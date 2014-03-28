@@ -1,0 +1,28 @@
+# Intellij IDEA files and folders
+*.iml
+.idea/
+
+# Apache Maven folders
+target/
+
+# Build files like *.class, *.jar
+*.jar
+*.war
+*.ear
+*.class
+*.log
+*.log.*
+
+# Eclipse files and folders
+.metadata/
+.settings/
+.classpath
+.project
+.springBeans
+
+# Subversion / SVN folders
+.svn/
+
+# Classes or build folder
+classes/
+bin/

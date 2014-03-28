@@ -1,0 +1,30 @@
+QIF 2.0
+- new component structure :
+    qif-ui --> qif user interface
+    qif-core --> qif basic classes, meant to be added in classpath as a library
+    qif-shared --> contains shared classes between ui and qif-dev
+    qif-dev --> the implementation of the business process, depend on qif-core for basic classes in qif, for example, in real create new module to project name, ex : qif-adminduk
+- new name :
+    QifTask --> class that only have one responsibility, same as version 1
+    QifProcess --> replace BpFlow
+    QifReceiver --> convert original input format into qif internal format
+    QifAdapter --> same as version 1
+    QifEvent --> replace BpListener
+- use JSON for saving message content in database
+- add generic in execution Qif classes, example T executeXxx(Message, ClassInput, ClassOutput)
+- use ActiveMQ as embedded queue or using ExecutorServices.singleThreadExecutor for insert the log transaction, insert as batch
+- separate option to save message content, audit trail
+- UI for test, can upload file input or type in text area
+
+
+QifEvent eventType
+- scheduler_cron
+- scheduler_interval
+- incoming_message
+
+QifEven eventInterface
+- http_rest
+- webservice_soap
+- ftp
+- file
+- jms_queue
