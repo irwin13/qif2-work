@@ -28,3 +28,65 @@ QifEven eventInterface
 - ftp
 - file
 - jms_queue
+
+Java UUID Generator code example :
+// need to pass Ethernet address; can either use real one (shown here)
+EthernetAddress nic = EthernetAddress.fromInterface();
+// or bogus which would be gotten with: EthernetAddress.constructMulticastAddress()
+TimeBasedGenerator uuidGenerator = Generators.timeBasedGenerator(nic);
+// also: we don't specify synchronizer, getting an intra-JVM syncer; there is
+// also external file-locking-based synchronizer if multiple JVMs run JUG
+UUID uuid = uuidGenerator.generate();
+
+<dependency>
+    <groupId>org.hibernate</groupId>
+    <artifactId>hibernate-core</artifactId>
+    <version>4.3.5.Final</version>
+</dependency>
+
+<!-- for JPA, use hibernate-entitymanager instead of hibernate-core -->
+<dependency>
+    <groupId>org.hibernate</groupId>
+    <artifactId>hibernate-entitymanager</artifactId>
+    <version>4.3.5.Final</version>
+</dependency>
+
+<!-- optional -->
+
+<dependency>
+    <groupId>org.hibernate</groupId>
+    <artifactId>hibernate-osgi</artifactId>
+    <version>4.3.5.Final</version>
+</dependency>
+<dependency>
+    <groupId>org.hibernate</groupId>
+    <artifactId>hibernate-envers</artifactId>
+    <version>4.3.5.Final</version>
+</dependency>
+<dependency>
+    <groupId>org.hibernate</groupId>
+    <artifactId>hibernate-c3p0</artifactId>
+    <version>4.3.5.Final</version>
+</dependency>
+<dependency>
+    <groupId>org.hibernate</groupId>
+    <artifactId>hibernate-proxool</artifactId>
+    <version>4.3.5.Final</version>
+</dependency>
+<dependency>
+    <groupId>org.hibernate</groupId>
+    <artifactId>hibernate-infinispan</artifactId>
+    <version>4.3.5.Final</version>
+</dependency>
+<dependency>
+    <groupId>org.hibernate</groupId>
+    <artifactId>hibernate-ehcache</artifactId>
+    <version>4.3.5.Final</version>
+</dependency>
+
+
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context</artifactId>
+        <version>4.0.3.RELEASE</version>
+    </dependency>
