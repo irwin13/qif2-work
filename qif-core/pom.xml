@@ -254,5 +254,10 @@
             <version>${jersey.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.hazelcast</groupId>
+            <artifactId>hazelcast</artifactId>
+            <version>3.2</version>
+        </dependency>
     </dependencies>
 </project>
