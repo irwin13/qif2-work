@@ -90,3 +90,19 @@ UUID uuid = uuidGenerator.generate();
         <artifactId>spring-context</artifactId>
         <version>4.0.3.RELEASE</version>
     </dependency>
+
+- For insert Event and Activity log data use ConcurrentLinkedQueue from JDK
+- For Event, Process and Task counter use Multiset from Google Guava
+http://code.google.com/p/guava-libraries/wiki/NewCollectionTypesExplained#Multiset
+- create utility / shared classes like :
+    qifTaskRepository.getTask("taskName);
+    qifProcessRepository.getTask("taskName);
+    activityCounter.increment("activityName", incrementSize)
+    eventLogQueue.put(qifEventLog);
+    eventLogQueue.read();
+    activityLogQueue.put(qifEventLog);
+    activityLogQueue.read();
+    activityLogInputMessageContent dst
+    qifAdapterUtil.getAdapter(name)
+    qifAdapterUtil.getAdapterProperty(key)
+

@@ -5,4 +5,14 @@ package id.co.quadras.qif2.model.entity;
  */
 public class QifEvent {
 
+    private String name;
+    private String eventType;
+    private String eventInterface;
+    private String qifReceiver;
+    private String description;
+    private Boolean auditTrailEnabled;
+    private Boolean keepMessageContent;
+    private Boolean activeAcceptMessage;
+
+
 }

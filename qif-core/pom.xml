@@ -19,7 +19,7 @@
         <mybatis.version>3.2.7</mybatis.version>
         <hibernate.version>4.3.5.Final</hibernate.version>
         <uuid-generator.version>3.1.3</uuid-generator.version>
-        <jersey.version>1.18</jersey.version>
+        <jersey.version>2.7</jersey.version>
     </properties>
 
     <repositories>
@@ -178,7 +178,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>16.0.1</version>
+            <version>17.0</version>
         </dependency>
         <dependency>
             <groupId>commons-beanutils</groupId>
@@ -239,18 +239,18 @@
         </dependency>
 
         <dependency>
-            <groupId>com.sun.jersey</groupId>
+            <groupId>org.glassfish.jersey.core</groupId>
             <artifactId>jersey-server</artifactId>
             <version>${jersey.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.sun.jersey</groupId>
+            <groupId>org.glassfish.jersey.core</groupId>
             <artifactId>jersey-client</artifactId>
             <version>${jersey.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.sun.jersey.contribs</groupId>
-            <artifactId>jersey-guice</artifactId>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-common</artifactId>
             <version>${jersey.version}</version>
         </dependency>
 
