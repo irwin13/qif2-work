@@ -1,4 +1,4 @@
-package id.co.quadras.qif2.model.entity;
+package id.co.quadras.qif.model.entity;
 
 /**
  * @author irwin Timestamp : 07/04/2014 11:53
