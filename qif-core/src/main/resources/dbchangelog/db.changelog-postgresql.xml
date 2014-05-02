@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="init" author="irwin">
+        <createTable tableName="QIF_EVENT_LOG" schemaName="qif">
+            <column name="ID" type="char(32)">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="ACTIVE" type="char(1)" defaultValue="N" />
+            <column name="CREATE_BY" type="character varying(500)" />
+            <column name="CREATE_DATE" type="timestamp" defaultValueComputed="now" />
+            <column name="LAST_UPDATE_BY" type="character varying(500)" />
+            <column name="LAST_UPDATE_DATE" type="timestamp" defaultValueComputed="now" />
+
+            <column name="EVENT_ID" type="char(32)" />
+            <column name="REFERENCE_KEY" type="character varying(500)" />
+            <column name="NODE_NAME" type="character varying(500)" />
+        </createTable>
+
+        <createTable tableName="QIF_EVENT_LOG_MESSAGE" schemaName="qif">
+            <column name="ID" type="char(32)">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="ACTIVE" type="char(1)" defaultValue="N" />
+            <column name="CREATE_BY" type="character varying(500)" />
+            <column name="CREATE_DATE" type="timestamp" defaultValueComputed="now" />
+            <column name="LAST_UPDATE_BY" type="character varying(500)" />
+            <column name="LAST_UPDATE_DATE" type="timestamp" defaultValueComputed="now" />
+
+            <column name="EVENT_LOG_ID" type="char(32)" />
+            <column name="MESSAGE_CONTENT" type="clob" />
+        </createTable>
+
+        <createTable tableName="QIF_ACTIVITY_LOG" schemaName="qif">
+            <column name="ID" type="char(32)">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="ACTIVE" type="char(1)" defaultValue="N" />
+            <column name="CREATE_BY" type="character varying(500)" />
+            <column name="CREATE_DATE" type="timestamp" defaultValueComputed="now" />
+            <column name="LAST_UPDATE_BY" type="character varying(500)" />
+            <column name="LAST_UPDATE_DATE" type="timestamp" defaultValueComputed="now" />
+
+            <column name="NODE_NAME" type="character varying(500)" />
+            <column name="ACTIVITY_TYPE" type="character varying(500)" />
+            <column name="ACTIVITY_STATUS" type="character varying(500)" />
+            <column name="START_TIME" type="numeric(16)" />
+            <column name="EXECUTION_TIME" type="numeric(16)" />
+            <column name="EVENT_LOG_ID" type="char(32)" />
+            <column name="PARENT_ACTIVITY_ID" type="char(32)" />
+        </createTable>
+
+
+        <createTable tableName="QIF_ACTIVITY_LOG_INPUT_MESSAGE" schemaName="qif">
+            <column name="ID" type="char(32)">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="ACTIVE" type="char(1)" defaultValue="N" />
+            <column name="CREATE_BY" type="character varying(500)" />
+            <column name="CREATE_DATE" type="timestamp" defaultValueComputed="now" />
+            <column name="LAST_UPDATE_BY" type="character varying(500)" />
+            <column name="LAST_UPDATE_DATE" type="timestamp" defaultValueComputed="now" />
+
+            <column name="ACTIVITY_LOG_ID" type="char(32)" />
+            <column name="INPUT_MESSAGE_CONTENT" type="clob" />
+        </createTable>
+
+        <createTable tableName="QIF_ACTIVITY_LOG_OUTPUT_MESSAGE" schemaName="qif">
+            <column name="ID" type="char(32)">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="ACTIVE" type="char(1)" defaultValue="N" />
+            <column name="CREATE_BY" type="character varying(500)" />
+            <column name="CREATE_DATE" type="timestamp" defaultValueComputed="now" />
+            <column name="LAST_UPDATE_BY" type="character varying(500)" />
+            <column name="LAST_UPDATE_DATE" type="timestamp" defaultValueComputed="now" />
+
+            <column name="ACTIVITY_LOG_ID" type="char(32)" />
+            <column name="OUTPUT_MESSAGE_CONTENT" type="clob" />
+        </createTable>
+
+        <createTable tableName="QIF_ACTIVITY_LOG_DATA" schemaName="qif">
+            <column name="ID" type="char(32)">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="ACTIVE" type="char(1)" defaultValue="N" />
+            <column name="CREATE_BY" type="character varying(500)" />
+            <column name="CREATE_DATE" type="timestamp" defaultValueComputed="now" />
+            <column name="LAST_UPDATE_BY" type="character varying(500)" />
+            <column name="LAST_UPDATE_DATE" type="timestamp" defaultValueComputed="now" />
+
+            <column name="ACTIVITY_LOG_ID" type="char(32)" />
+            <column name="DATA_KEY" type="character varying(500)" />
+            <column name="DATA_VALUE" type="character varying(500)" />
+        </createTable>
+
+        <createTable tableName="QIF_EVENT" schemaName="qif">
+            <column name="ID" type="char(32)">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="ACTIVE" type="char(1)" defaultValue="N" />
+            <column name="CREATE_BY" type="character varying(500)" />
+            <column name="CREATE_DATE" type="timestamp" defaultValueComputed="now" />
+            <column name="LAST_UPDATE_BY" type="character varying(500)" />
+            <column name="LAST_UPDATE_DATE" type="timestamp" defaultValueComputed="now" />
+
+            <column name="NAME" type="character varying(500)" />
+            <column name="EVENT_TYPE" type="character varying(500)" />
+            <column name="EVENT_INTERFACE" type="character varying(500)" />
+            <column name="QIF_RECEIVER" type="character varying(500)" />
+            <column name="DESCRIPTION" type="character varying(500)" />
+            <column name="AUDIT_TRAIL_ENABLED" type="char(1)" />
+            <column name="KEEP_MESSAGE_CONTENT" type="char(1)" />
+            <column name="ACTIVE_ACCEPT_MESSAGE" type="char(1)" />
+        </createTable>
+
+        <createTable tableName="QIF_EVENT_PROPERTY" schemaName="qif">
+            <column name="ID" type="char(32)">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="ACTIVE" type="char(1)" defaultValue="N" />
+            <column name="CREATE_BY" type="character varying(500)" />
+            <column name="CREATE_DATE" type="timestamp" defaultValueComputed="now" />
+            <column name="LAST_UPDATE_BY" type="character varying(500)" />
+            <column name="LAST_UPDATE_DATE" type="timestamp" defaultValueComputed="now" />
+
+            <column name="PROPERTY_KEY" type="character varying(500)" />
+            <column name="PROPERTY_VALUE" type="character varying(500)" />
+            <column name="DESCRIPTION" type="character varying(500)" />
+        </createTable>
+
+        <createTable tableName="QIF_ADAPTER" schemaName="qif">
+            <column name="ID" type="char(32)">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="ACTIVE" type="char(1)" defaultValue="N" />
+            <column name="CREATE_BY" type="character varying(500)" />
+            <column name="CREATE_DATE" type="timestamp" defaultValueComputed="now" />
+            <column name="LAST_UPDATE_BY" type="character varying(500)" />
+            <column name="LAST_UPDATE_DATE" type="timestamp" defaultValueComputed="now" />
+
+            <column name="NAME" type="character varying(500)" />
+            <column name="ADAPTER_INTERFACE" type="character varying(500)" />
+            <column name="DESCRIPTION" type="character varying(500)" />
+        </createTable>
+
+        <createTable tableName="QIF_ADAPTER_PROPERTY" schemaName="qif">
+            <column name="ID" type="char(32)">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="ACTIVE" type="char(1)" defaultValue="N" />
+            <column name="CREATE_BY" type="character varying(500)" />
+            <column name="CREATE_DATE" type="timestamp" defaultValueComputed="now" />
+            <column name="LAST_UPDATE_BY" type="character varying(500)" />
+            <column name="LAST_UPDATE_DATE" type="timestamp" defaultValueComputed="now" />
+
+            <column name="PROPERTY_KEY" type="character varying(500)" />
+            <column name="PROPERTY_VALUE" type="character varying(500)" />
+            <column name="DESCRIPTION" type="character varying(500)" />
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

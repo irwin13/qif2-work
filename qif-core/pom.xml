@@ -35,7 +35,27 @@
         </repository>
     </repositories>
 
+    <profiles>
+        <profile>
+            <id>irwin</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <liquibase.url>jdbc:postgresql://localhost:5432/postgres</liquibase.url>
+                <liquibase.driver>org.postgresql.Driver</liquibase.driver>
+                <liquibase.username>postgres</liquibase.username>
+                <liquibase.password>socrates</liquibase.password>
+            </properties>
+        </profile>
+    </profiles>
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -66,9 +86,9 @@
             <plugin>
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-maven-plugin</artifactId>
-                <version>3.0.5</version>
+                <version>3.1.1</version>
                 <configuration>
-                    <propertyFile>src/main/resources/liquibase.properties</propertyFile>
+                    <propertyFile>liquibase.properties</propertyFile>
                 </configuration>
                 <executions>
                     <execution>
@@ -116,26 +136,10 @@
 
         <!-- DATABASE -->
         <dependency>
-            <groupId>oracle</groupId>
-            <artifactId>ojdbc6</artifactId>
-            <version>11.1.0.7.0</version>
+            <groupId>postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>8.4-702.jdbc4</version>
         </dependency>
-        <dependency>
-            <groupId>org.codehaus.plexus</groupId>
-            <artifactId>plexus-utils</artifactId>
-            <version>1.0.4</version>
-        </dependency>
-        <dependency>
-            <groupId>org.liquibase</groupId>
-            <artifactId>liquibase-core</artifactId>
-            <version>3.0.5</version>
-        </dependency>
-        <dependency>
-            <groupId>org.yaml</groupId>
-            <artifactId>snakeyaml</artifactId>
-            <version>1.12</version>
-        </dependency>
-
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
