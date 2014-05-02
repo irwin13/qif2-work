@@ -5,8 +5,8 @@ package id.co.quadras.qif.model.entity;
  */
 public class QifAdapterProperty {
 
-    private String key;
-    private String value;
+    private String propertyKey;
+    private String propertyValue;
     private String description;
 
 }

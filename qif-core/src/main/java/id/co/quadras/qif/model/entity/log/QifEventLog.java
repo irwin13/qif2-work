@@ -5,7 +5,7 @@ package id.co.quadras.qif.model.entity.log;
  */
 public class QifEventLog {
 
-    private String qifEventId;
+    private String eventId;
     private String referenceKey;
     private String nodeName;
 }
