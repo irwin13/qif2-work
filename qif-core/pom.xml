@@ -35,14 +35,55 @@
         </repository>
     </repositories>
 
+    <profiles>
+        <profile>
+            <id>irwin</id>
+            <properties>
+                <profile>irwin.properties</profile>
+            </properties>
+        </profile>
+    </profiles>
+
     <build>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
             </resource>
+            <resource>
+                <directory>${basedir}/src/main/java</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>**/*.java</exclude>
+                </excludes>
+            </resource>
         </resources>
+        <testResources>
+            <testResource>
+                <directory>${basedir}/src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
+
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <version>1.0-alpha-2</version>
+                <executions>
+                    <execution>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>read-project-properties</goal>
+                        </goals>
+                        <configuration>
+                            <files>
+                                <file>${project.basedir}/${profile}</file>
+                            </files>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -69,6 +110,18 @@
                 <artifactId>maven-dependency-plugin</artifactId>
                 <version>2.2</version>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.16</version>
+                <configuration>
+                    <argLine>-Xms256m -Xmx256m -Djava.net.preferIPv4Stack=true</argLine>
+                    <testFailureIgnore>false</testFailureIgnore>
+                    <useFile>false</useFile>
+                    <trimStackTrace>false</trimStackTrace>
+                    <detail>true</detail>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
@@ -78,13 +131,13 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.10</version>
-            <scope>provided</scope>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.dbunit</groupId>
             <artifactId>dbunit</artifactId>
             <version>2.4.8</version>
-            <scope>provided</scope>
+            <scope>test</scope>
         </dependency>
 
         <!-- LOGGING -->
