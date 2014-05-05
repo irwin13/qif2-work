@@ -5,5 +5,5 @@ import id.co.quadras.qif.model.entity.log.QifActivityLogInputMessage;
 /**
  * @author irwin Timestamp : 29/04/2014 18:49
  */
-public interface QifActivityLogInputMessageQueue extends QifQueue<QifActivityLogInputMessage> {
+public interface ActivityLogInputMessageQueue extends QifQueue<QifActivityLogInputMessage> {
 }

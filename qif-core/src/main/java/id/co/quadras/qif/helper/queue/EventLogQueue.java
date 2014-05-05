@@ -5,4 +5,4 @@ import id.co.quadras.qif.model.entity.log.QifEventLog;
 /**
  * @author irwin Timestamp : 29/04/2014 16:20
  */
-public interface QifEventLogQueue extends QifQueue<QifEventLog> {}
+public interface EventLogQueue extends QifQueue<QifEventLog> {}

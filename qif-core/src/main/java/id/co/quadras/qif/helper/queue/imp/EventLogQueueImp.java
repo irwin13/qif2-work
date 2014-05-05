@@ -1,6 +1,6 @@
 package id.co.quadras.qif.helper.queue.imp;
 
-import id.co.quadras.qif.helper.queue.QifEventLogQueue;
+import id.co.quadras.qif.helper.queue.EventLogQueue;
 import id.co.quadras.qif.model.entity.log.QifEventLog;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 /**
  * @author irwin Timestamp : 29/04/2014 18:50
  */
-public class QifEventLogQueueImp implements QifEventLogQueue {
+public class EventLogQueueImp implements EventLogQueue {
 
     private static final ConcurrentLinkedQueue<QifEventLog> QUEUE = new ConcurrentLinkedQueue<QifEventLog>();
 

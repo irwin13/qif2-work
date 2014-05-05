@@ -5,5 +5,5 @@ import id.co.quadras.qif.model.entity.log.QifActivityLogData;
 /**
  * @author irwin Timestamp : 29/04/2014 18:48
  */
-public interface QifActivityLogDataQueue extends QifQueue<QifActivityLogData> {
+public interface ActivityLogDataQueue extends QifQueue<QifActivityLogData> {
 }
