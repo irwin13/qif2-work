@@ -23,7 +23,7 @@ public class EventLogMessageQueueReaderImp implements EventLogMessageQueueReader
 
     @Override
     public List<QifEventLogMessage> getLogList(int maxFetch) {
-        Preconditions.checkArgument(maxFetch <= 0, "maxFetch cannot be less than or equals 0");
+        Preconditions.checkArgument(maxFetch > 0, "maxFetch cannot be less than or equals 0");
         List<QifEventLogMessage> result = new LinkedList<QifEventLogMessage>();
 
         loopQueue:

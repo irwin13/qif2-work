@@ -23,7 +23,7 @@ public class ActivityLogQueueReaderImp implements ActivityLogQueueReader {
 
     @Override
     public List<QifActivityLog> getLogList(int maxFetch) {
-        Preconditions.checkArgument(maxFetch <= 0, "maxFetch cannot be less than or equals 0");
+        Preconditions.checkArgument(maxFetch > 0, "maxFetch cannot be less than or equals 0");
         List<QifActivityLog> result = new LinkedList<QifActivityLog>();
 
         loopQueue:

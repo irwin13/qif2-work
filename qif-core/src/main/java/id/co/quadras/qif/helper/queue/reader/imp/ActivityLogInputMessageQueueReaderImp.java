@@ -23,7 +23,7 @@ public class ActivityLogInputMessageQueueReaderImp implements ActivityLogInputMe
 
     @Override
     public List<QifActivityLogInputMessage> getLogList(int maxFetch) {
-        Preconditions.checkArgument(maxFetch <= 0, "maxFetch cannot be less than or equals 0");
+        Preconditions.checkArgument(maxFetch > 0, "maxFetch cannot be less than or equals 0");
         List<QifActivityLogInputMessage> result = new LinkedList<QifActivityLogInputMessage>();
 
         loopQueue:

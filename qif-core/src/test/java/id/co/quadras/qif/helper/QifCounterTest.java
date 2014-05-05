@@ -9,14 +9,14 @@ import org.junit.Test;
  */
 public class QifCounterTest {
 
+    final QifCounter qifCounter = GuiceQif.getInjector().getInstance(QifCounter.class);
+
+    final String even = "even";
+    final String odd = "odd";
+    int loopCount = 10;
+
     @Test
     public void testCounter() throws InterruptedException {
-        final QifCounter qifCounter = GuiceQif.getInjector().getInstance(QifCounter.class);
-
-        final String even = "even";
-        final String odd = "odd";
-
-        int loopCount = 10;
         for (int i = 1; i <= loopCount; i++) {
             Thread thread;
             if (i % 2 == 0) {
@@ -43,4 +43,14 @@ public class QifCounterTest {
         Assert.assertEquals(loopCount / 2, qifCounter.get(even));
         Assert.assertEquals(loopCount / 2, qifCounter.get(odd));
     }
+
+    @Test
+    public void testReset() {
+        QifCounter qifCounter = GuiceQif.getInjector().getInstance(QifCounter.class);
+        Assert.assertEquals(loopCount / 2, qifCounter.get(even));
+
+        qifCounter.reset(even, 0);
+        Assert.assertEquals(0, qifCounter.get(even));
+    }
+
 }
