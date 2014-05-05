@@ -21,6 +21,8 @@ public class QifEvent extends WinWorkBasicEntity {
 
     private List<QifEventProperty> qifEventPropertyList;
 
+    private transient String eventMessage;
+
     public String getName() {
         return name;
     }
@@ -91,6 +93,14 @@ public class QifEvent extends WinWorkBasicEntity {
 
     public void setQifEventPropertyList(List<QifEventProperty> qifEventPropertyList) {
         this.qifEventPropertyList = qifEventPropertyList;
+    }
+
+    public String getEventMessage() {
+        return eventMessage;
+    }
+
+    public void setEventMessage(String eventMessage) {
+        this.eventMessage = eventMessage;
     }
 
     @Override
