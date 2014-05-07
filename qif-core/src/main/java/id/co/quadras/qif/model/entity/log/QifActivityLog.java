@@ -13,7 +13,7 @@ public class QifActivityLog extends WinWorkBasicEntity {
     private String nodeName;
     private String activityType;
     private String activityStatus;
-    private long starts;
+    private long startTime;
     private long executionTime;
     private String eventLogId;
     private String parentActivityId;
@@ -47,12 +47,12 @@ public class QifActivityLog extends WinWorkBasicEntity {
         this.activityStatus = activityStatus;
     }
 
-    public long getStarts() {
-        return starts;
+    public long getStartTime() {
+        return startTime;
     }
 
-    public void setStarts(long starts) {
-        this.starts = starts;
+    public void setStartTime(long startTime) {
+        this.startTime = startTime;
     }
 
     public long getExecutionTime() {

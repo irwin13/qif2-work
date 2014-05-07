@@ -93,7 +93,7 @@ public abstract class QifTask implements QifActivity {
             taskLog.setActivityType(activityType());
             taskLog.setExecutionTime(System.currentTimeMillis() - start);
             taskLog.setNodeName(WinWorkUtil.getNodeName());
-            taskLog.setStarts(start);
+            taskLog.setStartTime(start);
             taskLog.setQifActivityLogDataList(activityLogDataList);
             taskLog.setParentActivity(qifActivityMessage.getParentActivityLog());
 

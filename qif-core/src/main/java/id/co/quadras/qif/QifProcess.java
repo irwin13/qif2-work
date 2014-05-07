@@ -71,7 +71,7 @@ public abstract class QifProcess implements QifActivity {
             processLog.setEventLogId(qifActivityMessage.getQifEventLog().getId());
             processLog.setActivityType(activityType());
             processLog.setNodeName(WinWorkUtil.getNodeName());
-            processLog.setStarts(System.currentTimeMillis());
+            processLog.setStartTime(System.currentTimeMillis());
 
             processLog.setCreateBy(activityName());
             processLog.setLastUpdateBy(activityName());
@@ -115,7 +115,7 @@ public abstract class QifProcess implements QifActivity {
             }
 
             processLog.setActivityStatus(activityStatus);
-            processLog.setExecutionTime(System.currentTimeMillis() - processLog.getStarts());
+            processLog.setExecutionTime(System.currentTimeMillis() - processLog.getStartTime());
             processLog.setQifActivityLogDataList(activityLogDataList);
 
             processLog.setLastUpdateBy(activityName());
