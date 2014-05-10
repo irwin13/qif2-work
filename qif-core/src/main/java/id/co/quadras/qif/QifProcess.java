@@ -7,6 +7,7 @@ import id.co.quadras.qif.helper.JsonParser;
 import id.co.quadras.qif.helper.queue.ActivityLogInputMessageQueue;
 import id.co.quadras.qif.helper.queue.ActivityLogOutputMessageQueue;
 import id.co.quadras.qif.helper.queue.ActivityLogQueue;
+import id.co.quadras.qif.helper.queue.ActivityLogUpdateQueue;
 import id.co.quadras.qif.model.entity.log.QifActivityLog;
 import id.co.quadras.qif.model.entity.log.QifActivityLogData;
 import id.co.quadras.qif.model.entity.log.QifActivityLogInputMessage;
@@ -17,7 +18,9 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author irwin Timestamp : 07/04/2014 11:53
@@ -39,6 +42,9 @@ public abstract class QifProcess implements QifActivity {
     private ActivityLogQueue activityLogQueue;
 
     @Inject
+    private ActivityLogUpdateQueue activityLogUpdateQueue;
+
+    @Inject
     private ActivityLogInputMessageQueue inputMessageQueue;
 
     @Inject
@@ -53,13 +59,13 @@ public abstract class QifProcess implements QifActivity {
     protected abstract QifActivityResult implementProcess(QifActivityMessage qifActivityMessage);
 
     public QifActivityResult executeProcess(QifActivityMessage qifActivityMessage) {
-        processLog = generateProcessLog(qifActivityMessage);
+        processLog = insertProcessLog(qifActivityMessage);
         QifActivityResult qifActivityResult = implementProcess(qifActivityMessage);
-        insertProcessLog(qifActivityMessage, qifActivityResult);
+        updateProcessLog(qifActivityMessage, qifActivityResult);
         return qifActivityResult;
     }
 
-    private QifActivityLog generateProcessLog(QifActivityMessage qifActivityMessage) {
+    private QifActivityLog insertProcessLog(QifActivityMessage qifActivityMessage) {
 
         boolean auditTrailEnabled = qifActivityMessage.getQifEventLog().getQifEvent().getAuditTrailEnabled();
 
@@ -75,6 +81,8 @@ public abstract class QifProcess implements QifActivity {
 
             processLog.setCreateBy(activityName());
             processLog.setLastUpdateBy(activityName());
+
+            activityLogQueue.put(processLog);
 
             boolean keepMessageContent = qifActivityMessage.getQifEventLog().getQifEvent().getKeepMessageContent();
 
@@ -102,7 +110,7 @@ public abstract class QifProcess implements QifActivity {
         return processLog;
     }
 
-    private void insertProcessLog(QifActivityMessage qifActivityMessage, QifActivityResult qifActivityResult) {
+    private void updateProcessLog(QifActivityMessage qifActivityMessage, QifActivityResult qifActivityResult) {
 
         if (processLog != null) {
 
@@ -111,7 +119,16 @@ public abstract class QifProcess implements QifActivity {
 
             if (qifActivityResult != null) {
                 activityStatus = qifActivityResult.getStatus();
-                activityLogDataList = qifActivityResult.getLogDataList();
+                if (qifActivityResult.getAdditionalData() != null) {
+                    activityLogDataList = new LinkedList<QifActivityLogData>();
+                    for (Map.Entry<String, String> entry : qifActivityResult.getAdditionalData().entrySet()) {
+                        QifActivityLogData logData = new QifActivityLogData();
+                        logData.setDataKey(entry.getKey());
+                        logData.setDataValue(entry.getValue());
+                        logData.setActivityLogId(processLog.getId());
+                        activityLogDataList.add(logData);
+                    }
+                }
             }
 
             processLog.setActivityStatus(activityStatus);
@@ -121,7 +138,7 @@ public abstract class QifProcess implements QifActivity {
             processLog.setLastUpdateBy(activityName());
             processLog.setLastUpdateDate(new Date());
 
-            activityLogQueue.put(processLog);
+            activityLogUpdateQueue.put(processLog);
 
             boolean keepMessageContent = qifActivityMessage.getQifEventLog().getQifEvent().getKeepMessageContent();
 

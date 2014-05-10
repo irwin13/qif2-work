@@ -10,10 +10,11 @@ import id.co.quadras.qif.helper.queue.EventLogQueue;
 import id.co.quadras.qif.model.entity.QifEvent;
 import id.co.quadras.qif.model.entity.log.QifEventLog;
 import id.co.quadras.qif.model.entity.log.QifEventLogMessage;
-import id.co.quadras.qif.model.vo.QifEventResult;
+import id.co.quadras.qif.model.vo.QifActivityResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.Date;
 
 /**
@@ -38,14 +39,14 @@ public abstract class QifEventReceiver implements QifActivity {
     @Inject
     protected JsonParser jsonParser;
 
-    protected abstract QifEventResult implementReceiver(QifEventLog qifEventLog);
+    protected abstract QifActivityResult implementReceiver(QifEventLog qifEventLog);
 
     /**
      * Typical execution will be like this :
      *
      * <code>
      * // run your Business Process here
-     * QifEventResult result;
+     * QifActivityResult result;
      * QifEventLog qifEventLog = insertEventLog(qifEvent);
      * BpMessage bpMessage = new BpMessage(bpReceiverLog, jsonMessage);
      * bpTask.executeTask(bpMessage); // execute the BpFlow
@@ -55,7 +56,7 @@ public abstract class QifEventReceiver implements QifActivity {
      * @param qifEvent
      * @return
      */
-    public QifEventResult receiveMessage(QifEvent qifEvent) {
+    public QifActivityResult receiveMessage(QifEvent qifEvent) {
         QifEventLog qifEventLog = insertEventLog(qifEvent);
         return implementReceiver(qifEventLog);
     }
@@ -87,7 +88,11 @@ public abstract class QifEventReceiver implements QifActivity {
                 logContent.setId(StringUtil.random32UUID());
 
                 logContent.setEventLogId(generatedId);
-                logContent.setMessageContent(qifEvent.getEventMessage());
+                try {
+                    logContent.setMessageContent(jsonParser.parseToString(true, qifEvent.getEventMessage()));
+                } catch (IOException e) {
+                    logger.error(e.getLocalizedMessage(), e);
+                }
 
                 logContent.setCreateBy(activityName());
                 logContent.setLastUpdateBy(activityName());
@@ -98,7 +103,7 @@ public abstract class QifEventReceiver implements QifActivity {
             }
 
         } else {
-            logger.debug("auditTrail is not enabled");
+            logger.debug("auditTrail is not enabled for QifEvent {}", qifEvent.getName());
             if (!Strings.isNullOrEmpty(qifEvent.getId())) {
                 qifEventLog.setQifEvent(qifEvent);
             }

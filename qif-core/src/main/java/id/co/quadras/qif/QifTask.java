@@ -17,7 +17,9 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author irwin Timestamp : 07/04/2014 11:53
@@ -70,7 +72,7 @@ public abstract class QifTask implements QifActivity {
     @Inject
     private ActivityLogOutputMessageQueue outputMessageQueue;
 
-    private void insertAuditTrail(QifActivityMessage qifActivityMessage, long start, QifActivityResult bpActivityResult) {
+    private void insertAuditTrail(QifActivityMessage qifActivityMessage, long start, QifActivityResult qifActivityResult) {
 
         boolean auditTrailEnabled = qifActivityMessage.getQifEventLog().getQifEvent().getAuditTrailEnabled();
 
@@ -82,9 +84,19 @@ public abstract class QifTask implements QifActivity {
             String activityStatus = null;
             List<QifActivityLogData> activityLogDataList = null;
 
-            if (bpActivityResult != null) {
-                activityStatus = bpActivityResult.getStatus();
-                activityLogDataList = bpActivityResult.getLogDataList();
+            if (qifActivityResult != null) {
+                activityStatus = qifActivityResult.getStatus();
+                if (qifActivityResult.getAdditionalData() != null) {
+                    activityLogDataList = new LinkedList<QifActivityLogData>();
+                    for (Map.Entry<String, String> entry : qifActivityResult.getAdditionalData().entrySet()) {
+                        QifActivityLogData logData = new QifActivityLogData();
+                        logData.setDataKey(entry.getKey());
+                        logData.setDataValue(entry.getValue());
+                        logData.setActivityLogId(taskLogId);
+                        activityLogDataList.add(logData);
+                    }
+                }
+
             }
 
             taskLog.setId(taskLogId);
@@ -126,7 +138,7 @@ public abstract class QifTask implements QifActivity {
                     inputMessageQueue.put(inputMessage);
                 }
 
-                if (bpActivityResult != null && bpActivityResult.getResult() != null) {
+                if (qifActivityResult != null && qifActivityResult.getResult() != null) {
                     QifActivityLogOutputMessage outputMessage = new QifActivityLogOutputMessage();
                     outputMessage.setId(StringUtil.random32UUID());
                     outputMessage.setActivityLogId(taskLogId);
@@ -136,7 +148,7 @@ public abstract class QifTask implements QifActivity {
                     outputMessage.setLastUpdateDate(today);
                     try {
                         outputMessage.setOutputMessageContent(jsonParser
-                                .parseToString(true, bpActivityResult.getResult()));
+                                .parseToString(true, qifActivityResult.getResult()));
                     } catch (IOException e) {
                         logger.error(e.getLocalizedMessage(), e);
                         outputMessage.setOutputMessageContent(e.getMessage());
