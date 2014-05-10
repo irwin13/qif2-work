@@ -5,6 +5,8 @@ import com.google.inject.Inject;
 import id.co.quadras.qif.helper.queue.ActivityLogOutputMessageQueue;
 import id.co.quadras.qif.helper.queue.reader.ActivityLogOutputMessageQueueReader;
 import id.co.quadras.qif.model.entity.log.QifActivityLogOutputMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.List;
 public class ActivityLogOutputMessageQueueReaderImp implements ActivityLogOutputMessageQueueReader {
 
     private final ActivityLogOutputMessageQueue queue;
+    private static final Logger LOGGER = LoggerFactory.getLogger(ActivityLogOutputMessageQueueReaderImp.class);
 
     @Inject
     public ActivityLogOutputMessageQueueReaderImp(ActivityLogOutputMessageQueue queue) {
@@ -31,11 +34,12 @@ public class ActivityLogOutputMessageQueueReaderImp implements ActivityLogOutput
             QifActivityLogOutputMessage log = queue.get();
             if (log != null) {
                 result.add(log);
+                LOGGER.trace("queue message = {}", log);
             } else {
                 break loopQueue;
             }
         }
-
+        LOGGER.debug("total message = {}", result.size());
         return result;
     }
 }

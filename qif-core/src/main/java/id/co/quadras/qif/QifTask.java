@@ -62,13 +62,13 @@ public abstract class QifTask implements QifActivity {
     protected JsonParser jsonParser;
 
     @Inject
-    protected ActivityLogQueue activityLogQueue;
+    private ActivityLogQueue activityLogQueue;
 
     @Inject
-    protected ActivityLogInputMessageQueue inputMessageQueue;
+    private ActivityLogInputMessageQueue inputMessageQueue;
 
     @Inject
-    protected ActivityLogOutputMessageQueue outputMessageQueue;
+    private ActivityLogOutputMessageQueue outputMessageQueue;
 
     private void insertAuditTrail(QifActivityMessage qifActivityMessage, long start, QifActivityResult bpActivityResult) {
 

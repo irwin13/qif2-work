@@ -5,6 +5,8 @@ import com.google.inject.Inject;
 import id.co.quadras.qif.helper.queue.ActivityLogDataQueue;
 import id.co.quadras.qif.helper.queue.reader.ActivityLogDataQueueReader;
 import id.co.quadras.qif.model.entity.log.QifActivityLogData;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.List;
 public class ActivityLogDataQueueReaderImp implements ActivityLogDataQueueReader {
 
     private final ActivityLogDataQueue queue;
+    private static final Logger LOGGER = LoggerFactory.getLogger(ActivityLogDataQueueReaderImp.class);
 
     @Inject
     public ActivityLogDataQueueReaderImp(ActivityLogDataQueue queue) {
@@ -30,12 +33,13 @@ public class ActivityLogDataQueueReaderImp implements ActivityLogDataQueueReader
         for (int i = 0; i < maxFetch; i++) {
             QifActivityLogData log = queue.get();
             if (log != null) {
+                LOGGER.trace("queue message = {}", log);
                 result.add(log);
             } else {
                 break loopQueue;
             }
         }
-
+        LOGGER.debug("total message = {}", result.size());
         return result;
     }
 }

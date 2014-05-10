@@ -36,13 +36,13 @@ public abstract class QifProcess implements QifActivity {
     protected JsonParser jsonParser;
 
     @Inject
-    protected ActivityLogQueue activityLogQueue;
+    private ActivityLogQueue activityLogQueue;
 
     @Inject
-    protected ActivityLogInputMessageQueue inputMessageQueue;
+    private ActivityLogInputMessageQueue inputMessageQueue;
 
     @Inject
-    protected ActivityLogOutputMessageQueue outputMessageQueue;
+    private ActivityLogOutputMessageQueue outputMessageQueue;
 
     private QifActivityLog processLog;
 

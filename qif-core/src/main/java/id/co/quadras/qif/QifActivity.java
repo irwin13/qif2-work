@@ -5,8 +5,8 @@ package id.co.quadras.qif;
  */
 public interface QifActivity {
 
-    public static final String SUCCESS = "SUCCESS";
-    public static final String ERROR = "ERROR";
+    public static final String SUCCESS = "success";
+    public static final String ERROR = "error";
 
     public String activityName();
     public String activityType();

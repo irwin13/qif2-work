@@ -30,10 +30,10 @@ public abstract class QifEventReceiver implements QifActivity {
     }
 
     @Inject
-    protected EventLogQueue eventLogQueue;
+    private EventLogQueue eventLogQueue;
 
     @Inject
-    protected EventLogMessageQueue messageQueue;
+    private EventLogMessageQueue messageQueue;
 
     @Inject
     protected JsonParser jsonParser;

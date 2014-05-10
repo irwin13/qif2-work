@@ -2,6 +2,8 @@ package id.co.quadras.qif.helper.queue.imp;
 
 import id.co.quadras.qif.helper.queue.ActivityLogInputMessageQueue;
 import id.co.quadras.qif.model.entity.log.QifActivityLogInputMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -11,9 +13,11 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class ActivityLogInputMessageQueueImp implements ActivityLogInputMessageQueue {
 
     private static final ConcurrentLinkedQueue<QifActivityLogInputMessage> QUEUE = new ConcurrentLinkedQueue<QifActivityLogInputMessage>();
+    private static final Logger LOGGER = LoggerFactory.getLogger(ActivityLogInputMessageQueueImp.class);
 
     @Override
     public boolean put(QifActivityLogInputMessage qifActivityLogInputMessage) {
+        LOGGER.trace("put message = {}", qifActivityLogInputMessage);
         return QUEUE.offer(qifActivityLogInputMessage);
     }
 
