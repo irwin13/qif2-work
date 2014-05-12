@@ -10,7 +10,7 @@ QIF 2.0
     QifReceiver --> convert original input format into qif internal format
     QifAdapter --> same as version 1
     QifEvent --> replace BpListener
-- use JSON for saving message content in database
+- use JSON and compressed for saving message content in database
 - add generic in execution Qif classes, example T executeXxx(Message, ClassInput, ClassOutput)
 - use ActiveMQ as embedded queue or using ExecutorServices.singleThreadExecutor for insert the log transaction, insert as batch
 - separate option to save message content, audit trail
@@ -28,6 +28,7 @@ QifEven eventInterface
 - ftp
 - file
 - jms_queue
+- oaq
 
 Java UUID Generator code example :
 // need to pass Ethernet address; can either use real one (shown here)

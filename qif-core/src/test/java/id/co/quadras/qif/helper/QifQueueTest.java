@@ -22,17 +22,14 @@ public class QifQueueTest {
     private final PodamFactory podamFactory = new PodamFactoryImpl();
 
     @Test
-    public void putQueue() {
+    public void queueOperation() {
         for (int i = 0; i < messageCount; i++) {
             QifEventLog log = podamFactory.manufacturePojo(QifEventLog.class);
             queue.put(log);
         }
 
         Assert.assertEquals(messageCount, queue.size());
-    }
 
-    @Test
-    public void readQueue() {
         List<QifEventLog> logList = queueReader.getLogList(messageCount);
         Assert.assertEquals(messageCount, logList.size());
     }

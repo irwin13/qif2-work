@@ -10,12 +10,4 @@
         <listener-class>id.co.quadras.qif.web.QifWebContextListener</listener-class>
     </listener>
 
-    <filter>
-        <filter-name>GuiceFilter</filter-name>
-        <filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>GuiceFilter</filter-name>
-        <url-pattern>/j/*</url-pattern>
-    </filter-mapping>
 </web-app>
