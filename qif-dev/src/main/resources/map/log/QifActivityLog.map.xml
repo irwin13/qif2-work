@@ -3,43 +3,54 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="mapper.com.irwin13.winwork.basic.model.entity.app.AppSetting">
+<mapper namespace="mapper.id.co.quadras.qif.model.entity.log.QifActivityLog">
 
-    <resultMap id="AppSettingResult" type="AppSetting">
+    <resultMap id="QifActivityLogResult" type="QifActivityLog">
         <result property="id" column="id"/>
         <result property="active" column="active"
-                typeHandler="com.irwin13.winwork.mybatis.typehandler.CharToBooleanTypeHandler"/>
+                typeHandler="com.irwin13.winwork.mybatis.typehandler.YesNoBooleanTypeHandler"/>
         <result property="createBy" column="create_by"/>
         <result property="createDate" column="create_date"/>
         <result property="lastUpdateBy" column="last_update_by"/>
         <result property="lastUpdateDate" column="last_update_date"/>
 
-        <result property="code" column="code"/>
-        <result property="description" column="description"/>
-        <result property="stringValue" column="string_value"/>
-        <result property="settingCategory" column="setting_category"/>
+        <result property="nodeName" column="node_name" />
+        <result property="activityType" column="activity_type" />
+        <result property="activityStatus" column="activity_status" />
+        <result property="startTime" column="start_time" />
+        <result property="executionTime" column="execution_time" />
+        <result property="eventLogId" column="event_log_id" />
+        <result property="parentActivityId" column="parent_activity_id" />
+
     </resultMap>
 
-    <insert id="insert" parameterType="AppSetting">
-        INSERT INTO app_setting
+    <insert id="insert" parameterType="QifActivityLog">
+        INSERT INTO qif_activity_log
         (
         id, active, create_by, create_date, last_update_by, last_update_date,
-        code, description, string_value, setting_category
+        node_name, activity_type, activity_status, start_time,
+        execution_time, event_log_id, parent_activity_id
         )
         VALUES
         (
-        #{id}, #{active}, #{createBy}, #{createDate}, #{lastUpdateBy}, #{lastUpdateDate},
-        #{code}, #{description}, #{stringValue}, #{settingCategory}
+        #{id}, #{active, typeHandler=com.irwin13.winwork.mybatis.typehandler.YesNoBooleanTypeHandler},
+        #{createBy}, #{createDate}, #{lastUpdateBy}, #{lastUpdateDate},
+        #{nodeName}, #{activityType}, #{activityStatus}, #{startTime},
+        #{executionTime}, #{eventLogId}, #{parentActivityId}
         )
     </insert>
 
-    <update id="update" parameterType="AppSetting">
+    <update id="update" parameterType="QifActivityLog">
         UPDATE app_setting SET
-        code = #{code},
-        description = #{description},
-        string_value = #{stringValue},
-        setting_category = #{settingCategory},
-        active = #{active},
+        node_name = #{nodeName},
+        activity_type = #{activityType},
+        activity_status = #{activityStatus},
+        start_time = #{startTime},
+        execution_time = #{executionTime},
+        event_log_id = #{eventLogId},
+        parent_activity_id = #{parentActivityId},
+
+        active = #{active, typeHandler=com.irwin13.winwork.mybatis.typehandler.YesNoBooleanTypeHandler},
         last_update_by = #{lastUpdateBy},
         last_update_date = #{lastUpdateDate}
         WHERE id = #{id}

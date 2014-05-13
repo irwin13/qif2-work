@@ -16,9 +16,7 @@ import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author irwin Timestamp : 12/05/2014 17:47
@@ -34,7 +32,7 @@ public final class SchedulerStarter {
         this.schedulerManager = schedulerManager;
     }
 
-    public void start(List<QifEvent> qifEventList) throws SchedulerException {
+    public void startEvent(List<QifEvent> qifEventList) throws SchedulerException {
         LOGGER.info("=====================================");
         LOGGER.info("Configure BP Listener with type SCHEDULER ");
 
@@ -94,5 +92,15 @@ public final class SchedulerStarter {
             }
         }
         schedulerManager.start();
+    }
+
+    public void startInternalScheduler() {
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+
+            }
+        }, 1000L, 1000L); // delay and period
     }
 }

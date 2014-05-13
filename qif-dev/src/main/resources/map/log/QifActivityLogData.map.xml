@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.id.co.quadras.qif.model.entity.log.QifActivityLogData">
+
+    <resultMap id="QifActivityLogDataResult" type="QifActivityLogData">
+        <result property="id" column="id"/>
+        <result property="active" column="active"
+                typeHandler="com.irwin13.winwork.mybatis.typehandler.YesNoBooleanTypeHandler"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createDate" column="create_date"/>
+        <result property="lastUpdateBy" column="last_update_by"/>
+        <result property="lastUpdateDate" column="last_update_date"/>
+
+        <result property="activityLogId" column="activity_log_id" />
+        <result property="dataKey" column="data_key" />
+        <result property="dataValue" column="data_value" />
+
+    </resultMap>
+
+    <insert id="insert" parameterType="QifActivityLogData">
+        INSERT INTO qif_activity_log_data
+        (
+        id, active, create_by, create_date, last_update_by, last_update_date,
+        activity_log_id, data_key, data_value
+        )
+        VALUES
+        (
+        #{id}, #{active, typeHandler=com.irwin13.winwork.mybatis.typehandler.YesNoBooleanTypeHandler},
+        #{createBy}, #{createDate}, #{lastUpdateBy}, #{lastUpdateDate},
+        #{activityLogId}, #{dataKey}, #{dataValue}
+        )
+    </insert>
+
+</mapper>

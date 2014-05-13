@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.id.co.quadras.qif.model.entity.QifEvent">
+
+    <cache type="org.mybatis.caches.hazelcast.HazelcastCache" />
+
+    <resultMap id="QifEventResult" type="QifEvent">
+        <result property="id" column="id"/>
+        <result property="active" column="active"
+                typeHandler="com.irwin13.winwork.mybatis.typehandler.YesNoBooleanTypeHandler"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createDate" column="create_date"/>
+        <result property="lastUpdateBy" column="last_update_by"/>
+        <result property="lastUpdateDate" column="last_update_date"/>
+
+        <result property="name" column="name"/>
+        <result property="description" column="description"/>
+        <result property="eventType" column="event_type"/>
+        <result property="eventInterface" column="event_interface"/>
+        <result property="qifReceiver" column="qif_receiver"/>
+        <result property="auditTrailEnabled" column="audit_trail_enabled"
+                typeHandler="com.irwin13.winwork.mybatis.typehandler.YesNoBooleanTypeHandler"/>
+        <result property="keepMessageContent" column="keep_message_content"
+                typeHandler="com.irwin13.winwork.mybatis.typehandler.YesNoBooleanTypeHandler"/>
+        <result property="activeAcceptMessage" column="active_accept_message"
+                typeHandler="com.irwin13.winwork.mybatis.typehandler.YesNoBooleanTypeHandler"/>
+
+    </resultMap>
+
+    <sql id="allField">
+        id,
+
+        name,
+        description,
+        event_interface,
+        event_type,
+        qif_receiver,
+        audit_trail_enabled,
+        keep_message_content,
+        active_accept_message,
+
+        active,
+        create_by,
+        create_date,
+        last_update_by,
+        last_update_date
+    </sql>
+
+    <sql id="defaultWhere">
+        WHERE 1=1
+        <if test="name != null">
+            AND name = #{name}
+        </if>
+        <if test="description != null">
+            AND description = #{description}
+        </if>
+        <if test="eventInterface != null">
+            AND event_interface = #{eventInterface}
+        </if>
+        <if test="eventType != null">
+            AND event_type = #{eventType}
+        </if>
+        <if test="qifReceiver != null">
+            AND qif_receiver = #{qifReceiver}
+        </if>
+        <if test="auditTrailEnabled != null">
+            AND audit_trail_enabled = #{auditTrailEnabled}
+        </if>
+        <if test="keepMessageContent != null">
+            AND keep_message_content = #{keepMessageContent}
+        </if>
+        <if test="activeAcceptMessage != null">
+            AND active_accept_message = #{activeAcceptMessage}
+        </if>
+
+        <if test="columnName != null and columnName != '' and sortMethod != null and sortMethod != ''">
+            ORDER BY ${columnName} ${sortMethod}
+        </if>
+    </sql>
+
+    <sql id="defaultSearch">
+        WHERE 1=1
+        <if test="searchKeyword != null and searchKeyword != ''">
+            AND (
+            lower(name) LIKE #{searchKeyword} OR
+            lower(event_interface) LIKE #{searchKeyword} OR
+            lower(event_type) LIKE #{searchKeyword} OR
+            lower(description) LIKE #{searchKeyword} OR
+            lower(qif_receiver) LIKE #{searchKeyword} OR
+            lower(audit_trail_enabled) LIKE #{searchKeyword} OR
+            lower(keep_message_content) LIKE #{searchKeyword} OR
+            lower(active_accept_message) LIKE #{searchKeyword}
+            )
+        </if>
+        <if test="columnName != null and columnName != '' and sortMethod != null and sortMethod != ''">
+            ORDER BY ${columnName} ${sortMethod}
+        </if>
+    </sql>
+
+    <select id="select" resultMap="QifEventResult">
+        SELECT
+        <include refid="allField" />
+        FROM qif_event
+        <include refid="defaultWhere" />
+    </select>
+
+    <select id="selectCount" resultType="_long">
+        SELECT count(id) AS total
+        FROM qif_event
+        <include refid="defaultWhere" />
+    </select>
+
+    <select id="selectSearch" parameterType="SearchParameter" resultMap="QifEventResult">
+        SELECT
+        <include refid="allField" />
+        FROM qif_event
+        <include refid="defaultSearch" />
+    </select>
+
+    <select id="selectSearchCount" parameterType="SearchParameter" resultType="_long">
+        SELECT count(id) AS total
+        FROM qif_event
+        <include refid="defaultSearch" />
+    </select>
+
+    <select id="selectById" resultMap="QifEventResult">
+        SELECT
+        <include refid="allField" />
+        FROM qif_event
+        WHERE id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="QifEvent">
+        INSERT INTO qif_event
+        (
+        id, active, create_by, create_date, last_update_by, last_update_date,
+        name, description, event_interface, event_type, qif_receiver,
+        audit_trail_enabled, keep_message_content, active_accept_message
+        )
+        VALUES
+        (
+        #{id}, #{active, typeHandler=com.irwin13.winwork.mybatis.typehandler.YesNoBooleanTypeHandler},
+        #{createBy}, #{createDate}, #{lastUpdateBy}, #{lastUpdateDate},
+        #{name}, #{description}, #{eventInterface}, #{eventType}, #{qifReceiver},
+        #{auditTrailEnabled}, #{keepMessageContent}, #{activeAcceptMessage}
+        )
+    </insert>
+
+    <update id="update" parameterType="QifEvent">
+        UPDATE qif_event SET
+
+        name = #{name},
+        description = #{description},
+        event_interface = #{eventInterface},
+        event_type = #{eventType},
+        qif_receiver = #{qifReceiver},
+        audit_trail_enabled = #{auditTrailEnabled},
+        keep_message_content = #{keepMessageContent},
+        active_accept_message = #{activeAcceptMessage},
+
+        active = #{active, typeHandler=com.irwin13.winwork.mybatis.typehandler.YesNoBooleanTypeHandler},
+        last_update_by = #{lastUpdateBy},
+        last_update_date = #{lastUpdateDate}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="QifEvent">
+        DELETE FROM qif_event WHERE id = #{id}
+    </delete>
+
+</mapper>

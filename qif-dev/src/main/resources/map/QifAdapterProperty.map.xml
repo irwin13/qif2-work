@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.id.co.quadras.qif.model.entity.QifAdapterProperty">
+
+    <cache type="org.mybatis.caches.hazelcast.HazelcastCache" />
+
+    <resultMap id="QifAdapterPropertyResult" type="QifAdapterProperty">
+        <result property="id" column="id"/>
+        <result property="active" column="active"
+                typeHandler="com.irwin13.winwork.mybatis.typehandler.YesNoBooleanTypeHandler"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createDate" column="create_date"/>
+        <result property="lastUpdateBy" column="last_update_by"/>
+        <result property="lastUpdateDate" column="last_update_date"/>
+
+        <result property="description" column="description"/>
+        <result property="propertyKey" column="property_key"/>
+        <result property="propertyValue" column="property_value"/>
+    </resultMap>
+
+    <sql id="allField">
+        id,
+
+        description,
+        property_key,
+        property_value,
+
+        active,
+        create_by,
+        create_date,
+        last_update_by,
+        last_update_date
+    </sql>
+
+    <sql id="defaultWhere">
+        WHERE 1=1
+        <if test="description != null">
+            AND description = #{description}
+        </if>
+        <if test="propertyValue != null">
+            AND property_value = #{propertyValue}
+        </if>
+        <if test="propertyKey != null">
+            AND property_key = #{propertyKey}
+        </if>
+        <if test="columnName != null and columnName != '' and sortMethod != null and sortMethod != ''">
+            ORDER BY ${columnName} ${sortMethod}
+        </if>
+    </sql>
+
+    <sql id="defaultSearch">
+        WHERE 1=1
+        <if test="searchKeyword != null and searchKeyword != ''">
+            AND (
+            lower(description) LIKE #{searchKeyword} OR
+            lower(property_key) LIKE #{searchKeyword} OR
+            lower(property_value) LIKE #{searchKeyword}
+            )
+        </if>
+        <if test="columnName != null and columnName != '' and sortMethod != null and sortMethod != ''">
+            ORDER BY ${columnName} ${sortMethod}
+        </if>
+    </sql>
+
+    <select id="select" resultMap="QifAdapterPropertyResult">
+        SELECT
+        <include refid="allField" />
+        FROM qif_adapter_property
+        <include refid="defaultWhere" />
+    </select>
+
+    <select id="selectCount" resultType="_long">
+        SELECT count(id) AS total
+        FROM qif_adapter_property
+        <include refid="defaultWhere" />
+    </select>
+
+    <select id="selectSearch" parameterType="SearchParameter" resultMap="QifAdapterPropertyResult">
+        SELECT
+        <include refid="allField" />
+        FROM qif_adapter_property
+        <include refid="defaultSearch" />
+    </select>
+
+    <select id="selectSearchCount" parameterType="SearchParameter" resultType="_long">
+        SELECT count(id) AS total
+        FROM qif_adapter_property
+        <include refid="defaultSearch" />
+    </select>
+
+    <select id="selectById" resultMap="QifAdapterPropertyResult">
+        SELECT
+        <include refid="allField" />
+        FROM qif_adapter_property
+        WHERE id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="QifAdapterProperty">
+        INSERT INTO qif_adapter_property
+        (
+        id, active, create_by, create_date, last_update_by, last_update_date,
+        description, property_key, property_value
+        )
+        VALUES
+        (
+        #{id}, #{active, typeHandler=com.irwin13.winwork.mybatis.typehandler.YesNoBooleanTypeHandler},
+        #{createBy}, #{createDate}, #{lastUpdateBy}, #{lastUpdateDate},
+        #{description}, #{propertyKey}, #{propertyValue}
+        )
+    </insert>
+
+    <update id="update" parameterType="QifAdapterProperty">
+        UPDATE qif_adapter_property SET
+        description = #{description},
+        property_key = #{propertyKey},
+        property_value = #{propertyValue},
+        active = #{active, typeHandler=com.irwin13.winwork.mybatis.typehandler.YesNoBooleanTypeHandler},
+        last_update_by = #{lastUpdateBy},
+        last_update_date = #{lastUpdateDate}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="QifAdapterProperty">
+        DELETE FROM qif_adapter_property WHERE id = #{id}
+    </delete>
+
+</mapper>
