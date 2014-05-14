@@ -3,9 +3,9 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="mapper.id.co.quadras.qif.model.entity.log.QifEventLogMessage">
+<mapper namespace="sqlmap.id.co.quadras.qif.model.entity.log.QifActivityLogOutputMessage">
 
-    <resultMap id="QifEventLogMessageResult" type="QifEventLogMessage">
+    <resultMap id="QifActivityLogOutputMessageResult" type="QifActivityLogOutputMessage">
         <result property="id" column="id"/>
         <result property="active" column="active"
                 typeHandler="com.irwin13.winwork.mybatis.typehandler.YesNoBooleanTypeHandler"/>
@@ -14,22 +14,22 @@
         <result property="lastUpdateBy" column="last_update_by"/>
         <result property="lastUpdateDate" column="last_update_date"/>
 
-        <result property="eventLogId" column="event_log_id" />
-        <result property="messageContent" column="message_content" />
+        <result property="activityLogId" column="activity_log_id" />
+        <result property="outputMessageContent" column="output_message_content" />
 
     </resultMap>
 
-    <insert id="insert" parameterType="QifEventLogMessage">
-        INSERT INTO qif_activity_log
+    <insert id="insert" parameterType="QifActivityLogOutputMessage">
+        INSERT INTO qif_activity_output_message
         (
         id, active, create_by, create_date, last_update_by, last_update_date,
-        event_log_id, message_content
+        activity_log_id, output_message_content
         )
         VALUES
         (
         #{id}, #{active, typeHandler=com.irwin13.winwork.mybatis.typehandler.YesNoBooleanTypeHandler},
         #{createBy}, #{createDate}, #{lastUpdateBy}, #{lastUpdateDate},
-        #{eventLogId}, #{messageContent}
+        #{activityLogId}, #{outputMessageContent}
         )
     </insert>
 

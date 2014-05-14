@@ -3,11 +3,11 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="mapper.id.co.quadras.qif.model.entity.QifEventProperty">
+<mapper namespace="sqlmap.id.co.quadras.qif.model.entity.QifAdapterProperty">
 
     <cache type="org.mybatis.caches.hazelcast.HazelcastCache" />
 
-    <resultMap id="QifEventPropertyResult" type="QifEventProperty">
+    <resultMap id="QifAdapterPropertyResult" type="QifAdapterProperty">
         <result property="id" column="id"/>
         <result property="active" column="active"
                 typeHandler="com.irwin13.winwork.mybatis.typehandler.YesNoBooleanTypeHandler"/>
@@ -65,41 +65,41 @@
         </if>
     </sql>
 
-    <select id="select" resultMap="QifEventPropertyResult">
+    <select id="select" resultMap="QifAdapterPropertyResult">
         SELECT
         <include refid="allField" />
-        FROM qif_event_property
+        FROM qif_adapter_property
         <include refid="defaultWhere" />
     </select>
 
     <select id="selectCount" resultType="_long">
         SELECT count(id) AS total
-        FROM qif_event_property
+        FROM qif_adapter_property
         <include refid="defaultWhere" />
     </select>
 
-    <select id="selectSearch" parameterType="SearchParameter" resultMap="QifEventPropertyResult">
+    <select id="selectSearch" parameterType="SearchParameter" resultMap="QifAdapterPropertyResult">
         SELECT
         <include refid="allField" />
-        FROM qif_event_property
+        FROM qif_adapter_property
         <include refid="defaultSearch" />
     </select>
 
     <select id="selectSearchCount" parameterType="SearchParameter" resultType="_long">
         SELECT count(id) AS total
-        FROM qif_event_property
+        FROM qif_adapter_property
         <include refid="defaultSearch" />
     </select>
 
-    <select id="selectById" resultMap="QifEventPropertyResult">
+    <select id="selectById" resultMap="QifAdapterPropertyResult">
         SELECT
         <include refid="allField" />
-        FROM qif_event_property
+        FROM qif_adapter_property
         WHERE id = #{id}
     </select>
 
-    <insert id="insert" parameterType="QifEventProperty">
-        INSERT INTO qif_event_property
+    <insert id="insert" parameterType="QifAdapterProperty">
+        INSERT INTO qif_adapter_property
         (
         id, active, create_by, create_date, last_update_by, last_update_date,
         description, property_key, property_value
@@ -112,8 +112,8 @@
         )
     </insert>
 
-    <update id="update" parameterType="QifEventProperty">
-        UPDATE qif_event_property SET
+    <update id="update" parameterType="QifAdapterProperty">
+        UPDATE qif_adapter_property SET
         description = #{description},
         property_key = #{propertyKey},
         property_value = #{propertyValue},
@@ -123,8 +123,8 @@
         WHERE id = #{id}
     </update>
 
-    <delete id="delete" parameterType="QifEventProperty">
-        DELETE FROM qif_event_property WHERE id = #{id}
+    <delete id="delete" parameterType="QifAdapterProperty">
+        DELETE FROM qif_adapter_property WHERE id = #{id}
     </delete>
 
 </mapper>

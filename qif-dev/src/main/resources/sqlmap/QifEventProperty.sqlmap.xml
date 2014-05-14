@@ -3,11 +3,11 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="mapper.id.co.quadras.qif.model.entity.QifAdapter">
+<mapper namespace="sqlmap.id.co.quadras.qif.model.entity.QifEventProperty">
 
     <cache type="org.mybatis.caches.hazelcast.HazelcastCache" />
 
-    <resultMap id="QifAdapterResult" type="QifAdapter">
+    <resultMap id="QifEventPropertyResult" type="QifEventProperty">
         <result property="id" column="id"/>
         <result property="active" column="active"
                 typeHandler="com.irwin13.winwork.mybatis.typehandler.YesNoBooleanTypeHandler"/>
@@ -16,18 +16,17 @@
         <result property="lastUpdateBy" column="last_update_by"/>
         <result property="lastUpdateDate" column="last_update_date"/>
 
-        <result property="name" column="name"/>
-        <result property="adapterInterface" column="adapter_interface"/>
         <result property="description" column="description"/>
-
+        <result property="propertyKey" column="property_key"/>
+        <result property="propertyValue" column="property_value"/>
     </resultMap>
 
     <sql id="allField">
         id,
 
-        name,
-        adapter_interface,
         description,
+        property_key,
+        property_value,
 
         active,
         create_by,
@@ -38,14 +37,14 @@
 
     <sql id="defaultWhere">
         WHERE 1=1
-        <if test="name != null">
-            AND name = #{name}
-        </if>
-        <if test="adapterInterface != null">
-            AND adapter_interface = #{adapterInterface}
-        </if>
         <if test="description != null">
             AND description = #{description}
+        </if>
+        <if test="propertyValue != null">
+            AND property_value = #{propertyValue}
+        </if>
+        <if test="propertyKey != null">
+            AND property_key = #{propertyKey}
         </if>
         <if test="columnName != null and columnName != '' and sortMethod != null and sortMethod != ''">
             ORDER BY ${columnName} ${sortMethod}
@@ -56,9 +55,9 @@
         WHERE 1=1
         <if test="searchKeyword != null and searchKeyword != ''">
             AND (
-            lower(name) LIKE #{searchKeyword} OR
-            lower(adapter_interface) LIKE #{searchKeyword} OR
-            lower(description) LIKE #{searchKeyword}
+            lower(description) LIKE #{searchKeyword} OR
+            lower(property_key) LIKE #{searchKeyword} OR
+            lower(property_value) LIKE #{searchKeyword}
             )
         </if>
         <if test="columnName != null and columnName != '' and sortMethod != null and sortMethod != ''">
@@ -66,66 +65,66 @@
         </if>
     </sql>
 
-    <select id="select" resultMap="QifAdapterResult">
+    <select id="select" resultMap="QifEventPropertyResult">
         SELECT
         <include refid="allField" />
-        FROM qif_adapter
+        FROM qif_event_property
         <include refid="defaultWhere" />
     </select>
 
     <select id="selectCount" resultType="_long">
         SELECT count(id) AS total
-        FROM qif_adapter
+        FROM qif_event_property
         <include refid="defaultWhere" />
     </select>
 
-    <select id="selectSearch" parameterType="SearchParameter" resultMap="QifAdapterResult">
+    <select id="selectSearch" parameterType="SearchParameter" resultMap="QifEventPropertyResult">
         SELECT
         <include refid="allField" />
-        FROM qif_adapter
+        FROM qif_event_property
         <include refid="defaultSearch" />
     </select>
 
     <select id="selectSearchCount" parameterType="SearchParameter" resultType="_long">
         SELECT count(id) AS total
-        FROM qif_adapter
+        FROM qif_event_property
         <include refid="defaultSearch" />
     </select>
 
-    <select id="selectById" resultMap="QifAdapterResult">
+    <select id="selectById" resultMap="QifEventPropertyResult">
         SELECT
         <include refid="allField" />
-        FROM qif_adapter
+        FROM qif_event_property
         WHERE id = #{id}
     </select>
 
-    <insert id="insert" parameterType="QifAdapter">
-        INSERT INTO qif_adapter
+    <insert id="insert" parameterType="QifEventProperty">
+        INSERT INTO qif_event_property
         (
         id, active, create_by, create_date, last_update_by, last_update_date,
-        name, description, adapter_interface
+        description, property_key, property_value
         )
         VALUES
         (
         #{id}, #{active, typeHandler=com.irwin13.winwork.mybatis.typehandler.YesNoBooleanTypeHandler},
         #{createBy}, #{createDate}, #{lastUpdateBy}, #{lastUpdateDate},
-        #{name}, #{description}, #{adapterInterface}
+        #{description}, #{propertyKey}, #{propertyValue}
         )
     </insert>
 
-    <update id="update" parameterType="QifAdapter">
-        UPDATE qif_adapter SET
-        name = #{name},
+    <update id="update" parameterType="QifEventProperty">
+        UPDATE qif_event_property SET
         description = #{description},
-        adapter_interface = #{adapterInterface},
+        property_key = #{propertyKey},
+        property_value = #{propertyValue},
         active = #{active, typeHandler=com.irwin13.winwork.mybatis.typehandler.YesNoBooleanTypeHandler},
         last_update_by = #{lastUpdateBy},
         last_update_date = #{lastUpdateDate}
         WHERE id = #{id}
     </update>
 
-    <delete id="delete" parameterType="QifAdapter">
-        DELETE FROM qif_adapter WHERE id = #{id}
+    <delete id="delete" parameterType="QifEventProperty">
+        DELETE FROM qif_event_property WHERE id = #{id}
     </delete>
 
 </mapper>

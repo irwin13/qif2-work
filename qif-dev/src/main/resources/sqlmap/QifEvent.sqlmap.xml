@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="mapper.id.co.quadras.qif.model.entity.QifEvent">
+<mapper namespace="sqlmap.id.co.quadras.qif.model.entity.QifEvent">
 
     <cache type="org.mybatis.caches.hazelcast.HazelcastCache" />
 

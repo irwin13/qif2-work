@@ -89,6 +89,6 @@
     </databaseIdProvider>
 
     <mappers>
-        <mapper resource="mapper/AppSetting.map.xml"/>
+        <mapper resource="sqlmap/AppSetting.sqlmap.xml"/>
     </mappers>
 </configuration>

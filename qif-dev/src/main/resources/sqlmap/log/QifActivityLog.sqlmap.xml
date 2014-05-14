@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="mapper.id.co.quadras.qif.model.entity.log.QifActivityLog">
+<mapper namespace="sqlmap.id.co.quadras.qif.model.entity.log.QifActivityLog">
 
     <resultMap id="QifActivityLogResult" type="QifActivityLog">
         <result property="id" column="id"/>
