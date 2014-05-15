@@ -36,7 +36,7 @@
     </sql>
 
     <sql id="defaultWhere">
-        WHERE 1=1
+        WHERE active = 'Y'
         <if test="description != null">
             AND description = #{description}
         </if>
@@ -52,7 +52,7 @@
     </sql>
 
     <sql id="defaultSearch">
-        WHERE 1=1
+        WHERE active = 'Y'
         <if test="searchKeyword != null and searchKeyword != ''">
             AND (
             lower(description) LIKE #{searchKeyword} OR
