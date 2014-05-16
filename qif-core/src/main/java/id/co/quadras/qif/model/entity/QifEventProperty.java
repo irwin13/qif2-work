@@ -11,6 +11,7 @@ public class QifEventProperty extends WinWorkBasicEntity {
     private String propertyKey;
     private String propertyValue;
     private String description;
+    private String qifEventId;
 
     public String getPropertyKey() {
         return propertyKey;
@@ -34,6 +35,14 @@ public class QifEventProperty extends WinWorkBasicEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getQifEventId() {
+        return qifEventId;
+    }
+
+    public void setQifEventId(String qifEventId) {
+        this.qifEventId = qifEventId;
     }
 
     @Override

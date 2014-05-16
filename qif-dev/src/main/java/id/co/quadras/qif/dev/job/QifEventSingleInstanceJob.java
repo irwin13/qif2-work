@@ -2,7 +2,7 @@ package id.co.quadras.qif.dev.job;
 
 import com.irwin13.winwork.basic.exception.WinWorkException;
 import id.co.quadras.qif.QifConstants;
-import id.co.quadras.qif.QifEventReceiver;
+import id.co.quadras.qif.QifProcess;
 import id.co.quadras.qif.dev.guice.GuiceFactory;
 import id.co.quadras.qif.dev.service.EventService;
 import id.co.quadras.qif.model.entity.QifEvent;
@@ -29,9 +29,9 @@ public class QifEventSingleInstanceJob implements Job {
         if (qifEvent != null) {
             if (qifEvent.getActiveAcceptMessage() != null && qifEvent.getActiveAcceptMessage()) {
                 try {
-                    QifEventReceiver eventReceiver = (QifEventReceiver) GuiceFactory.getInjector()
-                            .getInstance(Class.forName(qifEvent.getQifReceiver()));
-                    eventReceiver.receiveMessage(qifEvent);
+                    QifProcess qifProcess = (QifProcess) GuiceFactory.getInjector()
+                            .getInstance(Class.forName(qifEvent.getQifProcess()));
+                    qifProcess.executeProcess(qifEvent);
                 } catch (Exception e) {
                     LOGGER.error(e.getLocalizedMessage(), e);
                 }
@@ -43,5 +43,4 @@ public class QifEventSingleInstanceJob implements Job {
                     + id);
         }
     }
-
 }

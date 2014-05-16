@@ -22,7 +22,7 @@ CREATE TABLE QIF_EVENT
   name VARCHAR2(500),
   event_interface VARCHAR2(500),
   event_type VARCHAR2(500),
-  qif_receiver VARCHAR2(500),
+  qif_process VARCHAR2(500),
   audit_trail_enabled char(1) default 'Y',
   active_accept_message CHAR(1) default 'Y',
   keep_message_content char(1) default 'Y',

@@ -20,7 +20,7 @@
         <result property="description" column="description"/>
         <result property="eventType" column="event_type"/>
         <result property="eventInterface" column="event_interface"/>
-        <result property="qifReceiver" column="qif_receiver"/>
+        <result property="qifProcess" column="qif_process"/>
         <result property="auditTrailEnabled" column="audit_trail_enabled"
                 typeHandler="com.irwin13.winwork.mybatis.typehandler.YesNoBooleanTypeHandler"/>
         <result property="keepMessageContent" column="keep_message_content"
@@ -37,7 +37,7 @@
         description,
         event_interface,
         event_type,
-        qif_receiver,
+        qif_process,
         audit_trail_enabled,
         keep_message_content,
         active_accept_message,
@@ -63,8 +63,8 @@
         <if test="eventType != null">
             AND event_type = #{eventType}
         </if>
-        <if test="qifReceiver != null">
-            AND qif_receiver = #{qifReceiver}
+        <if test="qifProcess != null">
+            AND qif_process = #{qifProcess}
         </if>
         <if test="auditTrailEnabled != null">
             AND audit_trail_enabled = #{auditTrailEnabled}
@@ -89,7 +89,7 @@
             lower(event_interface) LIKE #{searchKeyword} OR
             lower(event_type) LIKE #{searchKeyword} OR
             lower(description) LIKE #{searchKeyword} OR
-            lower(qif_receiver) LIKE #{searchKeyword} OR
+            lower(qif_process) LIKE #{searchKeyword} OR
             lower(audit_trail_enabled) LIKE #{searchKeyword} OR
             lower(keep_message_content) LIKE #{searchKeyword} OR
             lower(active_accept_message) LIKE #{searchKeyword}
@@ -137,14 +137,14 @@
         INSERT INTO qif_event
         (
         id, active, create_by, create_date, last_update_by, last_update_date,
-        name, description, event_interface, event_type, qif_receiver,
+        name, description, event_interface, event_type, qif_process,
         audit_trail_enabled, keep_message_content, active_accept_message
         )
         VALUES
         (
         #{id}, #{active, typeHandler=com.irwin13.winwork.mybatis.typehandler.YesNoBooleanTypeHandler},
         #{createBy}, #{createDate}, #{lastUpdateBy}, #{lastUpdateDate},
-        #{name}, #{description}, #{eventInterface}, #{eventType}, #{qifReceiver},
+        #{name}, #{description}, #{eventInterface}, #{eventType}, #{qifProcess},
         #{auditTrailEnabled}, #{keepMessageContent}, #{activeAcceptMessage}
         )
     </insert>
@@ -156,7 +156,7 @@
         description = #{description},
         event_interface = #{eventInterface},
         event_type = #{eventType},
-        qif_receiver = #{qifReceiver},
+        qif_process = #{qifProcess},
         audit_trail_enabled = #{auditTrailEnabled},
         keep_message_content = #{keepMessageContent},
         active_accept_message = #{activeAcceptMessage},

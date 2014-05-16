@@ -1,17 +1,13 @@
 package id.co.quadras.qif;
 
+import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.irwin13.winwork.basic.utilities.StringUtil;
 import com.irwin13.winwork.basic.utilities.WinWorkUtil;
 import id.co.quadras.qif.helper.JsonParser;
-import id.co.quadras.qif.helper.queue.ActivityLogInputMessageQueue;
-import id.co.quadras.qif.helper.queue.ActivityLogOutputMessageQueue;
-import id.co.quadras.qif.helper.queue.ActivityLogQueue;
-import id.co.quadras.qif.helper.queue.ActivityLogUpdateQueue;
-import id.co.quadras.qif.model.entity.log.QifActivityLog;
-import id.co.quadras.qif.model.entity.log.QifActivityLogData;
-import id.co.quadras.qif.model.entity.log.QifActivityLogInputMessage;
-import id.co.quadras.qif.model.entity.log.QifActivityLogOutputMessage;
+import id.co.quadras.qif.helper.queue.*;
+import id.co.quadras.qif.model.entity.QifEvent;
+import id.co.quadras.qif.model.entity.log.*;
 import id.co.quadras.qif.model.vo.QifActivityResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,15 +46,23 @@ public abstract class QifProcess implements QifActivity {
     @Inject
     private ActivityLogOutputMessageQueue outputMessageQueue;
 
+    @Inject
+    private EventLogQueue eventLogQueue;
+
+    @Inject
+    private EventLogMessageQueue messageQueue;
+
     private QifActivityLog processLog;
 
     protected QifActivityLog getProcessActivityLog() {
         return processLog;
     }
 
+    protected abstract QifActivityMessage receiveEvent(QifEvent qifEvent);
     protected abstract QifActivityResult implementProcess(QifActivityMessage qifActivityMessage);
 
-    public QifActivityResult executeProcess(QifActivityMessage qifActivityMessage) {
+    public QifActivityResult executeProcess(QifEvent qifEvent) {
+        QifActivityMessage qifActivityMessage = receiveEvent(qifEvent);
         processLog = insertProcessLog(qifActivityMessage);
         QifActivityResult qifActivityResult = implementProcess(qifActivityMessage);
         updateProcessLog(qifActivityMessage, qifActivityResult);
@@ -163,4 +167,57 @@ public abstract class QifProcess implements QifActivity {
             }
         }
     }
+
+    protected QifEventLog insertEventLog(QifEvent qifEvent) {
+
+        QifEventLog qifEventLog = new QifEventLog();
+
+        if (qifEvent.getAuditTrailEnabled() != null && qifEvent.getAuditTrailEnabled()) {
+
+            String generatedId = StringUtil.random32UUID();
+            Date today = new Date();
+
+            qifEventLog.setId(generatedId);
+            if (!Strings.isNullOrEmpty(qifEvent.getId())) {
+                qifEventLog.setEventId(qifEvent.getId());
+            }
+            qifEventLog.setNodeName(WinWorkUtil.getNodeName());
+
+            qifEventLog.setCreateBy(activityName());
+            qifEventLog.setLastUpdateBy(activityName());
+            qifEventLog.setCreateDate(today);
+            qifEventLog.setLastUpdateDate(today);
+
+            eventLogQueue.put(qifEventLog);
+
+            if (qifEvent.getKeepMessageContent() != null && qifEvent.getKeepMessageContent()) {
+                QifEventLogMessage logContent = new QifEventLogMessage();
+                logContent.setId(StringUtil.random32UUID());
+
+                logContent.setEventLogId(generatedId);
+                try {
+                    logContent.setMessageContent(jsonParser.parseToString(true, qifEvent.getEventMessage()));
+                } catch (IOException e) {
+                    logger.error(e.getLocalizedMessage(), e);
+                }
+
+                logContent.setCreateBy(activityName());
+                logContent.setLastUpdateBy(activityName());
+                logContent.setCreateDate(today);
+                logContent.setLastUpdateDate(today);
+
+                messageQueue.put(logContent);
+            }
+
+        } else {
+            logger.debug("auditTrail is not enabled for QifEvent {}", qifEvent.getName());
+            if (!Strings.isNullOrEmpty(qifEvent.getId())) {
+                qifEventLog.setQifEvent(qifEvent);
+            }
+            qifEventLog.setNodeName(WinWorkUtil.getNodeName());
+        }
+
+        return qifEventLog;
+    }
+
 }

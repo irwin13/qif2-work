@@ -27,7 +27,6 @@ public final class GuiceFactory {
             moduleList.add(new ServiceModule());
             moduleList.add(new TaskModule());
             moduleList.add(new ProcessModule());
-            moduleList.add(new EventReceiverModule());
             moduleList.add(new WebModule());
         }
         return moduleList;

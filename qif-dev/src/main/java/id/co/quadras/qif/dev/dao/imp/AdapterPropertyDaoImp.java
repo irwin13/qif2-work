@@ -1,6 +1,7 @@
 package id.co.quadras.qif.dev.dao.imp;
 
 import com.google.inject.Inject;
+import com.irwin13.winwork.basic.model.SortParameter;
 import com.irwin13.winwork.mybatis.dao.BasicMyBatisDao;
 import id.co.quadras.qif.dev.dao.AdapterPropertyDao;
 import id.co.quadras.qif.model.entity.QifAdapterProperty;
@@ -24,6 +25,8 @@ public class AdapterPropertyDaoImp implements AdapterPropertyDao {
 
     @Override
     public List<QifAdapterProperty> selectByAdapter(String adapterId) {
-        return null;
+        QifAdapterProperty filter = new QifAdapterProperty();
+        filter.setQifAdapterId(adapterId);
+        return basicDao.select(filter, new SortParameter("property_key", SortParameter.ASC));
     }
 }

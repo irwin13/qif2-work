@@ -11,6 +11,7 @@ public class QifAdapterProperty extends WinWorkBasicEntity {
     private String propertyKey;
     private String propertyValue;
     private String description;
+    private String qifAdapterId;
 
     public String getPropertyKey() {
         return propertyKey;
@@ -34,6 +35,14 @@ public class QifAdapterProperty extends WinWorkBasicEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getQifAdapterId() {
+        return qifAdapterId;
+    }
+
+    public void setQifAdapterId(String qifAdapterId) {
+        this.qifAdapterId = qifAdapterId;
     }
 
     @Override

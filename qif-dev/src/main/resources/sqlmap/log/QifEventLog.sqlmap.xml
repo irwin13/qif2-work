@@ -14,7 +14,7 @@
         <result property="lastUpdateBy" column="last_update_by"/>
         <result property="lastUpdateDate" column="last_update_date"/>
 
-        <result property="eventId" column="event_id" />
+        <result property="qifEventId" column="event_id" />
         <result property="referenceKey" column="reference_key" />
         <result property="nodeName" column="node_name" />
 
@@ -30,7 +30,7 @@
         (
         #{id}, #{active, typeHandler=com.irwin13.winwork.mybatis.typehandler.YesNoBooleanTypeHandler},
         #{createBy}, #{createDate}, #{lastUpdateBy}, #{lastUpdateDate},
-        #{eventId}, #{referenceKey}, #{nodeName}
+        #{qifEventId}, #{referenceKey}, #{nodeName}
         )
     </insert>
 

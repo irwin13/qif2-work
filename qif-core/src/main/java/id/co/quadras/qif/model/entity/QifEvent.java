@@ -13,7 +13,7 @@ public class QifEvent extends WinWorkBasicEntity {
     private String name;
     private String eventType;
     private String eventInterface;
-    private String qifReceiver;
+    private String qifProcess;
     private String description;
     private Boolean auditTrailEnabled;
     private Boolean keepMessageContent;
@@ -21,7 +21,7 @@ public class QifEvent extends WinWorkBasicEntity {
 
     private List<QifEventProperty> qifEventPropertyList;
 
-    private transient String eventMessage;
+    private transient Object eventMessage;
 
     public String getName() {
         return name;
@@ -47,12 +47,12 @@ public class QifEvent extends WinWorkBasicEntity {
         this.eventInterface = eventInterface;
     }
 
-    public String getQifReceiver() {
-        return qifReceiver;
+    public String getQifProcess() {
+        return qifProcess;
     }
 
-    public void setQifReceiver(String qifReceiver) {
-        this.qifReceiver = qifReceiver;
+    public void setQifProcess(String qifProcess) {
+        this.qifProcess = qifProcess;
     }
 
     public String getDescription() {
@@ -95,11 +95,11 @@ public class QifEvent extends WinWorkBasicEntity {
         this.qifEventPropertyList = qifEventPropertyList;
     }
 
-    public String getEventMessage() {
+    public Object getEventMessage() {
         return eventMessage;
     }
 
-    public void setEventMessage(String eventMessage) {
+    public void setEventMessage(Object eventMessage) {
         this.eventMessage = eventMessage;
     }
 
