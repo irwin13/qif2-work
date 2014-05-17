@@ -98,7 +98,11 @@ public final class SchedulerStarter {
                 schedulerManager.reschedule(triggerKey, trigger);
             }
         }
-        schedulerManager.start();
+
+        if (!schedulerManager.isStarted()) {
+            schedulerManager.start();
+        }
+
     }
 
     public void startInternalScheduler() {

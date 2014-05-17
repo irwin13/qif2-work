@@ -5,6 +5,7 @@ import com.google.inject.Singleton;
 import com.google.inject.name.Names;
 import com.irwin13.winwork.basic.config.WinWorkConfig;
 import id.co.quadras.qif.dev.QifConfig;
+import id.co.quadras.qif.dev.SchedulerStarter;
 
 /**
  * @author irwin Timestamp : 12/05/2014 17:15
@@ -24,6 +25,6 @@ public class SharedModule extends AbstractModule {
                 .toInstance("mybatis-config.xml");
 
         bind(WinWorkConfig.class).to(QifConfig.class).in(Singleton.class);
-
+        bind(SchedulerStarter.class);
     }
 }
