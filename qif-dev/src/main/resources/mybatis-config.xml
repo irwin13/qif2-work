@@ -56,17 +56,17 @@
                 <property name="tomcat.connectionPool.username" value="${username}" />
                 <property name="tomcat.connectionPool.password" value="${password}" />
 
-                <property name="tomcat.connectionPool.validationQuery" value="SELECT 1 FROM DUAL" />
+                <property name="tomcat.connectionPool.validationQuery" value="${validationQuery}" />
+
+                <property name="tomcat.connectionPool.initialSize" value="${initialSize}" />
+                <property name="tomcat.connectionPool.maxActive" value="${maxActive}" />
+                <property name="tomcat.connectionPool.maxIdle" value="${maxIdle}" />
+                <property name="tomcat.connectionPool.minIdle" value="${minIdle}" />
 
                 <property name="tomcat.connectionPool.testOnBorrow" value="true" />
                 <property name="tomcat.connectionPool.jmxEnabled" value="false" />
                 <property name="tomcat.connectionPool.testWhileIdle" value="false" />
                 <property name="tomcat.connectionPool.testOnReturn" value="false" />
-
-                <property name="tomcat.connectionPool.initialSize" value="10" />
-                <property name="tomcat.connectionPool.maxActive" value="100" />
-                <property name="tomcat.connectionPool.maxIdle" value="7" />
-                <property name="tomcat.connectionPool.minIdle" value="3" />
 
                 <property name="tomcat.connectionPool.minEvictableIdleTimeMillis" value="10000" />
 

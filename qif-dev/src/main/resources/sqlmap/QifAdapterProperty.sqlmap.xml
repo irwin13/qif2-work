@@ -19,6 +19,7 @@
         <result property="description" column="description"/>
         <result property="propertyKey" column="property_key"/>
         <result property="propertyValue" column="property_value"/>
+        <result property="qifAdapterId" column="qif_adapter_id"/>
     </resultMap>
 
     <sql id="allField">
@@ -27,6 +28,7 @@
         description,
         property_key,
         property_value,
+        qif_adapter_id,
 
         active,
         create_by,
@@ -45,6 +47,9 @@
         </if>
         <if test="propertyKey != null">
             AND property_key = #{propertyKey}
+        </if>
+        <if test="qifAdapterId != null">
+            AND qif_adapter_id = #{qifAdapterId}
         </if>
         <if test="columnName != null and columnName != '' and sortMethod != null and sortMethod != ''">
             ORDER BY ${columnName} ${sortMethod}
@@ -102,13 +107,13 @@
         INSERT INTO qif_adapter_property
         (
         id, active, create_by, create_date, last_update_by, last_update_date,
-        description, property_key, property_value
+        description, property_key, property_value, qif_adapter_id
         )
         VALUES
         (
         #{id}, #{active, typeHandler=com.irwin13.winwork.mybatis.typehandler.YesNoBooleanTypeHandler},
         #{createBy}, #{createDate}, #{lastUpdateBy}, #{lastUpdateDate},
-        #{description}, #{propertyKey}, #{propertyValue}
+        #{description}, #{propertyKey}, #{propertyValue}, #{qifAdapterId}
         )
     </insert>
 
@@ -117,6 +122,7 @@
         description = #{description},
         property_key = #{propertyKey},
         property_value = #{propertyValue},
+        qif_adapter_id = #{qifAdapterId},
         active = #{active, typeHandler=com.irwin13.winwork.mybatis.typehandler.YesNoBooleanTypeHandler},
         last_update_by = #{lastUpdateBy},
         last_update_date = #{lastUpdateDate}

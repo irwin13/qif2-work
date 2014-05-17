@@ -28,7 +28,7 @@ public class DaoModule extends AbstractModule {
         bind(EventLogDao.class).to(EventLogDaoImp.class);
         bind(EventLogMessageDao.class).to(EventLogMessageDaoImp.class);
 
-        // CONFIGURATIOn
+        // CONFIGURATION
         bind(EventDao.class).to(EventDaoImp.class);
         bind(EventPropertyDao.class).to(EventPropertyDaoImp.class);
 

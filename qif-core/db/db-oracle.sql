@@ -41,7 +41,7 @@ CREATE TABLE QIF_EVENT_PROPERTY
   property_key VARCHAR2(500),
   property_value VARCHAR2(500),
   description VARCHAR2(500),
-  qif_event CHAR(32 BYTE),
+  qif_event_id CHAR(32 BYTE),
   CONSTRAINT qif_event_property_pk PRIMARY KEY (id)
 );
 
@@ -70,7 +70,7 @@ CREATE TABLE QIF_ADAPTER_PROPERTY
   property_key VARCHAR2(500),
   property_value VARCHAR2(500),
   description VARCHAR2(500),
-  qif_adapter CHAR(32 BYTE),
+  qif_adapter_id CHAR(32 BYTE),
   CONSTRAINT qif_adapter_property_pk PRIMARY KEY (id)
 );
 

@@ -5,8 +5,10 @@ import com.irwin13.winwork.basic.exception.WinWorkException;
 import com.irwin13.winwork.basic.scheduler.BasicSchedulerManager;
 import id.co.quadras.qif.QifConstants;
 import id.co.quadras.qif.QifUtil;
+import id.co.quadras.qif.dev.guice.GuiceFactory;
 import id.co.quadras.qif.dev.job.QifEventConcurrentJob;
 import id.co.quadras.qif.dev.job.QifEventSingleInstanceJob;
+import id.co.quadras.qif.dev.job.timertask.*;
 import id.co.quadras.qif.model.entity.QifEvent;
 import id.co.quadras.qif.model.entity.QifEventProperty;
 import id.co.quadras.qif.model.vo.event.EventType;
@@ -16,15 +18,20 @@ import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Timer;
 
 /**
  * @author irwin Timestamp : 12/05/2014 17:47
  */
 public final class SchedulerStarter {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SchedulerStarter.class);
+    private static final long LOG_PERSIST_DELAY = 5000;
+    private static final long DEFAULT_LOG_PERSIST_INTERVAL = 5000;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(SchedulerStarter.class);
     private final BasicSchedulerManager schedulerManager;
 
     @Inject
@@ -95,12 +102,27 @@ public final class SchedulerStarter {
     }
 
     public void startInternalScheduler() {
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
+        EventLogPersist eventLogPersist = GuiceFactory.getInjector().getInstance(EventLogPersist.class);
+        new Timer().schedule(eventLogPersist, LOG_PERSIST_DELAY, DEFAULT_LOG_PERSIST_INTERVAL);
 
-            }
-        }, 1000L, 1000L); // delay and period
+        EventLogMessagePersist eventLogMessagePersist =
+                GuiceFactory.getInjector().getInstance(EventLogMessagePersist.class);
+        new Timer().schedule(eventLogMessagePersist, LOG_PERSIST_DELAY, DEFAULT_LOG_PERSIST_INTERVAL);
+
+        ActivityLogPersist activityLogPersist = GuiceFactory.getInjector().getInstance(ActivityLogPersist.class);
+        new Timer().schedule(activityLogPersist, LOG_PERSIST_DELAY, DEFAULT_LOG_PERSIST_INTERVAL);
+
+        ActivityLogDataPersist activityLogDataPersist =
+                GuiceFactory.getInjector().getInstance(ActivityLogDataPersist.class);
+        new Timer().schedule(activityLogDataPersist, LOG_PERSIST_DELAY, DEFAULT_LOG_PERSIST_INTERVAL);
+
+        ActivityLogInputMessagePersist activityLogInputMessagePersist =
+                GuiceFactory.getInjector().getInstance(ActivityLogInputMessagePersist.class);
+        new Timer().schedule(activityLogInputMessagePersist, LOG_PERSIST_DELAY, DEFAULT_LOG_PERSIST_INTERVAL);
+
+        ActivityLogOutputMessagePersist activityLogOutputMessagePersist =
+                GuiceFactory.getInjector().getInstance(ActivityLogOutputMessagePersist.class);
+        new Timer().schedule(activityLogOutputMessagePersist, LOG_PERSIST_DELAY, DEFAULT_LOG_PERSIST_INTERVAL);
+
     }
 }
