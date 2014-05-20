@@ -8,7 +8,7 @@
     <changeSet id="init" author="irwin">
         <createTable tableName="QIF_EVENT_LOG">
             <column name="ID" type="char(32)" defaultValue="SYS_GUID()">
-                <constraints primaryKey="true" nullable="false" />
+                <constraints primaryKey="true" nullable="false" primaryKeyName="PK_EVENT_LOG" />
             </column>
             <column name="ACTIVE" type="char(1)" defaultValue="N" />
             <column name="CREATE_BY" type="varchar2(500)" />
@@ -23,7 +23,7 @@
 
         <createTable tableName="QIF_EVENT_LOG_MESSAGE">
             <column name="ID" type="char(32)" defaultValue="SYS_GUID()">
-                <constraints primaryKey="true" nullable="false" />
+                <constraints primaryKey="true" nullable="false" primaryKeyName="PK_EVENT_LOG_MSG" />
             </column>
             <column name="ACTIVE" type="char(1)" defaultValue="N" />
             <column name="CREATE_BY" type="varchar2(500)" />
@@ -37,7 +37,7 @@
 
         <createTable tableName="QIF_ACTIVITY_LOG">
             <column name="ID" type="char(32)" defaultValue="SYS_GUID()">
-                <constraints primaryKey="true" nullable="false" />
+                <constraints primaryKey="true" nullable="false" primaryKeyName="PK_ACT_LOG" />
             </column>
             <column name="ACTIVE" type="char(1)" defaultValue="N" />
             <column name="CREATE_BY" type="varchar2(500)" />
@@ -55,9 +55,9 @@
         </createTable>
 
 
-        <createTable tableName="QIF_ACTIVITY_LOG_INPUT_MESSAGE">
+        <createTable tableName="QIF_ACTIVITY_LOG_INPUT_MSG">
             <column name="ID" type="char(32)" defaultValue="SYS_GUID()">
-                <constraints primaryKey="true" nullable="false" />
+                <constraints primaryKey="true" nullable="false" primaryKeyName="PK_ACT_LOG_IN" />
             </column>
             <column name="ACTIVE" type="char(1)" defaultValue="N" />
             <column name="CREATE_BY" type="varchar2(500)" />
@@ -69,9 +69,9 @@
             <column name="INPUT_MESSAGE_CONTENT" type="clob" />
         </createTable>
 
-        <createTable tableName="QIF_ACTIVITY_LOG_OUTPUT_MESSAGE">
+        <createTable tableName="QIF_ACTIVITY_LOG_OUTPUT_MSG">
             <column name="ID" type="char(32)" defaultValue="SYS_GUID()">
-                <constraints primaryKey="true" nullable="false" />
+                <constraints primaryKey="true" nullable="false" primaryKeyName="PK_ACT_LOG_OUT" />
             </column>
             <column name="ACTIVE" type="char(1)" defaultValue="N" />
             <column name="CREATE_BY" type="varchar2(500)" />
@@ -85,7 +85,7 @@
 
         <createTable tableName="QIF_ACTIVITY_LOG_DATA">
             <column name="ID" type="char(32)" defaultValue="SYS_GUID()">
-                <constraints primaryKey="true" nullable="false" />
+                <constraints primaryKey="true" nullable="false" primaryKeyName="PK_ACT_LOG_DATA" />
             </column>
             <column name="ACTIVE" type="char(1)" defaultValue="N" />
             <column name="CREATE_BY" type="varchar2(500)" />
@@ -100,7 +100,7 @@
 
         <createTable tableName="QIF_EVENT">
             <column name="ID" type="char(32)" defaultValue="SYS_GUID()">
-                <constraints primaryKey="true" nullable="false" />
+                <constraints primaryKey="true" nullable="false" primaryKeyName="PK_EVENT" />
             </column>
             <column name="ACTIVE" type="char(1)" defaultValue="N" />
             <column name="CREATE_BY" type="varchar2(500)" />
@@ -120,7 +120,7 @@
 
         <createTable tableName="QIF_EVENT_PROPERTY">
             <column name="ID" type="char(32)" defaultValue="SYS_GUID()">
-                <constraints primaryKey="true" nullable="false" />
+                <constraints primaryKey="true" nullable="false" primaryKeyName="PK_EVENT_PROP" />
             </column>
             <column name="ACTIVE" type="char(1)" defaultValue="N" />
             <column name="CREATE_BY" type="varchar2(500)" />
@@ -135,7 +135,7 @@
 
         <createTable tableName="QIF_ADAPTER">
             <column name="ID" type="char(32)" defaultValue="SYS_GUID()">
-                <constraints primaryKey="true" nullable="false" />
+                <constraints primaryKey="true" nullable="false" primaryKeyName="PK_ADAPTER" />
             </column>
             <column name="ACTIVE" type="char(1)" defaultValue="N" />
             <column name="CREATE_BY" type="varchar2(500)" />
@@ -150,7 +150,7 @@
 
         <createTable tableName="QIF_ADAPTER_PROPERTY">
             <column name="ID" type="char(32)" defaultValue="SYS_GUID()">
-                <constraints primaryKey="true" nullable="false" />
+                <constraints primaryKey="true" nullable="false" primaryKeyName="PK_ADAPTER_PROP" />
             </column>
             <column name="ACTIVE" type="char(1)" defaultValue="N" />
             <column name="CREATE_BY" type="varchar2(500)" />

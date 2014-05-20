@@ -21,7 +21,7 @@
             <column name="NODE_NAME" type="character varying(500)" />
         </createTable>
 
-        <createTable tableName="QIF_EVENT_LOG_MESSAGE" schemaName="qif">
+        <createTable tableName="QIF_EVENT_LOG_MSG" schemaName="qif">
             <column name="ID" type="char(32)">
                 <constraints primaryKey="true" nullable="false" />
             </column>
@@ -55,7 +55,7 @@
         </createTable>
 
 
-        <createTable tableName="QIF_ACTIVITY_LOG_INPUT_MESSAGE" schemaName="qif">
+        <createTable tableName="QIF_ACTIVITY_LOG_INPUT_MSG" schemaName="qif">
             <column name="ID" type="char(32)">
                 <constraints primaryKey="true" nullable="false" />
             </column>
@@ -69,7 +69,7 @@
             <column name="INPUT_MESSAGE_CONTENT" type="clob" />
         </createTable>
 
-        <createTable tableName="QIF_ACTIVITY_LOG_OUTPUT_MESSAGE" schemaName="qif">
+        <createTable tableName="QIF_ACTIVITY_LOG_OUTPUT_MSG" schemaName="qif">
             <column name="ID" type="char(32)">
                 <constraints primaryKey="true" nullable="false" />
             </column>

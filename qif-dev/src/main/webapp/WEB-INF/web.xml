@@ -9,5 +9,13 @@
     <listener>
         <listener-class>id.co.quadras.qif.web.QifWebContextListener</listener-class>
     </listener>
-
+    
+    <servlet>
+        <servlet-name>AppStatus</servlet-name>
+        <servlet-class>id.co.quadras.qif.dev.web.AppStatus</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AppStatus</servlet-name>
+        <url-pattern>/appStatus</url-pattern>
+    </servlet-mapping>
 </web-app>
