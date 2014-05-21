@@ -1,7 +1,6 @@
 package id.co.quadras.qif.dev;
 
 import com.google.inject.Inject;
-import com.irwin13.winwork.basic.exception.WinWorkException;
 import com.irwin13.winwork.basic.scheduler.BasicSchedulerManager;
 import id.co.quadras.qif.QifConstants;
 import id.co.quadras.qif.QifUtil;
@@ -9,6 +8,7 @@ import id.co.quadras.qif.dev.guice.GuiceFactory;
 import id.co.quadras.qif.dev.job.QifEventConcurrentJob;
 import id.co.quadras.qif.dev.job.QifEventSingleInstanceJob;
 import id.co.quadras.qif.dev.job.timertask.*;
+import id.co.quadras.qif.exception.QifException;
 import id.co.quadras.qif.model.entity.QifEvent;
 import id.co.quadras.qif.model.entity.QifEventProperty;
 import id.co.quadras.qif.model.vo.event.EventType;
@@ -87,7 +87,7 @@ public final class SchedulerStarter {
                             qifEvent.getName());
                 }
             } else {
-            throw new WinWorkException("FATAL : Property listenerInterface on QifEvent " + qifEvent.getName()
+            throw new QifException("FATAL : Property listenerInterface on QifEvent " + qifEvent.getName()
                         + " is not scheduler_interval or scheduler_cron");
             }
 

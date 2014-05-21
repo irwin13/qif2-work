@@ -2,10 +2,23 @@ package id.co.quadras.qif.dev.guice.module;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
+import com.google.inject.matcher.Matchers;
 import com.google.inject.name.Names;
+import com.irwin13.winwork.basic.annotations.MDCLog;
 import com.irwin13.winwork.basic.config.WinWorkConfig;
+import com.irwin13.winwork.basic.log.MDCLogInterceptor;
+import com.irwin13.winwork.basic.scheduler.BasicSchedulerManager;
+import com.irwin13.winwork.basic.scheduler.SchedulerProvider;
+import com.irwin13.winwork.basic.utilities.WinWorkVelocityUtil;
 import id.co.quadras.qif.dev.QifConfig;
 import id.co.quadras.qif.dev.SchedulerStarter;
+import id.co.quadras.qif.helper.QifCounter;
+import id.co.quadras.qif.helper.imp.QifCounterGuava;
+import id.co.quadras.qif.helper.queue.*;
+import id.co.quadras.qif.helper.queue.imp.*;
+import id.co.quadras.qif.helper.queue.reader.*;
+import id.co.quadras.qif.helper.queue.reader.imp.*;
+import org.quartz.Scheduler;
 
 /**
  * @author irwin Timestamp : 12/05/2014 17:15
@@ -25,6 +38,36 @@ public class SharedModule extends AbstractModule {
                 .toInstance("mybatis-config.xml");
 
         bind(WinWorkConfig.class).to(QifConfig.class).in(Singleton.class);
+        bind(WinWorkVelocityUtil.class);
+
+        // MDC Log AOP Interceptor
+        bindInterceptor(Matchers.any(), Matchers.annotatedWith(MDCLog.class), new MDCLogInterceptor());
+
+        // scheduler components
+        bind(Scheduler.class).toProvider(SchedulerProvider.class).in(Singleton.class);
+        bind(BasicSchedulerManager.class);
         bind(SchedulerStarter.class);
+
+        // counter
+        bind(QifCounter.class).to(QifCounterGuava.class);
+
+        // queue
+        bind(EventLogQueue.class).to(EventLogQueueImp.class);
+        bind(EventLogMessageQueue.class).to(EventLogMessageQueueImp.class);
+
+        bind(ActivityLogQueue.class).to(ActivityLogQueueImp.class);
+        bind(ActivityLogDataQueue.class).to(ActivityLogDataQueueImp.class);
+        bind(ActivityLogInputMessageQueue.class).to(ActivityLogInputMessageQueueImp.class);
+        bind(ActivityLogOutputMessageQueue.class).to(ActivityLogOutputMessageQueueImp.class);
+
+        // queue reader
+        bind(EventLogQueueReader.class).to(EventLogQueueReaderImp.class);
+        bind(EventLogMessageQueueReader.class).to(EventLogMessageQueueReaderImp.class);
+
+        bind(ActivityLogQueueReader.class).to(ActivityLogQueueReaderImp.class);
+        bind(ActivityLogDataQueueReader.class).to(ActivityLogDataQueueReaderImp.class);
+        bind(ActivityLogInputMessageQueueReader.class).to(ActivityLogInputMessageQueueReaderImp.class);
+        bind(ActivityLogOutputMessageQueueReader.class).to(ActivityLogOutputMessageQueueReaderImp.class);
+
     }
 }

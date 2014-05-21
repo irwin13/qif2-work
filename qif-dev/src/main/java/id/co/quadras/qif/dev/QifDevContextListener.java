@@ -62,16 +62,16 @@ public class QifDevContextListener implements ServletContextListener {
         LOGGER.info("================================================================================================");
         LOGGER.info("=================================== Shutdown QifDevContextListener ===============================");
 
-        SqlSessionFactory sqlSessionFactory = GuiceFactory.getInjector().getInstance(SqlSessionFactory.class);
-        DataSource dataSource = (DataSource) sqlSessionFactory.getConfiguration().getEnvironment().getDataSource();
-        dataSource.close();
-
         BasicSchedulerManager schedulerManager = GuiceFactory.getInjector().getInstance(BasicSchedulerManager.class);
         try {
             schedulerManager.shutdown(true);
         } catch (SchedulerException e) {
             LOGGER.error(e.getLocalizedMessage(), e);
         }
+
+        SqlSessionFactory sqlSessionFactory = GuiceFactory.getInjector().getInstance(SqlSessionFactory.class);
+        DataSource dataSource = (DataSource) sqlSessionFactory.getConfiguration().getEnvironment().getDataSource();
+        dataSource.close(true); // close all
 
         LOGGER.info("=================================== Shutdown QifDevContextListener complete ===============================");
 

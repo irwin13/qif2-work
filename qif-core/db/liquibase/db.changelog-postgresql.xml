@@ -163,4 +163,7 @@
             <column name="DESCRIPTION" type="character varying(500)" />
         </createTable>
     </changeSet>
+    <changeSet id="alter-table" author="irwin">
+        <renameColumn newColumnName="QIF_PROCESS" oldColumnName="QIF_RECEIVER" tableName="QIF_EVENT" />
+    </changeSet>
 </databaseChangeLog>

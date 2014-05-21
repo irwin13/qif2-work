@@ -7,7 +7,7 @@
     <display-name>Quadra Integration Framework</display-name>
 
     <listener>
-        <listener-class>id.co.quadras.qif.web.QifWebContextListener</listener-class>
+        <listener-class>id.co.quadras.qif.dev.QifDevContextListener</listener-class>
     </listener>
     
     <servlet>
