@@ -31,15 +31,6 @@
         </repository>
     </repositories>
 
-    <profiles>
-        <profile>
-            <id>irwin</id>
-            <properties>
-                <profile>irwin.properties</profile>
-            </properties>
-        </profile>
-    </profiles>
-
     <build>
         <resources>
             <resource>
@@ -62,24 +53,6 @@
         </testResources>
 
         <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>properties-maven-plugin</artifactId>
-                <version>1.0-alpha-2</version>
-                <executions>
-                    <execution>
-                        <phase>initialize</phase>
-                        <goals>
-                            <goal>read-project-properties</goal>
-                        </goals>
-                        <configuration>
-                            <files>
-                                <file>${project.basedir}/${profile}</file>
-                            </files>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -202,6 +175,18 @@
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
             <version>4.3</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-net</groupId>
+            <artifactId>commons-net</artifactId>
+            <version>3.3</version>
+        </dependency>
+
+        <!-- EMAIL -->
+        <dependency>
+            <groupId>org.codemonkey.simplejavamail</groupId>
+            <artifactId>simple-java-mail</artifactId>
+            <version>2.1</version>
         </dependency>
 
         <dependency>
