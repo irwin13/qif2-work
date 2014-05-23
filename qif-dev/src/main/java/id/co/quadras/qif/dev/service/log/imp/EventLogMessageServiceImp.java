@@ -3,7 +3,7 @@ package id.co.quadras.qif.dev.service.log.imp;
 import com.google.inject.Inject;
 import id.co.quadras.qif.dev.dao.log.EventLogMessageDao;
 import id.co.quadras.qif.dev.service.log.EventLogMessageService;
-import id.co.quadras.qif.model.entity.log.QifEventLogMessage;
+import id.co.quadras.qif.model.entity.log.QifEventLogMsg;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ public class EventLogMessageServiceImp implements EventLogMessageService {
     }
 
     @Override
-    public void batchInsert(List<QifEventLogMessage> logList) {
+    public void batchInsert(List<QifEventLogMsg> logList) {
         dao.batchInsert(logList);
     }
 }

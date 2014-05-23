@@ -5,10 +5,14 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
+    <preConditions>
+        <dbms type="postgresql" />
+    </preConditions>
+
     <changeSet id="init" author="irwin">
         <createTable tableName="QIF_EVENT_LOG" schemaName="qif">
             <column name="ID" type="char(32)">
-                <constraints primaryKey="true" nullable="false" />
+                <constraints primaryKey="true" nullable="false" primaryKeyName="PK_EVENT_LOG" />
             </column>
             <column name="ACTIVE" type="char(1)" defaultValue="N" />
             <column name="CREATE_BY" type="character varying(500)" />
@@ -23,7 +27,7 @@
 
         <createTable tableName="QIF_EVENT_LOG_MSG" schemaName="qif">
             <column name="ID" type="char(32)">
-                <constraints primaryKey="true" nullable="false" />
+                <constraints primaryKey="true" nullable="false" primaryKeyName="PK_EVENT_LOG_MSG" />
             </column>
             <column name="ACTIVE" type="char(1)" defaultValue="N" />
             <column name="CREATE_BY" type="character varying(500)" />
@@ -37,7 +41,7 @@
 
         <createTable tableName="QIF_ACTIVITY_LOG" schemaName="qif">
             <column name="ID" type="char(32)">
-                <constraints primaryKey="true" nullable="false" />
+                <constraints primaryKey="true" nullable="false" primaryKeyName="PK_ACT_LOG" />
             </column>
             <column name="ACTIVE" type="char(1)" defaultValue="N" />
             <column name="CREATE_BY" type="character varying(500)" />
@@ -57,7 +61,7 @@
 
         <createTable tableName="QIF_ACTIVITY_LOG_INPUT_MSG" schemaName="qif">
             <column name="ID" type="char(32)">
-                <constraints primaryKey="true" nullable="false" />
+                <constraints primaryKey="true" nullable="false" primaryKeyName="PK_ACT_LOG_IN" />
             </column>
             <column name="ACTIVE" type="char(1)" defaultValue="N" />
             <column name="CREATE_BY" type="character varying(500)" />
@@ -71,7 +75,7 @@
 
         <createTable tableName="QIF_ACTIVITY_LOG_OUTPUT_MSG" schemaName="qif">
             <column name="ID" type="char(32)">
-                <constraints primaryKey="true" nullable="false" />
+                <constraints primaryKey="true" nullable="false" primaryKeyName="PK_ACT_LOG_OUT" />
             </column>
             <column name="ACTIVE" type="char(1)" defaultValue="N" />
             <column name="CREATE_BY" type="character varying(500)" />
@@ -85,7 +89,7 @@
 
         <createTable tableName="QIF_ACTIVITY_LOG_DATA" schemaName="qif">
             <column name="ID" type="char(32)">
-                <constraints primaryKey="true" nullable="false" />
+                <constraints primaryKey="true" nullable="false" primaryKeyName="PK_ACT_LOG_DATA" />
             </column>
             <column name="ACTIVE" type="char(1)" defaultValue="N" />
             <column name="CREATE_BY" type="character varying(500)" />
@@ -100,7 +104,7 @@
 
         <createTable tableName="QIF_EVENT" schemaName="qif">
             <column name="ID" type="char(32)">
-                <constraints primaryKey="true" nullable="false" />
+                <constraints primaryKey="true" nullable="false" primaryKeyName="PK_EVENT" />
             </column>
             <column name="ACTIVE" type="char(1)" defaultValue="N" />
             <column name="CREATE_BY" type="character varying(500)" />
@@ -120,7 +124,7 @@
 
         <createTable tableName="QIF_EVENT_PROPERTY" schemaName="qif">
             <column name="ID" type="char(32)">
-                <constraints primaryKey="true" nullable="false" />
+                <constraints primaryKey="true" nullable="false" primaryKeyName="PK_EVENT_PROP" />
             </column>
             <column name="ACTIVE" type="char(1)" defaultValue="N" />
             <column name="CREATE_BY" type="character varying(500)" />
@@ -135,7 +139,7 @@
 
         <createTable tableName="QIF_ADAPTER" schemaName="qif">
             <column name="ID" type="char(32)">
-                <constraints primaryKey="true" nullable="false" />
+                <constraints primaryKey="true" nullable="false" primaryKeyName="PK_ADAPTER" />
             </column>
             <column name="ACTIVE" type="char(1)" defaultValue="N" />
             <column name="CREATE_BY" type="character varying(500)" />
@@ -150,7 +154,7 @@
 
         <createTable tableName="QIF_ADAPTER_PROPERTY" schemaName="qif">
             <column name="ID" type="char(32)">
-                <constraints primaryKey="true" nullable="false" />
+                <constraints primaryKey="true" nullable="false" primaryKeyName="PK_ADAPTER_PROP" />
             </column>
             <column name="ACTIVE" type="char(1)" defaultValue="N" />
             <column name="CREATE_BY" type="character varying(500)" />
@@ -165,5 +169,16 @@
     </changeSet>
     <changeSet id="alter-table" author="irwin">
         <renameColumn newColumnName="QIF_PROCESS" oldColumnName="QIF_RECEIVER" tableName="QIF_EVENT" />
+    </changeSet>
+    <changeSet id="create-function" author="irwin">
+        <sql dbms="postgresql" stripComments="true" splitStatements="true" endDelimiter=";">
+            CREATE OR REPLACE FUNCTION qif.gen_uuid()
+            RETURNS character varying AS
+            'select md5(clock_timestamp()::text||random()::text)::character varying'
+            LANGUAGE sql VOLATILE
+            COST 100;
+            ALTER FUNCTION qif.gen_uuid()
+            OWNER TO qif;
+        </sql>
     </changeSet>
 </databaseChangeLog>

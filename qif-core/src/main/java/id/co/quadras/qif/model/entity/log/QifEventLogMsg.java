@@ -6,7 +6,7 @@ import com.irwin13.winwork.basic.utilities.PojoUtil;
 /**
  * @author irwin Timestamp : 24/04/2014 19:30
  */
-public class QifEventLogMessage extends WinWorkBasicEntity {
+public class QifEventLogMsg extends WinWorkBasicEntity {
 
     private String eventLogId;
     private String messageContent;

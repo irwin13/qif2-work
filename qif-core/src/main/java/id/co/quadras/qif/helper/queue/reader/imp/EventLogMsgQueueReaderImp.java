@@ -2,9 +2,9 @@ package id.co.quadras.qif.helper.queue.reader.imp;
 
 import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
-import id.co.quadras.qif.helper.queue.EventLogMessageQueue;
-import id.co.quadras.qif.helper.queue.reader.EventLogMessageQueueReader;
-import id.co.quadras.qif.model.entity.log.QifEventLogMessage;
+import id.co.quadras.qif.helper.queue.EventLogMsgQueue;
+import id.co.quadras.qif.helper.queue.reader.EventLogMsgQueueReader;
+import id.co.quadras.qif.model.entity.log.QifEventLogMsg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,24 +14,24 @@ import java.util.List;
 /**
  * @author irwin Timestamp : 05/05/2014 11:53
  */
-public class EventLogMessageQueueReaderImp implements EventLogMessageQueueReader {
+public class EventLogMsgQueueReaderImp implements EventLogMsgQueueReader {
 
-    private final EventLogMessageQueue queue;
-    private static final Logger LOGGER = LoggerFactory.getLogger(EventLogMessageQueueReaderImp.class);
+    private final EventLogMsgQueue queue;
+    private static final Logger LOGGER = LoggerFactory.getLogger(EventLogMsgQueueReaderImp.class);
 
     @Inject
-    public EventLogMessageQueueReaderImp(EventLogMessageQueue queue) {
+    public EventLogMsgQueueReaderImp(EventLogMsgQueue queue) {
         this.queue = queue;
     }
 
     @Override
-    public List<QifEventLogMessage> getLogList(int maxFetch) {
+    public List<QifEventLogMsg> getLogList(int maxFetch) {
         Preconditions.checkArgument(maxFetch > 0, "maxFetch cannot be less than or equals 0");
-        List<QifEventLogMessage> result = new LinkedList<QifEventLogMessage>();
+        List<QifEventLogMsg> result = new LinkedList<QifEventLogMsg>();
 
         loopQueue:
         for (int i = 0; i < maxFetch; i++) {
-            QifEventLogMessage log = queue.get();
+            QifEventLogMsg log = queue.get();
             if (log != null) {
                 result.add(log);
                 LOGGER.trace("queue message = {}", log);

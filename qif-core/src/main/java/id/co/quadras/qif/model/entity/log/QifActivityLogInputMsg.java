@@ -6,10 +6,10 @@ import com.irwin13.winwork.basic.utilities.PojoUtil;
 /**
  * @author irwin Timestamp : 24/04/2014 19:30
  */
-public class QifActivityLogOutputMessage extends WinWorkBasicEntity {
+public class QifActivityLogInputMsg extends WinWorkBasicEntity {
 
     private String activityLogId;
-    private String outputMessageContent;
+    private String inputMessageContent;
 
     private QifActivityLog qifActivityLog;
 
@@ -21,12 +21,12 @@ public class QifActivityLogOutputMessage extends WinWorkBasicEntity {
         this.activityLogId = activityLogId;
     }
 
-    public String getOutputMessageContent() {
-        return outputMessageContent;
+    public String getInputMessageContent() {
+        return inputMessageContent;
     }
 
-    public void setOutputMessageContent(String outputMessageContent) {
-        this.outputMessageContent = outputMessageContent;
+    public void setInputMessageContent(String inputMessageContent) {
+        this.inputMessageContent = inputMessageContent;
     }
 
     public QifActivityLog getQifActivityLog() {
@@ -41,4 +41,5 @@ public class QifActivityLogOutputMessage extends WinWorkBasicEntity {
     public String toString() {
         return PojoUtil.beanToString(this, true);
     }
+
 }

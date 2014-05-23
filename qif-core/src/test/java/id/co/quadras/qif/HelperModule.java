@@ -21,20 +21,20 @@ public class HelperModule extends AbstractModule {
         // queue
         bind(ActivityLogQueue.class).to(ActivityLogQueueImp.class);
         bind(ActivityLogDataQueue.class).to(ActivityLogDataQueueImp.class);
-        bind(ActivityLogInputMessageQueue.class).to(ActivityLogInputMessageQueueImp.class);
-        bind(ActivityLogOutputMessageQueue.class).to(ActivityLogOutputMessageQueueImp.class);
+        bind(ActivityLogInputMsgQueue.class).to(ActivityLogInputMsgQueueImp.class);
+        bind(ActivityLogOutputMsgQueue.class).to(ActivityLogOutputMsgQueueImp.class);
 
         bind(EventLogQueue.class).to(EventLogQueueImp.class);
-        bind(EventLogMessageQueue.class).to(EventLogMessageQueueImp.class);
+        bind(EventLogMsgQueue.class).to(EventLogMsgQueueImp.class);
 
         // queue reader
         bind(ActivityLogQueueReader.class).to(ActivityLogQueueReaderImp.class);
         bind(ActivityLogDataQueueReader.class).to(ActivityLogDataQueueReaderImp.class);
-        bind(ActivityLogInputMessageQueueReader.class).to(ActivityLogInputMessageQueueReaderImp.class);
-        bind(ActivityLogOutputMessageQueueReader.class).to(ActivityLogOutputMessageQueueReaderImp.class);
+        bind(ActivityLogInputMsgQueueReader.class).to(ActivityLogInputMsgQueueReaderImp.class);
+        bind(ActivityLogOutputMsgQueueReader.class).to(ActivityLogOutputMsgQueueReaderImp.class);
 
         bind(EventLogQueueReader.class).to(EventLogQueueReaderImp.class);
-        bind(EventLogMessageQueueReader.class).to(EventLogMessageQueueReaderImp.class);
+        bind(EventLogMsgQueueReader.class).to(EventLogMsgQueueReaderImp.class);
 
     }
 }

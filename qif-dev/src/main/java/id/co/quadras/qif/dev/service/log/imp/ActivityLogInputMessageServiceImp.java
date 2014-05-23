@@ -3,7 +3,7 @@ package id.co.quadras.qif.dev.service.log.imp;
 import com.google.inject.Inject;
 import id.co.quadras.qif.dev.dao.log.ActivityLogInputMessageDao;
 import id.co.quadras.qif.dev.service.log.ActivityLogInputMessageService;
-import id.co.quadras.qif.model.entity.log.QifActivityLogInputMessage;
+import id.co.quadras.qif.model.entity.log.QifActivityLogInputMsg;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ public class ActivityLogInputMessageServiceImp implements ActivityLogInputMessag
     }
 
     @Override
-    public void batchInsert(List<QifActivityLogInputMessage> logList) {
+    public void batchInsert(List<QifActivityLogInputMsg> logList) {
         dao.batchInsert(logList);
     }
 }

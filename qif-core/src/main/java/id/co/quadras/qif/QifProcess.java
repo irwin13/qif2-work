@@ -41,16 +41,16 @@ public abstract class QifProcess implements QifActivity {
     private ActivityLogUpdateQueue activityLogUpdateQueue;
 
     @Inject
-    private ActivityLogInputMessageQueue inputMessageQueue;
+    private ActivityLogInputMsgQueue inputMessageQueue;
 
     @Inject
-    private ActivityLogOutputMessageQueue outputMessageQueue;
+    private ActivityLogOutputMsgQueue outputMessageQueue;
 
     @Inject
     private EventLogQueue eventLogQueue;
 
     @Inject
-    private EventLogMessageQueue messageQueue;
+    private EventLogMsgQueue messageQueue;
 
     private QifActivityLog processLog;
 
@@ -92,7 +92,7 @@ public abstract class QifProcess implements QifActivity {
 
             if (keepMessageContent) {
                 if (qifActivityMessage.getMessage() != null) {
-                    QifActivityLogInputMessage inputMessage = new QifActivityLogInputMessage();
+                    QifActivityLogInputMsg inputMessage = new QifActivityLogInputMsg();
                     inputMessage.setId(StringUtil.random32UUID());
                     inputMessage.setActivityLogId(id);
                     inputMessage.setCreateBy(activityName());
@@ -148,7 +148,7 @@ public abstract class QifProcess implements QifActivity {
 
             if (keepMessageContent) {
                 if (qifActivityResult != null && qifActivityResult.getResult() != null) {
-                    QifActivityLogOutputMessage outputMessage = new QifActivityLogOutputMessage();
+                    QifActivityLogOutputMsg outputMessage = new QifActivityLogOutputMsg();
                     outputMessage.setId(StringUtil.random32UUID());
                     outputMessage.setActivityLogId(processLog.getId());
                     outputMessage.setCreateBy(activityName());
@@ -191,7 +191,7 @@ public abstract class QifProcess implements QifActivity {
             eventLogQueue.put(qifEventLog);
 
             if (qifEvent.getKeepMessageContent() != null && qifEvent.getKeepMessageContent()) {
-                QifEventLogMessage logContent = new QifEventLogMessage();
+                QifEventLogMsg logContent = new QifEventLogMsg();
                 logContent.setId(StringUtil.random32UUID());
 
                 logContent.setEventLogId(generatedId);

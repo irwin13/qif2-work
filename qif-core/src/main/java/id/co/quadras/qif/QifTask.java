@@ -4,13 +4,13 @@ import com.google.inject.Inject;
 import com.irwin13.winwork.basic.utilities.StringUtil;
 import com.irwin13.winwork.basic.utilities.WinWorkUtil;
 import id.co.quadras.qif.helper.JsonParser;
-import id.co.quadras.qif.helper.queue.ActivityLogInputMessageQueue;
-import id.co.quadras.qif.helper.queue.ActivityLogOutputMessageQueue;
+import id.co.quadras.qif.helper.queue.ActivityLogInputMsgQueue;
+import id.co.quadras.qif.helper.queue.ActivityLogOutputMsgQueue;
 import id.co.quadras.qif.helper.queue.ActivityLogQueue;
 import id.co.quadras.qif.model.entity.log.QifActivityLog;
 import id.co.quadras.qif.model.entity.log.QifActivityLogData;
-import id.co.quadras.qif.model.entity.log.QifActivityLogInputMessage;
-import id.co.quadras.qif.model.entity.log.QifActivityLogOutputMessage;
+import id.co.quadras.qif.model.entity.log.QifActivityLogInputMsg;
+import id.co.quadras.qif.model.entity.log.QifActivityLogOutputMsg;
 import id.co.quadras.qif.model.vo.QifActivityResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,10 +67,10 @@ public abstract class QifTask implements QifActivity {
     private ActivityLogQueue activityLogQueue;
 
     @Inject
-    private ActivityLogInputMessageQueue inputMessageQueue;
+    private ActivityLogInputMsgQueue inputMessageQueue;
 
     @Inject
-    private ActivityLogOutputMessageQueue outputMessageQueue;
+    private ActivityLogOutputMsgQueue outputMessageQueue;
 
     private void insertAuditTrail(QifActivityMessage qifActivityMessage, long start, QifActivityResult qifActivityResult) {
 
@@ -121,7 +121,7 @@ public abstract class QifTask implements QifActivity {
             if (keepMessageContent) {
 
                 if (qifActivityMessage.getMessage() != null) {
-                    QifActivityLogInputMessage inputMessage = new QifActivityLogInputMessage();
+                    QifActivityLogInputMsg inputMessage = new QifActivityLogInputMsg();
                     inputMessage.setId(StringUtil.random32UUID());
                     inputMessage.setActivityLogId(taskLogId);
                     inputMessage.setCreateBy(activityName());
@@ -139,7 +139,7 @@ public abstract class QifTask implements QifActivity {
                 }
 
                 if (qifActivityResult != null && qifActivityResult.getResult() != null) {
-                    QifActivityLogOutputMessage outputMessage = new QifActivityLogOutputMessage();
+                    QifActivityLogOutputMsg outputMessage = new QifActivityLogOutputMsg();
                     outputMessage.setId(StringUtil.random32UUID());
                     outputMessage.setActivityLogId(taskLogId);
                     outputMessage.setCreateBy(activityName());

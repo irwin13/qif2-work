@@ -5,6 +5,10 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
+    <preConditions>
+        <dbms type="oracle" />
+    </preConditions>
+
     <changeSet id="init" author="irwin">
         <createTable tableName="QIF_EVENT_LOG">
             <column name="ID" type="char(32)" defaultValue="SYS_GUID()">
@@ -21,7 +25,7 @@
             <column name="NODE_NAME" type="varchar2(500)" />
         </createTable>
 
-        <createTable tableName="QIF_EVENT_LOG_MESSAGE">
+        <createTable tableName="QIF_EVENT_LOG_MSG">
             <column name="ID" type="char(32)" defaultValue="SYS_GUID()">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="PK_EVENT_LOG_MSG" />
             </column>

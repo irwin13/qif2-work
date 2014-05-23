@@ -31,12 +31,12 @@
         <!-- ACTIVITY_LOG -->
         <typeAlias alias="QifActivityLog" type="id.co.quadras.qif.model.entity.log.QifActivityLog" />
         <typeAlias alias="QifActivityLogData" type="id.co.quadras.qif.model.entity.log.QifActivityLogData" />
-        <typeAlias alias="QifActivityLogInputMessage" type="id.co.quadras.qif.model.entity.log.QifActivityLogInputMessage" />
-        <typeAlias alias="QifActivityLogOutputMessage" type="id.co.quadras.qif.model.entity.log.QifActivityLogOutputMessage" />
+        <typeAlias alias="QifActivityLogInputMessage" type="id.co.quadras.qif.model.entity.log.QifActivityLogInputMsg" />
+        <typeAlias alias="QifActivityLogOutputMessage" type="id.co.quadras.qif.model.entity.log.QifActivityLogOutputMsg" />
 
         <!-- EVENT_LOG -->
         <typeAlias alias="QifEventLog" type="id.co.quadras.qif.model.entity.log.QifEventLog" />
-        <typeAlias alias="QifEventLogMessage" type="id.co.quadras.qif.model.entity.log.QifEventLogMessage" />
+        <typeAlias alias="QifEventLogMessage" type="id.co.quadras.qif.model.entity.log.QifEventLogMsg" />
 
         <!-- MASTER -->
         <typeAlias alias="QifEvent" type="id.co.quadras.qif.model.entity.QifEvent" />

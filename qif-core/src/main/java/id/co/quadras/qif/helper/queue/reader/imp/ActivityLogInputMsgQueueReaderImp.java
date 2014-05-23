@@ -2,9 +2,9 @@ package id.co.quadras.qif.helper.queue.reader.imp;
 
 import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
-import id.co.quadras.qif.helper.queue.ActivityLogInputMessageQueue;
-import id.co.quadras.qif.helper.queue.reader.ActivityLogInputMessageQueueReader;
-import id.co.quadras.qif.model.entity.log.QifActivityLogInputMessage;
+import id.co.quadras.qif.helper.queue.ActivityLogInputMsgQueue;
+import id.co.quadras.qif.helper.queue.reader.ActivityLogInputMsgQueueReader;
+import id.co.quadras.qif.model.entity.log.QifActivityLogInputMsg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,24 +14,24 @@ import java.util.List;
 /**
  * @author irwin Timestamp : 05/05/2014 11:51
  */
-public class ActivityLogInputMessageQueueReaderImp implements ActivityLogInputMessageQueueReader {
+public class ActivityLogInputMsgQueueReaderImp implements ActivityLogInputMsgQueueReader {
 
-    private final ActivityLogInputMessageQueue queue;
-    private static final Logger LOGGER = LoggerFactory.getLogger(ActivityLogInputMessageQueueReaderImp.class);
+    private final ActivityLogInputMsgQueue queue;
+    private static final Logger LOGGER = LoggerFactory.getLogger(ActivityLogInputMsgQueueReaderImp.class);
 
     @Inject
-    public ActivityLogInputMessageQueueReaderImp(ActivityLogInputMessageQueue queue) {
+    public ActivityLogInputMsgQueueReaderImp(ActivityLogInputMsgQueue queue) {
         this.queue = queue;
     }
 
     @Override
-    public List<QifActivityLogInputMessage> getLogList(int maxFetch) {
+    public List<QifActivityLogInputMsg> getLogList(int maxFetch) {
         Preconditions.checkArgument(maxFetch > 0, "maxFetch cannot be less than or equals 0");
-        List<QifActivityLogInputMessage> result = new LinkedList<QifActivityLogInputMessage>();
+        List<QifActivityLogInputMsg> result = new LinkedList<QifActivityLogInputMsg>();
 
         loopQueue:
         for (int i = 0; i < maxFetch; i++) {
-            QifActivityLogInputMessage log = queue.get();
+            QifActivityLogInputMsg log = queue.get();
             if (log != null) {
                 result.add(log);
                 LOGGER.trace("queue message = {}", log);

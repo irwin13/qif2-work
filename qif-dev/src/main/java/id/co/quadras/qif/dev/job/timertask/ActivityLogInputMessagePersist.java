@@ -3,8 +3,8 @@ package id.co.quadras.qif.dev.job.timertask;
 import com.google.inject.Inject;
 import com.irwin13.winwork.basic.config.WinWorkConfig;
 import id.co.quadras.qif.dev.service.log.ActivityLogInputMessageService;
-import id.co.quadras.qif.helper.queue.reader.ActivityLogInputMessageQueueReader;
-import id.co.quadras.qif.model.entity.log.QifActivityLogInputMessage;
+import id.co.quadras.qif.helper.queue.reader.ActivityLogInputMsgQueueReader;
+import id.co.quadras.qif.model.entity.log.QifActivityLogInputMsg;
 
 import java.util.List;
 import java.util.TimerTask;
@@ -14,12 +14,12 @@ import java.util.TimerTask;
  */
 public class ActivityLogInputMessagePersist extends TimerTask {
 
-    private final ActivityLogInputMessageQueueReader queueReader;
+    private final ActivityLogInputMsgQueueReader queueReader;
     private final ActivityLogInputMessageService service;
     private final WinWorkConfig config;
 
     @Inject
-    public ActivityLogInputMessagePersist(ActivityLogInputMessageQueueReader queueReader, ActivityLogInputMessageService service, WinWorkConfig config) {
+    public ActivityLogInputMessagePersist(ActivityLogInputMsgQueueReader queueReader, ActivityLogInputMessageService service, WinWorkConfig config) {
         this.queueReader = queueReader;
         this.service = service;
         this.config = config;
@@ -28,7 +28,7 @@ public class ActivityLogInputMessagePersist extends TimerTask {
     @Override
     public void run() {
         int maxFetch = config.getInt("queue.activityLogInputMessage.maxFetch", 10);
-        List<QifActivityLogInputMessage> list = queueReader.getLogList(maxFetch);
+        List<QifActivityLogInputMsg> list = queueReader.getLogList(maxFetch);
         service.batchInsert(list);
     }
 }
