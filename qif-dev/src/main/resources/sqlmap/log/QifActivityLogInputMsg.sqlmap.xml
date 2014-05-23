@@ -5,7 +5,7 @@
 
 <mapper namespace="sqlmap.id.co.quadras.qif.model.entity.log.QifActivityLogInputMsg">
 
-    <resultMap id="QifActivityLogInputMessageResult" type="QifActivityLogInputMessage">
+    <resultMap id="QifActivityLogInputMsgResult" type="QifActivityLogInputMsg">
         <result property="id" column="id"/>
         <result property="active" column="active"
                 typeHandler="com.irwin13.winwork.mybatis.typehandler.YesNoBooleanTypeHandler"/>
@@ -19,8 +19,8 @@
 
     </resultMap>
 
-    <insert id="insert" parameterType="QifActivityLogInputMessage">
-        INSERT INTO qif_activity_input_message
+    <insert id="insert" parameterType="QifActivityLogInputMsg">
+        INSERT INTO qif_activity_log_input_msg
         (
         id, active, create_by, create_date, last_update_by, last_update_date,
         activity_log_id, input_message_content
