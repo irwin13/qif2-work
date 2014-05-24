@@ -26,7 +26,7 @@ public class FileAdapter extends AbstractAdapter {
 
         String fullPath;
         if (!Strings.isNullOrEmpty(getPropertyValue(AdapterFile.FOLDER.getName()))) {
-            fullPath = getPropertyValue(AdapterFile.FOLDER.getName()) + File.pathSeparator + fileName;
+            fullPath = getPropertyValue(AdapterFile.FOLDER.getName()) + File.separatorChar + fileName;
         } else {
             fullPath = fileName;
         }

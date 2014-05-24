@@ -9,10 +9,7 @@ public enum AdapterEmail {
     SMTP_PORT("smtp_port"),
     SMTP_USER("smtp_user"),
     SMTP_PASSWORD("smtp_password"),
-    SMTP_METHOD("smtp_method"),
-    SMTP_METHOD_SSL("smtp_method_ssl"),
-    SMTP_METHOD_TLS("smtp_method_tls"),
-    SMTP_METHOD_PLAIN("smtp_method_plain");
+    SMTP_METHOD("smtp_method");
 
     private final String name;
 

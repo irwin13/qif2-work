@@ -10,7 +10,8 @@ public enum AdapterInterface {
     FTP("ftp"),
     FILE("file"),
     JMS_QUEUE("jms_queue"),
-    ORACLE_ADVANCE_QUEUE("oaq");
+    ORACLE_ADVANCE_QUEUE("oaq"),
+    EMAIL("email");
 
     private final String name;
 

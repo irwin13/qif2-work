@@ -55,11 +55,11 @@ public class EmailAdapter extends AbstractAdapter {
         String smtpMethod = getPropertyValue(AdapterEmail.SMTP_METHOD.getName());
         TransportStrategy transportStrategy;
 
-        if (smtpMethod.equalsIgnoreCase(AdapterEmail.SMTP_METHOD_PLAIN.getName())) {
+        if (smtpMethod.equalsIgnoreCase(SmtpMethod.PLAIN.getName())) {
             transportStrategy = TransportStrategy.SMTP_PLAIN;
-        } else if (smtpMethod.equalsIgnoreCase(AdapterEmail.SMTP_METHOD_SSL.getName())) {
+        } else if (smtpMethod.equalsIgnoreCase(SmtpMethod.SSL.getName())) {
             transportStrategy = TransportStrategy.SMTP_SSL;
-        } else if (smtpMethod.equalsIgnoreCase(AdapterEmail.SMTP_METHOD_TLS.getName())) {
+        } else if (smtpMethod.equalsIgnoreCase(SmtpMethod.TLS.getName())) {
             transportStrategy = TransportStrategy.SMTP_TLS;
         } else {
             transportStrategy = TransportStrategy.SMTP_PLAIN;
@@ -74,4 +74,25 @@ public class EmailAdapter extends AbstractAdapter {
                 .sendMail(email);
     }
 
+    public enum SmtpMethod {
+        SSL("SSL"),
+        TLS("TLS"),
+        PLAIN("PLAIN");
+
+        private final String name;
+
+        SmtpMethod(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
+
+    }
 }
