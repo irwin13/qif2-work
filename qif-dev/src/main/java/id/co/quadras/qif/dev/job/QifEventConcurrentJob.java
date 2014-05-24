@@ -29,7 +29,7 @@ public class QifEventConcurrentJob implements Job {
                 try {
                     QifProcess qifProcess = (QifProcess) GuiceFactory.getInjector()
                             .getInstance(Class.forName(qifEvent.getQifProcess()));
-                    qifProcess.executeProcess(qifEvent);
+                    qifProcess.executeProcess(qifEvent, null, null);
                 } catch (Exception e) {
                     LOGGER.error(e.getLocalizedMessage(), e);
                 }

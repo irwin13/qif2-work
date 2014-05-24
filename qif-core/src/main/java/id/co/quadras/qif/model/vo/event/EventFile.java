@@ -8,7 +8,7 @@ public enum EventFile {
     FOLDER("folder"),
     END_WITH("end_with"),
     MAX_FETCH("max_fetch"),
-    LAST_TOUCH_SECONDS("last_touch_seconds");
+    LAST_MODIFIED_INTERVAL_SECONDS("last_modified_interval_seconds");
 
     private final String name;
 
