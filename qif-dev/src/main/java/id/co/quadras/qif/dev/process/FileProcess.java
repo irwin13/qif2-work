@@ -12,7 +12,7 @@ import java.util.Arrays;
 /**
  * @author irwin Timestamp : 25/05/2014 0:55
  */
-public abstract class FileAbstractProcess extends QifProcess {
+public abstract class FileProcess extends QifProcess {
 
     @Override
     protected Object receiveEvent(QifEvent qifEvent, Object inputMessage) {
@@ -57,7 +57,7 @@ public abstract class FileAbstractProcess extends QifProcess {
 
     private boolean isFileReady(QifEvent qifEvent, long fileLastModified) {
         Duration duration = new Duration(System.currentTimeMillis() - fileLastModified);
-        int lastModifiedIntervalSeconds = Integer.valueOf(getPropertyValue(qifEvent,
+        long lastModifiedIntervalSeconds = Long.valueOf(getPropertyValue(qifEvent,
                 EventFile.LAST_MODIFIED_INTERVAL_SECONDS.getName()));
         long period = duration.getStandardSeconds();
         logger.debug("lastModifiedIntervalSeconds = {} seconds", period);

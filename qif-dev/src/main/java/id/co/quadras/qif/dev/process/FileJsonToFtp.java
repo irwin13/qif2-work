@@ -9,7 +9,7 @@ import id.co.quadras.qif.model.vo.QifActivityResult;
 /**
  * @author irwin Timestamp : 25/05/2014 0:40
  */
-public class FileJsonToFtp extends FileAbstractProcess {
+public class FileJsonToFtp extends FileProcess {
 
     @Override
     protected QifActivityResult implementProcess(Object processInput) {
