@@ -35,7 +35,7 @@ public abstract class QifTask implements QifActivity {
         return TYPE;
     }
 
-    protected abstract QifActivityResult implementTask(QifActivityMessage qifActivityMessage);
+    protected abstract QifActivityResult implementTask(QifTaskMessage qifTaskMessage);
 
     /**
      * Typical execution will be like this :
@@ -50,13 +50,13 @@ public abstract class QifTask implements QifActivity {
      *
      *
      *
-     * @param qifActivityMessage
+     * @param qifTaskMessage
      * @return
      */
-    public QifActivityResult executeTask(QifActivityMessage qifActivityMessage) {
+    public QifActivityResult executeTask(QifTaskMessage qifTaskMessage) {
         long start = System.currentTimeMillis();
-        QifActivityResult bpActivityResult = implementTask(qifActivityMessage);
-        insertAuditTrail(qifActivityMessage, start, bpActivityResult);
+        QifActivityResult bpActivityResult = implementTask(qifTaskMessage);
+        insertAuditTrail(qifTaskMessage, start, bpActivityResult);
         return bpActivityResult;
     }
 
@@ -72,9 +72,10 @@ public abstract class QifTask implements QifActivity {
     @Inject
     private ActivityLogOutputMsgQueue outputMessageQueue;
 
-    private void insertAuditTrail(QifActivityMessage qifActivityMessage, long start, QifActivityResult qifActivityResult) {
+    private void insertAuditTrail(QifTaskMessage qifTaskMessage, long start, QifActivityResult qifActivityResult) {
 
-        boolean auditTrailEnabled = qifActivityMessage.getQifEventLog().getQifEvent().getAuditTrailEnabled();
+        boolean auditTrailEnabled = qifTaskMessage.getQifProcess()
+                                        .getQifEventLog().getQifEvent().getAuditTrailEnabled();
 
         if (auditTrailEnabled) {
             String taskLogId = StringUtil.random32UUID();
@@ -100,14 +101,14 @@ public abstract class QifTask implements QifActivity {
             }
 
             taskLog.setId(taskLogId);
-            taskLog.setQifEventLog(qifActivityMessage.getQifEventLog());
+            taskLog.setQifEventLog(qifTaskMessage.getQifProcess().getQifEventLog());
             taskLog.setActivityStatus(activityStatus);
             taskLog.setActivityType(activityType());
             taskLog.setExecutionTime(System.currentTimeMillis() - start);
             taskLog.setNodeName(WinWorkUtil.getNodeName());
             taskLog.setStartTime(start);
             taskLog.setQifActivityLogDataList(activityLogDataList);
-            taskLog.setParentActivity(qifActivityMessage.getParentActivityLog());
+            taskLog.setParentActivity(qifTaskMessage.getQifProcess().getProcessActivityLog());
 
             taskLog.setCreateBy(activityName());
             taskLog.setLastUpdateBy(activityName());
@@ -116,11 +117,12 @@ public abstract class QifTask implements QifActivity {
 
             activityLogQueue.put(taskLog);
 
-            boolean keepMessageContent = qifActivityMessage.getQifEventLog().getQifEvent().getKeepMessageContent();
+            boolean keepMessageContent = qifTaskMessage.getQifProcess()
+                                            .getQifEventLog().getQifEvent().getKeepMessageContent();
 
             if (keepMessageContent) {
 
-                if (qifActivityMessage.getMessage() != null) {
+                if (qifTaskMessage.getMessage() != null) {
                     QifActivityLogInputMsg inputMessage = new QifActivityLogInputMsg();
                     inputMessage.setId(StringUtil.random32UUID());
                     inputMessage.setActivityLogId(taskLogId);
@@ -130,7 +132,7 @@ public abstract class QifTask implements QifActivity {
                     inputMessage.setLastUpdateDate(today);
                     try {
                         inputMessage.setInputMessageContent(jsonParser.parseToString(
-                                true, qifActivityMessage.getMessage()));
+                                true, qifTaskMessage.getMessage()));
                     } catch (IOException e) {
                         logger.error(e.getLocalizedMessage(), e);
                         inputMessage.setInputMessageContent(e.getMessage());

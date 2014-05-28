@@ -179,7 +179,7 @@ public abstract class QifProcess implements QifActivity {
         }
     }
 
-    protected QifEventLog insertEventLog(QifEvent qifEvent, Object inputMessage) {
+    private QifEventLog insertEventLog(QifEvent qifEvent, Object inputMessage) {
 
         QifEventLog qifEventLog = new QifEventLog();
 
