@@ -2,6 +2,7 @@ package id.co.quadras.qif;
 
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
+import com.google.inject.Injector;
 import com.irwin13.winwork.basic.utilities.StringUtil;
 import com.irwin13.winwork.basic.utilities.WinWorkUtil;
 import id.co.quadras.qif.exception.QifException;
@@ -189,10 +190,9 @@ public abstract class QifProcess implements QifActivity {
             Date today = new Date();
 
             qifEventLog.setId(generatedId);
-            if (!Strings.isNullOrEmpty(qifEvent.getId())) {
-                qifEventLog.setEventId(qifEvent.getId());
-            }
+            qifEventLog.setEventId(qifEvent.getId());
             qifEventLog.setNodeName(WinWorkUtil.getNodeName());
+            qifEventLog.setQifEvent(qifEvent);
 
             qifEventLog.setCreateBy(activityName());
             qifEventLog.setLastUpdateBy(activityName());
@@ -222,9 +222,8 @@ public abstract class QifProcess implements QifActivity {
 
         } else {
             logger.debug("auditTrail is not enabled for QifEvent {}", qifEvent.getName());
-            if (!Strings.isNullOrEmpty(qifEvent.getId())) {
-                qifEventLog.setQifEvent(qifEvent);
-            }
+            qifEventLog.setEventId(qifEvent.getId());
+            qifEventLog.setQifEvent(qifEvent);
             qifEventLog.setNodeName(WinWorkUtil.getNodeName());
         }
 
@@ -244,6 +243,26 @@ public abstract class QifProcess implements QifActivity {
             }
         }
         return result;
+    }
+
+    protected QifActivityResult executeTask(Injector injector, Class<? extends QifTask> taskClass,
+                                            QifTaskMessage qifTaskMessage) {
+        QifTask qifTask = injector.getInstance(taskClass);
+        return qifTask.executeTask(qifTaskMessage);
+    }
+
+    protected QifActivityResult executeTaskAsynchronous(Injector injector, Class<? extends QifTask> taskClass,
+                                            QifTaskMessage qifTaskMessage) {
+        // TODO use ExecutorService and Future here
+        QifTask qifTask = injector.getInstance(taskClass);
+        return qifTask.executeTask(qifTaskMessage);
+    }
+
+    protected void executeTaskParallel(Injector injector, Class<? extends QifTask> taskClass,
+                                                       QifTaskMessage qifTaskMessage) {
+        // TODO use ThreadRunnable here
+        QifTask qifTask = injector.getInstance(taskClass);
+        qifTask.executeTask(qifTaskMessage);
     }
 
 }

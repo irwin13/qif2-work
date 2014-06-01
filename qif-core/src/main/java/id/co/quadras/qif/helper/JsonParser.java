@@ -13,7 +13,7 @@ import java.io.IOException;
 /**
  * @author irwin Timestamp : 05/05/2014 19:40
  */
-public final class JsonParser {
+public class JsonParser {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JsonParser.class);
 

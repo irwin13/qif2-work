@@ -14,7 +14,9 @@
         <setting name="useGeneratedKeys" value="false"/>
         <setting name="autoMappingBehavior" value="PARTIAL"/>
         <setting name="defaultExecutorType" value="REUSE"/>
+        <!-- PostgreSQL JDBC Driver doesn't support this
         <setting name="defaultStatementTimeout" value="25"/>
+        -->
         <setting name="safeRowBoundsEnabled" value="false"/>
         <setting name="mapUnderscoreToCamelCase" value="true"/>
         <setting name="localCacheScope" value="SESSION"/>
@@ -97,10 +99,10 @@
         <!-- LOG -->
         <mapper resource="sqlmap/log/QifActivityLog.sqlmap.xml"/>
         <mapper resource="sqlmap/log/QifActivityLogData.sqlmap.xml"/>
-        <mapper resource="sqlmap/log/QifActivityLogInputMessage.sqlmap.xml"/>
-        <mapper resource="sqlmap/log/QifActivityLogOutputMessage.sqlmap.xml"/>
+        <mapper resource="sqlmap/log/QifActivityLogInputMsg.sqlmap.xml"/>
+        <mapper resource="sqlmap/log/QifActivityLogOutputMsg.sqlmap.xml"/>
 
         <mapper resource="sqlmap/log/QifEventLog.sqlmap.xml"/>
-        <mapper resource="sqlmap/log/QifEventLogMessage.sqlmap.xml"/>
+        <mapper resource="sqlmap/log/QifEventLogMsg.sqlmap.xml"/>
     </mappers>
 </configuration>

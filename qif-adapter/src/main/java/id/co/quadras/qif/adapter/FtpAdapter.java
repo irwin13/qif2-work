@@ -31,7 +31,9 @@ public class FtpAdapter extends AbstractAdapter {
         int port = Integer.valueOf(getPropertyValue(AdapterFtp.PORT.getName()));
         String user = getPropertyValue(AdapterFtp.USER.getName());
         String password = getPropertyValue(AdapterFtp.PASSWORD.getName());
-
+        LOGGER.debug("FTP host = {}", host);
+        LOGGER.debug("FTP port = {}", port);
+        LOGGER.debug("FTP user = {}", user);
         ftpClient.connect(host, port);
         ftpClient.login(user, password);
         if (!FTPReply.isPositiveCompletion(ftpClient.getReplyCode())) {

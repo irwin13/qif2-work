@@ -1,5 +1,6 @@
 package id.co.quadras.qif.dev.guice.module;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 import com.google.inject.matcher.Matchers;
@@ -12,6 +13,8 @@ import com.irwin13.winwork.basic.scheduler.SchedulerProvider;
 import com.irwin13.winwork.basic.utilities.WinWorkVelocityUtil;
 import id.co.quadras.qif.dev.QifConfig;
 import id.co.quadras.qif.dev.SchedulerStarter;
+import id.co.quadras.qif.dev.guice.JsonMapperProvider;
+import id.co.quadras.qif.helper.JsonParser;
 import id.co.quadras.qif.helper.QifCounter;
 import id.co.quadras.qif.helper.imp.QifCounterGuava;
 import id.co.quadras.qif.helper.queue.*;
@@ -40,6 +43,10 @@ public class SharedModule extends AbstractModule {
         bind(WinWorkConfig.class).to(QifConfig.class).in(Singleton.class);
         bind(WinWorkVelocityUtil.class);
 
+        // json
+        bind(ObjectMapper.class).toProvider(JsonMapperProvider.class);
+        bind(JsonParser.class);
+
         // MDC Log AOP Interceptor
         bindInterceptor(Matchers.any(), Matchers.annotatedWith(MDCLog.class), new MDCLogInterceptor());
 
@@ -56,6 +63,7 @@ public class SharedModule extends AbstractModule {
         bind(EventLogMsgQueue.class).to(EventLogMsgQueueImp.class);
 
         bind(ActivityLogQueue.class).to(ActivityLogQueueImp.class);
+        bind(ActivityLogUpdateQueue.class).to(ActivityLogUpdateQueueImp.class);
         bind(ActivityLogDataQueue.class).to(ActivityLogDataQueueImp.class);
         bind(ActivityLogInputMsgQueue.class).to(ActivityLogInputMsgQueueImp.class);
         bind(ActivityLogOutputMsgQueue.class).to(ActivityLogOutputMsgQueueImp.class);
@@ -65,6 +73,7 @@ public class SharedModule extends AbstractModule {
         bind(EventLogMsgQueueReader.class).to(EventLogMsgQueueReaderImp.class);
 
         bind(ActivityLogQueueReader.class).to(ActivityLogQueueReaderImp.class);
+        bind(ActivityLogUpdateQueueReader.class).to(ActivityLogUpdateQueueReaderImp.class);
         bind(ActivityLogDataQueueReader.class).to(ActivityLogDataQueueReaderImp.class);
         bind(ActivityLogInputMsgQueueReader.class).to(ActivityLogInputMsgQueueReaderImp.class);
         bind(ActivityLogOutputMsgQueueReader.class).to(ActivityLogOutputMsgQueueReaderImp.class);

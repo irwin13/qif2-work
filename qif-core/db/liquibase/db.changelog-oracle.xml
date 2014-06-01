@@ -170,4 +170,12 @@
     <changeSet id="alter-table" author="irwin">
         <renameColumn newColumnName="QIF_PROCESS" oldColumnName="QIF_RECEIVER" tableName="QIF_EVENT" />
     </changeSet>
+    <changeSet id="alter-tables-1" author="irwin">
+        <addColumn tableName="QIF_EVENT_PROPERTY">
+            <column name="QIF_EVENT_ID" type="char(32)" />
+        </addColumn>
+        <addColumn tableName="QIF_ADAPTER_PROPERTY">
+            <column name="QIF_ADAPTER_ID" type="char(32)" />
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

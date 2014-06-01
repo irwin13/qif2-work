@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <!-- IrwinFtp -->
+    <qif_test.QIF_EVENT ID="f9bd1632beb04e498f915a0975ae4831" ACTIVE="Y" CREATE_BY="SYSTEM" LAST_UPDATE_BY="SYSTEM"
+                 NAME="FileJsonEvent"
+                 EVENT_INTERFACE="FILE"
+                 EVENT_TYPE="scheduler_interval"/>
+    <qif_test.QIF_EVENT_PROPERTY ID="C11D75C1FEF64BF49D4CB0B7BA75287A" ACTIVE="Y" CREATE_BY="SYSTEM" LAST_UPDATE_BY="SYSTEM"
+                          PROPERTY_KEY="folder"
+                          PROPERTY_VALUE="C:\\hotfolder-in"
+                          QIF_EVENT_ID="f9bd1632beb04e498f915a0975ae4831"/>
+    <qif_test.QIF_EVENT_PROPERTY ID="C11D75C1FEF64BF49D4CB0B7BA75287B" ACTIVE="Y" CREATE_BY="SYSTEM" LAST_UPDATE_BY="SYSTEM"
+                          PROPERTY_KEY="end_with"
+                          PROPERTY_VALUE=".json"
+                          QIF_EVENT_ID="f9bd1632beb04e498f915a0975ae4831"/>
+    <qif_test.QIF_EVENT_PROPERTY ID="C11D75C1FEF64BF49D4CB0B7BA75287C" ACTIVE="Y" CREATE_BY="SYSTEM" LAST_UPDATE_BY="SYSTEM"
+                          PROPERTY_KEY="max_fetch"
+                          PROPERTY_VALUE="10"
+                          QIF_EVENT_ID="f9bd1632beb04e498f915a0975ae4831"/>
+    <qif_test.QIF_EVENT_PROPERTY ID="C11D75C1FEF64BF49D4CB0B7BA75287D" ACTIVE="Y" CREATE_BY="SYSTEM" LAST_UPDATE_BY="SYSTEM"
+                          PROPERTY_KEY="last_modified_interval_seconds"
+                          PROPERTY_VALUE="3"
+                          QIF_EVENT_ID="f9bd1632beb04e498f915a0975ae4831"/>
+
+</dataset>

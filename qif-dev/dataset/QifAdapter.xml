@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+
+    <qif_test.QIF_ADAPTER ID="f9bd1632beb04e498f915a0975ae4831" ACTIVE="Y" CREATE_BY="SYSTEM" LAST_UPDATE_BY="SYSTEM"
+                 NAME="IrwinFtp"
+                 ADAPTER_INTERFACE="FTP"/>
+    <qif_test.QIF_ADAPTER_PROPERTY ID="C11D75C1FEF64BF49D4CB0B7BA75287A" ACTIVE="Y" CREATE_BY="SYSTEM" LAST_UPDATE_BY="SYSTEM"
+                          PROPERTY_KEY="host"
+                          PROPERTY_VALUE="localhost"
+                          QIF_ADAPTER_ID="f9bd1632beb04e498f915a0975ae4831"/>
+    <qif_test.QIF_ADAPTER_PROPERTY ID="C11D75C1FEF64BF49D4CB0B7BA75287B" ACTIVE="Y" CREATE_BY="SYSTEM" LAST_UPDATE_BY="SYSTEM"
+                          PROPERTY_KEY="port"
+                          PROPERTY_VALUE="21"
+                          QIF_ADAPTER_ID="f9bd1632beb04e498f915a0975ae4831"/>
+    <qif_test.QIF_ADAPTER_PROPERTY ID="C11D75C1FEF64BF49D4CB0B7BA75287C" ACTIVE="Y" CREATE_BY="SYSTEM" LAST_UPDATE_BY="SYSTEM"
+                          PROPERTY_KEY="user"
+                          PROPERTY_VALUE="irwin"
+                          QIF_ADAPTER_ID="f9bd1632beb04e498f915a0975ae4831"/>
+    <qif_test.QIF_ADAPTER_PROPERTY ID="C11D75C1FEF64BF49D4CB0B7BA75287D" ACTIVE="Y" CREATE_BY="SYSTEM" LAST_UPDATE_BY="SYSTEM"
+                          PROPERTY_KEY="password"
+                          PROPERTY_VALUE="irwin"
+                          QIF_ADAPTER_ID="f9bd1632beb04e498f915a0975ae4831"/>
+
+</dataset>

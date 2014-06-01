@@ -4,8 +4,11 @@ import id.co.quadras.qif.QifTaskMessage;
 import id.co.quadras.qif.dev.guice.GuiceFactory;
 import id.co.quadras.qif.dev.task.JsonToXml;
 import id.co.quadras.qif.dev.task.PutToFtp;
-import id.co.quadras.qif.helper.TaskRepository;
 import id.co.quadras.qif.model.vo.QifActivityResult;
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * @author irwin Timestamp : 25/05/2014 0:40
@@ -14,11 +17,18 @@ public class FileJsonToFtp extends FileProcess {
 
     @Override
     protected QifActivityResult implementProcess(Object processInput) {
-        JsonToXml jsonToXml = TaskRepository.getTask(GuiceFactory.getInjector(), JsonToXml.class);
-        Object resultXml = jsonToXml.executeTask(new QifTaskMessage(this, processInput));
+        File[] files = (File[]) processInput;
+        String json = null;
+        try {
+            json = FileUtils.readFileToString(files[0]);
+        } catch (IOException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
+        QifActivityResult xmlResult = executeTask(GuiceFactory.getInjector(), JsonToXml.class,
+                new QifTaskMessage(this, json));
 
-        PutToFtp putToFtp = TaskRepository.getTask(GuiceFactory.getInjector(), PutToFtp.class);
-        putToFtp.executeTask(new QifTaskMessage(this, resultXml));
+        executeTask(GuiceFactory.getInjector(), PutToFtp.class,
+                new QifTaskMessage(this, xmlResult.getResult()));
 
         return new QifActivityResult(SUCCESS, null, null);
     }
