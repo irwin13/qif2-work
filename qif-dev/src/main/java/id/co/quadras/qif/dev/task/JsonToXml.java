@@ -16,6 +16,7 @@ public class JsonToXml extends AbstractTask {
     protected QifActivityResult implementTask(QifTaskMessage qifTaskMessage) {
         String result = null;
         String json = (String) qifTaskMessage.getMessage();
+        logger.debug("json input = {}", json);
         XmlMapper xmlMapper = new XmlMapper();
 
         try {
@@ -24,6 +25,7 @@ public class JsonToXml extends AbstractTask {
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
+        logger.debug("xml output = {}", result);
         return new QifActivityResult(SUCCESS, result, null);
     }
 

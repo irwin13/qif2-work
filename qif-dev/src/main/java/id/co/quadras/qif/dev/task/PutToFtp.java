@@ -16,10 +16,12 @@ public class PutToFtp extends AbstractTask {
     @Override
     protected QifActivityResult implementTask(QifTaskMessage qifTaskMessage) {
         QifAdapter qifAdapter = getAdapter("IrwinFtp");
+        logger.debug("IrwinFtp adapter = {}", qifAdapter);
         FtpAdapter ftpAdapter = new FtpAdapter(qifAdapter);
         try {
             ftpAdapter.connect();
-            ftpAdapter.storeFile("book.xml", new ByteArrayInputStream(((String) qifTaskMessage.getMessage()).getBytes()));
+            ftpAdapter.storeFile("book.xml",
+                    new ByteArrayInputStream(((String) qifTaskMessage.getMessage()).getBytes()));
             ftpAdapter.disconnect();
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
