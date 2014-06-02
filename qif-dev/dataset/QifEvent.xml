@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-    <!-- IrwinFtp -->
+    <!-- file event -->
     <qif_test.QIF_EVENT ID="f9bd1632beb04e498f915a0975ae4831" ACTIVE="Y" CREATE_BY="SYSTEM" LAST_UPDATE_BY="SYSTEM"
                  NAME="FileJsonEvent"
                  EVENT_INTERFACE="FILE"
@@ -21,5 +21,42 @@
                           PROPERTY_KEY="last_modified_interval_seconds"
                           PROPERTY_VALUE="3"
                           QIF_EVENT_ID="f9bd1632beb04e498f915a0975ae4831"/>
+    <!-- ftp event -->
+    <qif_test.QIF_EVENT ID="f9bd1632beb04e498f915a0975ae4832" ACTIVE="Y" CREATE_BY="SYSTEM" LAST_UPDATE_BY="SYSTEM"
+                        NAME="FtpIrwinEvent"
+                        EVENT_INTERFACE="FTP"
+                        EVENT_TYPE="scheduler_interval"/>
+    <qif_test.QIF_EVENT_PROPERTY ID="D11D75C1FEF64BF49D4CB0B7BA75287A" ACTIVE="Y" CREATE_BY="SYSTEM" LAST_UPDATE_BY="SYSTEM"
+                                 PROPERTY_KEY="folder"
+                                 PROPERTY_VALUE=""
+                                 QIF_EVENT_ID="f9bd1632beb04e498f915a0975ae4832"/>
+    <qif_test.QIF_EVENT_PROPERTY ID="D11D75C1FEF64BF49D4CB0B7BA75287B" ACTIVE="Y" CREATE_BY="SYSTEM" LAST_UPDATE_BY="SYSTEM"
+                                 PROPERTY_KEY="end_with"
+                                 PROPERTY_VALUE=".xml"
+                                 QIF_EVENT_ID="f9bd1632beb04e498f915a0975ae4832"/>
+    <qif_test.QIF_EVENT_PROPERTY ID="D11D75C1FEF64BF49D4CB0B7BA75287C" ACTIVE="Y" CREATE_BY="SYSTEM" LAST_UPDATE_BY="SYSTEM"
+                                 PROPERTY_KEY="max_fetch"
+                                 PROPERTY_VALUE="1"
+                                 QIF_EVENT_ID="f9bd1632beb04e498f915a0975ae4832"/>
+    <qif_test.QIF_EVENT_PROPERTY ID="D11D75C1FEF64BF49D4CB0B7BA75287D" ACTIVE="Y" CREATE_BY="SYSTEM" LAST_UPDATE_BY="SYSTEM"
+                                 PROPERTY_KEY="last_modified_interval_seconds"
+                                 PROPERTY_VALUE="3"
+                                 QIF_EVENT_ID="f9bd1632beb04e498f915a0975ae4832"/>
+    <qif_test.QIF_EVENT_PROPERTY ID="D11D75C1FEF64BF49D4CB0B7BA75287E" ACTIVE="Y" CREATE_BY="SYSTEM" LAST_UPDATE_BY="SYSTEM"
+                                 PROPERTY_KEY="host"
+                                 PROPERTY_VALUE="localhost"
+                                 QIF_EVENT_ID="f9bd1632beb04e498f915a0975ae4832"/>
+    <qif_test.QIF_EVENT_PROPERTY ID="D11D75C1FEF64BF49D4CB0B7BA75287F" ACTIVE="Y" CREATE_BY="SYSTEM" LAST_UPDATE_BY="SYSTEM"
+                                 PROPERTY_KEY="port"
+                                 PROPERTY_VALUE="21"
+                                 QIF_EVENT_ID="f9bd1632beb04e498f915a0975ae4832"/>
+    <qif_test.QIF_EVENT_PROPERTY ID="D11D75C1FEF64BF49D4CB0B7BA75287G" ACTIVE="Y" CREATE_BY="SYSTEM" LAST_UPDATE_BY="SYSTEM"
+                                 PROPERTY_KEY="user"
+                                 PROPERTY_VALUE="irwin"
+                                 QIF_EVENT_ID="f9bd1632beb04e498f915a0975ae4832"/>
+    <qif_test.QIF_EVENT_PROPERTY ID="D11D75C1FEF64BF49D4CB0B7BA75287H" ACTIVE="Y" CREATE_BY="SYSTEM" LAST_UPDATE_BY="SYSTEM"
+                                 PROPERTY_KEY="password"
+                                 PROPERTY_VALUE="irwin"
+                                 QIF_EVENT_ID="f9bd1632beb04e498f915a0975ae4832"/>
 
 </dataset>

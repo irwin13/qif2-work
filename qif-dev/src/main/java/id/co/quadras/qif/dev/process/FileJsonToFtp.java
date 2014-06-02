@@ -1,6 +1,5 @@
 package id.co.quadras.qif.dev.process;
 
-import id.co.quadras.qif.QifTaskMessage;
 import id.co.quadras.qif.dev.guice.GuiceFactory;
 import id.co.quadras.qif.dev.task.JsonToXml;
 import id.co.quadras.qif.dev.task.PutToFtp;
@@ -13,7 +12,7 @@ import java.io.IOException;
 /**
  * @author irwin Timestamp : 25/05/2014 0:40
  */
-public class FileJsonToFtp extends FileProcess {
+public class FileJsonToFtp extends FileEventProcess {
 
     @Override
     protected QifActivityResult implementProcess(Object processInput) {
@@ -24,11 +23,9 @@ public class FileJsonToFtp extends FileProcess {
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
-        QifActivityResult xmlResult = executeTask(GuiceFactory.getInjector(), JsonToXml.class,
-                new QifTaskMessage(this, json));
+        QifActivityResult xmlResult = executeTask(GuiceFactory.getInjector(), JsonToXml.class, json);
 
-        executeTask(GuiceFactory.getInjector(), PutToFtp.class,
-                new QifTaskMessage(this, xmlResult.getResult()));
+        executeTask(GuiceFactory.getInjector(), PutToFtp.class, xmlResult.getResult());
 
         return new QifActivityResult(SUCCESS, null, null);
     }

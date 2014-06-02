@@ -12,7 +12,7 @@ import java.util.Arrays;
 /**
  * @author irwin Timestamp : 25/05/2014 0:55
  */
-public abstract class FileProcess extends QifProcess {
+public abstract class FileEventProcess extends QifProcess {
 
     @Override
     protected Object receiveEvent(QifEvent qifEvent, Object inputMessage) {

@@ -1,6 +1,5 @@
 package id.co.quadras.qif;
 
-import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.irwin13.winwork.basic.utilities.StringUtil;
@@ -246,23 +245,23 @@ public abstract class QifProcess implements QifActivity {
     }
 
     protected QifActivityResult executeTask(Injector injector, Class<? extends QifTask> taskClass,
-                                            QifTaskMessage qifTaskMessage) {
+                                            Object taskInput) {
         QifTask qifTask = injector.getInstance(taskClass);
-        return qifTask.executeTask(qifTaskMessage);
+        return qifTask.executeTask(new QifTaskMessage(this, taskInput));
     }
 
     protected QifActivityResult executeTaskAsynchronous(Injector injector, Class<? extends QifTask> taskClass,
-                                            QifTaskMessage qifTaskMessage) {
+                                            Object taskInput) {
         // TODO use ExecutorService and Future here
         QifTask qifTask = injector.getInstance(taskClass);
-        return qifTask.executeTask(qifTaskMessage);
+        return qifTask.executeTask(new QifTaskMessage(this, taskInput));
     }
 
     protected void executeTaskParallel(Injector injector, Class<? extends QifTask> taskClass,
-                                                       QifTaskMessage qifTaskMessage) {
+                                                       Object taskInput) {
         // TODO use ThreadRunnable here
         QifTask qifTask = injector.getInstance(taskClass);
-        qifTask.executeTask(qifTaskMessage);
+        qifTask.executeTask(new QifTaskMessage(this, taskInput));
     }
 
 }
