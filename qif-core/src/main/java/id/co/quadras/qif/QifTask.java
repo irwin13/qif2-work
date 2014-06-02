@@ -109,7 +109,9 @@ public abstract class QifTask implements QifActivity {
             taskLog.setStartTime(start);
             taskLog.setQifActivityLogDataList(activityLogDataList);
             taskLog.setParentActivity(qifTaskMessage.getQifProcess().getProcessActivityLog());
+            taskLog.setParentActivityId(qifTaskMessage.getQifProcess().getProcessActivityLog().getId());
 
+            taskLog.setActive(Boolean.TRUE);
             taskLog.setCreateBy(activityName());
             taskLog.setLastUpdateBy(activityName());
             taskLog.setCreateDate(today);
@@ -126,6 +128,8 @@ public abstract class QifTask implements QifActivity {
                     QifActivityLogInputMsg inputMessage = new QifActivityLogInputMsg();
                     inputMessage.setId(StringUtil.random32UUID());
                     inputMessage.setActivityLogId(taskLogId);
+
+                    inputMessage.setActive(Boolean.TRUE);
                     inputMessage.setCreateBy(activityName());
                     inputMessage.setLastUpdateBy(activityName());
                     inputMessage.setCreateDate(today);
@@ -144,6 +148,8 @@ public abstract class QifTask implements QifActivity {
                     QifActivityLogOutputMsg outputMessage = new QifActivityLogOutputMsg();
                     outputMessage.setId(StringUtil.random32UUID());
                     outputMessage.setActivityLogId(taskLogId);
+
+                    outputMessage.setActive(Boolean.TRUE);
                     outputMessage.setCreateBy(activityName());
                     outputMessage.setLastUpdateBy(activityName());
                     outputMessage.setCreateDate(today);

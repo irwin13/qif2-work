@@ -94,8 +94,9 @@ public abstract class QifProcess implements QifActivity {
                 processLog.setParentActivity(parentProcessLog);
             }
 
+            processLog.setActive(Boolean.TRUE);
+            processLog.setCreateDate(new Date());
             processLog.setCreateBy(activityName());
-            processLog.setLastUpdateBy(activityName());
 
             activityLogQueue.put(processLog);
 
@@ -106,6 +107,7 @@ public abstract class QifProcess implements QifActivity {
                     QifActivityLogInputMsg inputMsg = new QifActivityLogInputMsg();
                     inputMsg.setId(StringUtil.random32UUID());
                     inputMsg.setActivityLogId(id);
+                    inputMsg.setActive(Boolean.TRUE);
                     inputMsg.setCreateBy(activityName());
                     inputMsg.setLastUpdateBy(activityName());
                     inputMsg.setCreateDate(new Date());
@@ -162,6 +164,7 @@ public abstract class QifProcess implements QifActivity {
                     QifActivityLogOutputMsg outputMessage = new QifActivityLogOutputMsg();
                     outputMessage.setId(StringUtil.random32UUID());
                     outputMessage.setActivityLogId(processLog.getId());
+                    outputMessage.setActive(Boolean.TRUE);
                     outputMessage.setCreateBy(activityName());
                     outputMessage.setLastUpdateBy(activityName());
                     outputMessage.setCreateDate(new Date());
@@ -193,6 +196,7 @@ public abstract class QifProcess implements QifActivity {
             qifEventLog.setNodeName(WinWorkUtil.getNodeName());
             qifEventLog.setQifEvent(qifEvent);
 
+            qifEventLog.setActive(Boolean.TRUE);
             qifEventLog.setCreateBy(activityName());
             qifEventLog.setLastUpdateBy(activityName());
             qifEventLog.setCreateDate(today);
@@ -211,6 +215,7 @@ public abstract class QifProcess implements QifActivity {
                     logger.error(e.getLocalizedMessage(), e);
                 }
 
+                logContent.setActive(Boolean.TRUE);
                 logContent.setCreateBy(activityName());
                 logContent.setLastUpdateBy(activityName());
                 logContent.setCreateDate(today);
