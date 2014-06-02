@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-
+    <!-- FTP adapter -->
     <qif_test.QIF_ADAPTER ID="f9bd1632beb04e498f915a0975ae4831" ACTIVE="Y" CREATE_BY="SYSTEM" LAST_UPDATE_BY="SYSTEM"
                  NAME="IrwinFtp"
                  ADAPTER_INTERFACE="FTP"/>
@@ -20,5 +20,18 @@
                           PROPERTY_KEY="password"
                           PROPERTY_VALUE="irwin"
                           QIF_ADAPTER_ID="f9bd1632beb04e498f915a0975ae4831"/>
+
+    <!-- File adapter -->
+    <qif_test.QIF_ADAPTER ID="f9bd1632beb04e498f915a0975ae4832" ACTIVE="Y" CREATE_BY="SYSTEM" LAST_UPDATE_BY="SYSTEM"
+                          NAME="IrwinFile"
+                          ADAPTER_INTERFACE="FILE"/>
+    <qif_test.QIF_ADAPTER_PROPERTY ID="D11D75C1FEF64BF49D4CB0B7BA75287A" ACTIVE="Y" CREATE_BY="SYSTEM" LAST_UPDATE_BY="SYSTEM"
+                                   PROPERTY_KEY="folder"
+                                   PROPERTY_VALUE="C:\\hotfolder-out"
+                                   QIF_ADAPTER_ID="f9bd1632beb04e498f915a0975ae4832"/>
+    <qif_test.QIF_ADAPTER_PROPERTY ID="D11D75C1FEF64BF49D4CB0B7BA75287B" ACTIVE="Y" CREATE_BY="SYSTEM" LAST_UPDATE_BY="SYSTEM"
+                                   PROPERTY_KEY="append"
+                                   PROPERTY_VALUE="true"
+                                   QIF_ADAPTER_ID="f9bd1632beb04e498f915a0975ae4832"/>
 
 </dataset>

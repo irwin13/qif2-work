@@ -23,7 +23,7 @@
                           QIF_EVENT_ID="f9bd1632beb04e498f915a0975ae4831"/>
     <qif_test.QIF_EVENT_PROPERTY ID="C11D75C1FEF64BF49D4CB0B7BA75287E" ACTIVE="Y" CREATE_BY="SYSTEM" LAST_UPDATE_BY="SYSTEM"
                                  PROPERTY_KEY="delete_after_read"
-                                 PROPERTY_VALUE="true"
+                                 PROPERTY_VALUE="false"
                                  QIF_EVENT_ID="f9bd1632beb04e498f915a0975ae4831"/>
 
     <!-- ftp event -->
@@ -33,7 +33,7 @@
                         EVENT_TYPE="scheduler_interval"/>
     <qif_test.QIF_EVENT_PROPERTY ID="D11D75C1FEF64BF49D4CB0B7BA75287A" ACTIVE="Y" CREATE_BY="SYSTEM" LAST_UPDATE_BY="SYSTEM"
                                  PROPERTY_KEY="folder"
-                                 PROPERTY_VALUE=""
+                                 PROPERTY_VALUE="/folder1/"
                                  QIF_EVENT_ID="f9bd1632beb04e498f915a0975ae4832"/>
     <qif_test.QIF_EVENT_PROPERTY ID="D11D75C1FEF64BF49D4CB0B7BA75287B" ACTIVE="Y" CREATE_BY="SYSTEM" LAST_UPDATE_BY="SYSTEM"
                                  PROPERTY_KEY="end_with"
@@ -65,7 +65,7 @@
                                  QIF_EVENT_ID="f9bd1632beb04e498f915a0975ae4832"/>
     <qif_test.QIF_EVENT_PROPERTY ID="D11D75C1FEF64BF49D4CB0B7BA75287I" ACTIVE="Y" CREATE_BY="SYSTEM" LAST_UPDATE_BY="SYSTEM"
                                  PROPERTY_KEY="delete_after_read"
-                                 PROPERTY_VALUE="true"
+                                 PROPERTY_VALUE="false"
                                  QIF_EVENT_ID="f9bd1632beb04e498f915a0975ae4832"/>
 
 </dataset>

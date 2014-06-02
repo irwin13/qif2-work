@@ -19,9 +19,10 @@ public class FileJsonToFtp extends FileEventProcess {
     protected QifActivityResult implementProcess(Object processInput) {
         List<String> stringList = (List<String>) processInput;
 
-        QifActivityResult xmlResult = executeTask(GuiceFactory.getInjector(), JsonToXml.class, stringList.get(0));
-
-        executeTask(GuiceFactory.getInjector(), PutToFtp.class, xmlResult.getResult());
+        if (!stringList.isEmpty()) {
+            QifActivityResult xmlResult = executeTask(GuiceFactory.getInjector(), JsonToXml.class, stringList.get(0));
+            executeTask(GuiceFactory.getInjector(), PutToFtp.class, xmlResult.getResult());
+        }
 
         return new QifActivityResult(SUCCESS, null, null);
     }

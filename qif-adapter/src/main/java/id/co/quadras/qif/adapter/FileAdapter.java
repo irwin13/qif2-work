@@ -30,13 +30,15 @@ public class FileAdapter extends AbstractAdapter {
         } else {
             fullPath = fileName;
         }
+        boolean append = Boolean.valueOf(getPropertyValue(AdapterFile.APPEND.getName()));
 
         LOGGER.debug("fileName = {}", fileName);
         LOGGER.debug("fullPath = {}", fullPath);
         LOGGER.debug("content = {}", content);
+        LOGGER.debug("append = {}", append);
 
         try {
-            fileWriter = new FileWriter(fullPath);
+            fileWriter = new FileWriter(fullPath, append);
             fileWriter.write(content);
         } finally {
             if (fileWriter != null) {

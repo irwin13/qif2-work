@@ -4,7 +4,7 @@ import com.irwin13.winwork.basic.config.WinWorkConfig;
 import com.irwin13.winwork.basic.test.DbUnitCleanInsert;
 import id.co.quadras.qif.QifProcess;
 import id.co.quadras.qif.dev.guice.GuiceFactory;
-import id.co.quadras.qif.dev.process.FtpXmlToEmail;
+import id.co.quadras.qif.dev.process.FtpXmlToFile;
 import id.co.quadras.qif.dev.service.EventService;
 import id.co.quadras.qif.model.entity.QifEvent;
 import id.co.quadras.qif.model.vo.QifActivityResult;
@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * @author irwin Timestamp : 02/06/2014 14:28
  */
-public class FtpXmlToEmailTest extends DbUnitCleanInsert {
+public class FtpXmlToFileTest extends DbUnitCleanInsert {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FileJsonToFtpTest.class);
 
@@ -55,7 +55,7 @@ public class FtpXmlToEmailTest extends DbUnitCleanInsert {
 
     @Test
     public void runProcess() throws Exception {
-        QifProcess qifProcess = GuiceFactory.getInjector().getInstance(FtpXmlToEmail.class);
+        QifProcess qifProcess = GuiceFactory.getInjector().getInstance(FtpXmlToFile.class);
         EventService eventService = GuiceFactory.getInjector().getInstance(EventService.class);
         QifEvent qifEvent = eventService.selectById("f9bd1632beb04e498f915a0975ae4832");
         LOGGER.debug("qifEvent = {}", qifEvent);

@@ -5,8 +5,7 @@ package id.co.quadras.qif.model.vo.adapter;
  */
 public enum  AdapterFile {
 
-    FILE_NAME("file_name"),
-    OVERWRITE("overwrite"),
+    APPEND("append"),
     FOLDER("folder");
 
     private final String name;
