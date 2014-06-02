@@ -63,7 +63,9 @@ public class FtpAdapter extends AbstractAdapter {
     }
 
     public void disconnect() throws IOException {
-        ftpClient.logout();
-        ftpClient.disconnect();
+        if (ftpClient.isConnected()) {
+            ftpClient.logout();
+            ftpClient.disconnect();
+        }
     }
 }

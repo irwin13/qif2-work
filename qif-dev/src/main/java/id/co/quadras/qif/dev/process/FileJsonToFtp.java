@@ -8,6 +8,7 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @author irwin Timestamp : 25/05/2014 0:40
@@ -16,14 +17,9 @@ public class FileJsonToFtp extends FileEventProcess {
 
     @Override
     protected QifActivityResult implementProcess(Object processInput) {
-        File[] files = (File[]) processInput;
-        String json = null;
-        try {
-            json = FileUtils.readFileToString(files[0]);
-        } catch (IOException e) {
-            logger.error(e.getLocalizedMessage(), e);
-        }
-        QifActivityResult xmlResult = executeTask(GuiceFactory.getInjector(), JsonToXml.class, json);
+        List<String> stringList = (List<String>) processInput;
+
+        QifActivityResult xmlResult = executeTask(GuiceFactory.getInjector(), JsonToXml.class, stringList.get(0));
 
         executeTask(GuiceFactory.getInjector(), PutToFtp.class, xmlResult.getResult());
 

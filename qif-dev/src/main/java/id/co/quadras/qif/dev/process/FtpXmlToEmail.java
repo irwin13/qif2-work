@@ -2,7 +2,6 @@ package id.co.quadras.qif.dev.process;
 
 import id.co.quadras.qif.model.vo.QifActivityResult;
 
-import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 /**
@@ -12,9 +11,9 @@ public class FtpXmlToEmail extends FtpEventProcess {
 
     @Override
     protected QifActivityResult implementProcess(Object processInput) {
-        List<ByteArrayOutputStream> bosList = (List<ByteArrayOutputStream>) processInput;
-        for (ByteArrayOutputStream bos : bosList) {
-            logger.debug(bos.toString());
+        List<String> bosList = (List<String>) processInput;
+        for (String bos : bosList) {
+            logger.debug(bos);
         }
         return new QifActivityResult(SUCCESS, null, null);
     }

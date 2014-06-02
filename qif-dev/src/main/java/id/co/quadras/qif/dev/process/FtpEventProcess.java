@@ -26,8 +26,9 @@ public abstract class FtpEventProcess extends QifProcess {
         return getFiles(qifEvent);
     }
 
-    private List<ByteArrayOutputStream> getFiles(final QifEvent qifEvent) {
-        List<ByteArrayOutputStream> result = new LinkedList<ByteArrayOutputStream>();
+    private List<String> getFiles(final QifEvent qifEvent) {
+        List<String> result = new LinkedList<String>();
+
         String host = getPropertyValue(qifEvent, EventFtp.HOST.getName());
         int port = Integer.valueOf(getPropertyValue(qifEvent, EventFtp.PORT.getName()));
         String user = getPropertyValue(qifEvent, EventFtp.USER.getName());
@@ -36,9 +37,11 @@ public abstract class FtpEventProcess extends QifProcess {
         logger.debug("FTP port = {}", port);
         logger.debug("FTP user = {}", user);
 
+        String deleteAfterRead = getPropertyValue(qifEvent, EventFtp.DELETE_AFTER_READ.getName());
         String folderName = getPropertyValue(qifEvent, EventFtp.FOLDER.getName());
         final String endWith = getPropertyValue(qifEvent, EventFtp.END_WITH.getName());
         int maxFetch = Integer.valueOf(getPropertyValue(qifEvent, EventFtp.MAX_FETCH.getName()));
+        logger.debug("FTP deleteAfterRead = {}", deleteAfterRead);
         logger.debug("FTP folderName = {}", folderName);
         logger.debug("FTP endWith = {}", endWith);
         logger.debug("FTP maxFetch = {}", maxFetch);
@@ -78,14 +81,27 @@ public abstract class FtpEventProcess extends QifProcess {
                     ByteArrayOutputStream bos = new ByteArrayOutputStream();
                     ftpClient.retrieveFile(folderName + ftpFile.getName(), bos);
                     logger.debug("file content = {}", bos.toString());
-                    result.add(bos);
+                    result.add(bos.toString());
                     fileCounter++;
                     logger.debug("ftpFile fileCounter = {}", fileCounter);
+                    if (Boolean.valueOf(deleteAfterRead)) {
+                        ftpClient.deleteFile(folderName + ftpFile.getName());
+                        logger.debug("delete file after read {}", folderName + ftpFile.getName());
+                    }
                 }
             }
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
             throw new QifException("Error : " + e.getMessage());
+        } finally {
+            if (ftpClient.isConnected()) {
+                try {
+                    ftpClient.logout();
+                    ftpClient.disconnect();
+                } catch (IOException e) {
+                    logger.error(e.getLocalizedMessage(), e);
+                }
+            }
         }
         return result;
     }

@@ -21,6 +21,11 @@
                           PROPERTY_KEY="last_modified_interval_seconds"
                           PROPERTY_VALUE="3"
                           QIF_EVENT_ID="f9bd1632beb04e498f915a0975ae4831"/>
+    <qif_test.QIF_EVENT_PROPERTY ID="C11D75C1FEF64BF49D4CB0B7BA75287E" ACTIVE="Y" CREATE_BY="SYSTEM" LAST_UPDATE_BY="SYSTEM"
+                                 PROPERTY_KEY="delete_after_read"
+                                 PROPERTY_VALUE="true"
+                                 QIF_EVENT_ID="f9bd1632beb04e498f915a0975ae4831"/>
+
     <!-- ftp event -->
     <qif_test.QIF_EVENT ID="f9bd1632beb04e498f915a0975ae4832" ACTIVE="Y" CREATE_BY="SYSTEM" LAST_UPDATE_BY="SYSTEM"
                         NAME="FtpIrwinEvent"
@@ -57,6 +62,10 @@
     <qif_test.QIF_EVENT_PROPERTY ID="D11D75C1FEF64BF49D4CB0B7BA75287H" ACTIVE="Y" CREATE_BY="SYSTEM" LAST_UPDATE_BY="SYSTEM"
                                  PROPERTY_KEY="password"
                                  PROPERTY_VALUE="irwin"
+                                 QIF_EVENT_ID="f9bd1632beb04e498f915a0975ae4832"/>
+    <qif_test.QIF_EVENT_PROPERTY ID="D11D75C1FEF64BF49D4CB0B7BA75287I" ACTIVE="Y" CREATE_BY="SYSTEM" LAST_UPDATE_BY="SYSTEM"
+                                 PROPERTY_KEY="delete_after_read"
+                                 PROPERTY_VALUE="true"
                                  QIF_EVENT_ID="f9bd1632beb04e498f915a0975ae4832"/>
 
 </dataset>
