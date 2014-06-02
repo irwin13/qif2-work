@@ -8,6 +8,7 @@ import id.co.quadras.qif.exception.QifException;
 import id.co.quadras.qif.model.entity.QifEvent;
 import id.co.quadras.qif.model.entity.QifEventProperty;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -34,5 +35,16 @@ public class EventServiceImp implements EventService {
             qifEvent.setQifEventPropertyList(propertyList);
         }
         return qifEvent;
+    }
+
+    @Override
+    public List<QifEvent> select(QifEvent filter) {
+        List<QifEvent> result = new LinkedList<QifEvent>();
+        List<QifEvent> list = eventDao.select(filter);
+        for (QifEvent qifEvent : list) {
+            QifEvent event = selectById(qifEvent.getId());
+            result.add(event);
+        }
+        return result;
     }
 }

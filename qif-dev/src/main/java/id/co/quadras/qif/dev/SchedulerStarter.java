@@ -63,7 +63,7 @@ public final class SchedulerStarter {
             TriggerKey triggerKey = schedulerManager.createTriggerKey(qifEvent.getId());
             Trigger trigger = null;
 
-            if (EventType.SCHEDULER_INTERVAL.getName().equalsIgnoreCase(qifEvent.getEventInterface())) {
+            if (EventType.SCHEDULER_INTERVAL.getName().equalsIgnoreCase(qifEvent.getEventType())) {
                 QifEventProperty intervalProperty = QifUtil.getEventProperty(qifEvent,
                         SchedulerInterval.INTERVAL.getName());
                 if (intervalProperty != null) {
@@ -74,7 +74,7 @@ public final class SchedulerStarter {
                     LOGGER.error("FATAL : Missing QifEvent Property with property key = 'interval' for QifEvent {}",
                             qifEvent.getName());
                 }
-            } else if (EventType.SCHEDULER_CRON.getName().equalsIgnoreCase(qifEvent.getEventInterface())) {
+            } else if (EventType.SCHEDULER_CRON.getName().equalsIgnoreCase(qifEvent.getEventType())) {
                 QifEventProperty cronProperty = QifUtil.getEventProperty(qifEvent,
                         SchedulerCron.CRON_EXPRESSION.getName());
                 if (cronProperty != null) {
@@ -87,7 +87,7 @@ public final class SchedulerStarter {
                             qifEvent.getName());
                 }
             } else {
-            throw new QifException("FATAL : Property listenerInterface on QifEvent " + qifEvent.getName()
+            throw new QifException("FATAL : Property eventType on QifEvent " + qifEvent.getName()
                         + " is not scheduler_interval or scheduler_cron");
             }
 

@@ -4,6 +4,7 @@ import com.irwin13.winwork.basic.scheduler.BasicSchedulerManager;
 import com.irwin13.winwork.basic.utilities.WinWorkUtil;
 import id.co.quadras.qif.dev.dao.EventDao;
 import id.co.quadras.qif.dev.guice.GuiceFactory;
+import id.co.quadras.qif.dev.service.EventService;
 import id.co.quadras.qif.model.entity.QifEvent;
 import id.co.quadras.qif.model.vo.event.EventType;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -34,16 +35,16 @@ public class QifDevContextListener implements ServletContextListener {
         LOGGER.info("nodeName = {}", nodeName);
         MDC.put("nodeName", WinWorkUtil.getNodeName());
 
-        EventDao eventDao = GuiceFactory.getInjector().getInstance(EventDao.class);
+        EventService eventService = GuiceFactory.getInjector().getInstance(EventService.class);
         SchedulerStarter schedulerStarter = GuiceFactory.getInjector().getInstance(SchedulerStarter.class);
 
         QifEvent filterInterval = new QifEvent();
         filterInterval.setEventType(EventType.SCHEDULER_INTERVAL.getName());
-        List<QifEvent> eventIntervalList = eventDao.select(filterInterval);
+        List<QifEvent> eventIntervalList = eventService.select(filterInterval);
 
         QifEvent filterCron = new QifEvent();
         filterCron.setEventType(EventType.SCHEDULER_CRON.getName());
-        List<QifEvent> eventCronList = eventDao.select(filterCron);
+        List<QifEvent> eventCronList = eventService.select(filterCron);
 
         try {
             schedulerStarter.startEvent(eventIntervalList);
