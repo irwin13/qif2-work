@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
     <!-- FTP adapter -->
-    <qif_test.QIF_ADAPTER ID="f9bd1632beb04e498f915a0975ae4831" ACTIVE="Y" CREATE_BY="SYSTEM" LAST_UPDATE_BY="SYSTEM"
-                 NAME="IrwinFtp"
-                 ADAPTER_INTERFACE="FTP"/>
-    <qif_test.QIF_ADAPTER_PROPERTY ID="C11D75C1FEF64BF49D4CB0B7BA75287A" ACTIVE="Y" CREATE_BY="SYSTEM" LAST_UPDATE_BY="SYSTEM"
-                          PROPERTY_KEY="host"
-                          PROPERTY_VALUE="localhost"
-                          QIF_ADAPTER_ID="f9bd1632beb04e498f915a0975ae4831"/>
-    <qif_test.QIF_ADAPTER_PROPERTY ID="C11D75C1FEF64BF49D4CB0B7BA75287B" ACTIVE="Y" CREATE_BY="SYSTEM" LAST_UPDATE_BY="SYSTEM"
-                          PROPERTY_KEY="port"
-                          PROPERTY_VALUE="21"
-                          QIF_ADAPTER_ID="f9bd1632beb04e498f915a0975ae4831"/>
-    <qif_test.QIF_ADAPTER_PROPERTY ID="C11D75C1FEF64BF49D4CB0B7BA75287C" ACTIVE="Y" CREATE_BY="SYSTEM" LAST_UPDATE_BY="SYSTEM"
-                          PROPERTY_KEY="user"
-                          PROPERTY_VALUE="irwin"
-                          QIF_ADAPTER_ID="f9bd1632beb04e498f915a0975ae4831"/>
-    <qif_test.QIF_ADAPTER_PROPERTY ID="C11D75C1FEF64BF49D4CB0B7BA75287D" ACTIVE="Y" CREATE_BY="SYSTEM" LAST_UPDATE_BY="SYSTEM"
-                          PROPERTY_KEY="password"
-                          PROPERTY_VALUE="irwin"
-                          QIF_ADAPTER_ID="f9bd1632beb04e498f915a0975ae4831"/>
+    <qif_adapter id="f9bd1632beb04e498f915a0975ae4831" active="Y" create_by="SYSTEM" last_update_by="SYSTEM"
+                 name="IrwinFtp"
+                 adapter_interface="FTP"/>
+    <qif_adapter_property id="C11D75C1FEF64BF49D4CB0B7BA75287A" active="Y" create_by="SYSTEM" last_update_by="SYSTEM"
+                          property_key="host"
+                          property_value="localhost"
+                          qif_adapter_id="f9bd1632beb04e498f915a0975ae4831"/>
+    <qif_adapter_property id="C11D75C1FEF64BF49D4CB0B7BA75287B" active="Y" create_by="SYSTEM" last_update_by="SYSTEM"
+                          property_key="port"
+                          property_value="21"
+                          qif_adapter_id="f9bd1632beb04e498f915a0975ae4831"/>
+    <qif_adapter_property id="C11D75C1FEF64BF49D4CB0B7BA75287C" active="Y" create_by="SYSTEM" last_update_by="SYSTEM"
+                          property_key="user"
+                          property_value="irwin"
+                          qif_adapter_id="f9bd1632beb04e498f915a0975ae4831"/>
+    <qif_adapter_property id="C11D75C1FEF64BF49D4CB0B7BA75287D" active="Y" create_by="SYSTEM" last_update_by="SYSTEM"
+                          property_key="password"
+                          property_value="irwin"
+                          qif_adapter_id="f9bd1632beb04e498f915a0975ae4831"/>
 
     <!-- File adapter -->
-    <qif_test.QIF_ADAPTER ID="f9bd1632beb04e498f915a0975ae4832" ACTIVE="Y" CREATE_BY="SYSTEM" LAST_UPDATE_BY="SYSTEM"
-                          NAME="IrwinFile"
-                          ADAPTER_INTERFACE="FILE"/>
-    <qif_test.QIF_ADAPTER_PROPERTY ID="D11D75C1FEF64BF49D4CB0B7BA75287A" ACTIVE="Y" CREATE_BY="SYSTEM" LAST_UPDATE_BY="SYSTEM"
-                                   PROPERTY_KEY="folder"
-                                   PROPERTY_VALUE="C:\\hotfolder-out"
-                                   QIF_ADAPTER_ID="f9bd1632beb04e498f915a0975ae4832"/>
-    <qif_test.QIF_ADAPTER_PROPERTY ID="D11D75C1FEF64BF49D4CB0B7BA75287B" ACTIVE="Y" CREATE_BY="SYSTEM" LAST_UPDATE_BY="SYSTEM"
-                                   PROPERTY_KEY="append"
-                                   PROPERTY_VALUE="true"
-                                   QIF_ADAPTER_ID="f9bd1632beb04e498f915a0975ae4832"/>
+    <qif_adapter id="f9bd1632beb04e498f915a0975ae4832" active="Y" create_by="SYSTEM" last_update_by="SYSTEM"
+                          name="IrwinFile"
+                          adapter_interface="FILE"/>
+    <qif_adapter_property id="D11D75C1FEF64BF49D4CB0B7BA75287A" active="Y" create_by="SYSTEM" last_update_by="SYSTEM"
+                                   property_key="folder"
+                                   property_value="C:\\hotfolder-out"
+                                   qif_adapter_id="f9bd1632beb04e498f915a0975ae4832"/>
+    <qif_adapter_property id="D11D75C1FEF64BF49D4CB0B7BA75287B" active="Y" create_by="SYSTEM" last_update_by="SYSTEM"
+                                   property_key="append"
+                                   property_value="true"
+                                   qif_adapter_id="f9bd1632beb04e498f915a0975ae4832"/>
 
 </dataset>

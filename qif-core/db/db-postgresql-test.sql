@@ -53,7 +53,7 @@ CREATE TABLE qif_test.QIF_EVENT_PROPERTY
   property_key character varying(500),
   property_value character varying(500),
   description character varying(500),
-  qif_event CHAR(32),
+  qif_event_id CHAR(32),
   CONSTRAINT pk_event_prop PRIMARY KEY (id)
 );
 
@@ -82,7 +82,7 @@ CREATE TABLE qif_test.QIF_ADAPTER_PROPERTY
   property_key character varying(500),
   property_value character varying(500),
   description character varying(500),
-  qif_adapter CHAR(32),
+  qif_adapter_id CHAR(32),
   CONSTRAINT pk_adapter_prop PRIMARY KEY (id)
 );
 
