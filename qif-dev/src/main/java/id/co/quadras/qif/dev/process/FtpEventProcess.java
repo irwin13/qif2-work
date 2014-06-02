@@ -79,7 +79,6 @@ public abstract class FtpEventProcess extends QifProcess {
                     ftpClient.retrieveFile(folderName + ftpFile.getName(), bos);
                     logger.debug("file content = {}", bos.toString());
                     result.add(bos);
-                    bos.flush();
                     fileCounter++;
                     logger.debug("ftpFile fileCounter = {}", fileCounter);
                 }
