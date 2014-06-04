@@ -25,6 +25,7 @@ import java.util.Map;
  */
 public abstract class QifProcess implements QifActivity {
 
+    public static final String NOT_ACTIVE = "not_active";
     public static final String TYPE = "process";
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -66,12 +67,17 @@ public abstract class QifProcess implements QifActivity {
     protected abstract QifActivityResult implementProcess(Object processInput);
 
     public QifActivityResult executeProcess(QifEvent qifEvent, Object inputMessage, QifActivityLog parentProcessLog) {
-        Object processInput = receiveEvent(qifEvent, inputMessage);
-        qifEventLog = insertEventLog(qifEvent, inputMessage);
-        processLog = insertProcessLog(qifEventLog, inputMessage, parentProcessLog);
-        QifActivityResult qifActivityResult = implementProcess(processInput);
-        updateProcessLog(qifEventLog, qifActivityResult);
-        return qifActivityResult;
+        if (qifEvent.getActiveAcceptMessage() != null && qifEvent.getActiveAcceptMessage()) {
+            Object processInput = receiveEvent(qifEvent, inputMessage);
+            qifEventLog = insertEventLog(qifEvent, inputMessage);
+            processLog = insertProcessLog(qifEventLog, inputMessage, parentProcessLog);
+            QifActivityResult qifActivityResult = implementProcess(processInput);
+            updateProcessLog(qifEventLog, qifActivityResult);
+            return qifActivityResult;
+        } else {
+            return new QifActivityResult(SUCCESS, NOT_ACTIVE, null);
+        }
+
     }
 
     private QifActivityLog insertProcessLog(QifEventLog qifEventLog, Object inputMessage,

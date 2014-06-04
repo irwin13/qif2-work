@@ -5,6 +5,7 @@ delete from qif_activity_log_output_msg;
 
 delete from qif_event_log;
 delete from qif_event_log_msg;
+delete from qif_counter;
 
 select * from qif_activity_log;
 select * from qif_activity_log_data;

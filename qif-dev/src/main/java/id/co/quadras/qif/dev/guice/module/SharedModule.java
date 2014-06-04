@@ -15,8 +15,8 @@ import id.co.quadras.qif.dev.QifConfig;
 import id.co.quadras.qif.dev.SchedulerStarter;
 import id.co.quadras.qif.dev.guice.JsonMapperProvider;
 import id.co.quadras.qif.helper.JsonParser;
-import id.co.quadras.qif.helper.QifCounter;
-import id.co.quadras.qif.helper.imp.QifCounterGuava;
+import id.co.quadras.qif.helper.QifTransactionCounter;
+import id.co.quadras.qif.helper.imp.QifTransactionCounterGuava;
 import id.co.quadras.qif.helper.queue.*;
 import id.co.quadras.qif.helper.queue.imp.*;
 import id.co.quadras.qif.helper.queue.reader.*;
@@ -56,7 +56,7 @@ public class SharedModule extends AbstractModule {
         bind(SchedulerStarter.class);
 
         // counter
-        bind(QifCounter.class).to(QifCounterGuava.class);
+        bind(QifTransactionCounter.class).to(QifTransactionCounterGuava.class);
 
         // queue
         bind(EventLogQueue.class).to(EventLogQueueImp.class);

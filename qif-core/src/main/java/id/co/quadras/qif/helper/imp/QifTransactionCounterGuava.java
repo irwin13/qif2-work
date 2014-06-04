@@ -1,16 +1,16 @@
 package id.co.quadras.qif.helper.imp;
 
 import com.google.common.collect.ConcurrentHashMultiset;
-import id.co.quadras.qif.helper.QifCounter;
+import id.co.quadras.qif.helper.QifTransactionCounter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * @author irwin Timestamp : 29/04/2014 16:04
  */
-public final class QifCounterGuava implements QifCounter {
+public final class QifTransactionCounterGuava implements QifTransactionCounter {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(QifCounterGuava.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(QifTransactionCounterGuava.class);
     private static final ConcurrentHashMultiset<String> MULTISET = ConcurrentHashMultiset.create();
 
     @Override

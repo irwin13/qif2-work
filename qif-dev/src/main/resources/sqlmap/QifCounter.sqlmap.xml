@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="sqlmap.id.co.quadras.qif.model.entity.QifCounter">
+
+    <resultMap id="QifCounterResult" type="QifCounter">
+        <result property="id" column="id"/>
+        <result property="active" column="active"
+                typeHandler="com.irwin13.winwork.mybatis.typehandler.YesNoBooleanTypeHandler"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createDate" column="create_date"/>
+        <result property="lastUpdateBy" column="last_update_by"/>
+        <result property="lastUpdateDate" column="last_update_date"/>
+
+        <result property="sequenceKey" column="sequence_key"/>
+        <result property="lastSequence" column="last_sequence"/>
+
+    </resultMap>
+
+    <sql id="allField">
+        id,
+
+        sequence_key,
+        last_sequence,
+
+        active,
+        create_by,
+        create_date,
+        last_update_by,
+        last_update_date
+    </sql>
+
+    <sql id="defaultWhere">
+        WHERE active = 'Y'
+        <if test="sequenceKey != null">
+            AND sequence_key = #{sequenceKey}
+        </if>
+        <if test="lastSequence != null">
+            AND last_sequence = #{lastSequence}
+        </if>
+
+        <if test="columnName != null and columnName != '' and sortMethod != null and sortMethod != ''">
+            ORDER BY ${columnName} ${sortMethod}
+        </if>
+    </sql>
+
+    <sql id="defaultSearch">
+        WHERE active = 'Y'
+        <if test="searchKeyword != null and searchKeyword != ''">
+            AND (
+            lower(sequence_key) LIKE #{searchKeyword}
+            )
+        </if>
+        <if test="columnName != null and columnName != '' and sortMethod != null and sortMethod != ''">
+            ORDER BY ${columnName} ${sortMethod}
+        </if>
+    </sql>
+
+    <select id="select" resultMap="QifCounterResult">
+        SELECT
+        <include refid="allField" />
+        FROM qif_counter
+        <include refid="defaultWhere" />
+    </select>
+
+    <select id="selectCount" resultType="_long">
+        SELECT count(id) AS total
+        FROM qif_counter
+        <include refid="defaultWhere" />
+    </select>
+
+    <select id="selectSearch" parameterType="SearchParameter" resultMap="QifCounterResult">
+        SELECT
+        <include refid="allField" />
+        FROM qif_counter
+        <include refid="defaultSearch" />
+    </select>
+
+    <select id="selectSearchCount" parameterType="SearchParameter" resultType="_long">
+        SELECT count(id) AS total
+        FROM qif_counter
+        <include refid="defaultSearch" />
+    </select>
+
+    <select id="selectById" resultMap="QifCounterResult">
+        SELECT
+        <include refid="allField" />
+        FROM qif_counter
+        WHERE id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="QifCounter">
+        INSERT INTO qif_counter
+        (
+        id, active, create_by, create_date, last_update_by, last_update_date,
+        sequence_key, last_sequence
+        )
+        VALUES
+        (
+        #{id}, #{active, typeHandler=com.irwin13.winwork.mybatis.typehandler.YesNoBooleanTypeHandler},
+        #{createBy}, #{createDate}, #{lastUpdateBy}, #{lastUpdateDate},
+        #{sequenceKey}, #{lastSequence}
+        )
+    </insert>
+
+    <update id="update" parameterType="QifCounter">
+        UPDATE qif_counter SET
+
+        sequence_key = #{sequenceKey},
+        last_sequence = #{lastSequence},
+
+        active = #{active, typeHandler=com.irwin13.winwork.mybatis.typehandler.YesNoBooleanTypeHandler},
+        last_update_by = #{lastUpdateBy},
+        last_update_date = #{lastUpdateDate}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="QifCounter">
+        DELETE FROM qif_counter WHERE id = #{id}
+    </delete>
+
+    <update id="updateIncrementSequence" parameterType="QifCounter">
+        UPDATE qif_counter SET
+        last_sequence = (SELECT last_sequence FROM qif_counter WHERE sequence_key = #{sequenceKey}) + 1,
+        last_update_by = #{lastUpdateBy},
+        last_update_date = #{lastUpdateDate}
+        WHERE sequence_key = #{sequenceKey}
+    </update>
+
+</mapper>

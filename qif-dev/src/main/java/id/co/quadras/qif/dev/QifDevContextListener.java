@@ -55,6 +55,11 @@ public class QifDevContextListener implements ServletContextListener {
 
         schedulerStarter.startInternalScheduler();
 
+        // TODO
+        // insert QifCounter by process, by task, by date for the next day
+        // if today date is 01-01-2013 then insert data for 02-01-2013
+        // ex : processA_02-01-2013
+        // taskA_02-01-2013
         LOGGER.info("=================================== Starting QifDevContextListener complete ===============================");
     }
 

@@ -1,8 +1,8 @@
 package id.co.quadras.qif;
 
 import com.google.inject.AbstractModule;
-import id.co.quadras.qif.helper.QifCounter;
-import id.co.quadras.qif.helper.imp.QifCounterGuava;
+import id.co.quadras.qif.helper.QifTransactionCounter;
+import id.co.quadras.qif.helper.imp.QifTransactionCounterGuava;
 import id.co.quadras.qif.helper.queue.*;
 import id.co.quadras.qif.helper.queue.imp.*;
 import id.co.quadras.qif.helper.queue.reader.*;
@@ -16,7 +16,7 @@ public class HelperModule extends AbstractModule {
     @Override
     protected void configure() {
         // counter
-        bind(QifCounter.class).to(QifCounterGuava.class);
+        bind(QifTransactionCounter.class).to(QifTransactionCounterGuava.class);
 
         // queue
         bind(ActivityLogQueue.class).to(ActivityLogQueueImp.class);

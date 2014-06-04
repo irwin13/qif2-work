@@ -3,8 +3,10 @@ package id.co.quadras.qif.dev.guice.module;
 import com.google.inject.AbstractModule;
 import id.co.quadras.qif.dev.job.timertask.*;
 import id.co.quadras.qif.dev.service.AdapterService;
+import id.co.quadras.qif.dev.service.CounterService;
 import id.co.quadras.qif.dev.service.EventService;
 import id.co.quadras.qif.dev.service.imp.AdapterServiceImp;
+import id.co.quadras.qif.dev.service.imp.CounterServiceImp;
 import id.co.quadras.qif.dev.service.imp.EventServiceImp;
 import id.co.quadras.qif.dev.service.log.*;
 import id.co.quadras.qif.dev.service.log.imp.*;
@@ -38,5 +40,8 @@ public class ServiceModule extends AbstractModule {
 
         bind(EventLogPersist.class);
         bind(EventLogMessagePersist.class);
+
+        bind(CounterService.class).to(CounterServiceImp.class);
+
     }
 }

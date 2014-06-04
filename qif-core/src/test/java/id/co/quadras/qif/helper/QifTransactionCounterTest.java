@@ -7,9 +7,9 @@ import org.junit.Test;
 /**
  * @author irwin Timestamp : 05/05/2014 15:45
  */
-public class QifCounterTest {
+public class QifTransactionCounterTest {
 
-    final QifCounter qifCounter = GuiceQif.getInjector().getInstance(QifCounter.class);
+    final QifTransactionCounter qifTransactionCounter = GuiceQif.getInjector().getInstance(QifTransactionCounter.class);
 
     final String even = "even";
     final String odd = "odd";
@@ -23,14 +23,14 @@ public class QifCounterTest {
                 thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        qifCounter.add(even);
+                        qifTransactionCounter.add(even);
                     }
                 });
             } else {
                 thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        qifCounter.add(odd);
+                        qifTransactionCounter.add(odd);
                     }
                 });
             }
@@ -40,17 +40,17 @@ public class QifCounterTest {
         // give 1 second for thread to complete it's mission
         Thread.sleep(1000);
 
-        Assert.assertEquals(loopCount / 2, qifCounter.get(even));
-        Assert.assertEquals(loopCount / 2, qifCounter.get(odd));
+        Assert.assertEquals(loopCount / 2, qifTransactionCounter.get(even));
+        Assert.assertEquals(loopCount / 2, qifTransactionCounter.get(odd));
     }
 
     @Test
     public void testReset() {
-        QifCounter qifCounter = GuiceQif.getInjector().getInstance(QifCounter.class);
-        Assert.assertEquals(loopCount / 2, qifCounter.get(even));
+        QifTransactionCounter qifTransactionCounter = GuiceQif.getInjector().getInstance(QifTransactionCounter.class);
+        Assert.assertEquals(loopCount / 2, qifTransactionCounter.get(even));
 
-        qifCounter.reset(even, 0);
-        Assert.assertEquals(0, qifCounter.get(even));
+        qifTransactionCounter.reset(even, 0);
+        Assert.assertEquals(0, qifTransactionCounter.get(even));
     }
 
 }

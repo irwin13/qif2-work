@@ -46,6 +46,8 @@
         <typeAlias alias="QifAdapter" type="id.co.quadras.qif.model.entity.QifAdapter" />
         <typeAlias alias="QifAdapterProperty" type="id.co.quadras.qif.model.entity.QifAdapterProperty" />
 
+        <typeAlias alias="QifCounter" type="id.co.quadras.qif.model.entity.QifCounter" />
+
     </typeAliases>
 
     <environments default="qif">
@@ -104,5 +106,7 @@
 
         <mapper resource="sqlmap/log/QifEventLog.sqlmap.xml"/>
         <mapper resource="sqlmap/log/QifEventLogMsg.sqlmap.xml"/>
+
+        <mapper resource="sqlmap/log/QifCounter.sqlmap.xml"/>
     </mappers>
 </configuration>

@@ -2,14 +2,8 @@ package id.co.quadras.qif.dev.guice.module;
 
 import com.google.inject.AbstractModule;
 import com.irwin13.winwork.mybatis.guice.provider.SqlSessionFactoryProvider;
-import id.co.quadras.qif.dev.dao.AdapterDao;
-import id.co.quadras.qif.dev.dao.AdapterPropertyDao;
-import id.co.quadras.qif.dev.dao.EventDao;
-import id.co.quadras.qif.dev.dao.EventPropertyDao;
-import id.co.quadras.qif.dev.dao.imp.AdapterDaoImp;
-import id.co.quadras.qif.dev.dao.imp.AdapterPropertyDaoImp;
-import id.co.quadras.qif.dev.dao.imp.EventDaoImp;
-import id.co.quadras.qif.dev.dao.imp.EventPropertyDaoImp;
+import id.co.quadras.qif.dev.dao.*;
+import id.co.quadras.qif.dev.dao.imp.*;
 import id.co.quadras.qif.dev.dao.log.*;
 import id.co.quadras.qif.dev.dao.log.imp.*;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -41,5 +35,6 @@ public class DaoModule extends AbstractModule {
         bind(AdapterDao.class).to(AdapterDaoImp.class);
         bind(AdapterPropertyDao.class).to(AdapterPropertyDaoImp.class);
 
+        bind(CounterDao.class).to(CounterDaoImp.class);
     }
 }
