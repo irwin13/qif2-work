@@ -26,3 +26,7 @@ target/
 # Classes or build folder
 classes/
 bin/
+
+# Gradle files
+.gradle
+.gradle/
