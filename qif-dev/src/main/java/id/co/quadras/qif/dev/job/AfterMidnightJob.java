@@ -12,5 +12,8 @@ public class AfterMidnightJob implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
 
+        // TODO
+        // when change day or after 00:00, do clean log data
+
     }
 }

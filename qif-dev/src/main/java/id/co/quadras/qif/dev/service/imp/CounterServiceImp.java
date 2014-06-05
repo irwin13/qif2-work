@@ -1,11 +1,10 @@
 package id.co.quadras.qif.dev.service.imp;
 
 import com.google.inject.Inject;
+import id.co.quadras.qif.core.model.entity.QifCounter;
 import id.co.quadras.qif.dev.dao.CounterDao;
 import id.co.quadras.qif.dev.service.CounterService;
-import id.co.quadras.qif.core.model.entity.QifCounter;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,12 +20,8 @@ public class CounterServiceImp implements CounterService {
     }
 
     @Override
-    public void incrementCounter(String sequenceKey, String updateBy) {
-        QifCounter qifCounter = new QifCounter();
-        qifCounter.setSequenceKey(sequenceKey);
-        qifCounter.setLastUpdateBy(updateBy);
-        qifCounter.setLastUpdateDate(new Date());
-        counterDao.incrementCounter(qifCounter);
+    public void incrementCounter(List<QifCounter> qifCounterList) {
+        counterDao.incrementCounter(qifCounterList);
     }
 
     @Override

@@ -123,7 +123,7 @@
 
     <update id="updateIncrementSequence" parameterType="QifCounter">
         UPDATE qif_counter SET
-        last_sequence = (SELECT last_sequence FROM qif_counter WHERE sequence_key = #{sequenceKey}) + 1,
+        last_sequence = (SELECT last_sequence FROM qif_counter WHERE sequence_key = #{sequenceKey}) + #{lastSequence},
         last_update_by = #{lastUpdateBy},
         last_update_date = #{lastUpdateDate}
         WHERE sequence_key = #{sequenceKey}

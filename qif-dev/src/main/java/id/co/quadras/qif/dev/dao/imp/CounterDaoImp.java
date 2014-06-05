@@ -1,11 +1,15 @@
 package id.co.quadras.qif.dev.dao.imp;
 
+import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 import com.irwin13.winwork.mybatis.dao.BasicMyBatisDao;
-import id.co.quadras.qif.dev.dao.CounterDao;
 import id.co.quadras.qif.core.model.entity.QifCounter;
+import id.co.quadras.qif.dev.dao.CounterDao;
+import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -14,6 +18,9 @@ import java.util.List;
  */
 public class CounterDaoImp implements CounterDao {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(CounterDaoImp.class);
+
+    private static final String UPDATE_INCREMENT = ".updateIncrementSequence";
     private final SqlSessionFactory sqlSessionFactory;
     private final BasicMyBatisDao<QifCounter, String> basicDao;
 
@@ -24,9 +31,19 @@ public class CounterDaoImp implements CounterDao {
     }
 
     @Override
-    public void incrementCounter(QifCounter qifCounter) {
-        SqlSession sqlSession = basicDao.openNewSqlSession();
-        sqlSession.update(basicDao.getMapperName() + ".updateIncrementSequence", qifCounter);
+    public void incrementCounter(List<QifCounter> qifCounterList) {
+
+        Preconditions.checkNotNull(qifCounterList);
+        SqlSession session = sqlSessionFactory.openSession(ExecutorType.BATCH);
+        try {
+            for (QifCounter model : qifCounterList) {
+                session.update(basicDao.getMapperName() + UPDATE_INCREMENT, model);
+                LOGGER.trace("batch update increment = {}", model);
+            }
+            session.commit();
+        } finally {
+            basicDao.closeSqlSession(session);
+        }
     }
 
     @Override

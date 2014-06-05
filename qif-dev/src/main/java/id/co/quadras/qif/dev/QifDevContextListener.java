@@ -34,6 +34,7 @@ public class QifDevContextListener implements ServletContextListener {
         LOGGER.info("nodeName = {}", nodeName);
         MDC.put("nodeName", WinWorkUtil.getNodeName());
 
+        LOGGER.info("=== Starting Scheduler QifEvent ... ===");
         EventService eventService = GuiceFactory.getInjector().getInstance(EventService.class);
         SchedulerStarter schedulerStarter = GuiceFactory.getInjector().getInstance(SchedulerStarter.class);
 
@@ -51,14 +52,11 @@ public class QifDevContextListener implements ServletContextListener {
         } catch (SchedulerException e) {
             LOGGER.error(e.getLocalizedMessage(), e);
         }
+        LOGGER.info("=== Starting Scheduler QifEvent complete ===");
 
+        LOGGER.info("=== Starting Internal Scheduler ... ===");
         schedulerStarter.startInternalScheduler();
-
-        // TODO
-        // insert QifCounter by process, by task, by date for the next day
-        // if today date is 01-01-2013 then insert data for 02-01-2013
-        // ex : processA_02-01-2013
-        // taskA_02-01-2013
+        LOGGER.info("=== Starting Internal Scheduler complete ===");
 
         LOGGER.info("=================================== Starting QifDevContextListener complete ===============================");
     }
@@ -68,16 +66,20 @@ public class QifDevContextListener implements ServletContextListener {
         LOGGER.info("================================================================================================");
         LOGGER.info("=================================== Shutdown QifDevContextListener ===============================");
 
+        LOGGER.info("=== Shutdown Quartz scheduler ... ===");
         BasicSchedulerManager schedulerManager = GuiceFactory.getInjector().getInstance(BasicSchedulerManager.class);
         try {
             schedulerManager.shutdown(true);
         } catch (SchedulerException e) {
             LOGGER.error(e.getLocalizedMessage(), e);
         }
+        LOGGER.info("=== Shutdown Quartz scheduler complete ===");
 
+        LOGGER.info("=== Shutdown MyBatis ... ===");
         SqlSessionFactory sqlSessionFactory = GuiceFactory.getInjector().getInstance(SqlSessionFactory.class);
         DataSource dataSource = (DataSource) sqlSessionFactory.getConfiguration().getEnvironment().getDataSource();
         dataSource.close(true); // close all
+        LOGGER.info("=== Shutdown MyBatis complete ===");
 
         LOGGER.info("=================================== Shutdown QifDevContextListener complete ===============================");
 

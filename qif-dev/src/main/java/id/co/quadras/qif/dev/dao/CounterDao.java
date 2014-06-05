@@ -8,6 +8,6 @@ import java.util.List;
  * @author irwin Timestamp : 04/06/2014 18:57
  */
 public interface CounterDao {
-    public void incrementCounter(QifCounter qifCounter);
+    public void incrementCounter(List<QifCounter> qifCounterList);
     public void batchInsert(List<QifCounter> qifCounterList);
 }
