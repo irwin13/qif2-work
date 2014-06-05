@@ -1,9 +1,9 @@
 package id.co.quadras.qif.dev.task;
 
-import id.co.quadras.qif.QifTaskMessage;
+import id.co.quadras.qif.core.QifTaskMessage;
 import id.co.quadras.qif.adapter.FileAdapter;
-import id.co.quadras.qif.model.entity.QifAdapter;
-import id.co.quadras.qif.model.vo.QifActivityResult;
+import id.co.quadras.qif.core.model.entity.QifAdapter;
+import id.co.quadras.qif.core.model.vo.QifActivityResult;
 
 import java.io.IOException;
 import java.util.List;

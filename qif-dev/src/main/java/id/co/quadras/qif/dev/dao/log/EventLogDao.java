@@ -1,6 +1,6 @@
 package id.co.quadras.qif.dev.dao.log;
 
-import id.co.quadras.qif.model.entity.log.QifEventLog;
+import id.co.quadras.qif.core.model.entity.log.QifEventLog;
 
 import java.util.List;
 

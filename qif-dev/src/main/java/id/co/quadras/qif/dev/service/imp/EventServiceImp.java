@@ -4,9 +4,9 @@ import com.google.inject.Inject;
 import id.co.quadras.qif.dev.dao.EventDao;
 import id.co.quadras.qif.dev.dao.EventPropertyDao;
 import id.co.quadras.qif.dev.service.EventService;
-import id.co.quadras.qif.exception.QifException;
-import id.co.quadras.qif.model.entity.QifEvent;
-import id.co.quadras.qif.model.entity.QifEventProperty;
+import id.co.quadras.qif.core.exception.QifException;
+import id.co.quadras.qif.core.model.entity.QifEvent;
+import id.co.quadras.qif.core.model.entity.QifEventProperty;
 
 import java.util.LinkedList;
 import java.util.List;

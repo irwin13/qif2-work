@@ -3,7 +3,7 @@ package id.co.quadras.qif.dev.service.imp;
 import com.google.inject.Inject;
 import id.co.quadras.qif.dev.dao.CounterDao;
 import id.co.quadras.qif.dev.service.CounterService;
-import id.co.quadras.qif.model.entity.QifCounter;
+import id.co.quadras.qif.core.model.entity.QifCounter;
 
 import java.util.Date;
 import java.util.List;

@@ -1,12 +1,12 @@
 package id.co.quadras.qif;
 
 import com.google.inject.AbstractModule;
-import id.co.quadras.qif.helper.QifTransactionCounter;
-import id.co.quadras.qif.helper.imp.QifTransactionCounterGuava;
-import id.co.quadras.qif.helper.queue.*;
-import id.co.quadras.qif.helper.queue.imp.*;
-import id.co.quadras.qif.helper.queue.reader.*;
-import id.co.quadras.qif.helper.queue.reader.imp.*;
+import id.co.quadras.qif.core.helper.QifTransactionCounter;
+import id.co.quadras.qif.core.helper.imp.QifTransactionCounterGuava;
+import id.co.quadras.qif.core.helper.queue.*;
+import id.co.quadras.qif.core.helper.queue.imp.*;
+import id.co.quadras.qif.core.helper.queue.reader.*;
+import id.co.quadras.qif.core.helper.queue.reader.imp.*;
 
 /**
  * @author irwin Timestamp : 05/05/2014 15:57

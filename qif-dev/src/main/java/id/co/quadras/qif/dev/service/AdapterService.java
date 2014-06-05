@@ -1,8 +1,6 @@
 package id.co.quadras.qif.dev.service;
 
-import id.co.quadras.qif.model.entity.QifAdapter;
-
-import java.util.List;
+import id.co.quadras.qif.core.model.entity.QifAdapter;
 
 /**
  * @author irwin Timestamp : 12/05/2014 18:34

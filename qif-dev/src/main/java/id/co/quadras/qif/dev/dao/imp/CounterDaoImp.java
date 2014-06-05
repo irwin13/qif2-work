@@ -3,7 +3,7 @@ package id.co.quadras.qif.dev.dao.imp;
 import com.google.inject.Inject;
 import com.irwin13.winwork.mybatis.dao.BasicMyBatisDao;
 import id.co.quadras.qif.dev.dao.CounterDao;
-import id.co.quadras.qif.model.entity.QifCounter;
+import id.co.quadras.qif.core.model.entity.QifCounter;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 

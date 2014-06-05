@@ -31,22 +31,22 @@
         <typeAlias alias="SearchParameter" type="com.irwin13.winwork.basic.model.SearchParameter" />
 
         <!-- ACTIVITY_LOG -->
-        <typeAlias alias="QifActivityLog" type="id.co.quadras.qif.model.entity.log.QifActivityLog" />
-        <typeAlias alias="QifActivityLogData" type="id.co.quadras.qif.model.entity.log.QifActivityLogData" />
-        <typeAlias alias="QifActivityLogInputMsg" type="id.co.quadras.qif.model.entity.log.QifActivityLogInputMsg" />
-        <typeAlias alias="QifActivityLogOutputMsg" type="id.co.quadras.qif.model.entity.log.QifActivityLogOutputMsg" />
+        <typeAlias alias="QifActivityLog" type="id.co.quadras.qif.core.model.entity.log.QifActivityLog" />
+        <typeAlias alias="QifActivityLogData" type="id.co.quadras.qif.core.model.entity.log.QifActivityLogData" />
+        <typeAlias alias="QifActivityLogInputMsg" type="id.co.quadras.qif.core.model.entity.log.QifActivityLogInputMsg" />
+        <typeAlias alias="QifActivityLogOutputMsg" type="id.co.quadras.qif.core.model.entity.log.QifActivityLogOutputMsg" />
 
         <!-- EVENT_LOG -->
-        <typeAlias alias="QifEventLog" type="id.co.quadras.qif.model.entity.log.QifEventLog" />
-        <typeAlias alias="QifEventLogMsg" type="id.co.quadras.qif.model.entity.log.QifEventLogMsg" />
+        <typeAlias alias="QifEventLog" type="id.co.quadras.qif.core.model.entity.log.QifEventLog" />
+        <typeAlias alias="QifEventLogMsg" type="id.co.quadras.qif.core.model.entity.log.QifEventLogMsg" />
 
         <!-- MASTER -->
-        <typeAlias alias="QifEvent" type="id.co.quadras.qif.model.entity.QifEvent" />
-        <typeAlias alias="QifEventProperty" type="id.co.quadras.qif.model.entity.QifEventProperty" />
-        <typeAlias alias="QifAdapter" type="id.co.quadras.qif.model.entity.QifAdapter" />
-        <typeAlias alias="QifAdapterProperty" type="id.co.quadras.qif.model.entity.QifAdapterProperty" />
+        <typeAlias alias="QifEvent" type="id.co.quadras.qif.core.model.entity.QifEvent" />
+        <typeAlias alias="QifEventProperty" type="id.co.quadras.qif.core.model.entity.QifEventProperty" />
+        <typeAlias alias="QifAdapter" type="id.co.quadras.qif.core.model.entity.QifAdapter" />
+        <typeAlias alias="QifAdapterProperty" type="id.co.quadras.qif.core.model.entity.QifAdapterProperty" />
 
-        <typeAlias alias="QifCounter" type="id.co.quadras.qif.model.entity.QifCounter" />
+        <typeAlias alias="QifCounter" type="id.co.quadras.qif.core.model.entity.QifCounter" />
 
     </typeAliases>
 

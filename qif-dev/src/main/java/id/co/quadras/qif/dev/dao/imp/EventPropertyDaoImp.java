@@ -4,7 +4,7 @@ import com.google.inject.Inject;
 import com.irwin13.winwork.basic.model.SortParameter;
 import com.irwin13.winwork.mybatis.dao.BasicMyBatisDao;
 import id.co.quadras.qif.dev.dao.EventPropertyDao;
-import id.co.quadras.qif.model.entity.QifEventProperty;
+import id.co.quadras.qif.core.model.entity.QifEventProperty;
 import org.apache.ibatis.session.SqlSessionFactory;
 
 import java.util.List;

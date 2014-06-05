@@ -3,8 +3,8 @@ package id.co.quadras.qif.dev.job.timertask;
 import com.google.inject.Inject;
 import com.irwin13.winwork.basic.config.WinWorkConfig;
 import id.co.quadras.qif.dev.service.log.EventLogMessageService;
-import id.co.quadras.qif.helper.queue.reader.EventLogMsgQueueReader;
-import id.co.quadras.qif.model.entity.log.QifEventLogMsg;
+import id.co.quadras.qif.core.helper.queue.reader.EventLogMsgQueueReader;
+import id.co.quadras.qif.core.model.entity.log.QifEventLogMsg;
 
 import java.util.List;
 import java.util.TimerTask;

@@ -1,6 +1,6 @@
 package id.co.quadras.qif.dev.dao;
 
-import id.co.quadras.qif.model.entity.QifAdapter;
+import id.co.quadras.qif.core.model.entity.QifAdapter;
 
 import java.util.List;
 

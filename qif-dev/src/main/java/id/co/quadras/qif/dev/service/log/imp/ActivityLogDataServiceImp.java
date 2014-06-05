@@ -3,7 +3,7 @@ package id.co.quadras.qif.dev.service.log.imp;
 import com.google.inject.Inject;
 import id.co.quadras.qif.dev.dao.log.ActivityLogDataDao;
 import id.co.quadras.qif.dev.service.log.ActivityLogDataService;
-import id.co.quadras.qif.model.entity.log.QifActivityLogData;
+import id.co.quadras.qif.core.model.entity.log.QifActivityLogData;
 
 import java.util.List;
 

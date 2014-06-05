@@ -2,14 +2,15 @@ package id.co.quadras.qif.dev.process;
 
 import id.co.quadras.qif.dev.guice.GuiceFactory;
 import id.co.quadras.qif.dev.task.WriteToFile;
-import id.co.quadras.qif.model.vo.QifActivityResult;
+import id.co.quadras.qif.event.FtpEvent;
+import id.co.quadras.qif.core.model.vo.QifActivityResult;
 
 import java.util.List;
 
 /**
  * @author irwin Timestamp : 25/05/2014 0:40
  */
-public class FtpXmlToFile extends FtpEventProcess {
+public class FtpXmlToFile extends FtpEvent {
 
     @Override
     protected QifActivityResult implementProcess(Object processInput) {

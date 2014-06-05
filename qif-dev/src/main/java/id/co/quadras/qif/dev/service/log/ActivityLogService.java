@@ -1,6 +1,6 @@
 package id.co.quadras.qif.dev.service.log;
 
-import id.co.quadras.qif.model.entity.log.QifActivityLog;
+import id.co.quadras.qif.core.model.entity.log.QifActivityLog;
 
 import java.util.List;
 

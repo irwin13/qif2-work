@@ -2,11 +2,10 @@ package id.co.quadras.qif.dev;
 
 import com.irwin13.winwork.basic.scheduler.BasicSchedulerManager;
 import com.irwin13.winwork.basic.utilities.WinWorkUtil;
-import id.co.quadras.qif.dev.dao.EventDao;
 import id.co.quadras.qif.dev.guice.GuiceFactory;
 import id.co.quadras.qif.dev.service.EventService;
-import id.co.quadras.qif.model.entity.QifEvent;
-import id.co.quadras.qif.model.vo.event.EventType;
+import id.co.quadras.qif.core.model.entity.QifEvent;
+import id.co.quadras.qif.core.model.vo.event.EventType;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.quartz.SchedulerException;

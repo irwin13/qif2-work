@@ -2,12 +2,12 @@ package id.co.quadras.qif.process;
 
 import com.irwin13.winwork.basic.config.WinWorkConfig;
 import com.irwin13.winwork.basic.test.DbUnitCleanInsert;
-import id.co.quadras.qif.QifProcess;
+import id.co.quadras.qif.core.QifProcess;
 import id.co.quadras.qif.dev.guice.GuiceFactory;
 import id.co.quadras.qif.dev.process.FtpXmlToFile;
 import id.co.quadras.qif.dev.service.EventService;
-import id.co.quadras.qif.model.entity.QifEvent;
-import id.co.quadras.qif.model.vo.QifActivityResult;
+import id.co.quadras.qif.core.model.entity.QifEvent;
+import id.co.quadras.qif.core.model.vo.QifActivityResult;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;

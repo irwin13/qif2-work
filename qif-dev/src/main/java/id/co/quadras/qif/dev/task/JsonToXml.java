@@ -1,9 +1,9 @@
 package id.co.quadras.qif.dev.task;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import id.co.quadras.qif.QifTaskMessage;
+import id.co.quadras.qif.core.QifTaskMessage;
 import id.co.quadras.qif.dev.message.Book;
-import id.co.quadras.qif.model.vo.QifActivityResult;
+import id.co.quadras.qif.core.model.vo.QifActivityResult;
 
 import java.io.IOException;
 
