@@ -98,6 +98,8 @@
         <mapper resource="sqlmap/QifEvent.sqlmap.xml"/>
         <mapper resource="sqlmap/QifEventProperty.sqlmap.xml"/>
 
+        <mapper resource="sqlmap/QifCounter.sqlmap.xml"/>
+
         <!-- LOG -->
         <mapper resource="sqlmap/log/QifActivityLog.sqlmap.xml"/>
         <mapper resource="sqlmap/log/QifActivityLogData.sqlmap.xml"/>
@@ -107,6 +109,5 @@
         <mapper resource="sqlmap/log/QifEventLog.sqlmap.xml"/>
         <mapper resource="sqlmap/log/QifEventLogMsg.sqlmap.xml"/>
 
-        <mapper resource="sqlmap/log/QifCounter.sqlmap.xml"/>
     </mappers>
 </configuration>

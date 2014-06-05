@@ -1,7 +1,7 @@
 package id.co.quadras.qif.dev.task;
 
-import id.co.quadras.qif.core.QifTaskMessage;
 import id.co.quadras.qif.connector.adapter.FileAdapter;
+import id.co.quadras.qif.core.QifTaskMessage;
 import id.co.quadras.qif.core.model.entity.QifAdapter;
 import id.co.quadras.qif.core.model.vo.QifActivityResult;
 

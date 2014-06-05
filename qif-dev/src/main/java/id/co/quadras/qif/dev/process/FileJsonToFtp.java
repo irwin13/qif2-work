@@ -1,10 +1,10 @@
 package id.co.quadras.qif.dev.process;
 
+import id.co.quadras.qif.connector.event.FileEvent;
+import id.co.quadras.qif.core.model.vo.QifActivityResult;
 import id.co.quadras.qif.dev.guice.GuiceFactory;
 import id.co.quadras.qif.dev.task.JsonToXml;
 import id.co.quadras.qif.dev.task.PutToFtp;
-import id.co.quadras.qif.connector.event.FileEvent;
-import id.co.quadras.qif.core.model.vo.QifActivityResult;
 
 import java.util.List;
 
