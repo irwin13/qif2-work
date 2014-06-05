@@ -6,6 +6,7 @@ import com.irwin13.winwork.basic.utilities.WinWorkUtil;
 import id.co.quadras.qif.core.model.entity.QifEvent;
 import id.co.quadras.qif.dev.guice.GuiceFactory;
 import id.co.quadras.qif.dev.guice.module.*;
+import id.co.quadras.qif.dev.service.CounterService;
 import id.co.quadras.qif.dev.service.EventService;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.tomcat.jdbc.pool.DataSource;
@@ -68,14 +69,14 @@ public class QifDevContextListener implements ServletContextListener {
         }
         LOGGER.info("=== Starting Scheduler QifEvent complete ===");
 
+        LOGGER.info("=== Init counter ... ===");
+        CounterService counterService = GuiceFactory.getInjector().getInstance(CounterService.class);
+        counterService.initCounter(eventList);
+        LOGGER.info("=== Init counter complete ===");
+
         LOGGER.info("=== Starting Internal Scheduler ... ===");
         schedulerStarter.startInternalScheduler();
         LOGGER.info("=== Starting Internal Scheduler complete ===");
-
-        // TODO
-        // insert or update qif_counter for registered event, process and task
-        // for all counter and today counter
-        // example : eventA, eventA_01-01-2013, processA, processA_01-01-2013, taskA, taskA_01-01-2013
 
         LOGGER.info("=================================== Starting QifDevContextListener complete ===============================");
     }
