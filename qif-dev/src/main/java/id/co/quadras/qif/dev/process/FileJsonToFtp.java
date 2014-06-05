@@ -28,6 +28,6 @@ public class FileJsonToFtp extends FileEvent {
 
     @Override
     public String activityName() {
-        return getClass().getSimpleName();
+        return getClass().getCanonicalName();
     }
 }

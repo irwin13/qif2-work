@@ -14,6 +14,7 @@ public class AfterMidnightJob implements Job {
 
         // TODO
         // when change day or after 00:00, do clean log data
+        // delete qif_activity_log where create_date < max_keep_day
 
     }
 }

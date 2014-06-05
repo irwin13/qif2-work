@@ -10,4 +10,7 @@ import java.util.List;
 public interface CounterService {
     public void incrementCounter(List<QifCounter> qifCounterList);
     public void batchInsert(List<QifCounter> qifCounterList);
+    public void batchUpdate(List<QifCounter> qifCounterList);
+    public List<QifCounter> select(QifCounter filter);
+    public QifCounter selectByKey(String key);
 }

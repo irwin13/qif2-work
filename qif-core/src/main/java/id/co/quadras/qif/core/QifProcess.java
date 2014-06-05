@@ -2,10 +2,12 @@ package id.co.quadras.qif.core;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import com.irwin13.winwork.basic.WinWorkConstants;
 import com.irwin13.winwork.basic.utilities.StringUtil;
 import com.irwin13.winwork.basic.utilities.WinWorkUtil;
 import id.co.quadras.qif.core.exception.QifException;
 import id.co.quadras.qif.core.helper.JsonParser;
+import id.co.quadras.qif.core.helper.QifTransactionCounter;
 import id.co.quadras.qif.core.helper.queue.*;
 import id.co.quadras.qif.core.model.entity.QifEvent;
 import id.co.quadras.qif.core.model.entity.QifEventProperty;
@@ -38,6 +40,9 @@ public abstract class QifProcess implements QifActivity {
     protected JsonParser jsonParser;
 
     @Inject
+    protected QifTransactionCounter transactionCounter;
+
+    @Inject
     private ActivityLogQueue activityLogQueue;
 
     @Inject
@@ -67,17 +72,21 @@ public abstract class QifProcess implements QifActivity {
     protected abstract QifActivityResult implementProcess(Object processInput);
 
     public QifActivityResult executeProcess(QifEvent qifEvent, Object inputMessage, QifActivityLog parentProcessLog) {
+        QifActivityResult qifActivityResult;
         if (qifEvent.getActiveAcceptMessage() != null && qifEvent.getActiveAcceptMessage()) {
             Object processInput = receiveEvent(qifEvent, inputMessage);
             qifEventLog = insertEventLog(qifEvent, inputMessage);
-            processLog = insertProcessLog(qifEventLog, inputMessage, parentProcessLog);
-            QifActivityResult qifActivityResult = implementProcess(processInput);
-            updateProcessLog(qifEventLog, qifActivityResult);
-            return qifActivityResult;
+            if (processInput != null) {
+                processLog = insertProcessLog(qifEventLog, inputMessage, parentProcessLog);
+                qifActivityResult = implementProcess(processInput);
+                updateProcessLog(qifEventLog, qifActivityResult);
+            } else {
+                qifActivityResult = new QifActivityResult(SUCCESS, null, null);
+            }
         } else {
-            return new QifActivityResult(SUCCESS, NOT_ACTIVE, null);
+            qifActivityResult = new QifActivityResult(SUCCESS, NOT_ACTIVE, null);
         }
-
+        return qifActivityResult;
     }
 
     private QifActivityLog insertProcessLog(QifEventLog qifEventLog, Object inputMessage,
@@ -129,6 +138,8 @@ public abstract class QifProcess implements QifActivity {
                 }
             }
         }
+
+        addCounterProcess();
 
         return processLog;
     }
@@ -237,6 +248,8 @@ public abstract class QifProcess implements QifActivity {
             qifEventLog.setNodeName(WinWorkUtil.getNodeName());
         }
 
+        addCounterEvent(qifEvent);
+
         return qifEventLog;
     }
 
@@ -253,6 +266,16 @@ public abstract class QifProcess implements QifActivity {
             }
         }
         return result;
+    }
+
+    private void addCounterEvent(QifEvent qifEvent) {
+        transactionCounter.add(qifEvent.getName());
+        transactionCounter.add(qifEvent.getName() + "_" + WinWorkConstants.SDF_DEFAULT.format(new Date()));
+    }
+
+    private void addCounterProcess() {
+        transactionCounter.add(this.getClass().getName());
+        transactionCounter.add(this.getClass().getName() + "_" + WinWorkConstants.SDF_DEFAULT.format(new Date()));
     }
 
     protected QifActivityResult executeTask(Injector injector, Class<? extends QifTask> taskClass,

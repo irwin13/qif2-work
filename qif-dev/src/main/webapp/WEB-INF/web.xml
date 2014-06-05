@@ -9,7 +9,16 @@
     <listener>
         <listener-class>id.co.quadras.qif.dev.QifDevContextListener</listener-class>
     </listener>
-    
+    <!-- Init parameter -->
+    <context-param>
+        <param-name>rootPackage.process</param-name>
+        <param-value>id.co.quadras.qif.dev.process</param-value>
+    </context-param>
+    <context-param>
+        <param-name>rootPackage.task</param-name>
+        <param-value>id.co.quadras.qif.dev.task</param-value>
+    </context-param>
+
     <servlet>
         <servlet-name>AppStatus</servlet-name>
         <servlet-class>id.co.quadras.qif.dev.web.AppStatus</servlet-class>

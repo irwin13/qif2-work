@@ -1,11 +1,17 @@
 package id.co.quadras.qif.dev;
 
+import com.google.common.collect.ImmutableSet;
+import com.google.common.reflect.ClassPath;
+import com.google.inject.AbstractModule;
 import com.irwin13.winwork.basic.scheduler.BasicSchedulerManager;
 import com.irwin13.winwork.basic.utilities.WinWorkUtil;
-import id.co.quadras.qif.dev.guice.GuiceFactory;
-import id.co.quadras.qif.dev.service.EventService;
+import id.co.quadras.qif.core.QifProcess;
+import id.co.quadras.qif.core.QifTask;
 import id.co.quadras.qif.core.model.entity.QifEvent;
 import id.co.quadras.qif.core.model.vo.event.EventType;
+import id.co.quadras.qif.dev.guice.GuiceFactory;
+import id.co.quadras.qif.dev.guice.module.*;
+import id.co.quadras.qif.dev.service.EventService;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.quartz.SchedulerException;
@@ -15,7 +21,12 @@ import org.slf4j.MDC;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import java.io.IOException;
+import java.net.URLClassLoader;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author irwin Timestamp : 07/05/2014 17:59
@@ -33,6 +44,41 @@ public class QifDevContextListener implements ServletContextListener {
         String nodeName = System.getProperty("nodeName");
         LOGGER.info("nodeName = {}", nodeName);
         MDC.put("nodeName", WinWorkUtil.getNodeName());
+
+        String rootPackageProcess = servletContextEvent.getServletContext().getInitParameter("rootPackage.process");
+        LOGGER.info("initParameter rootPackageProcess = {}", rootPackageProcess);
+
+        String rootPackageTask = servletContextEvent.getServletContext().getInitParameter("rootPackage.task");
+        LOGGER.info("initParameter rootPackageTask = {}", rootPackageTask);
+
+        ClassPath classPath;
+        try {
+            classPath = ClassPath.from(Thread.currentThread().getContextClassLoader());
+        } catch (IOException e) {
+            LOGGER.error(e.getLocalizedMessage(), e);
+            throw new RuntimeException(e.getMessage());
+        }
+
+        ImmutableSet<ClassPath.ClassInfo> immutableSetProcess = classPath.getTopLevelClassesRecursive(rootPackageProcess);
+        ImmutableSet<ClassPath.ClassInfo> immutableSetTask = classPath.getTopLevelClassesRecursive(rootPackageTask);
+
+        Set<Class<? extends QifProcess>> processSet = new HashSet<Class<? extends QifProcess>>();
+        for (ClassPath.ClassInfo classInfo : immutableSetProcess) {
+            processSet.add((Class<? extends QifProcess>) classInfo.load());
+        }
+
+        Set<Class<? extends QifTask>> taskSet = new HashSet<Class<? extends QifTask>>();
+        for (ClassPath.ClassInfo classInfo : immutableSetTask) {
+            taskSet.add((Class<? extends QifTask>) classInfo.load());
+        }
+
+        List<AbstractModule> moduleList = new LinkedList<AbstractModule>();
+        moduleList.add(new SharedModule());
+        moduleList.add(new DaoModule());
+        moduleList.add(new ServiceModule());
+        moduleList.add(new TaskModule(taskSet));
+        moduleList.add(new ProcessModule(processSet));
+        GuiceFactory.setModuleList(moduleList);
 
         LOGGER.info("=== Starting Scheduler QifEvent ... ===");
         EventService eventService = GuiceFactory.getInjector().getInstance(EventService.class);
@@ -53,6 +99,11 @@ public class QifDevContextListener implements ServletContextListener {
             LOGGER.error(e.getLocalizedMessage(), e);
         }
         LOGGER.info("=== Starting Scheduler QifEvent complete ===");
+
+        // TODO
+        // insert or update qif_counter for registered event, process and task
+        // for all counter and today counter
+        // example : eventA, eventA_01-01-2013, processA, processA_01-01-2013, taskA, taskA_01-01-2013
 
         LOGGER.info("=== Starting Internal Scheduler ... ===");
         schedulerStarter.startInternalScheduler();

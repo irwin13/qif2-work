@@ -1,9 +1,11 @@
 package id.co.quadras.qif.core;
 
 import com.google.inject.Inject;
+import com.irwin13.winwork.basic.WinWorkConstants;
 import com.irwin13.winwork.basic.utilities.StringUtil;
 import com.irwin13.winwork.basic.utilities.WinWorkUtil;
 import id.co.quadras.qif.core.helper.JsonParser;
+import id.co.quadras.qif.core.helper.QifTransactionCounter;
 import id.co.quadras.qif.core.helper.queue.ActivityLogInputMsgQueue;
 import id.co.quadras.qif.core.helper.queue.ActivityLogOutputMsgQueue;
 import id.co.quadras.qif.core.helper.queue.ActivityLogQueue;
@@ -62,6 +64,9 @@ public abstract class QifTask implements QifActivity {
 
     @Inject
     protected JsonParser jsonParser;
+
+    @Inject
+    protected QifTransactionCounter transactionCounter;
 
     @Inject
     private ActivityLogQueue activityLogQueue;
@@ -167,4 +172,8 @@ public abstract class QifTask implements QifActivity {
         }
     }
 
+    private void addCounterTask() {
+        transactionCounter.add(this.getClass().getName());
+        transactionCounter.add(this.getClass().getName() + "_" + WinWorkConstants.SDF_DEFAULT.format(new Date()));
+    }
 }

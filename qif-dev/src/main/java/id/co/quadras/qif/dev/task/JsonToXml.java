@@ -31,6 +31,6 @@ public class JsonToXml extends AbstractTask {
 
     @Override
     public String activityName() {
-        return getClass().getSimpleName();
+        return getClass().getCanonicalName();
     }
 }

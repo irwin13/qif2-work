@@ -23,7 +23,7 @@ public class FtpAdapter extends AbstractAdapter {
         super(qifAdapter);
     }
 
-    private FTPClient ftpClient;
+    protected FTPClient ftpClient;
 
     public void connect() throws IOException {
         ftpClient = new FTPClient();

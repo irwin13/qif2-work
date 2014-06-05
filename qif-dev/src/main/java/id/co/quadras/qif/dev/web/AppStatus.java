@@ -17,6 +17,8 @@ import java.io.IOException;
  */
 public class AppStatus extends HttpServlet {
 
+    private static final String TEXT_HTML = "text/html";
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -24,6 +26,11 @@ public class AppStatus extends HttpServlet {
         WinWorkConfig winWorkConfig = GuiceFactory.getInjector().getInstance(WinWorkConfig.class);
         String htmlContent = WinWorkUtil.appStatusView(winWorkConfig, QifDevContextListener.START,
                 WinWorkConstants.SDF_FULL);
+
+        resp.setContentType(TEXT_HTML);
+        resp.setContentLength(htmlContent.length());
+        resp.setCharacterEncoding(WinWorkConstants.UTF_8);
+        resp.setStatus(HttpServletResponse.SC_OK);
 
         resp.getWriter().append(htmlContent);
     }

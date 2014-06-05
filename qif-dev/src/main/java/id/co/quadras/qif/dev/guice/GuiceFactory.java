@@ -3,8 +3,11 @@ package id.co.quadras.qif.dev.guice;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import id.co.quadras.qif.core.QifProcess;
+import id.co.quadras.qif.core.QifTask;
 import id.co.quadras.qif.dev.guice.module.*;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,6 +18,7 @@ public final class GuiceFactory {
 
     private static Injector injector;
     private static List<AbstractModule> moduleList;
+
     private GuiceFactory() {
         injector = Guice.createInjector(getModuleList());
     }
@@ -25,9 +29,8 @@ public final class GuiceFactory {
             moduleList.add(new SharedModule());
             moduleList.add(new DaoModule());
             moduleList.add(new ServiceModule());
-            moduleList.add(new TaskModule());
-            moduleList.add(new ProcessModule());
-            moduleList.add(new WebModule());
+            moduleList.add(new TaskModule(new HashSet<Class<? extends QifTask>>()));
+            moduleList.add(new ProcessModule(new HashSet<Class<? extends QifProcess>>()));
         }
         return moduleList;
     }
@@ -42,5 +45,4 @@ public final class GuiceFactory {
         }
         return injector;
     }
-
 }

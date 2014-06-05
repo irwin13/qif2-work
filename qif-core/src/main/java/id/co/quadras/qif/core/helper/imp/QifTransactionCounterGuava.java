@@ -5,6 +5,8 @@ import id.co.quadras.qif.core.helper.QifTransactionCounter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Set;
+
 /**
  * @author irwin Timestamp : 29/04/2014 16:04
  */
@@ -50,6 +52,11 @@ public final class QifTransactionCounterGuava implements QifTransactionCounter {
 
     public int keySize() {
         return MULTISET.size();
+    }
+
+    @Override
+    public Set<String> getKeys() {
+        return MULTISET.elementSet();
     }
 
     @Override

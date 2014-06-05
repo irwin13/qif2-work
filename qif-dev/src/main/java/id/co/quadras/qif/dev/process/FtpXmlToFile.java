@@ -21,6 +21,6 @@ public class FtpXmlToFile extends FtpEvent {
 
     @Override
     public String activityName() {
-        return getClass().getSimpleName();
+        return getClass().getCanonicalName();
     }
 }
