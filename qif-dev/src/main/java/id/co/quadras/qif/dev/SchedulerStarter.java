@@ -128,6 +128,7 @@ public final class SchedulerStarter {
                 GuiceFactory.getInjector().getInstance(ActivityLogOutputMessagePersist.class);
         new Timer().schedule(activityLogOutputMessagePersist, LOG_PERSIST_DELAY, DEFAULT_LOG_PERSIST_INTERVAL);
 
+        // TODO
         // when change day or after 00:00, insert new data for qif counter
     }
 }
