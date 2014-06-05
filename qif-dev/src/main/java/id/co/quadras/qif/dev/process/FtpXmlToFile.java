@@ -2,7 +2,7 @@ package id.co.quadras.qif.dev.process;
 
 import id.co.quadras.qif.dev.guice.GuiceFactory;
 import id.co.quadras.qif.dev.task.WriteToFile;
-import id.co.quadras.qif.event.FtpEvent;
+import id.co.quadras.qif.connector.event.FtpEvent;
 import id.co.quadras.qif.core.model.vo.QifActivityResult;
 
 import java.util.List;

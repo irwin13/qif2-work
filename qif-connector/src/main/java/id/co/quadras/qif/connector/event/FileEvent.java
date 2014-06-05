@@ -1,4 +1,4 @@
-package id.co.quadras.qif.event;
+package id.co.quadras.qif.connector.event;
 
 import id.co.quadras.qif.core.QifProcess;
 import id.co.quadras.qif.core.model.entity.QifEvent;
@@ -21,7 +21,7 @@ public abstract class FileEvent extends QifProcess {
     @Override
     protected Object receiveEvent(QifEvent qifEvent, Object inputMessage) {
         List<String> fileContentList = getFiles(qifEvent);
-        return fileContentList;
+        return (fileContentList.isEmpty()) ? null : fileContentList;
     }
 
     private List<String> getFiles(final QifEvent qifEvent) {

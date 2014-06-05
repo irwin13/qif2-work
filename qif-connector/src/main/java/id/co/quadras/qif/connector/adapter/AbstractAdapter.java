@@ -1,4 +1,4 @@
-package id.co.quadras.qif.adapter;
+package id.co.quadras.qif.connector.adapter;
 
 import id.co.quadras.qif.core.exception.QifException;
 import id.co.quadras.qif.core.model.entity.QifAdapter;

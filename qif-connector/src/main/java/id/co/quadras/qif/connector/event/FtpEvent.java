@@ -1,4 +1,4 @@
-package id.co.quadras.qif.event;
+package id.co.quadras.qif.connector.event;
 
 import com.google.common.base.Strings;
 import id.co.quadras.qif.core.QifProcess;
@@ -23,7 +23,8 @@ public abstract class FtpEvent extends QifProcess {
 
     @Override
     protected Object receiveEvent(QifEvent qifEvent, Object inputMessage) {
-        return getFiles(qifEvent);
+        List<String> stringList = getFiles(qifEvent);
+        return (stringList.isEmpty()) ? null : stringList;
     }
 
     private List<String> getFiles(final QifEvent qifEvent) {

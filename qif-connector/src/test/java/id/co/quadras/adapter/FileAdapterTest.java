@@ -1,6 +1,6 @@
 package id.co.quadras.adapter;
 
-import id.co.quadras.qif.adapter.FileAdapter;
+import id.co.quadras.qif.connector.adapter.FileAdapter;
 import id.co.quadras.qif.core.model.entity.QifAdapter;
 import id.co.quadras.qif.core.model.entity.QifAdapterProperty;
 import id.co.quadras.qif.core.model.vo.adapter.AdapterFile;

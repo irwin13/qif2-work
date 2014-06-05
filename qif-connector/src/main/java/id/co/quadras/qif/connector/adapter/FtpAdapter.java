@@ -1,4 +1,4 @@
-package id.co.quadras.qif.adapter;
+package id.co.quadras.qif.connector.adapter;
 
 import com.google.common.base.Strings;
 import id.co.quadras.qif.core.exception.QifException;
