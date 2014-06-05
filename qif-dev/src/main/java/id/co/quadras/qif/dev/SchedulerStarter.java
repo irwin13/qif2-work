@@ -4,16 +4,15 @@ import com.google.inject.Inject;
 import com.irwin13.winwork.basic.scheduler.BasicSchedulerManager;
 import id.co.quadras.qif.core.QifConstants;
 import id.co.quadras.qif.core.QifUtil;
-import id.co.quadras.qif.dev.guice.GuiceFactory;
-import id.co.quadras.qif.dev.job.QifEventConcurrentJob;
-import id.co.quadras.qif.dev.job.QifEventSingleInstanceJob;
-import id.co.quadras.qif.dev.job.timertask.*;
-import id.co.quadras.qif.core.exception.QifException;
 import id.co.quadras.qif.core.model.entity.QifEvent;
 import id.co.quadras.qif.core.model.entity.QifEventProperty;
 import id.co.quadras.qif.core.model.vo.event.EventType;
 import id.co.quadras.qif.core.model.vo.event.SchedulerCron;
 import id.co.quadras.qif.core.model.vo.event.SchedulerInterval;
+import id.co.quadras.qif.dev.guice.GuiceFactory;
+import id.co.quadras.qif.dev.job.QifEventConcurrentJob;
+import id.co.quadras.qif.dev.job.QifEventSingleInstanceJob;
+import id.co.quadras.qif.dev.job.timertask.*;
 import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +27,7 @@ import java.util.Timer;
  */
 public final class SchedulerStarter {
 
-    private static final long LOG_PERSIST_DELAY = 5000;
+    private static final long LOG_PERSIST_DELAY = 30000;
     private static final long DEFAULT_LOG_PERSIST_INTERVAL = 5000;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SchedulerStarter.class);
@@ -86,9 +85,6 @@ public final class SchedulerStarter {
                     LOGGER.error("FATAL : Missing Listener Property with property key = 'cronExpression' for QifEvent {}",
                             qifEvent.getName());
                 }
-            } else {
-            throw new QifException("FATAL : Property eventType on QifEvent " + qifEvent.getName()
-                        + " is not scheduler_interval or scheduler_cron");
             }
 
             if (!schedulerManager.isJobAlreadyExists(jobKey) && jobDetail != null) {
@@ -102,7 +98,6 @@ public final class SchedulerStarter {
         if (!schedulerManager.isStarted()) {
             schedulerManager.start();
         }
-
     }
 
     public void startInternalScheduler() {
@@ -127,5 +122,8 @@ public final class SchedulerStarter {
         ActivityLogOutputMessagePersist activityLogOutputMessagePersist =
                 GuiceFactory.getInjector().getInstance(ActivityLogOutputMessagePersist.class);
         new Timer().schedule(activityLogOutputMessagePersist, LOG_PERSIST_DELAY, DEFAULT_LOG_PERSIST_INTERVAL);
+
+        CounterUpdate counterUpdate = GuiceFactory.getInjector().getInstance(CounterUpdate.class);
+        new Timer().schedule(counterUpdate, LOG_PERSIST_DELAY, DEFAULT_LOG_PERSIST_INTERVAL);
     }
 }

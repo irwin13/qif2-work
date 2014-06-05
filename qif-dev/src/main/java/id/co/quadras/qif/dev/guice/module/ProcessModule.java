@@ -26,7 +26,7 @@ public class ProcessModule extends AbstractModule {
         for (Class<? extends QifProcess> processClass : classSet) {
             if (!Modifier.isAbstract(processClass.getModifiers())) {
                 bind(processClass);
-                LOGGER.info("register QifProcess {} to Guice", processClass.getName());
+                LOGGER.info("register QifProcess = {} ", processClass.getName());
             }
         }
     }

@@ -26,7 +26,7 @@ public class TaskModule extends AbstractModule {
         for (Class<? extends QifTask> taskClass : classSet) {
             if (!Modifier.isAbstract(taskClass.getModifiers())) {
                 bind(taskClass);
-                LOGGER.info("register QifTask {} to Guice", taskClass.getName());
+                LOGGER.info("register QifTask = {}", taskClass.getName());
             }
         }
     }

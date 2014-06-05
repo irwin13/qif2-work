@@ -41,7 +41,8 @@ public class ServiceModule extends AbstractModule {
         bind(EventLogPersist.class);
         bind(EventLogMessagePersist.class);
 
+        // COUNTER
         bind(CounterService.class).to(CounterServiceImp.class);
-
+        bind(CounterUpdate.class);
     }
 }

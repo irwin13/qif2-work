@@ -1,7 +1,9 @@
 package id.co.quadras.qif.dev.service;
 
 import id.co.quadras.qif.core.model.entity.QifCounter;
+import id.co.quadras.qif.core.model.entity.QifEvent;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -13,4 +15,6 @@ public interface CounterService {
     public void batchUpdate(List<QifCounter> qifCounterList);
     public List<QifCounter> select(QifCounter filter);
     public QifCounter selectByKey(String key);
+    public void initCounter(List<QifEvent> eventList);
+    public void insert(QifCounter model);
 }

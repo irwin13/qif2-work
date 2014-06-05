@@ -1,14 +1,9 @@
 package id.co.quadras.qif.dev;
 
-import com.google.common.collect.ImmutableSet;
-import com.google.common.reflect.ClassPath;
 import com.google.inject.AbstractModule;
 import com.irwin13.winwork.basic.scheduler.BasicSchedulerManager;
 import com.irwin13.winwork.basic.utilities.WinWorkUtil;
-import id.co.quadras.qif.core.QifProcess;
-import id.co.quadras.qif.core.QifTask;
 import id.co.quadras.qif.core.model.entity.QifEvent;
-import id.co.quadras.qif.core.model.vo.event.EventType;
 import id.co.quadras.qif.dev.guice.GuiceFactory;
 import id.co.quadras.qif.dev.guice.module.*;
 import id.co.quadras.qif.dev.service.EventService;
@@ -21,12 +16,8 @@ import org.slf4j.MDC;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import java.io.IOException;
-import java.net.URLClassLoader;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author irwin Timestamp : 07/05/2014 17:59
@@ -51,63 +42,40 @@ public class QifDevContextListener implements ServletContextListener {
         String rootPackageTask = servletContextEvent.getServletContext().getInitParameter("rootPackage.task");
         LOGGER.info("initParameter rootPackageTask = {}", rootPackageTask);
 
-        ClassPath classPath;
-        try {
-            classPath = ClassPath.from(Thread.currentThread().getContextClassLoader());
-        } catch (IOException e) {
-            LOGGER.error(e.getLocalizedMessage(), e);
-            throw new RuntimeException(e.getMessage());
-        }
-
-        ImmutableSet<ClassPath.ClassInfo> immutableSetProcess = classPath.getTopLevelClassesRecursive(rootPackageProcess);
-        ImmutableSet<ClassPath.ClassInfo> immutableSetTask = classPath.getTopLevelClassesRecursive(rootPackageTask);
-
-        Set<Class<? extends QifProcess>> processSet = new HashSet<Class<? extends QifProcess>>();
-        for (ClassPath.ClassInfo classInfo : immutableSetProcess) {
-            processSet.add((Class<? extends QifProcess>) classInfo.load());
-        }
-
-        Set<Class<? extends QifTask>> taskSet = new HashSet<Class<? extends QifTask>>();
-        for (ClassPath.ClassInfo classInfo : immutableSetTask) {
-            taskSet.add((Class<? extends QifTask>) classInfo.load());
-        }
+        TaskRegister.init(rootPackageTask);
+        ProcessRegister.init(rootPackageProcess);
 
         List<AbstractModule> moduleList = new LinkedList<AbstractModule>();
         moduleList.add(new SharedModule());
         moduleList.add(new DaoModule());
         moduleList.add(new ServiceModule());
-        moduleList.add(new TaskModule(taskSet));
-        moduleList.add(new ProcessModule(processSet));
+        moduleList.add(new TaskModule(TaskRegister.getTaskSet()));
+        moduleList.add(new ProcessModule(ProcessRegister.getProcessSet()));
         GuiceFactory.setModuleList(moduleList);
 
         LOGGER.info("=== Starting Scheduler QifEvent ... ===");
         EventService eventService = GuiceFactory.getInjector().getInstance(EventService.class);
         SchedulerStarter schedulerStarter = GuiceFactory.getInjector().getInstance(SchedulerStarter.class);
 
-        QifEvent filterInterval = new QifEvent();
-        filterInterval.setEventType(EventType.SCHEDULER_INTERVAL.getName());
-        List<QifEvent> eventIntervalList = eventService.select(filterInterval);
-
-        QifEvent filterCron = new QifEvent();
-        filterCron.setEventType(EventType.SCHEDULER_CRON.getName());
-        List<QifEvent> eventCronList = eventService.select(filterCron);
+        QifEvent filter = new QifEvent();
+        filter.setActive(Boolean.TRUE);
+        List<QifEvent> eventList = eventService.select(filter);
 
         try {
-            schedulerStarter.startEvent(eventIntervalList);
-            schedulerStarter.startEvent(eventCronList);
+            schedulerStarter.startEvent(eventList);
         } catch (SchedulerException e) {
             LOGGER.error(e.getLocalizedMessage(), e);
         }
         LOGGER.info("=== Starting Scheduler QifEvent complete ===");
 
+        LOGGER.info("=== Starting Internal Scheduler ... ===");
+        schedulerStarter.startInternalScheduler();
+        LOGGER.info("=== Starting Internal Scheduler complete ===");
+
         // TODO
         // insert or update qif_counter for registered event, process and task
         // for all counter and today counter
         // example : eventA, eventA_01-01-2013, processA, processA_01-01-2013, taskA, taskA_01-01-2013
-
-        LOGGER.info("=== Starting Internal Scheduler ... ===");
-        schedulerStarter.startInternalScheduler();
-        LOGGER.info("=== Starting Internal Scheduler complete ===");
 
         LOGGER.info("=================================== Starting QifDevContextListener complete ===============================");
     }

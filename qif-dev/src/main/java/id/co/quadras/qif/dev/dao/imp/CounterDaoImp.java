@@ -2,7 +2,6 @@ package id.co.quadras.qif.dev.dao.imp;
 
 import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
-import com.irwin13.winwork.basic.model.SortParameter;
 import com.irwin13.winwork.mybatis.dao.BasicMyBatisDao;
 import id.co.quadras.qif.core.model.entity.QifCounter;
 import id.co.quadras.qif.dev.dao.CounterDao;
@@ -60,5 +59,15 @@ public class CounterDaoImp implements CounterDao {
     @Override
     public List<QifCounter> select(QifCounter filter) {
         return basicDao.select(filter, null);
+    }
+
+    @Override
+    public void insert(QifCounter model) {
+        basicDao.insert(model);
+    }
+
+    @Override
+    public void update(QifCounter model) {
+        basicDao.update(model);
     }
 }

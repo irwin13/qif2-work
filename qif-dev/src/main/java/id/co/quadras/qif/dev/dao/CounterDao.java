@@ -12,4 +12,6 @@ public interface CounterDao {
     public void batchInsert(List<QifCounter> qifCounterList);
     public void batchUpdate(List<QifCounter> qifCounterList);
     public List<QifCounter> select(QifCounter filter);
+    public void insert(QifCounter model);
+    public void update(QifCounter model);
 }
