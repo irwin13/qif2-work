@@ -1,4 +1,4 @@
-package id.co.quadras.qif.dev.guice;
+package id.co.quadras.qif.engine.guice.provider;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -13,14 +13,14 @@ import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import javax.sql.DataSource;
 
 /**
- * @author irwin Timestamp : 06/06/2014 17:53
+ * @author irwin Timestamp : 06/06/2014 18:38
  */
-public class MyBatisSessionFactoryProvider implements Provider<SqlSessionFactory> {
+public class QifSqlSessionFactoryProvider implements Provider<SqlSessionFactory> {
 
     private final String qifConfigFile;
 
     @Inject
-    public MyBatisSessionFactoryProvider(@Named("qifConfigFile") String qifConfigFile) {
+    public QifSqlSessionFactoryProvider(@Named("qifConfigFile") String qifConfigFile) {
         this.qifConfigFile = qifConfigFile;
     }
 
@@ -34,4 +34,5 @@ public class MyBatisSessionFactoryProvider implements Provider<SqlSessionFactory
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(configuration);
         return null;
     }
+
 }

@@ -20,7 +20,7 @@ import id.co.quadras.qif.core.helper.queue.reader.*;
 import id.co.quadras.qif.core.helper.queue.reader.imp.*;
 import id.co.quadras.qif.engine.QifConfig;
 import id.co.quadras.qif.engine.SchedulerStarter;
-import id.co.quadras.qif.engine.guice.JsonMapperProvider;
+import id.co.quadras.qif.engine.guice.provider.JsonMapperProvider;
 import org.quartz.Scheduler;
 
 /**

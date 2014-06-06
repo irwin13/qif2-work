@@ -2,10 +2,10 @@ package id.co.quadras.qif.dev.task;
 
 import com.google.inject.Inject;
 import id.co.quadras.qif.core.QifTask;
-import id.co.quadras.qif.dev.service.AdapterService;
 import id.co.quadras.qif.core.exception.QifException;
 import id.co.quadras.qif.core.model.entity.QifAdapter;
 import id.co.quadras.qif.core.model.entity.QifAdapterProperty;
+import id.co.quadras.qif.engine.service.AdapterService;
 
 import java.util.List;
 
