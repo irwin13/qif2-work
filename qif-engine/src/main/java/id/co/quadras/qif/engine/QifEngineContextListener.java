@@ -8,8 +8,7 @@ import id.co.quadras.qif.engine.guice.GuiceFactory;
 import id.co.quadras.qif.engine.guice.module.*;
 import id.co.quadras.qif.engine.service.CounterService;
 import id.co.quadras.qif.engine.service.EventService;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.tomcat.jdbc.pool.DataSource;
+import id.co.quadras.qif.engine.web.HttpEventMap;
 import org.quartz.SchedulerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,13 +57,17 @@ public class QifEngineContextListener implements ServletContextListener {
         GuiceFactory.setModuleList(moduleList);
         LOGGER.info("=== Starting Guice complete ===");
 
-        LOGGER.info("=== Starting Scheduler QifEvent ... ===");
         EventService eventService = GuiceFactory.getInjector().getInstance(EventService.class);
-        SchedulerStarter schedulerStarter = GuiceFactory.getInjector().getInstance(SchedulerStarter.class);
-
         QifEvent filter = new QifEvent();
         filter.setActive(Boolean.TRUE);
         List<QifEvent> eventList = eventService.select(filter);
+
+        LOGGER.info("=== Starting HTTP QifEvent ... ===");
+        HttpEventMap.init(eventList);
+        LOGGER.info("=== Starting HTTP QifEvent complete ===");
+
+        LOGGER.info("=== Starting Scheduler QifEvent ... ===");
+        SchedulerStarter schedulerStarter = GuiceFactory.getInjector().getInstance(SchedulerStarter.class);
 
         try {
             schedulerStarter.startEvent(eventList);
@@ -98,12 +101,6 @@ public class QifEngineContextListener implements ServletContextListener {
             LOGGER.error(e.getLocalizedMessage(), e);
         }
         LOGGER.info("=== Shutdown Quartz scheduler complete ===");
-
-        LOGGER.info("=== Shutdown MyBatis ... ===");
-        SqlSessionFactory sqlSessionFactory = GuiceFactory.getInjector().getInstance(SqlSessionFactory.class);
-        DataSource dataSource = (DataSource) sqlSessionFactory.getConfiguration().getEnvironment().getDataSource();
-        dataSource.close(true); // close all
-        LOGGER.info("=== Shutdown MyBatis complete ===");
 
         LOGGER.info("=================================== Shutdown QifDevContextListener complete ===============================");
 

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <qif>
-	<productionMode active="true" />
+	<globalSetting
+            logBatchInterval="5"
+            counterBatchInterval="5"
+    />
 
 	<databaseRepository>
 		<environment name="qif" />
@@ -53,35 +56,36 @@
         to avoid the initial connection and authentication time required to create a new Connection instance.
         -->
         <dataSource type="POOLED">
-            <property name="connectionPool.url" value="${url}" />
-            <property name="connectionPool.driver" value="${driver}" />
-            <property name="connectionPool.username" value="${username}" />
-            <property name="connectionPool.password" value="${password}" />
+            <property name="url" value="${url}" />
+            <property name="driver" value="${driver}" />
+            <property name="username" value="${username}" />
+            <property name="password" value="${password}" />
 
-            <property name="connectionPool.validationQuery" value="${validationQuery}" />
+            <property name="validationQuery" value="${validationQuery}" />
 
-            <property name="connectionPool.initialSize" value="${initialSize}" />
-            <property name="connectionPool.maxActive" value="${maxActive}" />
-            <property name="connectionPool.maxIdle" value="${maxIdle}" />
-            <property name="connectionPool.minIdle" value="${minIdle}" />
+            <property name="initialSize" value="${initialSize}" />
+            <property name="maxActive" value="${maxActive}" />
+            <property name="maxIdle" value="${maxIdle}" />
+            <property name="minIdle" value="${minIdle}" />
 
-            <property name="connectionPool.testOnBorrow" value="true" />
-            <property name="connectionPool.jmxEnabled" value="false" />
-            <property name="connectionPool.testWhileIdle" value="false" />
-            <property name="connectionPool.testOnReturn" value="false" />
+            <property name="testOnBorrow" value="true" />
+            <property name="jmxEnabled" value="false" />
+            <property name="testWhileIdle" value="false" />
+            <property name="testOnReturn" value="false" />
 
-            <property name="connectionPool.minEvictableIdleTimeMillis" value="10000" />
+            <property name="minEvictableIdleTimeMillis" value="10000" />
 
-            <property name="connectionPool.validationInterval" value="30000" />
-            <property name="connectionPool.timeBetweenEvictionRunsMillis" value="5000" />
+            <property name="validationInterval" value="30000" />
+            <property name="timeBetweenEvictionRunsMillis" value="5000" />
 
-            <property name="connectionPool.maxWait" value="5000" />
+            <property name="maxWait" value="5000" />
 
-            <property name="connectionPool.logAbandoned" value="false" />
-            <property name="connectionPool.removeAbandoned" value="true" />
-            <property name="connectionPool.removeAbandonedTimeout" value="60" />
+            <property name="logAbandoned" value="false" />
+            <property name="removeAbandoned" value="true" />
+            <property name="removeAbandonedTimeout" value="60" />
 
-            <property name="connectionPool.jdbcInterceptors" value="org.apache.jdbc.pool.interceptor.ConnectionState;org.apache.jdbc.pool.interceptor.StatementFinalizer" />
+            <property name="jdbcInterceptors"
+                      value="org.apache.jdbc.pool.interceptor.ConnectionState;org.apache.jdbc.pool.interceptor.StatementFinalizer" />
         </dataSource>
 
 

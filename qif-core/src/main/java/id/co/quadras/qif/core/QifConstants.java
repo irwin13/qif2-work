@@ -12,5 +12,6 @@ public final class QifConstants {
     public static final String QIF_EVENT_ID = "qifEventId";
 
     public static final String HTTP_PATH = "httpPath";
+    public static final String HTTP_BODY = "httpBody";
 
 }

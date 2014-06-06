@@ -5,12 +5,12 @@ package id.co.quadras.qif.core.model.vo.event;
  */
 public enum EventInterface {
 
-    HTTP_REST("http_rest"),
+    HTTP("http"),
     WEB_SERVICE_SOAP("webservice_soap"),
     FTP("ftp"),
     FILE("file"),
     JMS_QUEUE("jms_queue"),
-    ORACLE_ADVANCE_QUEUE("oaq");
+    ORACLE_ADVANCE_QUEUE("oracle_advance_queue");
 
     private final String name;
 

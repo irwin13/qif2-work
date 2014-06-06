@@ -19,6 +19,15 @@
         <param-value>id.co.quadras.qif.dev.task</param-value>
     </context-param>
 
+    <!-- SERVLET -->
+    <servlet>
+        <servlet-name>EventDispatcherServlet</servlet-name>
+        <servlet-class>id.co.quadras.qif.engine.web.EventDispatcherServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>EventDispatcherServlet</servlet-name>
+        <url-pattern>/http-event/*</url-pattern>
+    </servlet-mapping>
     <servlet>
         <servlet-name>AppStatus</servlet-name>
         <servlet-class>id.co.quadras.qif.engine.web.AppStatus</servlet-class>
