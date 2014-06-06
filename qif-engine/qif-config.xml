@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<qif>
+	<productionMode active="true" />
+
+	<databaseRepository>
+		<environment name="qif" />
+        <settings>
+            <setting name="cacheEnabled" value="true"/>
+            <setting name="lazyLoadingEnabled" value="true"/>
+            <setting name="multipleResultSetsEnabled" value="true"/>
+            <setting name="useColumnLabel" value="true"/>
+            <setting name="useGeneratedKeys" value="false"/>
+            <setting name="autoMappingBehavior" value="PARTIAL"/>
+            <setting name="defaultExecutorType" value="REUSE"/>
+            <!-- PostgreSQL JDBC Driver doesn't support this
+            <setting name="defaultStatementTimeout" value="25"/>
+            -->
+            <setting name="safeRowBoundsEnabled" value="false"/>
+            <setting name="mapUnderscoreToCamelCase" value="true"/>
+            <setting name="localCacheScope" value="SESSION"/>
+            <setting name="jdbcTypeForNull" value="NULL"/>
+            <setting name="lazyLoadTriggerMethods" value="equals,clone,hashCode,toString"/>
+            <setting name="logPrefix" value="MyBatisLog"/>
+            <setting name="logImpl" value="SLF4J"/>
+        </settings>
+
+        <!-- transactionManager = JDBC or MANAGED -->
+
+        <!--
+        JDBC - This configuration simply makes use of the JDBC commit and rollback facilities directly.
+        It relies on the connection retrieved from the dataSource to manage the scope of the transaction
+        -->
+        <transactionManager type="JDBC" />
+
+        <!--
+         MANAGED – This configuration simply does almost nothing.
+         It never commits, or rolls back a connection.
+         Instead, it lets the container manage the full lifecycle of the transaction (e.g. a JEE Application Server context).
+         By default it does close the connection.
+         However, some containers don’t expect this, and thus if you need to stop it from closing the connection,
+         set the "closeConnection" property to false
+        -->
+        <!--
+        <transactionManager type="MANAGED">
+            <property name="closeConnection" value="false"/>
+        </transactionManager>
+        -->
+
+        <!-- dataSource = POOLED or JNDI -->
+
+        <!--
+        POOLED – This implementation of DataSource pools JDBC Connection objects
+        to avoid the initial connection and authentication time required to create a new Connection instance.
+        -->
+        <dataSource type="POOLED">
+            <property name="connectionPool.url" value="${url}" />
+            <property name="connectionPool.driver" value="${driver}" />
+            <property name="connectionPool.username" value="${username}" />
+            <property name="connectionPool.password" value="${password}" />
+
+            <property name="connectionPool.validationQuery" value="${validationQuery}" />
+
+            <property name="connectionPool.initialSize" value="${initialSize}" />
+            <property name="connectionPool.maxActive" value="${maxActive}" />
+            <property name="connectionPool.maxIdle" value="${maxIdle}" />
+            <property name="connectionPool.minIdle" value="${minIdle}" />
+
+            <property name="connectionPool.testOnBorrow" value="true" />
+            <property name="connectionPool.jmxEnabled" value="false" />
+            <property name="connectionPool.testWhileIdle" value="false" />
+            <property name="connectionPool.testOnReturn" value="false" />
+
+            <property name="connectionPool.minEvictableIdleTimeMillis" value="10000" />
+
+            <property name="connectionPool.validationInterval" value="30000" />
+            <property name="connectionPool.timeBetweenEvictionRunsMillis" value="5000" />
+
+            <property name="connectionPool.maxWait" value="5000" />
+
+            <property name="connectionPool.logAbandoned" value="false" />
+            <property name="connectionPool.removeAbandoned" value="true" />
+            <property name="connectionPool.removeAbandonedTimeout" value="60" />
+
+            <property name="connectionPool.jdbcInterceptors" value="org.apache.jdbc.pool.interceptor.ConnectionState;org.apache.jdbc.pool.interceptor.StatementFinalizer" />
+        </dataSource>
+
+
+        <!--
+        JNDI – This implementation of DataSource is intended for use with containers such as EJB or Application Servers
+        that may configure the DataSource centrally or externally and place a reference to it in a JNDI context.
+
+        initial_context – This property is used for the Context lookup from the InitialContext
+        (i.e. initialContext.lookup(initial_context)).
+        This property is optional, and if omitted, then the data_source property will be looked up against the InitialContext directly.
+
+        Similar to the other DataSource configurations,
+        it’s possible to send properties directly to the InitialContext by prefixing those properties with "env."
+        example : env.encoding=UTF8
+        This would send the property encoding with the value of UTF8 to the constructor of the InitialContext upon instantiation.
+        -->
+        <!--
+        <dataSource type="JNDI">
+            <property name="data_source" value="" />
+            <property name="initial_context" value="" />
+        </dataSource>
+        -->
+
+    </databaseRepository>
+</qif>
