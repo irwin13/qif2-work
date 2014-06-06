@@ -37,6 +37,7 @@ public class QifDevContextListener implements ServletContextListener {
         LOGGER.info("nodeName = {}", nodeName);
         MDC.put("nodeName", WinWorkUtil.getNodeName());
 
+        LOGGER.info("=== Starting scan Process and Task package ... ===");
         String rootPackageProcess = servletContextEvent.getServletContext().getInitParameter("rootPackage.process");
         LOGGER.info("initParameter rootPackageProcess = {}", rootPackageProcess);
 
@@ -45,7 +46,9 @@ public class QifDevContextListener implements ServletContextListener {
 
         TaskRegister.init(rootPackageTask);
         ProcessRegister.init(rootPackageProcess);
+        LOGGER.info("=== Starting scan Process and Task package complete ===");
 
+        LOGGER.info("=== Starting Guice ... ===");
         List<AbstractModule> moduleList = new LinkedList<AbstractModule>();
         moduleList.add(new SharedModule());
         moduleList.add(new DaoModule());
@@ -53,6 +56,7 @@ public class QifDevContextListener implements ServletContextListener {
         moduleList.add(new TaskModule(TaskRegister.getTaskSet()));
         moduleList.add(new ProcessModule(ProcessRegister.getProcessSet()));
         GuiceFactory.setModuleList(moduleList);
+        LOGGER.info("=== Starting Guice complete ===");
 
         LOGGER.info("=== Starting Scheduler QifEvent ... ===");
         EventService eventService = GuiceFactory.getInjector().getInstance(EventService.class);

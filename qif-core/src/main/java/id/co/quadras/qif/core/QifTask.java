@@ -79,6 +79,7 @@ public abstract class QifTask implements QifActivity {
 
     private void insertAuditTrail(QifTaskMessage qifTaskMessage, long start, QifActivityResult qifActivityResult) {
 
+        addCounterTask();
         boolean auditTrailEnabled = qifTaskMessage.getQifProcess()
                                         .getQifEventLog().getQifEvent().getAuditTrailEnabled();
 

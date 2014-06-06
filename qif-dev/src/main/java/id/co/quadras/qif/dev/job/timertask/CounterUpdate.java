@@ -43,25 +43,13 @@ public class CounterUpdate extends TimerTask {
 
         populateData(qifCounterList, mapCounter);
 
-        int index = 1;
-        List<QifCounter> batchList = new LinkedList<QifCounter>();
+        counterService.incrementCounter(qifCounterList);
 
-        for (QifCounter qifCounter : qifCounterList) {
-            batchList.add(qifCounter);
-            if (index % 10 == 0 || index == qifCounterList.size()) {
-                counterService.batchUpdate(batchList);
-                LOGGER.debug("update counter on index {} with data count {}", index, batchList.size());
-
-                for (QifCounter counter : batchList) {
-                    int count = mapCounter.get(counter.getSequenceKey());
-                    QifTransactionCounterGuava counterGuava = (QifTransactionCounterGuava) transactionCounter;
-                    counterGuava.subtract(counter.getSequenceKey(), count);
-                    LOGGER.debug("subtract key {} with count {}", counter.getSequenceKey(), count);
-                }
-
-                batchList.clear();
-            }
-            index++;
+        for (QifCounter counter : qifCounterList) {
+            int count = mapCounter.get(counter.getSequenceKey());
+            QifTransactionCounterGuava counterGuava = (QifTransactionCounterGuava) transactionCounter;
+            counterGuava.subtract(counter.getSequenceKey(), count);
+            LOGGER.debug("subtract key {} with count {}", counter.getSequenceKey(), count);
         }
     }
 

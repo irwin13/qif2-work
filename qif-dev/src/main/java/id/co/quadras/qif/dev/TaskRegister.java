@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.lang.reflect.Modifier;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,7 +34,9 @@ public class TaskRegister {
 
             taskSet = new HashSet<Class<? extends QifTask>>();
             for (ClassPath.ClassInfo classInfo : immutableSetTask) {
-                taskSet.add((Class<? extends QifTask>) classInfo.load());
+                if (!Modifier.isAbstract(classInfo.load().getModifiers())) {
+                    taskSet.add((Class<? extends QifTask>) classInfo.load());
+                }
             }
         }
     }

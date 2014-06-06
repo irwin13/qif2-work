@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.lang.reflect.Modifier;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,7 +34,9 @@ public class ProcessRegister {
 
             processSet = new HashSet<Class<? extends QifProcess>>();
             for (ClassPath.ClassInfo classInfo : immutableSetProcess) {
-                processSet.add((Class<? extends QifProcess>) classInfo.load());
+                if (!Modifier.isAbstract(classInfo.load().getModifiers())) {
+                    processSet.add((Class<? extends QifProcess>) classInfo.load());
+                }
             }
         }
     }

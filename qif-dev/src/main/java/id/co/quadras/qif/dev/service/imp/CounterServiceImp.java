@@ -2,9 +2,9 @@ package id.co.quadras.qif.dev.service.imp;
 
 import com.google.inject.Inject;
 import com.irwin13.winwork.basic.WinWorkConstants;
+import com.irwin13.winwork.basic.utilities.StringUtil;
 import id.co.quadras.qif.core.QifProcess;
 import id.co.quadras.qif.core.QifTask;
-import id.co.quadras.qif.core.helper.imp.QifTransactionCounterGuava;
 import id.co.quadras.qif.core.model.entity.QifCounter;
 import id.co.quadras.qif.core.model.entity.QifEvent;
 import id.co.quadras.qif.dev.ProcessRegister;
@@ -76,20 +76,7 @@ public class CounterServiceImp implements CounterService {
     public void initCounter(List<QifEvent> eventList) {
         List<QifCounter> insertList = new LinkedList<QifCounter>();
         populateData(insertList, eventList);
-
-        int index = 1;
-        List<QifCounter> batchList = new LinkedList<QifCounter>();
-
-        for (QifCounter qifCounter : insertList) {
-            batchList.add(qifCounter);
-            if (index % 10 == 0 || index == insertList.size()) {
-                batchInsert(batchList);
-                LOGGER.debug("insert counter on index {} with data count {}", index, batchList.size());
-                batchList.clear();
-            }
-            index++;
-        }
-
+        batchInsert(insertList);
     }
 
     private void populateData(List<QifCounter> insertList, List<QifEvent> eventList) {
@@ -107,6 +94,7 @@ public class CounterServiceImp implements CounterService {
                 qifCounterTotal.setSequenceKey(qifEvent.getName());
                 qifCounterTotal.setLastSequence(0);
 
+                qifCounterTotal.setId(StringUtil.random32UUID());
                 qifCounterTotal.setActive(Boolean.TRUE);
                 qifCounterTotal.setCreateBy(getClass().getName());
                 qifCounterTotal.setCreateDate(today);
@@ -127,6 +115,7 @@ public class CounterServiceImp implements CounterService {
                 qifCounterPerDay.setSequenceKey(keyPerDay);
                 qifCounterPerDay.setLastSequence(0);
 
+                qifCounterPerDay.setId(StringUtil.random32UUID());
                 qifCounterPerDay.setActive(Boolean.TRUE);
                 qifCounterPerDay.setCreateBy(getClass().getName());
                 qifCounterPerDay.setCreateDate(today);
@@ -148,6 +137,7 @@ public class CounterServiceImp implements CounterService {
                 qifCounterTotal.setSequenceKey(processClass.getName());
                 qifCounterTotal.setLastSequence(0);
 
+                qifCounterTotal.setId(StringUtil.random32UUID());
                 qifCounterTotal.setActive(Boolean.TRUE);
                 qifCounterTotal.setCreateBy(getClass().getName());
                 qifCounterTotal.setCreateDate(today);
@@ -168,6 +158,7 @@ public class CounterServiceImp implements CounterService {
                 qifCounterPerDay.setSequenceKey(keyPerDay);
                 qifCounterPerDay.setLastSequence(0);
 
+                qifCounterPerDay.setId(StringUtil.random32UUID());
                 qifCounterPerDay.setActive(Boolean.TRUE);
                 qifCounterPerDay.setCreateBy(getClass().getName());
                 qifCounterPerDay.setCreateDate(today);
@@ -189,6 +180,7 @@ public class CounterServiceImp implements CounterService {
                 qifCounterTotal.setSequenceKey(taskClass.getName());
                 qifCounterTotal.setLastSequence(0);
 
+                qifCounterTotal.setId(StringUtil.random32UUID());
                 qifCounterTotal.setActive(Boolean.TRUE);
                 qifCounterTotal.setCreateBy(getClass().getName());
                 qifCounterTotal.setCreateDate(today);
@@ -209,6 +201,7 @@ public class CounterServiceImp implements CounterService {
                 qifCounterPerDay.setSequenceKey(keyPerDay);
                 qifCounterPerDay.setLastSequence(0);
 
+                qifCounterPerDay.setId(StringUtil.random32UUID());
                 qifCounterPerDay.setActive(Boolean.TRUE);
                 qifCounterPerDay.setCreateBy(getClass().getName());
                 qifCounterPerDay.setCreateDate(today);
