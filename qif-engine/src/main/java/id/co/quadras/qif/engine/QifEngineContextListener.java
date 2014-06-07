@@ -8,7 +8,6 @@ import id.co.quadras.qif.engine.guice.GuiceFactory;
 import id.co.quadras.qif.engine.guice.module.*;
 import id.co.quadras.qif.engine.service.CounterService;
 import id.co.quadras.qif.engine.service.EventService;
-import id.co.quadras.qif.engine.web.HttpEventMap;
 import org.quartz.SchedulerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,15 +61,12 @@ public class QifEngineContextListener implements ServletContextListener {
         filter.setActive(Boolean.TRUE);
         List<QifEvent> eventList = eventService.select(filter);
 
-        LOGGER.info("=== Starting HTTP QifEvent ... ===");
-        HttpEventMap.init(eventList);
-        LOGGER.info("=== Starting HTTP QifEvent complete ===");
-
         LOGGER.info("=== Starting Scheduler QifEvent ... ===");
         SchedulerStarter schedulerStarter = GuiceFactory.getInjector().getInstance(SchedulerStarter.class);
 
         try {
             schedulerStarter.startEvent(eventList);
+            schedulerStarter.startInternalScheduler();
         } catch (SchedulerException e) {
             LOGGER.error(e.getLocalizedMessage(), e);
         }
@@ -80,10 +76,6 @@ public class QifEngineContextListener implements ServletContextListener {
         CounterService counterService = GuiceFactory.getInjector().getInstance(CounterService.class);
         counterService.initCounter(eventList);
         LOGGER.info("=== Init counter complete ===");
-
-        LOGGER.info("=== Starting Internal Scheduler ... ===");
-        schedulerStarter.startInternalScheduler();
-        LOGGER.info("=== Starting Internal Scheduler complete ===");
 
         LOGGER.info("=================================== Starting QifDevContextListener complete ===============================");
     }
