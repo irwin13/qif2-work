@@ -14,7 +14,7 @@
             <column name="ID" type="char(32)">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="PK_EVENT_LOG" />
             </column>
-            <column name="ACTIVE" type="char(1)" defaultValue="N" />
+            <column name="ACTIVE" type="char(1)" defaultValue="Y" />
             <column name="CREATE_BY" type="character varying(500)" />
             <column name="CREATE_DATE" type="timestamp" defaultValueComputed="now" />
             <column name="LAST_UPDATE_BY" type="character varying(500)" />
@@ -29,7 +29,7 @@
             <column name="ID" type="char(32)">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="PK_EVENT_LOG_MSG" />
             </column>
-            <column name="ACTIVE" type="char(1)" defaultValue="N" />
+            <column name="ACTIVE" type="char(1)" defaultValue="Y" />
             <column name="CREATE_BY" type="character varying(500)" />
             <column name="CREATE_DATE" type="timestamp" defaultValueComputed="now" />
             <column name="LAST_UPDATE_BY" type="character varying(500)" />
@@ -43,7 +43,7 @@
             <column name="ID" type="char(32)">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="PK_ACT_LOG" />
             </column>
-            <column name="ACTIVE" type="char(1)" defaultValue="N" />
+            <column name="ACTIVE" type="char(1)" defaultValue="Y" />
             <column name="CREATE_BY" type="character varying(500)" />
             <column name="CREATE_DATE" type="timestamp" defaultValueComputed="now" />
             <column name="LAST_UPDATE_BY" type="character varying(500)" />
@@ -63,7 +63,7 @@
             <column name="ID" type="char(32)">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="PK_ACT_LOG_IN" />
             </column>
-            <column name="ACTIVE" type="char(1)" defaultValue="N" />
+            <column name="ACTIVE" type="char(1)" defaultValue="Y" />
             <column name="CREATE_BY" type="character varying(500)" />
             <column name="CREATE_DATE" type="timestamp" defaultValueComputed="now" />
             <column name="LAST_UPDATE_BY" type="character varying(500)" />
@@ -77,7 +77,7 @@
             <column name="ID" type="char(32)">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="PK_ACT_LOG_OUT" />
             </column>
-            <column name="ACTIVE" type="char(1)" defaultValue="N" />
+            <column name="ACTIVE" type="char(1)" defaultValue="Y" />
             <column name="CREATE_BY" type="character varying(500)" />
             <column name="CREATE_DATE" type="timestamp" defaultValueComputed="now" />
             <column name="LAST_UPDATE_BY" type="character varying(500)" />
@@ -91,7 +91,7 @@
             <column name="ID" type="char(32)">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="PK_ACT_LOG_DATA" />
             </column>
-            <column name="ACTIVE" type="char(1)" defaultValue="N" />
+            <column name="ACTIVE" type="char(1)" defaultValue="Y" />
             <column name="CREATE_BY" type="character varying(500)" />
             <column name="CREATE_DATE" type="timestamp" defaultValueComputed="now" />
             <column name="LAST_UPDATE_BY" type="character varying(500)" />
@@ -106,7 +106,7 @@
             <column name="ID" type="char(32)">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="PK_EVENT" />
             </column>
-            <column name="ACTIVE" type="char(1)" defaultValue="N" />
+            <column name="ACTIVE" type="char(1)" defaultValue="Y" />
             <column name="CREATE_BY" type="character varying(500)" />
             <column name="CREATE_DATE" type="timestamp" defaultValueComputed="now" />
             <column name="LAST_UPDATE_BY" type="character varying(500)" />
@@ -126,7 +126,7 @@
             <column name="ID" type="char(32)">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="PK_EVENT_PROP" />
             </column>
-            <column name="ACTIVE" type="char(1)" defaultValue="N" />
+            <column name="ACTIVE" type="char(1)" defaultValue="Y" />
             <column name="CREATE_BY" type="character varying(500)" />
             <column name="CREATE_DATE" type="timestamp" defaultValueComputed="now" />
             <column name="LAST_UPDATE_BY" type="character varying(500)" />
@@ -141,7 +141,7 @@
             <column name="ID" type="char(32)">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="PK_ADAPTER" />
             </column>
-            <column name="ACTIVE" type="char(1)" defaultValue="N" />
+            <column name="ACTIVE" type="char(1)" defaultValue="Y" />
             <column name="CREATE_BY" type="character varying(500)" />
             <column name="CREATE_DATE" type="timestamp" defaultValueComputed="now" />
             <column name="LAST_UPDATE_BY" type="character varying(500)" />
@@ -156,7 +156,7 @@
             <column name="ID" type="char(32)">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="PK_ADAPTER_PROP" />
             </column>
-            <column name="ACTIVE" type="char(1)" defaultValue="N" />
+            <column name="ACTIVE" type="char(1)" defaultValue="Y" />
             <column name="CREATE_BY" type="character varying(500)" />
             <column name="CREATE_DATE" type="timestamp" defaultValueComputed="now" />
             <column name="LAST_UPDATE_BY" type="character varying(500)" />
@@ -188,5 +188,22 @@
         <addColumn tableName="QIF_ADAPTER_PROPERTY">
             <column name="QIF_ADAPTER_ID" type="char(32)" />
         </addColumn>
+    </changeSet>
+    <changeSet id="add-table-1" author="irwin">
+        <createTable tableName="APP_SETTING" schemaName="qif">
+            <column name="ID" type="char(32)">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="PK_APP_SETTING" />
+            </column>
+            <column name="ACTIVE" type="char(1)" defaultValue="Y" />
+            <column name="CREATE_BY" type="character varying(500)" />
+            <column name="CREATE_DATE" type="timestamp" defaultValueComputed="now" />
+            <column name="LAST_UPDATE_BY" type="character varying(500)" />
+            <column name="LAST_UPDATE_DATE" type="timestamp" defaultValueComputed="now" />
+
+            <column name="CODE" type="character varying(500)" />
+            <column name="STRING_VALUE" type="character varying(500)" />
+            <column name="SETTING_CATEGORY" type="character varying(500)" />
+            <column name="DESCRIPTION" type="character varying(500)" />
+        </createTable>
     </changeSet>
 </databaseChangeLog>

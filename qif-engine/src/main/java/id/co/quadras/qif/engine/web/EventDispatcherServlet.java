@@ -1,17 +1,14 @@
 package id.co.quadras.qif.engine.web;
 
 import com.google.common.base.Strings;
-import com.irwin13.winwork.basic.utilities.StringUtil;
-import id.co.quadras.qif.core.HttpHeader;
 import id.co.quadras.qif.core.QifActivity;
 import id.co.quadras.qif.core.QifConstants;
 import id.co.quadras.qif.core.QifProcess;
-import id.co.quadras.qif.core.helper.JsonParser;
 import id.co.quadras.qif.core.model.entity.QifEvent;
 import id.co.quadras.qif.core.model.vo.QifActivityResult;
+import id.co.quadras.qif.core.model.vo.event.EventHttp;
 import id.co.quadras.qif.engine.guice.GuiceFactory;
 import id.co.quadras.qif.engine.service.EventService;
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,8 +17,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -48,78 +43,36 @@ public class EventDispatcherServlet extends HttpServlet {
         String path = request.getRequestURI().substring(request.getContextPath().length()).replaceFirst("/", "");
         LOGGER.debug("incoming request for path {}", path);
 
-        String qifEventId = HttpEventMap.getMap().get(path);
-        if (Strings.isNullOrEmpty(qifEventId)) {
-            buildResponse(response, HttpServletResponse.SC_NOT_FOUND, null,
-                    "404 : Not Found. No QifEvent configured with HTTP path '" + path + "'.", null);
+        EventService eventService = GuiceFactory.getInjector().getInstance(EventService.class);
+        QifEvent qifEvent = eventService.selectByProperty(EventHttp.HTTP_PATH.getName(), path);
+        if (qifEvent == null) {
+            buildResponse(response, HttpServletResponse.SC_NOT_FOUND, TEXT_PLAIN,
+                    "404 : Not Found. No QifEvent configured with HTTP path '" + path + "'", null);
         } else {
-            EventService eventService = GuiceFactory.getInjector().getInstance(EventService.class);
-            JsonParser jsonParser = GuiceFactory.getInjector().getInstance(JsonParser.class);
+            if (qifEvent.getActiveAcceptMessage()) {
 
-            QifEvent qifEvent = eventService.selectById(qifEventId);
-            if (qifEvent == null) {
-                buildResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, null,
-                        "500 : Internal Server Error. No QifEvent found with id '" + path + "'.", null);
-            } else {
-                if (qifEvent.getActiveAcceptMessage()) {
+                if (QifConstants.GET.equalsIgnoreCase(request.getMethod()) ||
+                        QifConstants.POST.equalsIgnoreCase(request.getMethod())) {
 
-                    if (QifConstants.GET.equalsIgnoreCase(request.getMethod())) {
-                        Map<String, String> message = new HashMap<String, String>();
-
-                        Enumeration<String> headerNames = request.getHeaderNames();
-                        if (headerNames != null) {
-                            while (headerNames.hasMoreElements()) {
-                                String header = headerNames.nextElement();
-                                message.put(header, enumerationToString(request.getHeaders(header)));
-                            }
-                        }
-
-                        Map<String, String[]> parameterMap = request.getParameterMap();
-                        if (parameterMap != null) {
-                            for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
-                                message.put(entry.getKey(), StringUtil.getFirst(entry.getValue()));
-                            }
-                        }
-
-                        message.put(HttpHeader.REMOTE_ADDRESS, request.getRemoteAddr());
-
-                        String jsonMessage = jsonParser.parseToString(false, message);
-                        QifActivityResult result = executeEvent(jsonMessage, qifEvent);
-                        buildResponseFromResult(response, result);
-                    } else if (QifConstants.POST.equalsIgnoreCase(request.getMethod())) {
-                        Map<String, String> message = new HashMap<String, String>();
-
-                        Enumeration<String> headerNames = request.getHeaderNames();
-                        while (headerNames.hasMoreElements()) {
-                            String header = headerNames.nextElement();
-                            message.put(header, enumerationToString(request.getHeaders(header)));
-                        }
-
-                        String httpBody = IOUtils.toString(request.getReader());
-                        message.put(QifConstants.HTTP_BODY, httpBody);
-                        message.put(HttpHeader.REMOTE_ADDRESS, request.getRemoteAddr());
-
-                        String jsonMessage = jsonParser.parseToString(false, message);
-                        QifActivityResult result = executeEvent(jsonMessage, qifEvent);
-                        buildResponseFromResult(response, result);
-                    } else {
-                        String errorMessage = "405 : Method Not Allowed. HTTP Method " + request.getMethod() + " not supported, currently only support for GET and POST";
-                        buildResponse(response, HttpServletResponse.SC_METHOD_NOT_ALLOWED, null, errorMessage, null);
-                    }
-
+                    QifActivityResult result = executeEvent(request, qifEvent);
+                    buildResponseFromResult(response, result);
                 } else {
-                    String errorMessage = "503 : Service Unavailable. QifEvent is not activated, please try again later";
-                    buildResponse(response, HttpServletResponse.SC_SERVICE_UNAVAILABLE, null, errorMessage, null);
+                    String errorMessage = "405 : Method Not Allowed. HTTP Method " + request.getMethod() + " not supported, currently only support for GET and POST";
+                    buildResponse(response, HttpServletResponse.SC_METHOD_NOT_ALLOWED, TEXT_PLAIN, errorMessage, null);
                 }
+
+            } else {
+                String errorMessage = "503 : Service Unavailable. QifEvent is not activated, please try again later";
+                buildResponse(response, HttpServletResponse.SC_SERVICE_UNAVAILABLE, TEXT_PLAIN, errorMessage, null);
             }
         }
     }
 
-    private QifActivityResult executeEvent(String jsonMessage, QifEvent qifEvent) {
+    private QifActivityResult executeEvent(HttpServletRequest request, QifEvent qifEvent) {
         QifActivityResult result;
         try {
             QifProcess qifProcess = (QifProcess) GuiceFactory.getInjector().getInstance(Class.forName(qifEvent.getQifProcess()));
-            result = qifProcess.executeProcess(qifEvent, jsonMessage, null);
+            result = qifProcess.executeProcess(qifEvent, request, null);
         } catch (ClassNotFoundException e) {
             LOGGER.error(e.getLocalizedMessage(), e);
             String error = "FATAL : Class not found " + qifEvent.getQifProcess();
@@ -145,7 +98,7 @@ public class EventDispatcherServlet extends HttpServlet {
 
         if (resultHeader != null) {
             for (Map.Entry<String, String> entry : resultHeader.entrySet()) {
-                LOGGER.debug("set header for HTTP Respose key = {} | value = {}", entry.getKey(), entry.getValue());
+                LOGGER.debug("set header for HTTP response with key = {} | value = {}", entry.getKey(), entry.getValue());
                 response.setHeader(entry.getKey(), entry.getValue());
             }
         }
@@ -157,25 +110,14 @@ public class EventDispatcherServlet extends HttpServlet {
 
         if (QifActivity.SUCCESS.equals(result.getStatus())) {
             String body = result.getResult().toString();
-            buildResponse(response, HttpServletResponse.SC_OK, null, body, result.getAdditionalData());
+            buildResponse(response, HttpServletResponse.SC_OK, TEXT_PLAIN, body, result.getAdditionalData());
         } else if (QifActivity.ERROR.equals(result.getStatus())) {
             String body = "500 Internal Server Error. " + result.getResult().toString();
-            buildResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, null, body, result.getAdditionalData());
+            buildResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, TEXT_PLAIN, body, result.getAdditionalData());
         } else {
             String body = "500 Internal Server Error. Response status should be SUCCESS or ERROR";
-            buildResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, null, body, result.getAdditionalData());
+            buildResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, TEXT_PLAIN, body, result.getAdditionalData());
         }
-    }
-
-    private String enumerationToString(Enumeration<String> enumeration) {
-        StringBuilder value = new StringBuilder("");
-        if (enumeration != null) {
-            while (enumeration.hasMoreElements()) {
-                String header = enumeration.nextElement();
-                value.append(header + ",");
-            }
-        }
-        return value.toString();
     }
 
 }

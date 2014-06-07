@@ -171,6 +171,21 @@ CREATE TABLE qif.QIF_ACTIVITY_LOG_DATA
   CONSTRAINT pk_act_log_data PRIMARY KEY (id)
 );
 
+CREATE TABLE qif.APP_SETTING
+(
+  id CHAR(32) NOT NULL,
+  active char(1) default 'Y',
+  create_by character varying(500),
+  create_date timestamp default now(),
+  last_update_by character varying(500),
+  last_update_date timestamp default now(),
+  code character varying(500),
+  string_value character varying(500),
+  setting_category character varying(500),
+  description character varying(255),
+  CONSTRAINT pk_app_setting PRIMARY KEY (id)
+);
+
 ALTER TABLE qif.QIF_COUNTER OWNER TO qif;
 ALTER TABLE qif.QIF_EVENT OWNER TO qif;
 ALTER TABLE qif.QIF_EVENT_PROPERTY OWNER TO qif;
@@ -182,3 +197,4 @@ ALTER TABLE qif.QIF_ACTIVITY_LOG OWNER TO qif;
 ALTER TABLE qif.QIF_ACTIVITY_LOG_DATA OWNER TO qif;
 ALTER TABLE qif.QIF_ACTIVITY_LOG_INPUT_MSG OWNER TO qif;
 ALTER TABLE qif.QIF_ACTIVITY_LOG_OUTPUT_MSG OWNER TO qif;
+ALTER TABLE qif.APP_SETTING OWNER TO qif;

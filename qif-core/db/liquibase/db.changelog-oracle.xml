@@ -14,7 +14,7 @@
             <column name="ID" type="char(32)" defaultValue="SYS_GUID()">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="PK_EVENT_LOG" />
             </column>
-            <column name="ACTIVE" type="char(1)" defaultValue="N" />
+            <column name="ACTIVE" type="char(1)" defaultValue="Y" />
             <column name="CREATE_BY" type="varchar2(500)" />
             <column name="CREATE_DATE" type="timestamp" defaultValue="SYSTIMESTAMP" />
             <column name="LAST_UPDATE_BY" type="varchar2(500)" />
@@ -29,7 +29,7 @@
             <column name="ID" type="char(32)" defaultValue="SYS_GUID()">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="PK_EVENT_LOG_MSG" />
             </column>
-            <column name="ACTIVE" type="char(1)" defaultValue="N" />
+            <column name="ACTIVE" type="char(1)" defaultValue="Y" />
             <column name="CREATE_BY" type="varchar2(500)" />
             <column name="CREATE_DATE" type="timestamp" defaultValue="SYSTIMESTAMP" />
             <column name="LAST_UPDATE_BY" type="varchar2(500)" />
@@ -43,7 +43,7 @@
             <column name="ID" type="char(32)" defaultValue="SYS_GUID()">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="PK_ACT_LOG" />
             </column>
-            <column name="ACTIVE" type="char(1)" defaultValue="N" />
+            <column name="ACTIVE" type="char(1)" defaultValue="Y" />
             <column name="CREATE_BY" type="varchar2(500)" />
             <column name="CREATE_DATE" type="timestamp" defaultValue="SYSTIMESTAMP" />
             <column name="LAST_UPDATE_BY" type="varchar2(500)" />
@@ -63,7 +63,7 @@
             <column name="ID" type="char(32)" defaultValue="SYS_GUID()">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="PK_ACT_LOG_IN" />
             </column>
-            <column name="ACTIVE" type="char(1)" defaultValue="N" />
+            <column name="ACTIVE" type="char(1)" defaultValue="Y" />
             <column name="CREATE_BY" type="varchar2(500)" />
             <column name="CREATE_DATE" type="timestamp" defaultValue="SYSTIMESTAMP" />
             <column name="LAST_UPDATE_BY" type="varchar2(500)" />
@@ -77,7 +77,7 @@
             <column name="ID" type="char(32)" defaultValue="SYS_GUID()">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="PK_ACT_LOG_OUT" />
             </column>
-            <column name="ACTIVE" type="char(1)" defaultValue="N" />
+            <column name="ACTIVE" type="char(1)" defaultValue="Y" />
             <column name="CREATE_BY" type="varchar2(500)" />
             <column name="CREATE_DATE" type="timestamp" defaultValue="SYSTIMESTAMP" />
             <column name="LAST_UPDATE_BY" type="varchar2(500)" />
@@ -91,7 +91,7 @@
             <column name="ID" type="char(32)" defaultValue="SYS_GUID()">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="PK_ACT_LOG_DATA" />
             </column>
-            <column name="ACTIVE" type="char(1)" defaultValue="N" />
+            <column name="ACTIVE" type="char(1)" defaultValue="Y" />
             <column name="CREATE_BY" type="varchar2(500)" />
             <column name="CREATE_DATE" type="timestamp" defaultValue="SYSTIMESTAMP" />
             <column name="LAST_UPDATE_BY" type="varchar2(500)" />
@@ -106,7 +106,7 @@
             <column name="ID" type="char(32)" defaultValue="SYS_GUID()">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="PK_EVENT" />
             </column>
-            <column name="ACTIVE" type="char(1)" defaultValue="N" />
+            <column name="ACTIVE" type="char(1)" defaultValue="Y" />
             <column name="CREATE_BY" type="varchar2(500)" />
             <column name="CREATE_DATE" type="timestamp" defaultValue="SYSTIMESTAMP" />
             <column name="LAST_UPDATE_BY" type="varchar2(500)" />
@@ -126,7 +126,7 @@
             <column name="ID" type="char(32)" defaultValue="SYS_GUID()">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="PK_EVENT_PROP" />
             </column>
-            <column name="ACTIVE" type="char(1)" defaultValue="N" />
+            <column name="ACTIVE" type="char(1)" defaultValue="Y" />
             <column name="CREATE_BY" type="varchar2(500)" />
             <column name="CREATE_DATE" type="timestamp" defaultValue="SYSTIMESTAMP" />
             <column name="LAST_UPDATE_BY" type="varchar2(500)" />
@@ -141,7 +141,7 @@
             <column name="ID" type="char(32)" defaultValue="SYS_GUID()">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="PK_ADAPTER" />
             </column>
-            <column name="ACTIVE" type="char(1)" defaultValue="N" />
+            <column name="ACTIVE" type="char(1)" defaultValue="Y" />
             <column name="CREATE_BY" type="varchar2(500)" />
             <column name="CREATE_DATE" type="timestamp" defaultValue="SYSTIMESTAMP" />
             <column name="LAST_UPDATE_BY" type="varchar2(500)" />
@@ -156,7 +156,7 @@
             <column name="ID" type="char(32)" defaultValue="SYS_GUID()">
                 <constraints primaryKey="true" nullable="false" primaryKeyName="PK_ADAPTER_PROP" />
             </column>
-            <column name="ACTIVE" type="char(1)" defaultValue="N" />
+            <column name="ACTIVE" type="char(1)" defaultValue="Y" />
             <column name="CREATE_BY" type="varchar2(500)" />
             <column name="CREATE_DATE" type="timestamp" defaultValue="SYSTIMESTAMP" />
             <column name="LAST_UPDATE_BY" type="varchar2(500)" />
@@ -178,4 +178,22 @@
             <column name="QIF_ADAPTER_ID" type="char(32)" />
         </addColumn>
     </changeSet>
+    <changeSet id="add-table-1" author="irwin">
+        <createTable tableName="APP_SETTING">
+            <column name="ID" type="char(32)" defaultValue="SYS_GUID()">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="PK_APP_SETTING" />
+            </column>
+            <column name="ACTIVE" type="char(1)" defaultValue="Y" />
+            <column name="CREATE_BY" type="varchar2(500)" />
+            <column name="CREATE_DATE" type="timestamp" defaultValue="SYSTIMESTAMP" />
+            <column name="LAST_UPDATE_BY" type="varchar2(500)" />
+            <column name="LAST_UPDATE_DATE" type="timestamp" defaultValue="SYSTIMESTAMP" />
+
+            <column name="CODE" type="varchar2(500)" />
+            <column name="STRING_VALUE" type="varchar2(500)" />
+            <column name="SETTING_CATEGORY" type="varchar2(500)" />
+            <column name="DESCRIPTION" type="varchar2(500)" />
+        </createTable>
+    </changeSet>
+
 </databaseChangeLog>

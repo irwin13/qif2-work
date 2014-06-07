@@ -9,4 +9,5 @@ import java.util.List;
  */
 public interface EventPropertyDao {
     public List<QifEventProperty> selectByEvent(String eventId);
+    public List<QifEventProperty> select(QifEventProperty filter);
 }

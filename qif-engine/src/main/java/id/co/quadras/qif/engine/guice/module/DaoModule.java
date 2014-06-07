@@ -3,6 +3,8 @@ package id.co.quadras.qif.engine.guice.module;
 import com.google.inject.AbstractModule;
 import com.irwin13.winwork.mybatis.guice.provider.SqlSessionFactoryProvider;
 import id.co.quadras.qif.engine.dao.*;
+import id.co.quadras.qif.engine.dao.app.AppSettingDao;
+import id.co.quadras.qif.engine.dao.app.imp.AppSettingDaoImp;
 import id.co.quadras.qif.engine.dao.imp.*;
 import id.co.quadras.qif.engine.dao.log.*;
 import id.co.quadras.qif.engine.dao.log.imp.*;
@@ -22,11 +24,11 @@ public class DaoModule extends AbstractModule {
         // LOG
         bind(ActivityLogDao.class).to(ActivityLogDaoImp.class);
         bind(ActivityLogDataDao.class).to(ActivityLogDataDaoImp.class);
-        bind(ActivityLogInputMessageDao.class).to(ActivityLogInputMessageDaoImp.class);
-        bind(ActivityLogOutputMessageDao.class).to(ActivityLogOutputMessageDaoImp.class);
+        bind(ActivityLogInputMsgDao.class).to(ActivityLogInputMsgDaoImp.class);
+        bind(ActivityLogOutputMsgDao.class).to(ActivityLogOutputMsgDaoImp.class);
 
         bind(EventLogDao.class).to(EventLogDaoImp.class);
-        bind(EventLogMessageDao.class).to(EventLogMessageDaoImp.class);
+        bind(EventLogMsgDao.class).to(EventLogMsgDaoImp.class);
 
         // CONFIGURATION
         bind(EventDao.class).to(EventDaoImp.class);
@@ -35,6 +37,10 @@ public class DaoModule extends AbstractModule {
         bind(AdapterDao.class).to(AdapterDaoImp.class);
         bind(AdapterPropertyDao.class).to(AdapterPropertyDaoImp.class);
 
+        // Counter
         bind(CounterDao.class).to(CounterDaoImp.class);
+
+        // APP
+        bind(AppSettingDao.class).to(AppSettingDaoImp.class);
     }
 }

@@ -7,6 +7,6 @@ import java.util.List;
 /**
  * @author irwin Timestamp : 15/05/2014 22:29
  */
-public interface ActivityLogOutputMessageDao {
+public interface ActivityLogOutputMsgDao {
     public void batchInsert(List<QifActivityLogOutputMsg> logList);
 }

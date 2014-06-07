@@ -47,4 +47,36 @@ public class EventServiceImp implements EventService {
         }
         return result;
     }
+
+    @Override
+    public QifEvent selectByProperty(String propertyKey, String propertyValue) {
+        QifEvent qifEvent = null;
+        QifEventProperty propertyFilter = new QifEventProperty();
+        propertyFilter.setPropertyKey(propertyKey);
+        propertyFilter.setPropertyValue(propertyValue);
+
+        List<QifEventProperty> propertyList = eventPropertyDao.select(propertyFilter);
+        if (propertyList != null && !propertyList.isEmpty()) {
+            QifEventProperty property = propertyList.get(0);
+            qifEvent = selectById(property.getQifEventId());
+        }
+        return qifEvent;
+    }
+
+    @Override
+    public List<QifEvent> selectByPropertyKey(String propertyKey) {
+        List<QifEvent> eventList = new LinkedList<QifEvent>();
+        QifEventProperty propertyFilter = new QifEventProperty();
+        propertyFilter.setPropertyKey(propertyKey);
+
+        List<QifEventProperty> propertyList = eventPropertyDao.select(propertyFilter);
+        if (propertyList != null && !propertyList.isEmpty()) {
+            for (QifEventProperty property : propertyList) {
+                QifEvent qifEvent = selectById(property.getQifEventId());
+                eventList.add(qifEvent);
+            }
+
+        }
+        return eventList;
+    }
 }

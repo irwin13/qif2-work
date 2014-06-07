@@ -29,4 +29,9 @@ public class EventPropertyDaoImp implements EventPropertyDao {
         filter.setQifEventId(eventId);
         return basicDao.select(filter, new SortParameter("property_key", SortParameter.ASC));
     }
+
+    @Override
+    public List<QifEventProperty> select(QifEventProperty filter) {
+        return basicDao.select(filter, null);
+    }
 }

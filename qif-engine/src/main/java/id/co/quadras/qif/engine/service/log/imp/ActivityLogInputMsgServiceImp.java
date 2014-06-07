@@ -2,20 +2,20 @@ package id.co.quadras.qif.engine.service.log.imp;
 
 import com.google.inject.Inject;
 import id.co.quadras.qif.core.model.entity.log.QifActivityLogInputMsg;
-import id.co.quadras.qif.engine.dao.log.ActivityLogInputMessageDao;
-import id.co.quadras.qif.engine.service.log.ActivityLogInputMessageService;
+import id.co.quadras.qif.engine.dao.log.ActivityLogInputMsgDao;
+import id.co.quadras.qif.engine.service.log.ActivityLogInputMsgService;
 
 import java.util.List;
 
 /**
  * @author irwin Timestamp : 17/05/2014 22:12
  */
-public class ActivityLogInputMessageServiceImp implements ActivityLogInputMessageService {
+public class ActivityLogInputMsgServiceImp implements ActivityLogInputMsgService {
 
-    private final ActivityLogInputMessageDao dao;
+    private final ActivityLogInputMsgDao dao;
 
     @Inject
-    public ActivityLogInputMessageServiceImp(ActivityLogInputMessageDao dao) {
+    public ActivityLogInputMsgServiceImp(ActivityLogInputMsgDao dao) {
         this.dao = dao;
     }
 

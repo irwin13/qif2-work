@@ -12,7 +12,7 @@ import id.co.quadras.qif.core.model.vo.event.SchedulerInterval;
 import id.co.quadras.qif.engine.guice.GuiceFactory;
 import id.co.quadras.qif.engine.job.QifEventConcurrentJob;
 import id.co.quadras.qif.engine.job.QifEventSingleInstanceJob;
-import id.co.quadras.qif.engine.job.timertask.*;
+import id.co.quadras.qif.engine.job.internal.*;
 import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,8 +27,7 @@ import java.util.Timer;
  */
 public final class SchedulerStarter {
 
-    private static final long LOG_PERSIST_DELAY = 30000;
-    private static final long DEFAULT_LOG_PERSIST_INTERVAL = 5000;
+    private static final int DEFAULT_LOG_PERSIST_INTERVAL = 5000;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SchedulerStarter.class);
     private final BasicSchedulerManager schedulerManager;
@@ -100,30 +99,69 @@ public final class SchedulerStarter {
         }
     }
 
-    public void startInternalScheduler() {
-        EventLogPersist eventLogPersist = GuiceFactory.getInjector().getInstance(EventLogPersist.class);
-        new Timer().schedule(eventLogPersist, LOG_PERSIST_DELAY, DEFAULT_LOG_PERSIST_INTERVAL);
+    public void startInternalScheduler() throws SchedulerException {
+        // event log
+        schedulerManager.add(
+                schedulerManager.createJobDetail(EventLogMsgPersist.class,
+                                                schedulerManager.createJobKey(EventLogMsgPersist.class.getName()),
+                                                null),
+                schedulerManager.createIntervalTrigger(schedulerManager.createTriggerKey(EventLogMsgPersist.class.getName()),
+                                                        DEFAULT_LOG_PERSIST_INTERVAL,
+                                                        true));
 
-        EventLogMessagePersist eventLogMessagePersist =
-                GuiceFactory.getInjector().getInstance(EventLogMessagePersist.class);
-        new Timer().schedule(eventLogMessagePersist, LOG_PERSIST_DELAY, DEFAULT_LOG_PERSIST_INTERVAL);
+        schedulerManager.add(
+                schedulerManager.createJobDetail(EventLogPersist.class,
+                        schedulerManager.createJobKey(EventLogPersist.class.getName()),
+                        null),
+                schedulerManager.createIntervalTrigger(schedulerManager.createTriggerKey(EventLogPersist.class.getName()),
+                        DEFAULT_LOG_PERSIST_INTERVAL,
+                        true));
 
-        ActivityLogPersist activityLogPersist = GuiceFactory.getInjector().getInstance(ActivityLogPersist.class);
-        new Timer().schedule(activityLogPersist, LOG_PERSIST_DELAY, DEFAULT_LOG_PERSIST_INTERVAL);
+        // activity log
+        schedulerManager.add(
+                schedulerManager.createJobDetail(ActivityLogPersist.class,
+                        schedulerManager.createJobKey(ActivityLogPersist.class.getName()),
+                        null),
+                schedulerManager.createIntervalTrigger(schedulerManager.createTriggerKey(ActivityLogPersist.class.getName()),
+                        DEFAULT_LOG_PERSIST_INTERVAL,
+                        true));
 
-        ActivityLogDataPersist activityLogDataPersist =
-                GuiceFactory.getInjector().getInstance(ActivityLogDataPersist.class);
-        new Timer().schedule(activityLogDataPersist, LOG_PERSIST_DELAY, DEFAULT_LOG_PERSIST_INTERVAL);
+        schedulerManager.add(
+                schedulerManager.createJobDetail(ActivityLogDataPersist.class,
+                        schedulerManager.createJobKey(ActivityLogDataPersist.class.getName()),
+                        null),
+                schedulerManager.createIntervalTrigger(schedulerManager.createTriggerKey(ActivityLogDataPersist.class.getName()),
+                        DEFAULT_LOG_PERSIST_INTERVAL,
+                        true));
 
-        ActivityLogInputMessagePersist activityLogInputMessagePersist =
-                GuiceFactory.getInjector().getInstance(ActivityLogInputMessagePersist.class);
-        new Timer().schedule(activityLogInputMessagePersist, LOG_PERSIST_DELAY, DEFAULT_LOG_PERSIST_INTERVAL);
+        schedulerManager.add(
+                schedulerManager.createJobDetail(ActivityLogInputMsgPersist.class,
+                        schedulerManager.createJobKey(ActivityLogInputMsgPersist.class.getName()),
+                        null),
+                schedulerManager.createIntervalTrigger(schedulerManager.createTriggerKey(ActivityLogInputMsgPersist.class.getName()),
+                        DEFAULT_LOG_PERSIST_INTERVAL,
+                        true));
 
-        ActivityLogOutputMessagePersist activityLogOutputMessagePersist =
-                GuiceFactory.getInjector().getInstance(ActivityLogOutputMessagePersist.class);
-        new Timer().schedule(activityLogOutputMessagePersist, LOG_PERSIST_DELAY, DEFAULT_LOG_PERSIST_INTERVAL);
+        schedulerManager.add(
+                schedulerManager.createJobDetail(ActivityLogOutputMsgPersist.class,
+                        schedulerManager.createJobKey(ActivityLogOutputMsgPersist.class.getName()),
+                        null),
+                schedulerManager.createIntervalTrigger(schedulerManager.createTriggerKey(ActivityLogOutputMsgPersist.class.getName()),
+                        DEFAULT_LOG_PERSIST_INTERVAL,
+                        true));
 
-        CounterUpdate counterUpdate = GuiceFactory.getInjector().getInstance(CounterUpdate.class);
-        new Timer().schedule(counterUpdate, LOG_PERSIST_DELAY, DEFAULT_LOG_PERSIST_INTERVAL);
+        // Counter update
+        schedulerManager.add(
+                schedulerManager.createJobDetail(CounterUpdate.class,
+                        schedulerManager.createJobKey(CounterUpdate.class.getName()),
+                        null),
+                schedulerManager.createIntervalTrigger(schedulerManager.createTriggerKey(CounterUpdate.class.getName()),
+                        DEFAULT_LOG_PERSIST_INTERVAL,
+                        true));
+
+        if (!schedulerManager.isStarted()) {
+            schedulerManager.start();
+        }
+
     }
 }

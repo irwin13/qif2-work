@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="sqlmap.com.irwin13.winwork.basic.model.entity.app.AppSetting">
+
+    <cache type="org.mybatis.caches.hazelcast.HazelcastCache" />
+
+    <resultMap id="AppSettingResult" type="AppSetting">
+        <result property="id" column="id"/>
+        <result property="active" column="active"
+                typeHandler="com.irwin13.winwork.mybatis.typehandler.YesNoBooleanTypeHandler"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createDate" column="create_date"/>
+        <result property="lastUpdateBy" column="last_update_by"/>
+        <result property="lastUpdateDate" column="last_update_date"/>
+
+        <result property="code" column="code"/>
+        <result property="stringValue" column="string_value"/>
+        <result property="settingCategory" column="setting_category"/>
+        <result property="description" column="description"/>
+
+    </resultMap>
+
+    <sql id="allField">
+        id,
+
+        code,
+        string_value,
+        setting_category,
+        description,
+
+        active,
+        create_by,
+        create_date,
+        last_update_by,
+        last_update_date
+    </sql>
+
+    <sql id="defaultWhere">
+        WHERE active = 'Y'
+        <if test="code != null">
+            AND code = #{code}
+        </if>
+        <if test="stringValue != null">
+            AND string_value = #{stringValue}
+        </if>
+        <if test="settingCategory != null">
+            AND setting_category = #{settingCategory}
+        </if>
+        <if test="description != null">
+            AND description = #{description}
+        </if>
+        <if test="columnName != null and columnName != '' and sortMethod != null and sortMethod != ''">
+            ORDER BY ${columnName} ${sortMethod}
+        </if>
+    </sql>
+
+    <select id="select" resultMap="AppSettingResult">
+        SELECT
+        <include refid="allField" />
+        FROM app_setting
+        <include refid="defaultWhere" />
+    </select>
+
+    <select id="selectCount" resultType="_long">
+        SELECT count(id) AS total
+        FROM app_setting
+        <include refid="defaultWhere" />
+    </select>
+
+    <select id="selectById" resultMap="AppSettingResult">
+        SELECT
+        <include refid="allField" />
+        FROM app_setting
+        WHERE id = #{id}
+    </select>
+
+
+</mapper>

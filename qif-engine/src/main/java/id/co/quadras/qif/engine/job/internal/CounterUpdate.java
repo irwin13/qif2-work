@@ -1,6 +1,5 @@
-package id.co.quadras.qif.engine.job.timertask;
+package id.co.quadras.qif.engine.job.internal;
 
-import com.google.inject.Inject;
 import com.irwin13.winwork.basic.WinWorkConstants;
 import id.co.quadras.qif.core.QifProcess;
 import id.co.quadras.qif.core.QifTask;
@@ -10,8 +9,13 @@ import id.co.quadras.qif.core.model.entity.QifCounter;
 import id.co.quadras.qif.core.model.entity.QifEvent;
 import id.co.quadras.qif.engine.ProcessRegister;
 import id.co.quadras.qif.engine.TaskRegister;
+import id.co.quadras.qif.engine.guice.GuiceFactory;
 import id.co.quadras.qif.engine.service.CounterService;
 import id.co.quadras.qif.engine.service.EventService;
+import org.quartz.DisallowConcurrentExecution;
+import org.quartz.Job;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,24 +24,20 @@ import java.util.*;
 /**
  * @author irwin Timestamp : 05/06/2014 16:44
  */
-public class CounterUpdate extends TimerTask {
+@DisallowConcurrentExecution
+public class CounterUpdate implements Job {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CounterUpdate.class);
-
-    private final QifTransactionCounter transactionCounter;
-    private final CounterService counterService;
-    private final EventService eventService;
-
-    @Inject
-    public CounterUpdate(QifTransactionCounter transactionCounter, CounterService counterService,
-                         EventService eventService) {
-        this.transactionCounter = transactionCounter;
-        this.counterService = counterService;
-        this.eventService = eventService;
-    }
+    private QifTransactionCounter transactionCounter;
+    private EventService eventService;
 
     @Override
-    public void run() {
+    public void execute(JobExecutionContext context) throws JobExecutionException {
+
+        transactionCounter = GuiceFactory.getInjector().getInstance(QifTransactionCounter.class);
+        CounterService counterService = GuiceFactory.getInjector().getInstance(CounterService.class);
+        eventService = GuiceFactory.getInjector().getInstance(EventService.class);
+
         List<QifCounter> qifCounterList = new LinkedList<QifCounter>();
         Map<String, Integer> mapCounter = new WeakHashMap<String, Integer>();
 

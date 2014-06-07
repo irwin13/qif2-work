@@ -1,7 +1,7 @@
 package id.co.quadras.qif.engine.guice.module;
 
 import com.google.inject.AbstractModule;
-import id.co.quadras.qif.engine.job.timertask.*;
+import id.co.quadras.qif.engine.job.internal.*;
 import id.co.quadras.qif.engine.service.AdapterService;
 import id.co.quadras.qif.engine.service.CounterService;
 import id.co.quadras.qif.engine.service.EventService;
@@ -22,11 +22,11 @@ public class ServiceModule extends AbstractModule {
         // LOG
         bind(ActivityLogService.class).to(ActivityLogServiceImp.class);
         bind(ActivityLogDataService.class).to(ActivityLogDataServiceImp.class);
-        bind(ActivityLogInputMessageService.class).to(ActivityLogInputMessageServiceImp.class);
-        bind(ActivityLogOutputMessageService.class).to(ActivityLogOutputMessageServiceImp.class);
+        bind(ActivityLogInputMsgService.class).to(ActivityLogInputMsgServiceImp.class);
+        bind(ActivityLogOutputMsgService.class).to(ActivityLogOutputMsgServiceImp.class);
 
         bind(EventLogService.class).to(EventLogServiceImp.class);
-        bind(EventLogMessageService.class).to(EventLogMessageServiceImp.class);
+        bind(EventLogMsgService.class).to(EventLogMsgServiceImp.class);
 
         // CONFIGURATION
         bind(EventService.class).to(EventServiceImp.class);
@@ -35,11 +35,11 @@ public class ServiceModule extends AbstractModule {
         // PERSIST
         bind(ActivityLogPersist.class);
         bind(ActivityLogDataPersist.class);
-        bind(ActivityLogInputMessagePersist.class);
-        bind(ActivityLogOutputMessagePersist.class);
+        bind(ActivityLogInputMsgPersist.class);
+        bind(ActivityLogOutputMsgPersist.class);
 
         bind(EventLogPersist.class);
-        bind(EventLogMessagePersist.class);
+        bind(EventLogMsgPersist.class);
 
         // COUNTER
         bind(CounterService.class).to(CounterServiceImp.class);

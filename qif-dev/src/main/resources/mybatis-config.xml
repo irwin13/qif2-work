@@ -48,6 +48,9 @@
 
         <typeAlias alias="QifCounter" type="id.co.quadras.qif.core.model.entity.QifCounter" />
 
+        <!-- APP -->
+        <typeAlias alias="AppSetting" type="com.irwin13.winwork.basic.model.entity.app.AppSetting" />
+
     </typeAliases>
 
     <environments default="qif">
@@ -108,6 +111,9 @@
 
         <mapper resource="sqlmap/log/QifEventLog.sqlmap.xml"/>
         <mapper resource="sqlmap/log/QifEventLogMsg.sqlmap.xml"/>
+
+        <!-- APP -->
+        <mapper resource="sqlmap/app/AppSetting.sqlmap.xml"/>
 
     </mappers>
 </configuration>

@@ -10,4 +10,7 @@ import java.util.List;
 public interface EventService {
     public QifEvent selectById(String id);
     public List<QifEvent> select(QifEvent filter);
+
+    public QifEvent selectByProperty(String propertyKey, String propertyValue);
+    public List<QifEvent> selectByPropertyKey(String propertyKey);
 }
