@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <qif>
-	<globalSetting
-            logBatchInterval="5"
-            counterBatchInterval="5"
-    />
+	<configFile qifRuntimeConfig="E:\\work\\quadras\\qif2-work\qif-engine\\qif-runtime.properties" />
 
-	<databaseRepository>
-		<environment name="qif" />
+    <rootPackage
+            processRootPackage="id.co.quadras.qif.dev.process"
+            taskRootPackage="id.co.quadras.qif.dev.task" />
+
+    <batchConfig
+
+        />
+
+    <databaseRepository>
         <settings>
             <setting name="cacheEnabled" value="true"/>
             <setting name="lazyLoadingEnabled" value="true"/>

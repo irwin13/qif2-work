@@ -35,6 +35,9 @@ public class QifEngineContextListener implements ServletContextListener {
         LOGGER.info("nodeName = {}", nodeName);
         MDC.put("nodeName", WinWorkUtil.getNodeName());
 
+        String qifConfigFile = servletContextEvent.getServletContext().getInitParameter("qifConfigFile");
+        LOGGER.info("QIF Configuration file = {}", qifConfigFile);
+
         LOGGER.info("=== Starting scan Process and Task package ... ===");
         String rootPackageProcess = servletContextEvent.getServletContext().getInitParameter("rootPackage.process");
         LOGGER.info("initParameter rootPackageProcess = {}", rootPackageProcess);
@@ -48,7 +51,7 @@ public class QifEngineContextListener implements ServletContextListener {
 
         LOGGER.info("=== Starting Guice ... ===");
         List<AbstractModule> moduleList = new LinkedList<AbstractModule>();
-        moduleList.add(new SharedModule());
+        moduleList.add(new SharedModule(qifConfigFile));
         moduleList.add(new DaoModule());
         moduleList.add(new ServiceModule());
         moduleList.add(new TaskModule(TaskRegister.getTaskSet()));

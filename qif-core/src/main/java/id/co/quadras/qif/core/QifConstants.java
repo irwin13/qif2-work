@@ -14,4 +14,6 @@ public final class QifConstants {
     public static final String HTTP_PATH = "httpPath";
     public static final String HTTP_BODY = "httpBody";
 
+    public static final int DEFAULT_LOG_FETCH = 10;
+    public static final int DEFAULT_LOG_INTERVAL = 10;
 }

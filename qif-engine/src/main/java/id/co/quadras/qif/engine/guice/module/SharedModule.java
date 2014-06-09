@@ -28,6 +28,12 @@ import org.quartz.Scheduler;
  */
 public class SharedModule extends AbstractModule {
 
+    private final String qifConfigFile;
+
+    public SharedModule(String qifConfigFile) {
+        this.qifConfigFile = qifConfigFile;
+    }
+
     @Override
     protected void configure() {
 
@@ -37,8 +43,8 @@ public class SharedModule extends AbstractModule {
                 .toInstance("common-config.xml");
 
         bind(String.class)
-                .annotatedWith(Names.named("myBatisConfigFile"))
-                .toInstance("mybatis-config.xml");
+                .annotatedWith(Names.named("qifConfigFile"))
+                .toInstance(qifConfigFile);
 
         bind(WinWorkConfig.class).to(QifConfig.class).in(Singleton.class);
         bind(WinWorkVelocityUtil.class);
