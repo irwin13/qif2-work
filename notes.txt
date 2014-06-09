@@ -107,3 +107,4 @@ http://code.google.com/p/guava-libraries/wiki/NewCollectionTypesExplained#Multis
     qifAdapterUtil.getAdapter(name)
     qifAdapterUtil.getAdapterProperty(key)
 
+test commit from debian
