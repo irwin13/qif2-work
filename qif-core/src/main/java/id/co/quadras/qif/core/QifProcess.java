@@ -36,6 +36,11 @@ public abstract class QifProcess implements QifActivity {
         return TYPE;
     }
 
+    @Override
+    public String activityName() {
+        return getClass().getName();
+    }
+
     @Inject
     protected JsonParser jsonParser;
 

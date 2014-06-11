@@ -18,9 +18,4 @@ public class FtpXmlToFile extends FtpEvent {
         executeTask(EngineFactory.getInjector(), WriteToFile.class, bosList);
         return new QifActivityResult(SUCCESS, null, null);
     }
-
-    @Override
-    public String activityName() {
-        return getClass().getCanonicalName();
-    }
 }

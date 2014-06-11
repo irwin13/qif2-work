@@ -4,6 +4,7 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import id.co.quadras.qif.core.QifTaskMessage;
 import id.co.quadras.qif.dev.message.Book;
 import id.co.quadras.qif.core.model.vo.QifActivityResult;
+import id.co.quadras.qif.engine.AbstractTask;
 
 import java.io.IOException;
 
@@ -27,10 +28,5 @@ public class JsonToXml extends AbstractTask {
         }
         logger.debug("xml output = {}", result);
         return new QifActivityResult(SUCCESS, result, null);
-    }
-
-    @Override
-    public String activityName() {
-        return getClass().getCanonicalName();
     }
 }

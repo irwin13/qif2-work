@@ -24,10 +24,4 @@ public class FileJsonToFtp extends FileEvent {
 
         return new QifActivityResult(SUCCESS, null, null);
     }
-
-
-    @Override
-    public String activityName() {
-        return getClass().getCanonicalName();
-    }
 }

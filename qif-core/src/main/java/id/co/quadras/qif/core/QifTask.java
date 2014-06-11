@@ -37,6 +37,11 @@ public abstract class QifTask implements QifActivity {
         return TYPE;
     }
 
+    @Override
+    public String activityName() {
+        return getClass().getName();
+    }
+
     protected abstract QifActivityResult implementTask(QifTaskMessage qifTaskMessage);
 
     /**

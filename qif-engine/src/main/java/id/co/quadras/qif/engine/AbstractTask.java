@@ -1,4 +1,4 @@
-package id.co.quadras.qif.dev.task;
+package id.co.quadras.qif.engine;
 
 import com.google.inject.Inject;
 import id.co.quadras.qif.core.QifTask;
@@ -10,7 +10,7 @@ import id.co.quadras.qif.engine.service.AdapterService;
 import java.util.List;
 
 /**
- * @author irwin Timestamp : 28/05/2014 11:07
+ * @author irwin Timestamp : 11/06/2014 21:51
  */
 public abstract class AbstractTask extends QifTask {
 
@@ -35,5 +35,4 @@ public abstract class AbstractTask extends QifTask {
         }
         return result;
     }
-
 }
