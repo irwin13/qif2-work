@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="rootPackage">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute type="xs:string" name="processRootPackage"/>
+          <xs:attribute type="xs:string" name="taskRootPackage"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="dataSource">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute type="xs:string" name="type"/>
+          <xs:attribute type="xs:string" name="url"/>
+          <xs:attribute type="xs:string" name="driver"/>
+          <xs:attribute type="xs:string" name="username"/>
+          <xs:attribute type="xs:string" name="password"/>
+          <xs:attribute type="xs:string" name="validationQuery"/>
+          <xs:attribute type="xs:string" name="initialSize"/>
+          <xs:attribute type="xs:string" name="maxActive"/>
+          <xs:attribute type="xs:string" name="maxIdle"/>
+          <xs:attribute type="xs:string" name="minIdle"/>
+          <xs:attribute type="xs:string" name="testOnBorrow"/>
+          <xs:attribute type="xs:string" name="jmxEnabled"/>
+          <xs:attribute type="xs:string" name="testWhileIdle"/>
+          <xs:attribute type="xs:string" name="testOnReturn"/>
+          <xs:attribute type="xs:string" name="minEvictableIdleTimeMillis"/>
+          <xs:attribute type="xs:string" name="validationInterval"/>
+          <xs:attribute type="xs:string" name="timeBetweenEvictionRunsMillis"/>
+          <xs:attribute type="xs:string" name="maxWait"/>
+          <xs:attribute type="xs:string" name="logAbandoned"/>
+          <xs:attribute type="xs:string" name="removeAbandoned"/>
+          <xs:attribute type="xs:string" name="removeAbandonedTimeout"/>
+          <xs:attribute type="xs:string" name="jdbcInterceptors"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="qif">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="rootPackage"/>
+        <xs:element ref="batchConfig"/>
+        <xs:element ref="databaseRepository">
+          <xs:annotation>
+            <xs:documentation>JNDI This implementation of DataSource is intended for use with containers such as EJB or Application Servers
+        that may configure the DataSource centrally or externally and place a reference to it in a JNDI context.
+
+        initial_context This property is used for the Context lookup from the InitialContext
+        (i.e. initialContext.lookup(initial_context)).
+        This property is optional, and if omitted, then the data_source property will be looked up against the InitialContext directly.
+
+        Similar to the other DataSource configurations,
+        it's possible to send properties directly to the InitialContext by prefixing those properties with "env."
+        example : env.encoding=UTF8
+        This would send the property encoding with the value of UTF8 to the constructor of the InitialContext upon instantiation.
+        
+        &lt;dataSource type="JNDI"
+            data_source=""
+            initial_context=""
+        /></xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="databaseRepository">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="dbSettings">
+          <xs:annotation>
+            <xs:documentation>set value to "" for defaultStatementTimeout if the JDBC driver doesn't support it, for example : PostgreSQL</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element ref="transactionManager">
+          <xs:annotation>
+            <xs:documentation>transactionManager = JDBC or MANAGED 
+        JDBC This configuration simply makes use of the JDBC commit and rollback facilities directly.
+        It relies on the connection retrieved from the dataSource to manage the scope of the transaction</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element ref="dataSource">
+          <xs:annotation>
+            <xs:documentation>MANAGED This configuration simply does almost nothing.
+         It never commits, or rolls back a connection.
+         Instead, it lets the container manage the full lifecycle of the transaction (e.g. a JEE Application Server context).
+         By default it does close the connection.
+         However, some containers don't expect this, and thus if you need to stop it from closing the connection,
+         set the "closeConnection" property to false
+        
+        &lt;transactionManager type="MANAGED" closeConnection="false"
+
+         dataSource = POOLED or JNDI 
+        POOLED This implementation of DataSource pools JDBC Connection objects
+        to avoid the initial connection and authentication time required to create a new Connection instance.</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="transactionManager">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute type="xs:string" name="type"/>
+          <xs:attribute type="xs:string" name="closeConnection"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="batchConfig">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute type="xs:string" name="eventLogPersistInterval"/>
+          <xs:attribute type="xs:string" name="eventLogMsgPersistInterval"/>
+          <xs:attribute type="xs:string" name="activityLogPersistInterval"/>
+          <xs:attribute type="xs:string" name="activityLogDataPersistInterval"/>
+          <xs:attribute type="xs:string" name="activityLogInputMsgPersistInterval"/>
+          <xs:attribute type="xs:string" name="activityLogOutputMsgPersistInterval"/>
+          <xs:attribute type="xs:string" name="counterUpdateInterval"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="dbSettings">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute type="xs:string" name="cacheEnabled"/>
+          <xs:attribute type="xs:string" name="lazyLoadingEnabled"/>
+          <xs:attribute type="xs:string" name="multipleResultSetsEnabled"/>
+          <xs:attribute type="xs:string" name="useColumnLabel"/>
+          <xs:attribute type="xs:string" name="useGeneratedKeys"/>
+          <xs:attribute type="xs:string" name="autoMappingBehavior"/>
+          <xs:attribute type="xs:string" name="defaultExecutorType"/>
+          <xs:attribute type="xs:string" name="defaultStatementTimeout"/>
+          <xs:attribute type="xs:string" name="safeRowBoundsEnabled"/>
+          <xs:attribute type="xs:string" name="mapUnderscoreToCamelCase"/>
+          <xs:attribute type="xs:string" name="localCacheScope"/>
+          <xs:attribute type="xs:string" name="jdbcTypeForNull"/>
+          <xs:attribute type="xs:string" name="lazyLoadTriggerMethods"/>
+          <xs:attribute type="xs:string" name="logPrefix"/>
+          <xs:attribute type="xs:string" name="logImpl"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

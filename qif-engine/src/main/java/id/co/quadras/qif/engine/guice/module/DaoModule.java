@@ -1,14 +1,12 @@
 package id.co.quadras.qif.engine.guice.module;
 
 import com.google.inject.AbstractModule;
-import com.irwin13.winwork.mybatis.guice.provider.SqlSessionFactoryProvider;
 import id.co.quadras.qif.engine.dao.*;
 import id.co.quadras.qif.engine.dao.app.AppSettingDao;
 import id.co.quadras.qif.engine.dao.app.imp.AppSettingDaoImp;
 import id.co.quadras.qif.engine.dao.imp.*;
 import id.co.quadras.qif.engine.dao.log.*;
 import id.co.quadras.qif.engine.dao.log.imp.*;
-import org.apache.ibatis.session.SqlSessionFactory;
 
 /**
  * @author irwin Timestamp : 12/05/2014 17:16
@@ -17,9 +15,6 @@ public class DaoModule extends AbstractModule {
 
     @Override
     protected void configure() {
-
-        // MyBatis
-        bind(SqlSessionFactory.class).toProvider(SqlSessionFactoryProvider.class);
 
         // LOG
         bind(ActivityLogDao.class).to(ActivityLogDaoImp.class);

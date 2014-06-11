@@ -5,6 +5,7 @@ import com.irwin13.winwork.basic.model.SortParameter;
 import com.irwin13.winwork.mybatis.dao.BasicMyBatisDao;
 import id.co.quadras.qif.core.model.entity.QifEventProperty;
 import id.co.quadras.qif.engine.dao.EventPropertyDao;
+import id.co.quadras.qif.engine.sqlmap.QifEventPropertySqlmap;
 import org.apache.ibatis.session.SqlSessionFactory;
 
 import java.util.List;
@@ -20,7 +21,8 @@ public class EventPropertyDaoImp implements EventPropertyDao {
     @Inject
     public EventPropertyDaoImp(SqlSessionFactory sqlSessionFactory) {
         this.sqlSessionFactory = sqlSessionFactory;
-        this.basicDao = new BasicMyBatisDao<QifEventProperty, String>(QifEventProperty.class, sqlSessionFactory);
+        this.basicDao = new BasicMyBatisDao<QifEventProperty, String>(QifEventProperty.class, sqlSessionFactory,
+                QifEventPropertySqlmap.class.getName());
     }
 
     @Override

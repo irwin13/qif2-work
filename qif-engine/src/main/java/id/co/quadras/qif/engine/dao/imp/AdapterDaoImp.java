@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.irwin13.winwork.mybatis.dao.BasicMyBatisDao;
 import id.co.quadras.qif.core.model.entity.QifAdapter;
 import id.co.quadras.qif.engine.dao.AdapterDao;
+import id.co.quadras.qif.engine.sqlmap.QifAdapterSqlmap;
 import org.apache.ibatis.session.SqlSessionFactory;
 
 import java.util.List;
@@ -19,7 +20,8 @@ public class AdapterDaoImp implements AdapterDao {
     @Inject
     public AdapterDaoImp(SqlSessionFactory sqlSessionFactory) {
         this.sqlSessionFactory = sqlSessionFactory;
-        this.basicDao = new BasicMyBatisDao<QifAdapter, String>(QifAdapter.class, sqlSessionFactory);
+        this.basicDao = new BasicMyBatisDao<QifAdapter, String>(QifAdapter.class, sqlSessionFactory,
+                QifAdapterSqlmap.class.getName());
     }
 
     @Override

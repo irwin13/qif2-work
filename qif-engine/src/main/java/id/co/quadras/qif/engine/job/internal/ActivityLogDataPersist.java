@@ -3,7 +3,7 @@ package id.co.quadras.qif.engine.job.internal;
 import id.co.quadras.qif.core.QifConstants;
 import id.co.quadras.qif.core.helper.queue.reader.ActivityLogDataQueueReader;
 import id.co.quadras.qif.core.model.entity.log.QifActivityLogData;
-import id.co.quadras.qif.engine.guice.GuiceFactory;
+import id.co.quadras.qif.engine.guice.EngineFactory;
 import id.co.quadras.qif.engine.service.app.AppSettingService;
 import id.co.quadras.qif.engine.service.log.ActivityLogDataService;
 import org.quartz.DisallowConcurrentExecution;
@@ -25,10 +25,10 @@ public class ActivityLogDataPersist implements Job {
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        ActivityLogDataQueueReader queueReader = GuiceFactory.getInjector().getInstance(ActivityLogDataQueueReader.class);
-        ActivityLogDataService service = GuiceFactory.getInjector().getInstance(ActivityLogDataService.class);
+        ActivityLogDataQueueReader queueReader = EngineFactory.getInjector().getInstance(ActivityLogDataQueueReader.class);
+        ActivityLogDataService service = EngineFactory.getInjector().getInstance(ActivityLogDataService.class);
 
-        AppSettingService appSettingService = GuiceFactory.getInjector().getInstance(AppSettingService.class);
+        AppSettingService appSettingService = EngineFactory.getInjector().getInstance(AppSettingService.class);
         int maxFetch = QifConstants.DEFAULT_LOG_FETCH;
 
         try {

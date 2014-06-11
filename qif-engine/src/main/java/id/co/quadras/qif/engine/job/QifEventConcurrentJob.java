@@ -4,7 +4,7 @@ import com.irwin13.winwork.basic.exception.WinWorkException;
 import id.co.quadras.qif.core.QifConstants;
 import id.co.quadras.qif.core.QifProcess;
 import id.co.quadras.qif.core.model.entity.QifEvent;
-import id.co.quadras.qif.engine.guice.GuiceFactory;
+import id.co.quadras.qif.engine.guice.EngineFactory;
 import id.co.quadras.qif.engine.service.EventService;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -22,12 +22,12 @@ public class QifEventConcurrentJob implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         String id = (String) context.getMergedJobDataMap().get(QifConstants.QIF_EVENT_ID);
-        EventService eventService = GuiceFactory.getInjector().getInstance(EventService.class);
+        EventService eventService = EngineFactory.getInjector().getInstance(EventService.class);
         QifEvent qifEvent = eventService.selectById(id);
         if (qifEvent != null) {
             if (qifEvent.getActiveAcceptMessage() != null && qifEvent.getActiveAcceptMessage()) {
                 try {
-                    QifProcess qifProcess = (QifProcess) GuiceFactory.getInjector()
+                    QifProcess qifProcess = (QifProcess) EngineFactory.getInjector()
                             .getInstance(Class.forName(qifEvent.getQifProcess()));
                     qifProcess.executeProcess(qifEvent, null, null);
                 } catch (Exception e) {

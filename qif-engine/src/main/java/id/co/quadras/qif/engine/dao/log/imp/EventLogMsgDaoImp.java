@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.irwin13.winwork.mybatis.dao.BasicMyBatisDao;
 import id.co.quadras.qif.core.model.entity.log.QifEventLogMsg;
 import id.co.quadras.qif.engine.dao.log.EventLogMsgDao;
+import id.co.quadras.qif.engine.sqlmap.log.QifEventLogMsgSqlmap;
 import org.apache.ibatis.session.SqlSessionFactory;
 
 import java.util.List;
@@ -19,7 +20,8 @@ public class EventLogMsgDaoImp implements EventLogMsgDao {
     @Inject
     public EventLogMsgDaoImp(SqlSessionFactory sqlSessionFactory) {
         this.sqlSessionFactory = sqlSessionFactory;
-        this.basicDao = new BasicMyBatisDao<QifEventLogMsg, String>(QifEventLogMsg.class, sqlSessionFactory);
+        this.basicDao = new BasicMyBatisDao<QifEventLogMsg, String>(QifEventLogMsg.class, sqlSessionFactory,
+                QifEventLogMsgSqlmap.class.getName());
     }
 
     @Override

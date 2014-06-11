@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="sqlmap.com.irwin13.winwork.basic.model.entity.app.AppSetting">
+<mapper namespace="id.co.quadras.qif.engine.sqlmap.app.AppSettingSqlmap">
 
     <cache type="org.mybatis.caches.hazelcast.HazelcastCache" />
 

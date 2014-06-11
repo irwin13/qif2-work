@@ -5,6 +5,8 @@ import com.irwin13.winwork.basic.model.SortParameter;
 import com.irwin13.winwork.mybatis.dao.BasicMyBatisDao;
 import id.co.quadras.qif.core.model.entity.QifAdapterProperty;
 import id.co.quadras.qif.engine.dao.AdapterPropertyDao;
+import id.co.quadras.qif.engine.sqlmap.QifAdapterPropertySqlmap;
+import id.co.quadras.qif.engine.sqlmap.QifAdapterSqlmap;
 import org.apache.ibatis.session.SqlSessionFactory;
 
 import java.util.List;
@@ -20,7 +22,8 @@ public class AdapterPropertyDaoImp implements AdapterPropertyDao {
     @Inject
     public AdapterPropertyDaoImp(SqlSessionFactory sqlSessionFactory) {
         this.sqlSessionFactory = sqlSessionFactory;
-        this.basicDao = new BasicMyBatisDao<QifAdapterProperty, String>(QifAdapterProperty.class, sqlSessionFactory);
+        this.basicDao = new BasicMyBatisDao<QifAdapterProperty, String>(QifAdapterProperty.class, sqlSessionFactory,
+                QifAdapterPropertySqlmap.class.getName());
     }
 
     @Override

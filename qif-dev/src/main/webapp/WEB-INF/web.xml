@@ -11,12 +11,8 @@
     </listener>
     <!-- Init parameter -->
     <context-param>
-        <param-name>rootPackage.process</param-name>
-        <param-value>id.co.quadras.qif.dev.process</param-value>
-    </context-param>
-    <context-param>
-        <param-name>rootPackage.task</param-name>
-        <param-value>id.co.quadras.qif.dev.task</param-value>
+        <param-name>qifConfigFile</param-name>
+        <param-value>${app.qifConfigFile}</param-value>
     </context-param>
 
     <!-- SERVLET -->

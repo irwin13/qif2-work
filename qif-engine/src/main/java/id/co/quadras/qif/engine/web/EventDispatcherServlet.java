@@ -7,7 +7,7 @@ import id.co.quadras.qif.core.QifProcess;
 import id.co.quadras.qif.core.model.entity.QifEvent;
 import id.co.quadras.qif.core.model.vo.QifActivityResult;
 import id.co.quadras.qif.core.model.vo.event.EventHttp;
-import id.co.quadras.qif.engine.guice.GuiceFactory;
+import id.co.quadras.qif.engine.guice.EngineFactory;
 import id.co.quadras.qif.engine.service.EventService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +43,7 @@ public class EventDispatcherServlet extends HttpServlet {
         String path = request.getRequestURI().substring(request.getContextPath().length()).replaceFirst("/", "");
         LOGGER.debug("incoming request for path {}", path);
 
-        EventService eventService = GuiceFactory.getInjector().getInstance(EventService.class);
+        EventService eventService = EngineFactory.getInjector().getInstance(EventService.class);
         QifEvent qifEvent = eventService.selectByProperty(EventHttp.HTTP_PATH.getName(), path);
         if (qifEvent == null) {
             buildResponse(response, HttpServletResponse.SC_NOT_FOUND, TEXT_PLAIN,
@@ -71,7 +71,7 @@ public class EventDispatcherServlet extends HttpServlet {
     private QifActivityResult executeEvent(HttpServletRequest request, QifEvent qifEvent) {
         QifActivityResult result;
         try {
-            QifProcess qifProcess = (QifProcess) GuiceFactory.getInjector().getInstance(Class.forName(qifEvent.getQifProcess()));
+            QifProcess qifProcess = (QifProcess) EngineFactory.getInjector().getInstance(Class.forName(qifEvent.getQifProcess()));
             result = qifProcess.executeProcess(qifEvent, request, null);
         } catch (ClassNotFoundException e) {
             LOGGER.error(e.getLocalizedMessage(), e);

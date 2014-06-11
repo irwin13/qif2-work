@@ -21,17 +21,23 @@ import id.co.quadras.qif.core.helper.queue.reader.imp.*;
 import id.co.quadras.qif.engine.QifConfig;
 import id.co.quadras.qif.engine.SchedulerStarter;
 import id.co.quadras.qif.engine.guice.provider.JsonMapperProvider;
+import id.co.quadras.qif.engine.guice.provider.QifSqlSessionFactoryProvider;
+import id.co.quadras.qif.engine.guice.provider.TomcatDataSourceProvider;
+import id.co.quadras.qif.engine.jaxb.Qif;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.quartz.Scheduler;
+
+import javax.sql.DataSource;
 
 /**
  * @author irwin Timestamp : 12/05/2014 17:15
  */
 public class SharedModule extends AbstractModule {
 
-    private final String qifConfigFile;
+    private final Qif qifConfig;
 
-    public SharedModule(String qifConfigFile) {
-        this.qifConfigFile = qifConfigFile;
+    public SharedModule(Qif qifConfig) {
+        this.qifConfig = qifConfig;
     }
 
     @Override
@@ -42,9 +48,7 @@ public class SharedModule extends AbstractModule {
                 .annotatedWith(Names.named("configFile"))
                 .toInstance("common-config.xml");
 
-        bind(String.class)
-                .annotatedWith(Names.named("qifConfigFile"))
-                .toInstance(qifConfigFile);
+        bind(Qif.class).toInstance(qifConfig);
 
         bind(WinWorkConfig.class).to(QifConfig.class).in(Singleton.class);
         bind(WinWorkVelocityUtil.class);
@@ -83,6 +87,10 @@ public class SharedModule extends AbstractModule {
         bind(ActivityLogDataQueueReader.class).to(ActivityLogDataQueueReaderImp.class);
         bind(ActivityLogInputMsgQueueReader.class).to(ActivityLogInputMsgQueueReaderImp.class);
         bind(ActivityLogOutputMsgQueueReader.class).to(ActivityLogOutputMsgQueueReaderImp.class);
+
+        // MyBatis
+        bind(DataSource.class).toProvider(TomcatDataSourceProvider.class).in(Singleton.class);
+        bind(SqlSessionFactory.class).toProvider(QifSqlSessionFactoryProvider.class).in(Singleton.class);
 
     }
 }

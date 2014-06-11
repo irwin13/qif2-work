@@ -4,7 +4,7 @@ import com.irwin13.winwork.basic.WinWorkConstants;
 import com.irwin13.winwork.basic.config.WinWorkConfig;
 import com.irwin13.winwork.basic.utilities.WinWorkUtil;
 import id.co.quadras.qif.engine.QifEngineContextListener;
-import id.co.quadras.qif.engine.guice.GuiceFactory;
+import id.co.quadras.qif.engine.guice.EngineFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -23,7 +23,7 @@ public class AppStatus extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        WinWorkConfig winWorkConfig = GuiceFactory.getInjector().getInstance(WinWorkConfig.class);
+        WinWorkConfig winWorkConfig = EngineFactory.getInjector().getInstance(WinWorkConfig.class);
         String htmlContent = WinWorkUtil.appStatusView(winWorkConfig, QifEngineContextListener.START,
                 WinWorkConstants.SDF_FULL);
 

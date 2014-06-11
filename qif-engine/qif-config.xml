@@ -1,116 +1,124 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <qif>
-	<configFile qifRuntimeConfig="E:\\work\\quadras\\qif2-work\qif-engine\\qif-runtime.properties" />
+    <!-- THIS IS JUST A EXAMPLE FILE -->
 
     <rootPackage
             processRootPackage="id.co.quadras.qif.dev.process"
             taskRootPackage="id.co.quadras.qif.dev.task" />
 
     <batchConfig
+        eventLogPersistInterval="5"
+        eventLogMsgPersistInterval="5"
 
+        activityLogPersistInterval="5"
+        activityLogDataPersistInterval="5"
+        activityLogInputMsgPersistInterval="5"
+        activityLogOutputMsgPersistInterval="5"
+
+        counterUpdateInterval="10"
         />
 
     <databaseRepository>
-        <settings>
-            <setting name="cacheEnabled" value="true"/>
-            <setting name="lazyLoadingEnabled" value="true"/>
-            <setting name="multipleResultSetsEnabled" value="true"/>
-            <setting name="useColumnLabel" value="true"/>
-            <setting name="useGeneratedKeys" value="false"/>
-            <setting name="autoMappingBehavior" value="PARTIAL"/>
-            <setting name="defaultExecutorType" value="REUSE"/>
-            <!-- PostgreSQL JDBC Driver doesn't support this
-            <setting name="defaultStatementTimeout" value="25"/>
-            -->
-            <setting name="safeRowBoundsEnabled" value="false"/>
-            <setting name="mapUnderscoreToCamelCase" value="true"/>
-            <setting name="localCacheScope" value="SESSION"/>
-            <setting name="jdbcTypeForNull" value="NULL"/>
-            <setting name="lazyLoadTriggerMethods" value="equals,clone,hashCode,toString"/>
-            <setting name="logPrefix" value="MyBatisLog"/>
-            <setting name="logImpl" value="SLF4J"/>
-        </settings>
+        <!--
+        set value to "" for defaultStatementTimeout if the JDBC driver doesn't support it, for example : PostgreSQL
+        -->
+        <dbSettings
+            cacheEnabled="true"
+            lazyLoadingEnabled="true"
+            multipleResultSetsEnabled="true"
+            useColumnLabel="true"
+            useGeneratedKeys="false"
+            autoMappingBehavior="PARTIAL"
+            defaultExecutorType="REUSE"
 
+            defaultStatementTimeout=""
+
+            safeRowBoundsEnabled="false"
+            mapUnderscoreToCamelCase="true"
+            localCacheScope="SESSION"
+            jdbcTypeForNull="NULL"
+            lazyLoadTriggerMethods="equals,clone,hashCode,toString"
+            logPrefix="MyBatisLog"
+            logImpl="SLF4J"
+        />
         <!-- transactionManager = JDBC or MANAGED -->
 
         <!--
-        JDBC - This configuration simply makes use of the JDBC commit and rollback facilities directly.
+        JDBC This configuration simply makes use of the JDBC commit and rollback facilities directly.
         It relies on the connection retrieved from the dataSource to manage the scope of the transaction
         -->
-        <transactionManager type="JDBC" />
+        <transactionManager type="JDBC" closeConnection="" />
 
         <!--
-         MANAGED – This configuration simply does almost nothing.
+         MANAGED This configuration simply does almost nothing.
          It never commits, or rolls back a connection.
          Instead, it lets the container manage the full lifecycle of the transaction (e.g. a JEE Application Server context).
          By default it does close the connection.
-         However, some containers don’t expect this, and thus if you need to stop it from closing the connection,
+         However, some containers don't expect this, and thus if you need to stop it from closing the connection,
          set the "closeConnection" property to false
         -->
         <!--
-        <transactionManager type="MANAGED">
-            <property name="closeConnection" value="false"/>
-        </transactionManager>
+        <transactionManager type="MANAGED" closeConnection="false"
+
         -->
 
         <!-- dataSource = POOLED or JNDI -->
 
         <!--
-        POOLED – This implementation of DataSource pools JDBC Connection objects
+        POOLED This implementation of DataSource pools JDBC Connection objects
         to avoid the initial connection and authentication time required to create a new Connection instance.
         -->
-        <dataSource type="POOLED">
-            <property name="url" value="${url}" />
-            <property name="driver" value="${driver}" />
-            <property name="username" value="${username}" />
-            <property name="password" value="${password}" />
+        <dataSource type="POOLED"
+            url="${url}"
+            driver="${driver}"
+            username="${username}"
+            password="${password}"
 
-            <property name="validationQuery" value="${validationQuery}" />
+            validationQuery="${validationQuery}"
 
-            <property name="initialSize" value="${initialSize}" />
-            <property name="maxActive" value="${maxActive}" />
-            <property name="maxIdle" value="${maxIdle}" />
-            <property name="minIdle" value="${minIdle}" />
+            initialSize="${initialSize}"
+            maxActive="${maxActive}"
+            maxIdle="${maxIdle}"
+            minIdle="${minIdle}"
 
-            <property name="testOnBorrow" value="true" />
-            <property name="jmxEnabled" value="false" />
-            <property name="testWhileIdle" value="false" />
-            <property name="testOnReturn" value="false" />
+            testOnBorrow="true"
+            jmxEnabled="false"
+            testWhileIdle="false"
+            testOnReturn="false"
 
-            <property name="minEvictableIdleTimeMillis" value="10000" />
+            minEvictableIdleTimeMillis="10000"
 
-            <property name="validationInterval" value="30000" />
-            <property name="timeBetweenEvictionRunsMillis" value="5000" />
+            validationInterval="30000"
+            timeBetweenEvictionRunsMillis="5000"
 
-            <property name="maxWait" value="5000" />
+            maxWait="5000"
 
-            <property name="logAbandoned" value="false" />
-            <property name="removeAbandoned" value="true" />
-            <property name="removeAbandonedTimeout" value="60" />
+            logAbandoned="false"
+            removeAbandoned="true"
+            removeAbandonedTimeout="60"
 
-            <property name="jdbcInterceptors"
-                      value="org.apache.jdbc.pool.interceptor.ConnectionState;org.apache.jdbc.pool.interceptor.StatementFinalizer" />
-        </dataSource>
+            jdbcInterceptors="org.apache.tomcat.jdbc.pool.interceptor.ConnectionState;org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer"
+        />
 
 
         <!--
-        JNDI – This implementation of DataSource is intended for use with containers such as EJB or Application Servers
+        JNDI This implementation of DataSource is intended for use with containers such as EJB or Application Servers
         that may configure the DataSource centrally or externally and place a reference to it in a JNDI context.
 
-        initial_context – This property is used for the Context lookup from the InitialContext
+        initial_context This property is used for the Context lookup from the InitialContext
         (i.e. initialContext.lookup(initial_context)).
         This property is optional, and if omitted, then the data_source property will be looked up against the InitialContext directly.
 
         Similar to the other DataSource configurations,
-        it’s possible to send properties directly to the InitialContext by prefixing those properties with "env."
+        it's possible to send properties directly to the InitialContext by prefixing those properties with "env."
         example : env.encoding=UTF8
         This would send the property encoding with the value of UTF8 to the constructor of the InitialContext upon instantiation.
         -->
         <!--
-        <dataSource type="JNDI">
-            <property name="data_source" value="" />
-            <property name="initial_context" value="" />
-        </dataSource>
+        <dataSource type="JNDI"
+            data_source=""
+            initial_context=""
+        />
         -->
 
     </databaseRepository>

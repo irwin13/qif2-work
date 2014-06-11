@@ -3,7 +3,7 @@ package id.co.quadras.qif.dev.process;
 import id.co.quadras.qif.dev.task.WriteToFile;
 import id.co.quadras.qif.connector.event.FtpEvent;
 import id.co.quadras.qif.core.model.vo.QifActivityResult;
-import id.co.quadras.qif.engine.guice.GuiceFactory;
+import id.co.quadras.qif.engine.guice.EngineFactory;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public class FtpXmlToFile extends FtpEvent {
     @Override
     protected QifActivityResult implementProcess(Object processInput) {
         List<String> bosList = (List<String>) processInput;
-        executeTask(GuiceFactory.getInjector(), WriteToFile.class, bosList);
+        executeTask(EngineFactory.getInjector(), WriteToFile.class, bosList);
         return new QifActivityResult(SUCCESS, null, null);
     }
 

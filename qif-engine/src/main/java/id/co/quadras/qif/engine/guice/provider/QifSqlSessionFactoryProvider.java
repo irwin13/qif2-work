@@ -1,96 +1,138 @@
 package id.co.quadras.qif.engine.guice.provider;
 
+import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.google.inject.name.Named;
-import com.sun.org.apache.xpath.internal.XPathAPI;
+import com.irwin13.winwork.basic.model.SearchParameter;
+import com.irwin13.winwork.basic.model.entity.app.AppSetting;
+import id.co.quadras.qif.core.QifConstants;
+import id.co.quadras.qif.core.exception.QifException;
+import id.co.quadras.qif.core.model.entity.*;
+import id.co.quadras.qif.core.model.entity.log.*;
+import id.co.quadras.qif.engine.jaxb.Qif;
+import id.co.quadras.qif.engine.sqlmap.*;
+import id.co.quadras.qif.engine.sqlmap.app.AppSettingSqlmap;
+import id.co.quadras.qif.engine.sqlmap.log.*;
+import org.apache.ibatis.logging.slf4j.Slf4jImpl;
 import org.apache.ibatis.mapping.Environment;
-import org.apache.ibatis.session.Configuration;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.apache.ibatis.session.*;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.xml.sax.SAXException;
+import org.apache.ibatis.transaction.managed.ManagedTransactionFactory;
+import org.apache.ibatis.type.JdbcType;
 
 import javax.sql.DataSource;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Properties;
 
 /**
  * @author irwin Timestamp : 06/06/2014 18:38
  */
 public class QifSqlSessionFactoryProvider implements Provider<SqlSessionFactory> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(QifSqlSessionFactoryProvider.class);
-
-    private final String qifConfigFile;
+    private final Qif qifConfig;
+    private final DataSource dataSource;
 
     @Inject
-    public QifSqlSessionFactoryProvider(@Named("qifConfigFile") String qifConfigFile) {
-        this.qifConfigFile = qifConfigFile;
+    public QifSqlSessionFactoryProvider(Qif qifConfig, DataSource dataSource) {
+        this.qifConfig = qifConfig;
+        this.dataSource = dataSource;
     }
 
     @Override
     public SqlSessionFactory get() {
 
-        FileInputStream fisConfiguration = null;
-
-        try {
-            File fileConfig = new File(qifConfigFile);
-            if (!(fileConfig.exists())) {
-                throw new FileNotFoundException("FATAL ERROR : File " + qifConfigFile + " not found");
-            }
-            DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            fisConfiguration = new FileInputStream(fileConfig);
-            Document document = builder.parse(fisConfiguration);
-
-            LOGGER.info("File {} loaded successfully", qifConfigFile);
-
-            Node nodeJetty = XPathAPI.selectSingleNode(document, "qif-config//jetty");
-            Node nodeConcurrency = XPathAPI.selectSingleNode(document, "qif-config//concurrency");
-
-//            configMap.put(QifConstants.JETTY_PORT, getStringValue(nodeJetty, "@port"));
-//
-//            configMap.put(QifConstants.CONCURRENCY_PROVIDER_CLASS, getStringValue(nodeConcurrency, "@providerClass"));
-//            configMap.put(QifConstants.CONCURRENCY_JDK_THREAD_POOL, getStringValue(nodeConcurrency, "@jdkThreadPool"));
-
-        } catch (ParserConfigurationException e) {
-            LOGGER.error(e.getLocalizedMessage());
-        } catch (SAXException e) {
-            LOGGER.error(e.getLocalizedMessage());
-        } catch (TransformerException e) {
-            LOGGER.error(e.getLocalizedMessage());
-        } catch (IOException e) {
-            LOGGER.error(e.getLocalizedMessage());
-        } finally {
-            try {
-                if (fisConfiguration != null) fisConfiguration.close();
-            } catch (IOException e) {
-                LOGGER.error(e.getLocalizedMessage());
-            }
+        TransactionFactory transactionFactory;
+        if (qifConfig.getDatabaseRepository().getTransactionManager().getType().equalsIgnoreCase(QifConstants.MYBATIS_JDBC)) {
+            transactionFactory = new JdbcTransactionFactory();
+        } else if (qifConfig.getDatabaseRepository().getTransactionManager().getType().equalsIgnoreCase(QifConstants.MYBATIS_MANAGED)) {
+            transactionFactory = new ManagedTransactionFactory();
+            Properties properties = new Properties();
+            properties.setProperty("closeConnection", qifConfig.getDatabaseRepository().getTransactionManager().getCloseConnection());
+            transactionFactory.setProperties(properties);
+        } else {
+            throw new QifException("FATAL : transactionManager type must be JDBC or MANAGED in qif-config.xml");
         }
 
-        DataSource dataSource = null;
-        TransactionFactory transactionFactory = new JdbcTransactionFactory();
-        Environment environment = new Environment("development", transactionFactory, dataSource);
-        Configuration configuration = new Configuration(environment);
+        Environment environment = new Environment("qif", transactionFactory, dataSource);
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(getConfiguration(environment));
 
-        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(configuration);
-        return null;
+        return sqlSessionFactory;
     }
 
-    private String getStringValue(Node node, String attribute) throws TransformerException {
-        return XPathAPI.eval(node, attribute).toString().trim();
+
+    private Configuration getConfiguration(Environment environment) {
+        Configuration configuration = new Configuration(environment);
+
+        // boolean properties
+        configuration.setCacheEnabled(Boolean.valueOf(qifConfig.getDatabaseRepository().getDbSettings().getCacheEnabled()));
+        configuration.setLazyLoadingEnabled(Boolean.valueOf(qifConfig.getDatabaseRepository().getDbSettings().getLazyLoadingEnabled()));
+        configuration.setMultipleResultSetsEnabled(Boolean.valueOf(qifConfig.getDatabaseRepository().getDbSettings().getMultipleResultSetsEnabled()));
+        configuration.setUseColumnLabel(Boolean.valueOf(qifConfig.getDatabaseRepository().getDbSettings().getUseColumnLabel()));
+        configuration.setUseGeneratedKeys(Boolean.valueOf(qifConfig.getDatabaseRepository().getDbSettings().getUseGeneratedKeys()));
+        configuration.setSafeRowBoundsEnabled(Boolean.valueOf(qifConfig.getDatabaseRepository().getDbSettings().getSafeRowBoundsEnabled()));
+        configuration.setMapUnderscoreToCamelCase(Boolean.valueOf(qifConfig.getDatabaseRepository().getDbSettings().getMapUnderscoreToCamelCase()));
+
+        // enum properties
+        configuration.setAutoMappingBehavior(AutoMappingBehavior.valueOf(qifConfig.getDatabaseRepository().getDbSettings().getAutoMappingBehavior()));
+        configuration.setDefaultExecutorType(ExecutorType.valueOf(qifConfig.getDatabaseRepository().getDbSettings().getDefaultExecutorType()));
+        configuration.setLocalCacheScope(LocalCacheScope.valueOf(qifConfig.getDatabaseRepository().getDbSettings().getLocalCacheScope()));
+        configuration.setJdbcTypeForNull(JdbcType.valueOf(qifConfig.getDatabaseRepository().getDbSettings().getJdbcTypeForNull()));
+
+        // integer properties
+        String defaultStatementTimeout = qifConfig.getDatabaseRepository().getDbSettings().getDefaultStatementTimeout();
+        if (!Strings.isNullOrEmpty(defaultStatementTimeout)) {
+            configuration.setDefaultStatementTimeout(Integer.valueOf(defaultStatementTimeout));
+        }
+
+        // string array properties
+        String[] lazyLoadTriggerMethodArray = qifConfig.getDatabaseRepository().getDbSettings().getLazyLoadTriggerMethods().split(",");
+        configuration.setLazyLoadTriggerMethods(new HashSet<String>(Arrays.asList(lazyLoadTriggerMethodArray)));
+
+        // string properties
+        configuration.setLogPrefix(qifConfig.getDatabaseRepository().getDbSettings().getLogPrefix());
+
+        // fixed properties
+        configuration.setLogImpl(Slf4jImpl.class);
+
+        // typeAlias
+        configuration.getTypeAliasRegistry().registerAlias("SearchParameter", SearchParameter.class);
+        configuration.getTypeAliasRegistry().registerAlias("AppSetting", AppSetting.class);
+        configuration.getTypeAliasRegistry().registerAlias("QifCounter", QifCounter.class);
+
+        configuration.getTypeAliasRegistry().registerAlias("QifEventLog", QifEventLog.class);
+        configuration.getTypeAliasRegistry().registerAlias("QifEventLogMsg", QifEventLogMsg.class);
+
+        configuration.getTypeAliasRegistry().registerAlias("QifActivityLog", QifActivityLog.class);
+        configuration.getTypeAliasRegistry().registerAlias("QifActivityLogData", QifActivityLogData.class);
+        configuration.getTypeAliasRegistry().registerAlias("QifActivityLogInputMsg", QifActivityLogInputMsg.class);
+        configuration.getTypeAliasRegistry().registerAlias("QifActivityLogOutputMsg", QifActivityLogOutputMsg.class);
+
+        configuration.getTypeAliasRegistry().registerAlias("QifAdapter", QifAdapter.class);
+        configuration.getTypeAliasRegistry().registerAlias("QifAdapterProperty", QifAdapterProperty.class);
+
+        configuration.getTypeAliasRegistry().registerAlias("QifEvent", QifEvent.class);
+        configuration.getTypeAliasRegistry().registerAlias("QifEventProperty", QifEventProperty.class);
+
+        // mappers
+        configuration.addMapper(AppSettingSqlmap.class);
+        configuration.addMapper(QifCounterSqlmap.class);
+
+        configuration.addMapper(QifEventSqlmap.class);
+        configuration.addMapper(QifEventPropertySqlmap.class);
+        configuration.addMapper(QifAdapterSqlmap.class);
+        configuration.addMapper(QifAdapterPropertySqlmap.class);
+
+        configuration.addMapper(QifActivityLogSqlmap.class);
+        configuration.addMapper(QifActivityLogDataSqlmap.class);
+        configuration.addMapper(QifActivityLogInputMsgSqlmap.class);
+        configuration.addMapper(QifActivityLogOutputMsgSqlmap.class);
+
+        configuration.addMapper(QifEventLogSqlmap.class);
+        configuration.addMapper(QifEventLogMsgSqlmap.class);
+
+        return configuration;
     }
 
 }

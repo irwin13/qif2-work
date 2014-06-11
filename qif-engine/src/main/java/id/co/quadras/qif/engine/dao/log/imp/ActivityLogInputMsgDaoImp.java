@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.irwin13.winwork.mybatis.dao.BasicMyBatisDao;
 import id.co.quadras.qif.core.model.entity.log.QifActivityLogInputMsg;
 import id.co.quadras.qif.engine.dao.log.ActivityLogInputMsgDao;
+import id.co.quadras.qif.engine.sqlmap.log.QifActivityLogInputMsgSqlmap;
 import org.apache.ibatis.session.SqlSessionFactory;
 
 import java.util.List;
@@ -19,7 +20,8 @@ public class ActivityLogInputMsgDaoImp implements ActivityLogInputMsgDao {
     @Inject
     public ActivityLogInputMsgDaoImp(SqlSessionFactory sqlSessionFactory) {
         this.sqlSessionFactory = sqlSessionFactory;
-        this.basicDao = new BasicMyBatisDao<QifActivityLogInputMsg, String>(QifActivityLogInputMsg.class, sqlSessionFactory);
+        this.basicDao = new BasicMyBatisDao<QifActivityLogInputMsg, String>(QifActivityLogInputMsg.class,
+                sqlSessionFactory, QifActivityLogInputMsgSqlmap.class.getName());
     }
 
     @Override

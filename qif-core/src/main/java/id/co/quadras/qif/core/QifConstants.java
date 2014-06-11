@@ -16,4 +16,11 @@ public final class QifConstants {
 
     public static final int DEFAULT_LOG_FETCH = 10;
     public static final int DEFAULT_LOG_INTERVAL = 10;
+
+    public static final long ONE_SECOND = 1000;
+    public static final long ONE_MINUTE = ONE_SECOND * 60;
+    public static final long ONE_HOUR = ONE_MINUTE * 60;
+
+    public static final String MYBATIS_JDBC = "JDBC";
+    public static final String MYBATIS_MANAGED = "MANAGED";
 }

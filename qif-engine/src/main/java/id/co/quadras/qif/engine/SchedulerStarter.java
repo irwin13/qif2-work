@@ -9,7 +9,6 @@ import id.co.quadras.qif.core.model.entity.QifEventProperty;
 import id.co.quadras.qif.core.model.vo.event.EventType;
 import id.co.quadras.qif.core.model.vo.event.SchedulerCron;
 import id.co.quadras.qif.core.model.vo.event.SchedulerInterval;
-import id.co.quadras.qif.engine.guice.GuiceFactory;
 import id.co.quadras.qif.engine.job.QifEventConcurrentJob;
 import id.co.quadras.qif.engine.job.QifEventSingleInstanceJob;
 import id.co.quadras.qif.engine.job.internal.*;
@@ -20,7 +19,6 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
 
 /**
  * @author irwin Timestamp : 12/05/2014 17:47

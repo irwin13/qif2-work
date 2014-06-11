@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 import com.irwin13.winwork.mybatis.dao.BasicMyBatisDao;
 import id.co.quadras.qif.core.model.entity.QifCounter;
 import id.co.quadras.qif.engine.dao.CounterDao;
+import id.co.quadras.qif.engine.sqlmap.QifCounterSqlmap;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -27,7 +28,8 @@ public class CounterDaoImp implements CounterDao {
     @Inject
     public CounterDaoImp(SqlSessionFactory sqlSessionFactory) {
         this.sqlSessionFactory = sqlSessionFactory;
-        this.basicDao = new BasicMyBatisDao<QifCounter, String>(QifCounter.class, sqlSessionFactory);
+        this.basicDao = new BasicMyBatisDao<QifCounter, String>(QifCounter.class, sqlSessionFactory,
+                QifCounterSqlmap.class.getName());
     }
 
     @Override
