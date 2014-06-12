@@ -47,6 +47,10 @@ public final class EngineFactory {
             throw new QifException("FATAL : Failed to read QIF xml configuration file " + qifConfigFile);
         }
 
+        LOGGER.info("=== Success load {} file ===", qifConfigFile);
+        LOGGER.info("=== QIF Config ===");
+        LOGGER.info(qif.toString());
+
         LOGGER.info("=== Starting scan Process and Task package ... ===");
         LOGGER.info("rootPackageProcess = {}", qif.getRootPackage().getProcessRootPackage());
         LOGGER.info("rootPackageTask = {}", qif.getRootPackage().getTaskRootPackage());

@@ -3,6 +3,7 @@ package id.co.quadras.qif.engine;
 import com.irwin13.winwork.basic.scheduler.BasicSchedulerManager;
 import id.co.quadras.qif.core.model.entity.QifEvent;
 import id.co.quadras.qif.engine.guice.EngineFactory;
+import id.co.quadras.qif.engine.jaxb.Qif;
 import id.co.quadras.qif.engine.service.CounterService;
 import id.co.quadras.qif.engine.service.EventService;
 import org.quartz.SchedulerException;
@@ -23,8 +24,8 @@ public class QifEngineContextListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
-        LOGGER.info("================================================================================================");
-        LOGGER.info("=================================== Starting QifDevContextListener ===============================");
+        LOGGER.info("=========================");
+        LOGGER.info("===== Starting QifEngineContextListener =====");
 
         String qifConfigFile = servletContextEvent.getServletContext().getInitParameter("qifConfigFile");
         LOGGER.info("QIF Configuration file = {}", qifConfigFile);
@@ -40,7 +41,7 @@ public class QifEngineContextListener implements ServletContextListener {
 
         try {
             schedulerStarter.startEvent(eventList);
-            schedulerStarter.startInternalScheduler();
+            schedulerStarter.startInternalScheduler(EngineFactory.getInjector().getInstance(Qif.class));
         } catch (SchedulerException e) {
             LOGGER.error(e.getLocalizedMessage(), e);
         }
@@ -51,13 +52,13 @@ public class QifEngineContextListener implements ServletContextListener {
         counterService.initCounter(eventList);
         LOGGER.info("=== Init counter complete ===");
 
-        LOGGER.info("=================================== Starting QifDevContextListener complete ===============================");
+        LOGGER.info("===== Starting QifEngineContextListener complete =====");
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
-        LOGGER.info("================================================================================================");
-        LOGGER.info("=================================== Shutdown QifDevContextListener ===============================");
+        LOGGER.info("=========================");
+        LOGGER.info("===== Shutdown QifEngineContextListener =====");
 
         LOGGER.info("=== Shutdown Quartz scheduler ... ===");
         BasicSchedulerManager schedulerManager = EngineFactory.getInjector().getInstance(BasicSchedulerManager.class);
@@ -68,7 +69,7 @@ public class QifEngineContextListener implements ServletContextListener {
         }
         LOGGER.info("=== Shutdown Quartz scheduler complete ===");
 
-        LOGGER.info("=================================== Shutdown QifDevContextListener complete ===============================");
+        LOGGER.info("===== Shutdown QifEngineContextListener complete =====");
 
     }
 }

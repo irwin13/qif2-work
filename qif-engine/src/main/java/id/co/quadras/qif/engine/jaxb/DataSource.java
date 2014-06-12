@@ -8,6 +8,8 @@
 
 package id.co.quadras.qif.engine.jaxb;
 
+import com.irwin13.winwork.basic.utilities.PojoUtil;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -658,6 +660,11 @@ public class DataSource {
      */
     public void setJdbcInterceptors(String value) {
         this.jdbcInterceptors = value;
+    }
+
+    @Override
+    public String toString() {
+        return PojoUtil.beanToString(this, false);
     }
 
 }
