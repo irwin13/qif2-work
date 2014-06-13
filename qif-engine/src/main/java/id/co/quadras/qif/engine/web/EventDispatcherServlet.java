@@ -5,10 +5,12 @@ import id.co.quadras.qif.core.QifActivity;
 import id.co.quadras.qif.core.QifConstants;
 import id.co.quadras.qif.core.QifProcess;
 import id.co.quadras.qif.core.model.entity.QifEvent;
+import id.co.quadras.qif.core.model.vo.HttpRequestMessage;
 import id.co.quadras.qif.core.model.vo.QifActivityResult;
 import id.co.quadras.qif.core.model.vo.event.EventHttp;
 import id.co.quadras.qif.engine.guice.EngineFactory;
 import id.co.quadras.qif.engine.service.EventService;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,6 +19,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -72,7 +76,7 @@ public class EventDispatcherServlet extends HttpServlet {
         QifActivityResult result;
         try {
             QifProcess qifProcess = (QifProcess) EngineFactory.getInjector().getInstance(Class.forName(qifEvent.getQifProcess()));
-            result = qifProcess.executeProcess(qifEvent, request, null);
+            result = qifProcess.executeProcess(qifEvent, copyHttpServletRequest(request), null);
         } catch (ClassNotFoundException e) {
             LOGGER.error(e.getLocalizedMessage(), e);
             String error = "FATAL : Class not found " + qifEvent.getQifProcess();
@@ -128,4 +132,47 @@ public class EventDispatcherServlet extends HttpServlet {
         }
     }
 
+    private HttpRequestMessage copyHttpServletRequest(HttpServletRequest httpRequest) {
+        HttpRequestMessage requestMessage = new HttpRequestMessage();
+
+        requestMessage.setCharacterEncoding(httpRequest.getCharacterEncoding());
+        requestMessage.setContentLength(httpRequest.getContentLength());
+        requestMessage.setContentType(httpRequest.getContentType());
+        requestMessage.setContextPath(httpRequest.getContextPath());
+        requestMessage.setLocalAddr(httpRequest.getLocalAddr());
+        requestMessage.setLocalName(httpRequest.getLocalName());
+        requestMessage.setLocalPort(httpRequest.getLocalPort());
+        requestMessage.setMethod(httpRequest.getMethod());
+        requestMessage.setPathInfo(httpRequest.getPathInfo());
+        requestMessage.setPathTranslated(httpRequest.getPathTranslated());
+        requestMessage.setProtocol(httpRequest.getProtocol());
+        requestMessage.setQueryString(httpRequest.getQueryString());
+        requestMessage.setRemoteAddr(httpRequest.getRemoteAddr());
+        requestMessage.setRemoteHost(httpRequest.getRemoteHost());
+        requestMessage.setRemotePort(httpRequest.getRemotePort());
+        requestMessage.setRemoteUser(httpRequest.getRemoteUser());
+        requestMessage.setRequestURI(httpRequest.getRequestURI());
+        requestMessage.setScheme(httpRequest.getScheme());
+        requestMessage.setServerName(httpRequest.getServerName());
+        requestMessage.setServerPort(httpRequest.getServerPort());
+        requestMessage.setServletPath(httpRequest.getServletPath());
+        requestMessage.setRequestParameter(httpRequest.getParameterMap());
+
+        try {
+            requestMessage.setHttpBody(IOUtils.toString(httpRequest.getReader()));
+        } catch (IOException e) {
+            LOGGER.error(e.getLocalizedMessage(), e);
+        }
+
+        Map<String, String> httpHeader = new HashMap<String, String>();
+        Enumeration<String> headerNames = httpRequest.getHeaderNames();
+        while (headerNames.hasMoreElements()) {
+            String headerName = headerNames.nextElement();
+            String headerValue = httpRequest.getHeader(headerName);
+            httpHeader.put(headerName, headerValue);
+        }
+        requestMessage.setHttpHeader(httpHeader);
+
+        return requestMessage;
+    }
 }
