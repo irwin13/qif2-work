@@ -4,11 +4,13 @@ import com.google.inject.Inject;
 import com.irwin13.winwork.basic.scheduler.BasicSchedulerManager;
 import id.co.quadras.qif.core.QifConstants;
 import id.co.quadras.qif.core.QifUtil;
+import id.co.quadras.qif.core.helper.JsonParser;
 import id.co.quadras.qif.core.model.entity.QifEvent;
 import id.co.quadras.qif.core.model.entity.QifEventProperty;
 import id.co.quadras.qif.core.model.vo.event.EventType;
 import id.co.quadras.qif.core.model.vo.event.SchedulerCron;
 import id.co.quadras.qif.core.model.vo.event.SchedulerInterval;
+import id.co.quadras.qif.engine.guice.EngineFactory;
 import id.co.quadras.qif.engine.jaxb.Qif;
 import id.co.quadras.qif.engine.job.QifEventConcurrentJob;
 import id.co.quadras.qif.engine.job.QifEventSingleInstanceJob;
@@ -17,6 +19,7 @@ import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +42,11 @@ public final class SchedulerStarter {
         LOGGER.info("Configure BP Listener with type SCHEDULER ");
 
         for (QifEvent qifEvent : qifEventList) {
-
+            try {
+                LOGGER.debug(EngineFactory.getInjector().getInstance(JsonParser.class).parseToString(false, qifEvent));
+            } catch (IOException e) {
+                LOGGER.error(e.getLocalizedMessage(), e);
+            }
             if (qifEvent.getEventType().equalsIgnoreCase(EventType.SCHEDULER_CRON.getName()) ||
                     qifEvent.getEventType().equalsIgnoreCase(EventType.SCHEDULER_INTERVAL.getName())) {
 

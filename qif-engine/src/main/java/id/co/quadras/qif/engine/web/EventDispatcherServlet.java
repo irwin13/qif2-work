@@ -28,7 +28,7 @@ import java.util.Map;
  */
 public class EventDispatcherServlet extends HttpServlet {
 
-    private static final String TEXT_PLAIN = "text/plain;charset=UTF-8";
+    public static final String TEXT_PLAIN = "text/plain;charset=UTF-8";
     private static final Logger LOGGER = LoggerFactory.getLogger(EventDispatcherServlet.class);
 
     @Override

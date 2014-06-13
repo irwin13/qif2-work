@@ -24,6 +24,16 @@
         <servlet-name>EventDispatcherServlet</servlet-name>
         <url-pattern>/http-event/*</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SchedulerEventApi</servlet-name>
+        <servlet-class>id.co.quadras.qif.engine.web.SchedulerEventApi</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SchedulerEventApi</servlet-name>
+        <url-pattern>/event-api</url-pattern>
+    </servlet-mapping>
+
     <servlet>
         <servlet-name>AppStatus</servlet-name>
         <servlet-class>id.co.quadras.qif.engine.web.AppStatus</servlet-class>
