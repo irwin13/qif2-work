@@ -40,54 +40,58 @@ public final class SchedulerStarter {
 
         for (QifEvent qifEvent : qifEventList) {
 
-            QifEventProperty concurrentExecutionProperty = QifUtil.getEventProperty(qifEvent,
-                    SchedulerInterval.CONCURRENT_EXECUTION.getName());
+            if (qifEvent.getEventType().equalsIgnoreCase(EventType.SCHEDULER_CRON.getName()) ||
+                    qifEvent.getEventType().equalsIgnoreCase(EventType.SCHEDULER_INTERVAL.getName())) {
 
-            Map<String, Object> jobDataMap = new HashMap<String, Object>();
-            jobDataMap.put(QifConstants.QIF_EVENT_ID, qifEvent.getId());
+                QifEventProperty concurrentExecutionProperty = QifUtil.getEventProperty(qifEvent,
+                        SchedulerInterval.CONCURRENT_EXECUTION.getName());
 
-            JobKey jobKey = schedulerManager.createJobKey(qifEvent.getId());
-            JobDetail jobDetail;
+                Map<String, Object> jobDataMap = new HashMap<String, Object>();
+                jobDataMap.put(QifConstants.QIF_EVENT_ID, qifEvent.getId());
 
-            if (Boolean.valueOf(concurrentExecutionProperty.getPropertyValue())) {
-                jobDetail = schedulerManager.createJobDetail(QifEventConcurrentJob.class, jobKey, jobDataMap);
-            } else {
-                jobDetail = schedulerManager.createJobDetail(QifEventSingleInstanceJob.class, jobKey, jobDataMap);
-            }
+                JobKey jobKey = schedulerManager.createJobKey(qifEvent.getId());
+                JobDetail jobDetail;
 
-            TriggerKey triggerKey = schedulerManager.createTriggerKey(qifEvent.getId());
-            Trigger trigger = null;
-
-            if (EventType.SCHEDULER_INTERVAL.getName().equalsIgnoreCase(qifEvent.getEventType())) {
-                QifEventProperty intervalProperty = QifUtil.getEventProperty(qifEvent,
-                        SchedulerInterval.INTERVAL.getName());
-                if (intervalProperty != null) {
-                    int interval = Integer.valueOf(intervalProperty.getPropertyValue());
-                    trigger = schedulerManager.createIntervalTrigger(triggerKey, interval, false);
-                    LOGGER.info("Register QifEvent '{}' with interval '{} seconds' ", qifEvent.getName(), interval);
+                if (Boolean.valueOf(concurrentExecutionProperty.getPropertyValue())) {
+                    jobDetail = schedulerManager.createJobDetail(QifEventConcurrentJob.class, jobKey, jobDataMap);
                 } else {
-                    LOGGER.error("FATAL : Missing QifEvent Property with property key = 'interval' for QifEvent {}",
-                            qifEvent.getName());
+                    jobDetail = schedulerManager.createJobDetail(QifEventSingleInstanceJob.class, jobKey, jobDataMap);
                 }
-            } else if (EventType.SCHEDULER_CRON.getName().equalsIgnoreCase(qifEvent.getEventType())) {
-                QifEventProperty cronProperty = QifUtil.getEventProperty(qifEvent,
-                        SchedulerCron.CRON_EXPRESSION.getName());
-                if (cronProperty != null) {
-                    String cronExpression = cronProperty.getPropertyValue();
-                    trigger = schedulerManager.createCronTrigger(triggerKey, cronExpression);
-                    LOGGER.info("Register QifEvent '{}' with cronExpression '{}'", qifEvent.getName(),
-                            cronExpression);
-                } else {
-                    LOGGER.error("FATAL : Missing Listener Property with property key = 'cronExpression' for QifEvent {}",
-                            qifEvent.getName());
-                }
-            }
 
-            if (!schedulerManager.isJobAlreadyExists(jobKey) && jobDetail != null) {
-                schedulerManager.add(jobDetail, trigger);
-            } else if (jobDetail != null) {
-                LOGGER.debug("JobKey {} already exists, try to reschedule", jobKey);
-                schedulerManager.reschedule(triggerKey, trigger);
+                TriggerKey triggerKey = schedulerManager.createTriggerKey(qifEvent.getId());
+                Trigger trigger = null;
+
+                if (EventType.SCHEDULER_INTERVAL.getName().equalsIgnoreCase(qifEvent.getEventType())) {
+                    QifEventProperty intervalProperty = QifUtil.getEventProperty(qifEvent,
+                            SchedulerInterval.INTERVAL.getName());
+                    if (intervalProperty != null) {
+                        int interval = Integer.valueOf(intervalProperty.getPropertyValue());
+                        trigger = schedulerManager.createIntervalTrigger(triggerKey, interval, false);
+                        LOGGER.info("Register QifEvent '{}' with interval '{} seconds' ", qifEvent.getName(), interval);
+                    } else {
+                        LOGGER.error("FATAL : Missing QifEvent Property with property key = 'interval' for QifEvent {}",
+                                qifEvent.getName());
+                    }
+                } else if (EventType.SCHEDULER_CRON.getName().equalsIgnoreCase(qifEvent.getEventType())) {
+                    QifEventProperty cronProperty = QifUtil.getEventProperty(qifEvent,
+                            SchedulerCron.CRON_EXPRESSION.getName());
+                    if (cronProperty != null) {
+                        String cronExpression = cronProperty.getPropertyValue();
+                        trigger = schedulerManager.createCronTrigger(triggerKey, cronExpression);
+                        LOGGER.info("Register QifEvent '{}' with cronExpression '{}'", qifEvent.getName(),
+                                cronExpression);
+                    } else {
+                        LOGGER.error("FATAL : Missing Listener Property with property key = 'cronExpression' for QifEvent {}",
+                                qifEvent.getName());
+                    }
+                }
+
+                if (!schedulerManager.isJobAlreadyExists(jobKey) && jobDetail != null) {
+                    schedulerManager.add(jobDetail, trigger);
+                } else if (jobDetail != null) {
+                    LOGGER.debug("JobKey {} already exists, try to reschedule", jobKey);
+                    schedulerManager.reschedule(triggerKey, trigger);
+                }
             }
         }
 

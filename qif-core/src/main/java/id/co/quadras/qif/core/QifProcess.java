@@ -13,6 +13,7 @@ import id.co.quadras.qif.core.model.entity.QifEvent;
 import id.co.quadras.qif.core.model.entity.QifEventProperty;
 import id.co.quadras.qif.core.model.entity.log.*;
 import id.co.quadras.qif.core.model.vo.QifActivityResult;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -137,7 +138,7 @@ public abstract class QifProcess implements QifActivity {
                                 true, inputMessage));
                     } catch (IOException e) {
                         logger.error(e.getLocalizedMessage(), e);
-                        inputMsg.setInputMessageContent(e.getMessage());
+                        inputMsg.setInputMessageContent(ExceptionUtils.getStackTrace(e.getCause()));
                     }
                     inputMessageQueue.put(inputMsg);
                 }
@@ -196,7 +197,7 @@ public abstract class QifProcess implements QifActivity {
                                 .parseToString(true, qifActivityResult.getResult()));
                     } catch (IOException e) {
                         logger.error(e.getLocalizedMessage(), e);
-                        outputMessage.setOutputMessageContent(e.getMessage());
+                        outputMessage.setOutputMessageContent(ExceptionUtils.getStackTrace(e.getCause()));
                     }
                     outputMessageQueue.put(outputMessage);
                 }
@@ -235,6 +236,7 @@ public abstract class QifProcess implements QifActivity {
                     logContent.setMessageContent(jsonParser.parseToString(true, inputMessage));
                 } catch (IOException e) {
                     logger.error(e.getLocalizedMessage(), e);
+                    logContent.setMessageContent(ExceptionUtils.getStackTrace(e.getCause()));
                 }
 
                 logContent.setActive(Boolean.TRUE);

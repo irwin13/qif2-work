@@ -14,6 +14,7 @@ import id.co.quadras.qif.core.model.entity.log.QifActivityLogData;
 import id.co.quadras.qif.core.model.entity.log.QifActivityLogInputMsg;
 import id.co.quadras.qif.core.model.entity.log.QifActivityLogOutputMsg;
 import id.co.quadras.qif.core.model.vo.QifActivityResult;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -150,7 +151,7 @@ public abstract class QifTask implements QifActivity {
                                 true, qifTaskMessage.getMessage()));
                     } catch (IOException e) {
                         logger.error(e.getLocalizedMessage(), e);
-                        inputMessage.setInputMessageContent(e.getMessage());
+                        inputMessage.setInputMessageContent(ExceptionUtils.getStackTrace(e.getCause()));
                     }
                     inputMessageQueue.put(inputMessage);
                 }
@@ -170,7 +171,7 @@ public abstract class QifTask implements QifActivity {
                                 .parseToString(true, qifActivityResult.getResult()));
                     } catch (IOException e) {
                         logger.error(e.getLocalizedMessage(), e);
-                        outputMessage.setOutputMessageContent(e.getMessage());
+                        outputMessage.setOutputMessageContent(ExceptionUtils.getStackTrace(e.getCause()));
                     }
                     outputMessageQueue.put(outputMessage);
                 }

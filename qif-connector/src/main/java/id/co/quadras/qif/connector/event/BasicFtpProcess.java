@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * @author irwin Timestamp : 05/06/2014 14:32
  */
-public abstract class FtpEvent extends QifProcess {
+public abstract class BasicFtpProcess extends QifProcess {
 
     @Override
     protected Object receiveEvent(QifEvent qifEvent, Object inputMessage) {

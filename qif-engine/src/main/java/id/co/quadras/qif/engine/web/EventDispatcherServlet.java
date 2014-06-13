@@ -40,7 +40,7 @@ public class EventDispatcherServlet extends HttpServlet {
     }
 
     private void handleRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String path = request.getRequestURI().substring(request.getContextPath().length()).replaceFirst("/", "");
+        String path = request.getRequestURI().substring(request.getContextPath().length()).replaceFirst("/http-event/", "");
         LOGGER.debug("incoming request for path {}", path);
 
         EventService eventService = EngineFactory.getInjector().getInstance(EventService.class);
@@ -108,15 +108,23 @@ public class EventDispatcherServlet extends HttpServlet {
     private void buildResponseFromResult(HttpServletResponse response, QifActivityResult result)
             throws IOException {
 
-        if (QifActivity.SUCCESS.equals(result.getStatus())) {
-            String body = result.getResult().toString();
-            buildResponse(response, HttpServletResponse.SC_OK, TEXT_PLAIN, body, result.getAdditionalData());
-        } else if (QifActivity.ERROR.equals(result.getStatus())) {
-            String body = "500 Internal Server Error. " + result.getResult().toString();
-            buildResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, TEXT_PLAIN, body, result.getAdditionalData());
+        if (result != null) {
+            if (QifActivity.SUCCESS.equals(result.getStatus())) {
+                if (result.getResult() != null) {
+                    String body = result.getResult().toString();
+                    buildResponse(response, HttpServletResponse.SC_OK, TEXT_PLAIN, body, result.getAdditionalData());
+                } else {
+                    buildResponse(response, HttpServletResponse.SC_OK, TEXT_PLAIN, QifActivity.SUCCESS, result.getAdditionalData());
+                }
+            } else if (QifActivity.ERROR.equals(result.getStatus())) {
+                String body = "500 Internal Server Error. " + result.getResult().toString();
+                buildResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, TEXT_PLAIN, body, result.getAdditionalData());
+            } else {
+                String body = "500 Internal Server Error. Response status should be SUCCESS or ERROR";
+                buildResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, TEXT_PLAIN, body, result.getAdditionalData());
+            }
         } else {
-            String body = "500 Internal Server Error. Response status should be SUCCESS or ERROR";
-            buildResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, TEXT_PLAIN, body, result.getAdditionalData());
+            buildResponse(response, HttpServletResponse.SC_OK, TEXT_PLAIN, null, null);
         }
     }
 
