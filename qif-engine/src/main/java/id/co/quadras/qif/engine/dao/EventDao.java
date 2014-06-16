@@ -15,6 +15,6 @@ public interface EventDao {
     public QifEvent selectById(String id);
 
     public void update(QifEvent qifEvent);
-    public void update(SqlSession session, QifEvent qifEvent);
+    public void batchUpdate(SqlSession session, List<QifEvent> modelList);
     public SqlSession openSqlSession(ExecutorType executorType);
 }

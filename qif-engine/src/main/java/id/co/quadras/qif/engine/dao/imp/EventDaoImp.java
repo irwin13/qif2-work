@@ -9,6 +9,7 @@ import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -42,8 +43,8 @@ public class EventDaoImp implements EventDao {
     }
 
     @Override
-    public void update(SqlSession session, QifEvent qifEvent) {
-        basicDao.update(session, qifEvent);
+    public void batchUpdate(SqlSession session, List<QifEvent> modelList) {
+        basicDao.batchUpdate(session, modelList);
     }
 
     @Override

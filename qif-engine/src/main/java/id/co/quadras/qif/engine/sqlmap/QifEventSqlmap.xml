@@ -67,13 +67,13 @@
             AND qif_process = #{qifProcess}
         </if>
         <if test="auditTrailEnabled != null">
-            AND audit_trail_enabled = #{auditTrailEnabled}
+            AND audit_trail_enabled = #{auditTrailEnabled, typeHandler=com.irwin13.winwork.mybatis.typehandler.YesNoBooleanTypeHandler}
         </if>
         <if test="keepMessageContent != null">
-            AND keep_message_content = #{keepMessageContent}
+            AND keep_message_content = #{keepMessageContent, typeHandler=com.irwin13.winwork.mybatis.typehandler.YesNoBooleanTypeHandler}
         </if>
         <if test="activeAcceptMessage != null">
-            AND active_accept_message = #{activeAcceptMessage}
+            AND active_accept_message = #{activeAcceptMessage, typeHandler=com.irwin13.winwork.mybatis.typehandler.YesNoBooleanTypeHandler}
         </if>
 
         <if test="columnName != null and columnName != '' and sortMethod != null and sortMethod != ''">
@@ -145,7 +145,9 @@
         #{id}, #{active, typeHandler=com.irwin13.winwork.mybatis.typehandler.YesNoBooleanTypeHandler},
         #{createBy}, #{createDate}, #{lastUpdateBy}, #{lastUpdateDate},
         #{name}, #{description}, #{eventInterface}, #{eventType}, #{qifProcess},
-        #{auditTrailEnabled}, #{keepMessageContent}, #{activeAcceptMessage}
+        #{auditTrailEnabled, typeHandler=com.irwin13.winwork.mybatis.typehandler.YesNoBooleanTypeHandler},
+        #{keepMessageContent, typeHandler=com.irwin13.winwork.mybatis.typehandler.YesNoBooleanTypeHandler},
+        #{activeAcceptMessage, typeHandler=com.irwin13.winwork.mybatis.typehandler.YesNoBooleanTypeHandler}
         )
     </insert>
 
@@ -157,9 +159,9 @@
         event_interface = #{eventInterface},
         event_type = #{eventType},
         qif_process = #{qifProcess},
-        audit_trail_enabled = #{auditTrailEnabled},
-        keep_message_content = #{keepMessageContent},
-        active_accept_message = #{activeAcceptMessage},
+        audit_trail_enabled = #{auditTrailEnabled, typeHandler=com.irwin13.winwork.mybatis.typehandler.YesNoBooleanTypeHandler},
+        keep_message_content = #{keepMessageContent, typeHandler=com.irwin13.winwork.mybatis.typehandler.YesNoBooleanTypeHandler},
+        active_accept_message = #{activeAcceptMessage, typeHandler=com.irwin13.winwork.mybatis.typehandler.YesNoBooleanTypeHandler},
 
         active = #{active, typeHandler=com.irwin13.winwork.mybatis.typehandler.YesNoBooleanTypeHandler},
         last_update_by = #{lastUpdateBy},

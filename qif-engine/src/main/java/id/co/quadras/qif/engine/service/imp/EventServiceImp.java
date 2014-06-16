@@ -12,6 +12,8 @@ import id.co.quadras.qif.engine.service.EventService;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 
+import java.util.Arrays;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -90,13 +92,17 @@ public class EventServiceImp implements EventService {
     @Override
     public void update(QifEvent qifEvent) {
         Preconditions.checkNotNull(qifEvent.getQifEventPropertyList());
-        commonService.onUpdate(qifEvent);
+        Date today = new Date();
+        qifEvent.setLastUpdateDate(today);
+        qifEvent.setLastUpdateBy(this.getClass().getName());
+
         for (QifEventProperty property : qifEvent.getQifEventPropertyList()) {
-            commonService.onUpdate(property);
+            property.setLastUpdateDate(today);
+            property.setLastUpdateBy(this.getClass().getName());
         }
         SqlSession session = eventDao.openSqlSession(ExecutorType.BATCH);
         try {
-            eventDao.update(session, qifEvent);
+            eventDao.batchUpdate(session, Arrays.asList(qifEvent));
             eventPropertyDao.batchUpdate(session, qifEvent.getQifEventPropertyList());
 
             session.flushStatements();
@@ -111,13 +117,17 @@ public class EventServiceImp implements EventService {
     @Override
     public void delete(QifEvent qifEvent) {
         Preconditions.checkNotNull(qifEvent.getQifEventPropertyList());
-        commonService.onSoftDelete(qifEvent);
+        Date today = new Date();
+        qifEvent.setLastUpdateDate(today);
+        qifEvent.setLastUpdateBy(this.getClass().getName());
+
         for (QifEventProperty property : qifEvent.getQifEventPropertyList()) {
-            commonService.onSoftDelete(property);
+            property.setLastUpdateDate(today);
+            property.setLastUpdateBy(this.getClass().getName());
         }
         SqlSession session = eventDao.openSqlSession(ExecutorType.BATCH);
         try {
-            eventDao.update(session, qifEvent);
+            eventDao.batchUpdate(session, Arrays.asList(qifEvent));
             eventPropertyDao.batchUpdate(session, qifEvent.getQifEventPropertyList());
 
             session.flushStatements();
