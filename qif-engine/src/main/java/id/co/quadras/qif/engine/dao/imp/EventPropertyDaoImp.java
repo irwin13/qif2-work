@@ -6,6 +6,7 @@ import com.irwin13.winwork.mybatis.dao.BasicMyBatisDao;
 import id.co.quadras.qif.core.model.entity.QifEventProperty;
 import id.co.quadras.qif.engine.dao.EventPropertyDao;
 import id.co.quadras.qif.engine.sqlmap.QifEventPropertySqlmap;
+import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
 import java.util.List;
@@ -35,5 +36,10 @@ public class EventPropertyDaoImp implements EventPropertyDao {
     @Override
     public List<QifEventProperty> select(QifEventProperty filter) {
         return basicDao.select(filter, null);
+    }
+
+    @Override
+    public void batchUpdate(SqlSession session, List<QifEventProperty> modelList) {
+        basicDao.batchUpdate(session, modelList);
     }
 }

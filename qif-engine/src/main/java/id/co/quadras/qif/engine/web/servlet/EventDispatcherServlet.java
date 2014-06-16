@@ -1,4 +1,4 @@
-package id.co.quadras.qif.engine.web;
+package id.co.quadras.qif.engine.web.servlet;
 
 import com.google.common.base.Strings;
 import id.co.quadras.qif.core.QifActivity;

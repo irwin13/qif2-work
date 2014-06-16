@@ -10,6 +10,7 @@ import com.irwin13.winwork.basic.config.WinWorkConfig;
 import com.irwin13.winwork.basic.log.MDCLogInterceptor;
 import com.irwin13.winwork.basic.scheduler.BasicSchedulerManager;
 import com.irwin13.winwork.basic.scheduler.SchedulerProvider;
+import com.irwin13.winwork.basic.service.BasicEntityCommonService;
 import com.irwin13.winwork.basic.utilities.WinWorkVelocityUtil;
 import id.co.quadras.qif.core.helper.JsonParser;
 import id.co.quadras.qif.core.helper.QifTransactionCounter;
@@ -92,5 +93,6 @@ public class SharedModule extends AbstractModule {
         bind(DataSource.class).toProvider(TomcatDataSourceProvider.class).in(Singleton.class);
         bind(SqlSessionFactory.class).toProvider(QifSqlSessionFactoryProvider.class).in(Singleton.class);
 
+        bind(BasicEntityCommonService.class);
     }
 }

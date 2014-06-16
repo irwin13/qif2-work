@@ -1,4 +1,4 @@
-package id.co.quadras.qif.engine.web;
+package id.co.quadras.qif.engine.web.servlet;
 
 import com.irwin13.winwork.basic.WinWorkConstants;
 import com.irwin13.winwork.basic.config.WinWorkConfig;
@@ -15,7 +15,7 @@ import java.io.IOException;
 /**
  * @author irwin Timestamp : 18/05/2014 1:12
  */
-public class AppStatus extends HttpServlet {
+public class AppStatusServlet extends HttpServlet {
 
     private static final String TEXT_HTML = "text/html";
 

@@ -1,12 +1,16 @@
 package id.co.quadras.qif.engine.service.imp;
 
+import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
+import com.irwin13.winwork.basic.service.BasicEntityCommonService;
 import id.co.quadras.qif.core.exception.QifException;
 import id.co.quadras.qif.core.model.entity.QifEvent;
 import id.co.quadras.qif.core.model.entity.QifEventProperty;
 import id.co.quadras.qif.engine.dao.EventDao;
 import id.co.quadras.qif.engine.dao.EventPropertyDao;
 import id.co.quadras.qif.engine.service.EventService;
+import org.apache.ibatis.session.ExecutorType;
+import org.apache.ibatis.session.SqlSession;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -18,11 +22,14 @@ public class EventServiceImp implements EventService {
 
     private final EventDao eventDao;
     private final EventPropertyDao eventPropertyDao;
+    private final BasicEntityCommonService commonService;
 
     @Inject
-    public EventServiceImp(EventDao eventDao, EventPropertyDao eventPropertyDao) {
+    public EventServiceImp(EventDao eventDao, EventPropertyDao eventPropertyDao,
+                           BasicEntityCommonService commonService) {
         this.eventDao = eventDao;
         this.eventPropertyDao = eventPropertyDao;
+        this.commonService = commonService;
     }
 
     @Override
@@ -78,5 +85,47 @@ public class EventServiceImp implements EventService {
 
         }
         return eventList;
+    }
+
+    @Override
+    public void update(QifEvent qifEvent) {
+        Preconditions.checkNotNull(qifEvent.getQifEventPropertyList());
+        commonService.onUpdate(qifEvent);
+        for (QifEventProperty property : qifEvent.getQifEventPropertyList()) {
+            commonService.onUpdate(property);
+        }
+        SqlSession session = eventDao.openSqlSession(ExecutorType.BATCH);
+        try {
+            eventDao.update(session, qifEvent);
+            eventPropertyDao.batchUpdate(session, qifEvent.getQifEventPropertyList());
+
+            session.flushStatements();
+            session.commit();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
+
+    @Override
+    public void delete(QifEvent qifEvent) {
+        Preconditions.checkNotNull(qifEvent.getQifEventPropertyList());
+        commonService.onSoftDelete(qifEvent);
+        for (QifEventProperty property : qifEvent.getQifEventPropertyList()) {
+            commonService.onSoftDelete(property);
+        }
+        SqlSession session = eventDao.openSqlSession(ExecutorType.BATCH);
+        try {
+            eventDao.update(session, qifEvent);
+            eventPropertyDao.batchUpdate(session, qifEvent.getQifEventPropertyList());
+
+            session.flushStatements();
+            session.commit();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
     }
 }

@@ -13,4 +13,7 @@ public interface EventService {
 
     public QifEvent selectByProperty(String propertyKey, String propertyValue);
     public List<QifEvent> selectByPropertyKey(String propertyKey);
+
+    public void update(QifEvent qifEvent);
+    public void delete(QifEvent qifEvent);
 }

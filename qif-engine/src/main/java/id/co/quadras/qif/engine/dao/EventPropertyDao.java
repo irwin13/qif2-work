@@ -1,6 +1,7 @@
 package id.co.quadras.qif.engine.dao;
 
 import id.co.quadras.qif.core.model.entity.QifEventProperty;
+import org.apache.ibatis.session.SqlSession;
 
 import java.util.List;
 
@@ -10,4 +11,5 @@ import java.util.List;
 public interface EventPropertyDao {
     public List<QifEventProperty> selectByEvent(String eventId);
     public List<QifEventProperty> select(QifEventProperty filter);
+    public void batchUpdate(SqlSession session, List<QifEventProperty> modelList);
 }

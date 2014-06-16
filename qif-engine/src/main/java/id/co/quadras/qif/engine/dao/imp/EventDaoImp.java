@@ -5,6 +5,8 @@ import com.irwin13.winwork.mybatis.dao.BasicMyBatisDao;
 import id.co.quadras.qif.core.model.entity.QifEvent;
 import id.co.quadras.qif.engine.dao.EventDao;
 import id.co.quadras.qif.engine.sqlmap.QifEventSqlmap;
+import org.apache.ibatis.session.ExecutorType;
+import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
 import java.util.List;
@@ -32,5 +34,20 @@ public class EventDaoImp implements EventDao {
     @Override
     public QifEvent selectById(String id) {
         return basicDao.selectById(id, false);
+    }
+
+    @Override
+    public void update(QifEvent qifEvent) {
+        basicDao.update(qifEvent);
+    }
+
+    @Override
+    public void update(SqlSession session, QifEvent qifEvent) {
+        basicDao.update(session, qifEvent);
+    }
+
+    @Override
+    public SqlSession openSqlSession(ExecutorType executorType) {
+        return basicDao.openNewSqlSession(executorType);
     }
 }

@@ -1,11 +1,13 @@
-package id.co.quadras.qif.engine.web;
+package id.co.quadras.qif.engine.web.servlet;
 
 import com.irwin13.winwork.basic.scheduler.BasicSchedulerManager;
 import id.co.quadras.qif.core.QifActivity;
 import id.co.quadras.qif.core.helper.JsonParser;
 import id.co.quadras.qif.core.model.entity.QifEvent;
+import id.co.quadras.qif.core.model.vo.event.EventType;
 import id.co.quadras.qif.engine.SchedulerStarter;
 import id.co.quadras.qif.engine.guice.EngineFactory;
+import id.co.quadras.qif.engine.service.EventService;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.quartz.SchedulerException;
@@ -22,30 +24,15 @@ import java.util.Arrays;
 /**
  * @author irwin Timestamp : 13/06/2014 18:49
  */
-public class SchedulerEventApi extends HttpServlet {
+public class EventApiServlet extends HttpServlet {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SchedulerEventApi.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EventApiServlet.class);
     private final BasicSchedulerManager schedulerManager = EngineFactory.getInjector().getInstance(BasicSchedulerManager.class);
     private final SchedulerStarter schedulerStarter = EngineFactory.getInjector().getInstance(SchedulerStarter.class);
     private final JsonParser jsonParser = EngineFactory.getInjector().getInstance(JsonParser.class);
+    private final EventService eventService = EngineFactory.getInjector().getInstance(EventService.class);
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String json = IOUtils.toString(req.getReader());
-        LOGGER.debug("json input = {}", json);
-        QifEvent qifEvent = jsonParser.parseToObject(false, json, QifEvent.class);
-        LOGGER.debug("update scheduler event = {}", qifEvent);
-        try {
-            schedulerManager.remove(schedulerManager.createTriggerKey(qifEvent.getId()));
-            schedulerStarter.startEvent(Arrays.asList(qifEvent));
-            buildResponse(resp, HttpServletResponse.SC_OK, QifActivity.SUCCESS);
-        } catch (SchedulerException e) {
-            LOGGER.error(e.getLocalizedMessage(), e);
-            buildResponse(resp, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                    ExceptionUtils.getStackTrace(e.getCause()));
-        }
-    }
-
+    // ADD
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String json = IOUtils.toString(req.getReader());
@@ -62,17 +49,52 @@ public class SchedulerEventApi extends HttpServlet {
         }
     }
 
+    // UPDATE
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String json = IOUtils.toString(req.getReader());
+        LOGGER.debug("json input = {}", json);
+        QifEvent qifEvent = jsonParser.parseToObject(false, json, QifEvent.class);
+        LOGGER.debug("update scheduler event = {}", qifEvent);
+        if (EventType.SCHEDULER_CRON.getName().equals(qifEvent.getEventType()) ||
+                EventType.SCHEDULER_INTERVAL.getName().equals(qifEvent.getEventType())) {
+            try {
+                schedulerManager.remove(schedulerManager.createTriggerKey(qifEvent.getId()));
+                schedulerStarter.startEvent(Arrays.asList(qifEvent));
+                eventService.update(qifEvent);
+                buildResponse(resp, HttpServletResponse.SC_OK, QifActivity.SUCCESS);
+            } catch (SchedulerException e) {
+                LOGGER.error(e.getLocalizedMessage(), e);
+                buildResponse(resp, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                        ExceptionUtils.getStackTrace(e.getCause()));
+            }
+        } else {
+            eventService.update(qifEvent);
+            buildResponse(resp, HttpServletResponse.SC_OK, QifActivity.SUCCESS);
+        }
+    }
+
+    // DELETE
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("id");
         LOGGER.debug("delete scheduler event id = {}", id);
-        try {
-            schedulerManager.remove(schedulerManager.createTriggerKey(id));
+        QifEvent qifEvent = eventService.selectById(id);
+        if (EventType.SCHEDULER_CRON.getName().equals(qifEvent.getEventType()) ||
+                EventType.SCHEDULER_INTERVAL.getName().equals(qifEvent.getEventType())) {
+
+            try {
+                schedulerManager.remove(schedulerManager.createTriggerKey(id));
+                eventService.delete(qifEvent);
+                buildResponse(resp, HttpServletResponse.SC_OK, QifActivity.SUCCESS);
+            } catch (SchedulerException e) {
+                LOGGER.error(e.getLocalizedMessage(), e);
+                buildResponse(resp, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                        ExceptionUtils.getStackTrace(e.getCause()));
+            }
+        } else {
+            eventService.delete(qifEvent);
             buildResponse(resp, HttpServletResponse.SC_OK, QifActivity.SUCCESS);
-        } catch (SchedulerException e) {
-            LOGGER.error(e.getLocalizedMessage(), e);
-            buildResponse(resp, HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                    ExceptionUtils.getStackTrace(e.getCause()));
         }
     }
 
@@ -86,5 +108,4 @@ public class SchedulerEventApi extends HttpServlet {
         }
         response.getWriter().println(message);
     }
-
 }

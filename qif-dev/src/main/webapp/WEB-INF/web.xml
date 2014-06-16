@@ -18,7 +18,7 @@
     <!-- SERVLET -->
     <servlet>
         <servlet-name>EventDispatcherServlet</servlet-name>
-        <servlet-class>id.co.quadras.qif.engine.web.EventDispatcherServlet</servlet-class>
+        <servlet-class>id.co.quadras.qif.engine.web.servlet.EventDispatcherServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>EventDispatcherServlet</servlet-name>
@@ -26,20 +26,20 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>SchedulerEventApi</servlet-name>
-        <servlet-class>id.co.quadras.qif.engine.web.SchedulerEventApi</servlet-class>
+        <servlet-name>EventApiServlet</servlet-name>
+        <servlet-class>id.co.quadras.qif.engine.web.servlet.EventApiServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>SchedulerEventApi</servlet-name>
+        <servlet-name>EventApiServlet</servlet-name>
         <url-pattern>/event-api</url-pattern>
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>AppStatus</servlet-name>
-        <servlet-class>id.co.quadras.qif.engine.web.AppStatus</servlet-class>
+        <servlet-name>AppStatusServlet</servlet-name>
+        <servlet-class>id.co.quadras.qif.engine.web.servlet.AppStatusServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>AppStatus</servlet-name>
+        <servlet-name>AppStatusServlet</servlet-name>
         <url-pattern>/appStatus</url-pattern>
     </servlet-mapping>
 </web-app>
