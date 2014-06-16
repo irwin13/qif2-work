@@ -118,10 +118,12 @@ public class EventServiceImp implements EventService {
     public void delete(QifEvent qifEvent) {
         Preconditions.checkNotNull(qifEvent.getQifEventPropertyList());
         Date today = new Date();
+        qifEvent.setActive(Boolean.FALSE);
         qifEvent.setLastUpdateDate(today);
         qifEvent.setLastUpdateBy(this.getClass().getName());
 
         for (QifEventProperty property : qifEvent.getQifEventPropertyList()) {
+            property.setActive(Boolean.FALSE);
             property.setLastUpdateDate(today);
             property.setLastUpdateBy(this.getClass().getName());
         }
