@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>${pom.name} ${pom.version} - $winWorkUtil.getLabel($loginUser.displayLang, 'global.edit') $winWorkUtil.camelCaseToReadable($modelName, true)</title>
+        #include("vita/common/common_head_tag.html")
+    </head>
+    <body>
+        <div id="container-fluid">
+            #parse("vita/common/header.vm")
+
+            <!-- BODY START -->
+            <div class="row-fluid">
+                #include("vita/common/leftMenu.html")
+                <div class="span10">
+                    <form action="${web.context}/$modelName/edit" method="post" enctype="application/x-www-form-urlencoded" class="form-horizontal" name="editForm">
+                        <input type="hidden" name="id" value="$displayTool.alt($model.id, '')" />
+                        <fieldset>
+                            <legend>
+                                $winWorkUtil.camelCaseToReadable($modelName, true) $winWorkUtil.getLabel($loginUser.displayLang, 'global.create')
+                            </legend>
+                            <div class="control-group">
+                                <label class="control-label" for="optionCategory">$winWorkUtil.getLabel($loginUser.displayLang, 'appOption.optionCategory')</label>
+                                <div class="controls">
+                                    <input type="text" id="optionCategory" name="optionCategory" class="input-xlarge" value="$displayTool.alt($model.optionCategory, '')" />
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="name">$winWorkUtil.getLabel($loginUser.displayLang, 'appOption.name')</label>
+                                <div class="controls">
+                                    <input type="text" id="name" name="name" class="input-xlarge" value="$displayTool.alt($model.name, '')" />
+                                    <span class="help-inline">$displayTool.alt($errorMessage.name, '')</span>
+                                </div>
+                            </div>
+                            <div class="controls">
+                                #parse("vita/common/button_submit_form.vm")
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+                <!-- CONTENT END -->
+
+            </div>
+            #include("vita/common/footer.html")
+            <script type="text/javascript">
+                setModel('$modelName');
+                setContextUrl('${web.context}');
+                doSearch();
+            </script>
+        </div>
+    </body>
+</html>

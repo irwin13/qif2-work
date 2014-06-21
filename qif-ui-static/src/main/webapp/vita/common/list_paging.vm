@@ -1,0 +1,61 @@
+#if ($pagingModel.totalRecord > 0)
+<div class="pagination pagination-small">
+    <ul>
+        <li>
+            <a href="#">
+                $winWorkUtil.getLabel($loginUser.displayLang, 'list.page') $pagingModel.currentPage $winWorkUtil.getLabel($loginUser.displayLang, 'list.of') $winWorkUtil.formatNumericInteger('###,###', $pagingModel.totalPage) ($winWorkUtil.formatNumericLong('###,###', $pagingModel.totalRecord) $winWorkUtil.getLabel($loginUser.displayLang, 'list.record'))
+            </a>
+        </li>
+        <li #if ($pagingModel.start == 0) class="disabled" #end>
+            #if ($pagingModel.start == 0)
+            <a>
+                <i class="icon-fast-backward"></i> $winWorkUtil.getLabel($loginUser.displayLang, 'list.firstPage')
+            </a>
+            #else
+            <a href="#" onclick="doChangePage(0)">
+                <i class="icon-fast-backward"></i> $winWorkUtil.getLabel($loginUser.displayLang, 'list.firstPage')
+            </a>
+            #end
+        </li>
+        <li #if ($pagingModel.start < $pageSize) class="disabled" #end>
+            #if ($pagingModel.start < $pageSize)
+            <a>
+                <i class="icon-arrow-left"></i> $winWorkUtil.getLabel($loginUser.displayLang, 'list.previous')
+            </a>
+            #else
+            <a href="#" onclick="doChangePage($pagingModel.previous)">
+                <i class="icon-arrow-left"></i> $winWorkUtil.getLabel($loginUser.displayLang, 'list.previous')
+            </a>
+            #end
+        </li>
+        <li #if ($pagingModel.currentPage >= $pagingModel.totalPage) class="disabled" #end>
+            #if ($pagingModel.currentPage >= $pagingModel.totalPage)
+            <a>
+                $winWorkUtil.getLabel($loginUser.displayLang, 'list.next') <i class="icon-arrow-right"></i>
+            </a>
+            #else
+            <a href="#" onclick="doChangePage($pagingModel.next)">
+                $winWorkUtil.getLabel($loginUser.displayLang, 'list.next') <i class="icon-arrow-right"></i>
+            </a>
+            #end
+        </li>
+        <li #if ($pagingModel.start == $winWorkUtil.multiplyInt($pagingModel.totalPageMin1, $pageSize)) class="disabled" #end>
+            #if ($pagingModel.start == $winWorkUtil.multiplyInt($pagingModel.totalPageMin1, $pageSize))
+            <a>
+                $winWorkUtil.getLabel($loginUser.displayLang, 'list.lastPage') <i class="icon-fast-forward"></i>
+            </a>
+            #else
+            <a href="#" onclick="doChangePage($winWorkUtil.multiplyInt($pagingModel.totalPageMin1, $pageSize))">
+                $winWorkUtil.getLabel($loginUser.displayLang, 'list.lastPage') <i class="icon-fast-forward"></i>
+            </a>
+            #end
+        </li>
+    </ul>
+</div>
+#else
+<h3>
+    <strong>
+        $winWorkUtil.getLabel($loginUser.displayLang, 'list.noRecordFound')
+    </strong>
+</h3>
+#end

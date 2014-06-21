@@ -1,0 +1,17 @@
+
+		${pom.name} <br/><br/>
+		<table>
+            <tr>
+				<td>version</td>
+				<td>:</td>
+				<td>${pom.version}</td>
+			</tr>
+			<tr>
+				<td>Build time</td>
+				<td>:</td>
+				<td>$adminPanelConfig.getString('project.buildTime', 'Label is Missing')</td>
+			</tr>
+        </table>
+		<br/><br/> 
+		${label.global.copyright}<br/>
+		${label.global.allRightReserved}

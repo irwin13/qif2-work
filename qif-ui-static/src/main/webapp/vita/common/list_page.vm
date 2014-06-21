@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>${pom.name} ${pom.version} - $winWorkUtil.getLabel($loginUser.displayLang, 'global.list') $winWorkUtil.camelCaseToReadable($modelName, true)</title>
+        #include("vita/common/common_head_tag.html")
+    </head>
+    <body>
+        <div id="container-fluid">
+            #parse("vita/common/header.vm")
+
+            <!-- BODY START -->
+            <div class="row-fluid">
+                #include("vita/common/leftMenu.html")
+                <!-- CONTENT START -->
+                <div class="span10">
+                    <!-- function onKeyPress to prevent the form to be submitted when Enter button is pressed -->
+                    <form action="#" class="form-horizontal" name="listForm" id="listForm" onkeypress="return event.keyCode != 13;">
+                        <input type="hidden" name="pageStart" id="pageStart" />
+                        <input type="hidden" name="deleteId" id="deleteId" />
+                        <fieldset>
+                            <legend>
+                                $winWorkUtil.camelCaseToReadable($modelName, true) $winWorkUtil.getLabel($loginUser.displayLang, 'global.search')
+                            </legend>
+                            <div class="input-append input-prepend">
+                                <span class="add-on">
+                                    <i class="icon-search"></i>
+                                </span>
+                                <input type="text" class="input-xlarge" id="searchKeyword" name="searchKeyword" />
+                                <button class="btn" type="button" onclick="doSearch('${web.context}');">$winWorkUtil.getLabel($loginUser.displayLang, 'global.search')</button>
+                                <button class="btn" type="button" onclick="doReset('${web.context}');">$winWorkUtil.getLabel($loginUser.displayLang, 'global.reset')</button>
+                            </div>
+                            <a href="${web.context}/$modelName/create" class="btn btn-info">$winWorkUtil.getLabel($loginUser.displayLang, 'global.create')</a>
+                        </fieldset>
+                        <br />
+                        <p class="text-left">
+                            <strong>$winWorkUtil.getLabel($loginUser.displayLang, 'list.orderBy')</strong>
+                            <select class="input-medium" name="sortProperty" id="sortProperty">
+                                <option value=""></option>
+                                #foreach($keyValue in $propertyList)
+                                <option value="$keyValue.key">$keyValue.value</option>
+                                #end
+                            </select>
+                            <select class="input-medium" name="sortMethod" id="sortMethod">
+                                <option value=""></option>
+                                <option value="ASC">ASC (A &rarr; Z)</option>
+                                <option value="DESC">DESC (Z &rarr; A)</option>
+                            </select>
+                            &nbsp;
+                            <strong>$winWorkUtil.getLabel($loginUser.displayLang, 'list.displayResult')</strong>
+                            <select class="input-mini" name="pageSize" id="pageSize">
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                                <option value="25">25</option>
+                                <option value="30">30</option>
+                            </select>
+                        </p>
+                        <div id="listContent"></div>
+                        <div id="delete-confirm" title="$winWorkUtil.getLabel($loginUser.displayLang, 'global.deleteConfirmation')"
+                             class="modal hide fade" aria-hidden="true">
+                            <div class="modal-body">
+                                <p><strong>$winWorkUtil.getLabel($loginUser.displayLang, 'global.deleteConfirmation')</strong></p>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn" data-dismiss="modal" aria-hidden="true">$winWorkUtil.getLabel($loginUser.displayLang, 'global.cancel')</button>
+                                <a class="btn btn-info" onclick="doDelete()">$winWorkUtil.getLabel($loginUser.displayLang, 'global.delete')</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- CONTENT END -->
+            </div>
+            #include("vita/common/footer.html")
+            <script type="text/javascript">
+                $('#searchKeyword').focus();
+                setModel('$modelName');
+                setContextUrl('${web.context}');
+                doSearch();
+            </script>
+        </div>
+    </body>
+</html>

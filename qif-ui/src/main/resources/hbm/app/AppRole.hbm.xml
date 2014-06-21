@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="id.co.quadras.winwork.model.entity.app">
+    <class name="AppRole" table="APP_ROLE" lazy="false">
+
+        <id name="id" type="string" column="ID">
+            <generator class="uuid" />
+        </id>
+        <property name="active" column="ACTIVE" type="yes_no" not-null="false"  />
+        <property name="createDate" column="CREATE_DATE" type="timestamp" not-null="false"  />
+        <property name="createBy" column="CREATE_BY" type="string" not-null="false"  />
+        <property name="lastUpdateDate" column="LAST_UPDATE_DATE" type="timestamp" not-null="false"  />
+        <property name="lastUpdateBy" column="LAST_UPDATE_BY" type="string" not-null="false"  />
+
+        <property name="name" column="NAME" type="string" not-null="true"/>
+        <property name="description" column="DESCRIPTION" type="string" not-null="false"/>
+
+        <bag name="appUserList" table="APP_USER_ROLE">
+            <key column="APP_ROLE_ID"/>
+            <many-to-many column="APP_USER_ID" class="id.co.quadras.winwork.model.entity.app.AppUser"/>
+        </bag>
+
+        <bag name="appPermissionList" table="APP_ROLE_PERMISSION">
+            <key column="APP_ROLE_ID"/>
+            <many-to-many column="APP_PERMISSION_ID" class="id.co.quadras.winwork.model.entity.app.AppPermission"/>
+        </bag>
+
+
+    </class>
+</hibernate-mapping>

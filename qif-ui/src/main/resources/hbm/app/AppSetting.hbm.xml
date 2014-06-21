@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="id.co.quadras.winwork.model.entity.app">
+    <class name="AppSetting" table="APP_SETTING" lazy="true">
+
+        <id name="id" type="string" column="ID">
+            <generator class="uuid" />
+        </id>
+        <property name="active" column="ACTIVE" type="yes_no" not-null="false"  />
+        <property name="createDate" column="CREATE_DATE" type="timestamp" not-null="false"  />
+        <property name="createBy" column="CREATE_BY" type="string" not-null="false"  />
+        <property name="lastUpdateDate" column="LAST_UPDATE_DATE" type="timestamp" not-null="false"  />
+        <property name="lastUpdateBy" column="LAST_UPDATE_BY" type="string" not-null="false"  />
+
+        <property name="code" column="CODE" type="string" not-null="true"/>
+        <property name="settingCategory" column="SETTING_CATEGORY" type="string" not-null="false"/>
+        <property name="description" column="DESCRIPTION" type="string" not-null="false"/>
+        <property name="stringValue" column="STRING_VALUE" type="string" not-null="false"/>
+
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,44 @@
+#parse("vita/common/list_paging.vm")
+<table class="table table-condensed listTable-blue">
+    <thead>
+        <tr>
+            <th>$winWorkUtil.getLabel($loginUser.displayLang, 'list.no')</th>
+            <th>$winWorkUtil.getLabel($loginUser.displayLang, 'bpListener.name')</th>
+            <th>$winWorkUtil.getLabel($loginUser.displayLang, 'bpListener.listenerInterface')</th>
+            <th>$winWorkUtil.getLabel($loginUser.displayLang, 'bpListener.listenerEvent')</th>
+            <th>$winWorkUtil.getLabel($loginUser.displayLang, 'bpListener.bpPath')</th>
+            <th>$winWorkUtil.getLabel($loginUser.displayLang, 'bpListener.auditTrailEnabled')</th>
+			<th>$winWorkUtil.getLabel($loginUser.displayLang, 'bpListener.activeAcceptMessage')</th>
+			<th>$winWorkUtil.getLabel($loginUser.displayLang, 'bpListener.description')</th>
+			<th>$winWorkUtil.getLabel($loginUser.displayLang, 'global.action')</th>
+        </tr>
+    </thead>
+    <tbody>
+        #set ($index = 1)
+        #set ($pageMark = ($pagingModel.currentPage * $pageSize) - $pageSize)
+
+        #foreach($model in $list)
+        #set ($counter = $pageMark + $index)
+        <tr>
+            <td>$counter</td>
+            <td>$displayTool.alt($model.name, '&nbsp;')</td>
+            <td>$displayTool.alt($model.listenerInterface, '&nbsp;')</td>
+			<td>$displayTool.alt($model.listenerEvent, '&nbsp;')</td>
+            <td>$displayTool.alt($model.bpPath, '&nbsp;')</td>
+            <td>$displayTool.alt($model.auditTrailEnabled, '&nbsp;')</td>
+            <td>$displayTool.alt($model.activeAcceptMessage, '&nbsp;')</td>
+            <td>$displayTool.alt($model.description, '&nbsp;')</td>
+			<td>
+                <span class="add-on">
+                    <a href="${web.context}/$modelName/edit?id=$model.id"><i class="icon-pencil"></i></a>
+                </span>
+                &nbsp;
+                <span class="add-on">
+                    <a href="#" onclick="deleteConfirmation('$model.id')"><i class="icon-trash"></i></a>
+                </span>
+            </td>
+        </tr>
+        #set ($index = $index + 1)
+        #end
+    </tbody>
+</table>

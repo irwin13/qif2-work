@@ -1,0 +1,38 @@
+<!-- FOOTER START -->
+<div class="row-fluid">
+    <div class="navbar navbar-static-bottom">
+        <div class="navbar-inner">
+            <p class="text-center"><strong>Copyright 2014 <a href="http://www.quadras.co.id" target="_blank">Quadra Solution</a></strong></p>
+        </div>
+    </div>
+</div>
+<!-- FOOTER END -->
+
+<!--
+JavaScript
+Placed at the end of the document so the pages load faster
+http://developer.yahoo.com/performance/rules.html#js_bottom
+-->
+<script src="${web.static}/js/jquery-1.11.1.min.js" type="text/javascript"></script>
+<script src="${web.static}/js/jquery-ui-1.10.4.min.js" type="text/javascript"></script>
+<script src="${web.static}/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="${web.static}/js/winwork.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        jQuery.ajax({
+            type: "GET",
+            url: "${web.context}/publicAccess/leftMenu",
+            dataType: "text",
+            success: function(data, textStatus) {
+                if (textStatus == "success") {
+                    $('#leftMenu').html(data);
+                }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+            var html = textStatus + " " + errorThrown;
+                $('#leftMenu').html(html);
+            }
+        });
+    });
+</script>

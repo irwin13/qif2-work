@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>${pom.name} ${pom.version} - Main Page</title>
+        #include("vita/common/common_head_tag.html")
+    </head>
+    <body>
+        <div id="container-fluid">
+            #parse("vita/common/header.vm")
+            <!-- BODY START -->
+            <div class="row-fluid">
+                #include("vita/common/leftMenu.html")
+            </div>
+            #include("vita/common/footer.html")
+        </div>
+    </body>
+</html>

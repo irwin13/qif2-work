@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>${pom.name} ${pom.version} - $winWorkUtil.getLabel($loginUser.displayLang, 'global.create') $winWorkUtil.camelCaseToReadable($modelName, true)</title>
+        #include("vita/common/common_head_tag.html")
+    </head>
+    <body>
+        <div id="container-fluid">
+            #parse("vita/common/header.vm")
+
+            <!-- BODY START -->
+            <div class="row-fluid">
+                #include("vita/common/leftMenu.html")
+                <div class="span10">
+                    <form Property="${web.context}/$modelName/create.html" method="post" enctype="application/x-www-form-urlencoded" class="form-horizontal" name="createForm">
+                        <fieldset>
+                            <legend>
+                                $winWorkUtil.camelCaseToReadable($modelName, true) $winWorkUtil.getLabel($loginUser.displayLang, 'global.create')
+                            </legend>
+							
+			    <div class="control-group">
+                                <label class="control-label required" for="name">$winWorkUtil.getLabel($loginUser.displayLang, 'bpListener.name') </label>
+                                <div class="controls">
+                                    <input type="text" id="name" name="name" class="input-xlarge" value="$displayTool.alt($model.name, '')" />
+                                    <span class="help-inline">$displayTool.alt($errorMessage.name, '')</span>
+                                </div>
+                            </div>
+			    <div class="control-group">
+                                <label class="control-label" for="listenerInterface">$winWorkUtil.getLabel($loginUser.displayLang, 'bpListener.listenerInterface')<font color="red">*</font></label>
+                                <div class="controls">
+                                    <input type="text" id="listenerInterface" name="listenerInterface" class="input-xlarge" value="$displayTool.alt($model.listenerInterface, '')" />
+                                    <span class="help-inline">$displayTool.alt($errorMessage.listenerInterface, '')</span>
+                                </div>
+                            </div>
+			    <div class="control-group">
+                                <label class="control-label" for="listenerEvent">$winWorkUtil.getLabel($loginUser.displayLang, 'bpListener.listenerEvent')<font color="red">*</font></label>
+                                <div class="controls">
+                                    <input type="text" id="listenerEvent" name="listenerEvent" class="input-xlarge" value="$displayTool.alt($model.listenerEvent, '')" />
+                                    <span class="help-inline">$displayTool.alt($errorMessage.listenerEvent, '')</span>
+                                </div>
+                            </div>
+			    <div class="control-group">
+                                <label class="control-label" for="bpPath">$winWorkUtil.getLabel($loginUser.displayLang, 'bpListener.bpPath')<font color="red">*</font></label>
+                                <div class="controls">
+                                    <input type="text" id="bpPath" name="bpPath" class="input-xlarge" value="$displayTool.alt($model.bpPath, '')" />
+                                    <span class="help-inline">$displayTool.alt($errorMessage.bpPath, '')</span>
+                                </div>
+                            </div>
+			    <div class="control-group">
+                                <label class="control-label" for="auditTrailEnabled">$winWorkUtil.getLabel($loginUser.displayLang, 'bpListener.auditTrailEnabled')</label>
+                                <div class="controls">
+                                    <input type="checkbox" name="auditTrailEnabled" id="auditTrailEnabled" #if ($model.auditTrailEnabled) checked="checked" #end/>
+                                </div>
+                              </div>
+			    <div class="control-group">
+                                <label class="control-label" for="activeAcceptMessage">$winWorkUtil.getLabel($loginUser.displayLang, 'bpListener.activeAcceptMessage')</label>
+                                <div class="controls">
+                                    <input type="checkbox" name="activeAcceptMessage" id="activeAcceptMessage" #if ($model.activeAcceptMessage) checked="checked" #end/>
+                                </div>
+                            </div>
+                <div class="control-group">
+                      <label class="control-label" for="description">$winWorkUtil.getLabel($loginUser.displayLang, 'bpListener.description')</label>
+                      <div class="controls">
+                              <textarea name="description" id="description" class="input-xxlarge">$displayTool.alt($model.description, '')</textarea>
+                      </div>
+                </div>
+			    <div class="controls">
+                                #parse("vita/common/button_submit_form.vm")
+                            </div>
+                        </fieldset>
+                    </form>
+                    <form action="#" method="get" name="bpListenerPropertyForm" id="bpListenerPropertyForm">
+                        <input type="hidden" name="bpListenerPropertyIndex" id="bpListenerPropertyIndex" value="" />
+                        <input type="hidden" name="bpListenerPropertyProperty" id="bpListenerPropertyProperty" value="" />
+                        <div>
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <td>$winWorkUtil.getLabel($loginUser.displayLang, 'bpListenerProperty.propertyKey')</td>
+                                        <td>$winWorkUtil.getLabel($loginUser.displayLang, 'bpListenerProperty.propertyValue')</td>
+                                        <td>$winWorkUtil.getLabel($loginUser.displayLang, 'bpListenerProperty.description')</td>
+                                        <td>$winWorkUtil.getLabel($loginUser.displayLang, 'global.action')</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+					    <input type="text" name="bpListenerProperty_propertyKey" id="bpListenerProperty_propertyKey" class="input-xlarge">
+                                        </td>
+                                        <td>
+					    <input type="text" id="bpListenerProperty_propertyValue" class="input-xlarge" name="bpListenerProperty_propertyValue"  />
+                                        </td>
+                                        <td>
+                                            <textarea name="bpListenerProperty_description" id="bpListenerProperty_description"> </textarea>
+                                        </td>
+                                        <td>
+                                            <input type="button" name="bpListenerProperty_buttonAdd" class="btn btn-info" value="Add" onclick="addItem()"/>
+                                            <input type="button" name="bpListenerProperty_buttonReset" class="btn" disabled="disabled" value="Reset" onclick="resetItem()"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="child_bpListenerProperty" />
+                    </form>        		    
+                </div>
+                <!-- CONTENT END -->
+
+            </div>
+            #include("vita/common/footer.html")
+	    <script src="${web.static}/js/bp/bpListener.js" type="text/javascript"></script>
+            <script type="text/javascript">
+		$(function() {
+		    setModel('$modelName');
+		    setContextUrl('${web.context}');    
+		    loadBpListenerProperty();
+		});		  		
+            </script>
+        </div>
+    </body>
+</html>

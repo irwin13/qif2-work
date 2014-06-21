@@ -1,0 +1,50 @@
+<table class="table table-condensed listTable-blue">
+    <thead>
+    <tr>
+        <td><strong>$winWorkUtil.getLabel($loginUser.displayLang, 'list.no')</strong></td>
+        <td><strong>$winWorkUtil.getLabel($loginUser.displayLang, 'bpAdapterProperty.propertyKey')</strong></td>
+        <td><strong>$winWorkUtil.getLabel($loginUser.displayLang, 'bpAdapterProperty.propertyValue')</strong></td>
+        <td><strong>$winWorkUtil.getLabel($loginUser.displayLang, 'bpAdapterProperty.description')</strong></td>        
+        <td><strong>$winWorkUtil.getLabel($loginUser.displayLang, 'global.action')</strong></td>
+    </tr>
+    </thead>
+    <tbody>
+    #set( $index = 0 )
+    #set( $chart = 1 )
+    #foreach ($child in $bpAdapterPropertyList)
+    <tr>
+        <td>$chart</td>
+        <td>$displayTool.alt($child.propertyKey, '')</td>
+        <td>$displayTool.alt($child.propertyValue, '')</td>
+		<td>$displayTool.alt($child.description, '')</td>
+        <td>
+            <input type="button" class="btn" value="Edit" onclick="editItem('$index')" />&nbsp;
+            <input type="button" class="btn" value="Remove" onclick="removeItem('$index')" />
+        </td>
+    </tr>
+    #set( $index = $index + 1)
+    #set( $chart = $chart + 1)
+    #end
+    </tbody>
+</table>
+<table>
+    <thead>
+        <tr>
+            <td>
+                <font color="red">$displayTool.alt($errors.propertyKey, '')</font><br />
+                <font color="red">$displayTool.alt($errors.propertyValue, '')</font><br />
+				<font color="red">$displayTool.alt($errors.description, '')</font><br />
+            </td>
+        </tr>
+    </thead>
+</table>
+
+<script type="text/javascript">
+    $('#bpAdapterProperty_propertyKey').val('$displayTool.alt($bpAdapterProperty.propertyKey,'')');
+    $('#bpAdapterProperty_propertyValue').val('$displayTool.alt($bpAdapterProperty.propertyValue,'')');
+	$('#bpAdapterProperty_description').val('$displayTool.alt($bpAdapterProperty.description,'')');
+    
+    #if($isCleanError)
+        resetItem();
+    #end
+</script>

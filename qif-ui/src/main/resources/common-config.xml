@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <system />
+    <properties fileName="qif-ui-config.properties"/>
+    <properties fileName="label-en.properties"/>
+    <properties fileName="label-id.properties"/>
+    <properties fileName="error-en.properties"/>
+    <properties fileName="error-id.properties"/>
+</configuration>

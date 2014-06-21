@@ -1,0 +1,19 @@
+#macro( printMenu $userMenuList $isRoot )
+<ul class="nav nav-list">
+    #foreach($menu in $userMenuList)
+        #if ($menu.httpPath == "#")
+        <li class="nav-header">$menu.name</li>
+        #else
+        <li>
+            <a title="$menu.name" href="${web.context}/$menu.httpPath">$menu.name</a>
+        </li>
+        #end
+        #if($winWorkUtil.isEmptyChildMenuList($menu) == false)
+            #printMenu($menu.childMenuList false )
+        #end
+    #end
+</ul>
+#end
+
+#printMenu( $userMenuList false )
+

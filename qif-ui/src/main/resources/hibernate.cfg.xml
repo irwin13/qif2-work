@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+
+        <property name="hibernate.connection.provider_class">id.co.quadras.qif.ui.dao.TomcatDataSourceProvider</property>
+
+        <property name="hibernate.dialect">${app.database.dialect}</property>
+
+        <property name="hibernate.bytecode.use_reflection_optimizer">true</property>
+        <property name="hibernate.bytecode.provider">cglib</property>
+
+        <property name="hibernate.connection.release_mode">after_transaction</property>
+        <property name="hibernate.order_updates">true</property>
+
+        <property name="hibernate.cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
+
+        <property name="hibernate.show_sql">${app.database.showSql}</property>
+        <property name="hibernate.format_sql">${app.database.showSql}</property>
+
+        <!-- APP -->
+        <mapping resource="hbm/app/AppOption.hbm.xml" />
+        <mapping resource="hbm/app/AppSetting.hbm.xml" />
+        <mapping resource="hbm/app/AppUser.hbm.xml" />
+        <mapping resource="hbm/app/AppRole.hbm.xml" />
+        <mapping resource="hbm/app/AppPermission.hbm.xml" />
+
+    </session-factory>
+</hibernate-configuration>

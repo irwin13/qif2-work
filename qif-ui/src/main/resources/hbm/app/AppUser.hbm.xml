@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="id.co.quadras.winwork.model.entity.app">
+    <class name="AppUser" table="APP_USER" lazy="false">
+
+        <id name="id" type="string" column="ID">
+            <generator class="uuid" />
+        </id>
+        <property name="active" column="ACTIVE" type="yes_no" not-null="false"  />
+        <property name="createDate" column="CREATE_DATE" type="timestamp" not-null="false"  />
+        <property name="createBy" column="CREATE_BY" type="string" not-null="false"  />
+        <property name="lastUpdateDate" column="LAST_UPDATE_DATE" type="timestamp" not-null="false"  />
+        <property name="lastUpdateBy" column="LAST_UPDATE_BY" type="string" not-null="false"  />
+
+        <property name="username" column="USERNAME" type="string" not-null="true"/>
+        <property name="password" column="PASSWORD" type="string" not-null="true"/>
+        <property name="lastLoginFrom" column="LAST_LOGIN_FROM" type="string" not-null="false"/>
+        <property name="lastLogin" column="LAST_LOGIN" type="timestamp" not-null="false"/>
+        <property name="displayLang" column="DISPLAY_LANG" type="string" not-null="false"/>
+        <property name="firstName" column="FIRST_NAME" type="string" not-null="false"/>
+        <property name="lastName" column="LAST_NAME" type="string" not-null="false"/>
+        <property name="email" column="EMAIL" type="string" not-null="false"/>
+        <property name="phone" column="PHONE" type="string" not-null="false"/>
+
+        <bag name="appRoleList" table="APP_USER_ROLE" fetch="join">
+            <key column="APP_USER_ID"/>
+            <many-to-many column="APP_ROLE_ID" class="id.co.quadras.winwork.model.entity.app.AppRole"/>
+        </bag>
+
+    </class>
+</hibernate-mapping>

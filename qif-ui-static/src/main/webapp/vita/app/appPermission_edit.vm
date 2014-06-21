@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>${pom.name} ${pom.version} - $winWorkUtil.getLabel($loginUser.displayLang, 'global.create') $winWorkUtil.camelCaseToReadable($modelName, true)</title>
+        #include("vita/common/common_head_tag.html")
+    </head>
+    <body>
+        <div id="container-fluid">
+            #parse("vita/common/header.vm")
+            <!-- BODY START -->
+            <div class="row-fluid">
+                #include("vita/common/leftMenu.html")
+                <div class="span10">
+                    <form action="${web.context}/$modelName/edit" method="post" enctype="application/x-www-form-urlencoded" class="form-horizontal" name="editForm">
+                        <input type="hidden" name="id" value="$displayTool.alt($model.id, '')" />
+                        <fieldset>
+                            <legend>
+                                $winWorkUtil.camelCaseToReadable($modelName, true) $winWorkUtil.getLabel($loginUser.displayLang, 'global.create')
+                            </legend>
+                            <div class="control-group">
+                                <label class="control-label" for="name">$winWorkUtil.getLabel($loginUser.displayLang, 'appPermission.name')</label>
+                                <div class="controls">
+                                    <input type="text" class="input-xlarge" id="name" name="name" value="$displayTool.alt($model.name, '')" readonly/>
+                                    <span class="help-inline">$displayTool.alt($errorMessage.name, '')</span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="httpPath">$winWorkUtil.getLabel($loginUser.displayLang, 'appPermission.httpPath')</label>
+                                <div class="controls">
+                                    <input type="text" class="input-xlarge" id="httpPath" name="httpPath" value="$displayTool.alt($model.httpPath, '')" />
+                                    <span class="help-inline">$displayTool.alt($errorMessage.httpPath, '')</span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="httpMethod">$winWorkUtil.getLabel($loginUser.displayLang, 'appPermission.httpMethod')</label>
+                                <div class="controls">
+                                    <select name="httpMethod" id="httpMethod">
+                                        <option value=""></option>
+                                        #foreach($httpMethod in $httpMethodList)
+                                        <option value="$httpMethod.name"
+                                        #if($httpMethod.name == $model.httpMethod)
+                                        selected="selected"
+                                        #end
+                                        >$httpMethod.name</option>
+                                    #end
+                                </select><span class="help-inline">$displayTool.alt($errorMessage.httpMethod, '')</span>
+                            </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="menuOrder">$winWorkUtil.getLabel($loginUser.displayLang, 'appPermission.menuOrder')</label>
+                                <div class="controls">
+                                    <input type="text" class="input-mini" id="menuOrder" name="menuOrder" value="$displayTool.alt($model.menuOrder, '')"
+                                           onkeypress="return isNumberKey(event)" />
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="parentMenu">$winWorkUtil.getLabel($loginUser.displayLang, 'appPermission.parentMenu')</label>
+                                <div class="controls">
+                                    <select name="parentMenu" id="parentMenu" class="input-xxlarge">
+                                        <option value=""></option>
+                                        #foreach($appPermission in $appPermissionList)
+                                        <option value="$appPermission.id"
+                                        #if($appPermission.id == $model.parentMenu.id)
+                                        selected="selected"
+                                        #end
+                                        >$displayTool.alt($appPermission.tab, '') $appPermission.name [$appPermission.httpPath - $appPermission.httpMethod]</option>
+                                    #end
+                                </select>
+                            </div>
+                            </div>
+                            <div class="control-group">
+                                <div class="controls">
+                                    <label class="checkbox">
+                                        <input type="checkbox" name="asMenu" id="asMenu"
+                                            #if ($model.asMenu) checked="checked" #end
+                                        />
+                                        $winWorkUtil.getLabel($loginUser.displayLang, 'appPermission.asMenu')
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="description">$winWorkUtil.getLabel($loginUser.displayLang, 'appPermission.description')</label>
+                                <div class="controls">
+                                    <textarea rows="3" name="description" id="description">$displayTool.alt($model.description, '')</textarea>
+                                </div>
+                            </div>
+                            <div class="controls">
+                                #parse("vita/common/button_submit_form.vm")
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+                <!-- CONTENT END -->
+            </div>
+            #include("vita/common/footer.html")
+            <script type="text/javascript">
+                setModel('$modelName');
+                setContextUrl('${web.context}');
+                doSearch();
+            </script>
+        </div>
+    </body>
+</html>

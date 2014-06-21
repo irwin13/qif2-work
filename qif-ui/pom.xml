@@ -18,6 +18,7 @@
         <jackson.version>2.3.2</jackson.version>
         <hibernate.version>4.3.5.Final</hibernate.version>
         <uuid-generator.version>3.1.3</uuid-generator.version>
+        <jersey.version>1.18</jersey.version>
     </properties>
 
     <repositories>
@@ -120,6 +121,66 @@
                     <detail>true</detail>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <!-- to exclude jar from WEB-INF/lib
+                    <packagingExcludes>WEB-INF/lib/commons-logging-*.jar</packagingExcludes>
+                    -->
+                    <webResources>
+                        <resource>
+                            <directory>${basedir}/src/main/webapp</directory>
+                            <filtering>true</filtering>
+                            <includes>
+                                <include>WEB-INF/web.xml</include>
+                            </includes>
+                        </resource>
+                    </webResources>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <!-- Safety -->
+                                <mkdir dir="${project.build.directory}/classes" />
+                                <tstamp>
+                                    <format property="last.updated" pattern="dd-MM-yyyy HH:mm:ss" />
+                                </tstamp>
+                                <echo append="true"
+                                      file="${project.build.directory}/classes/qif-dev-config.properties">
+                                    project.buildTime=${last.updated}
+                                </echo>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.mortbay.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>8.1.10.v20130312</version>
+                <configuration>
+                    <connectors>
+                        <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+                            <port>8081</port>
+                        </connector>
+                    </connectors>
+                    <webApp>
+                        <contextPath>/qif-dev</contextPath>
+                    </webApp>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
@@ -168,8 +229,18 @@
             <version>8.4-702.jdbc4</version>
         </dependency>
         <dependency>
+            <groupId>oracle</groupId>
+            <artifactId>ojdbc6</artifactId>
+            <version>11.1.0.7.0</version>
+        </dependency>
+        <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
             <version>${hibernate.version}</version>
         </dependency>
         <dependency>
@@ -255,6 +326,12 @@
             <version>2.4</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.2.3</version>
+        </dependency>
+
         <!-- DATE TIME -->
         <dependency>
             <groupId>joda-time</groupId>
@@ -262,16 +339,86 @@
             <version>2.3</version>
         </dependency>
 
+        <!-- CONNECTION POOL -->
         <dependency>
-            <groupId>com.hazelcast</groupId>
-            <artifactId>hazelcast</artifactId>
-            <version>3.2</version>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-jdbc</artifactId>
+            <version>7.0.53</version>
         </dependency>
 
+        <!-- WEB -->
+        <!-- SERVLET DEPENDENCY, choose according to your deployment environment -->
+        <!-- SERVLET 3.0 -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- SERVLET 3.1
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+         -->
+
+        <!-- SERVLET 2.5
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
+            <scope>provided</scope>
+        </dependency>
+        -->
+
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-server</artifactId>
+            <version>${jersey.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-client</artifactId>
+            <version>${jersey.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.jersey.contribs</groupId>
+            <artifactId>jersey-guice</artifactId>
+            <version>${jersey.version}</version>
+        </dependency>
+
+        <!-- VELOCITY -->
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity</artifactId>
+            <version>1.7</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity-tools</artifactId>
+            <version>2.0</version>
+        </dependency>
+
+        <!-- winwork -->
         <dependency>
             <groupId>com.irwin13</groupId>
             <artifactId>winwork-basic</artifactId>
             <version>1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.irwin13</groupId>
+            <artifactId>winwork-hibernate</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>id.co.quadras</groupId>
+            <artifactId>qif-core</artifactId>
+            <version>2.0-SNAPSHOT</version>
         </dependency>
 
     </dependencies>

@@ -1,0 +1,63 @@
+.background-green {
+    background-image: linear-gradient(bottom, rgb(139,217,13) 27%, rgb(100,179,72) 100%);
+    background-image: -o-linear-gradient(bottom, rgb(139,217,13) 27%, rgb(100,179,72) 100%);
+    background-image: -moz-linear-gradient(bottom, rgb(139,217,13) 27%, rgb(100,179,72) 100%);
+    background-image: -webkit-linear-gradient(bottom, rgb(139,217,13) 27%, rgb(100,179,72) 100%);
+    background-image: -ms-linear-gradient(bottom, rgb(139,217,13) 27%, rgb(100,179,72) 100%);
+
+    background-image: -webkit-gradient(
+        linear,
+        left bottom,
+        left top,
+        color-stop(0.27, rgb(139,217,13)),
+        color-stop(1, rgb(100,179,72))
+    );
+    padding-bottom: 5px;
+    padding-bottom: 5px;
+}
+
+
+.menu-box-blue {
+    background-color: rgb(232, 255, 253);
+}
+
+.menu-box-green {
+    background-color: rgb(214, 252, 185);
+}
+
+.listTable-green {
+    width: 97%;
+}
+
+.listTable-white {
+    width: 30%;
+}
+
+.listTable-green tbody > tr:nth-child(odd) > td,
+.listTable-green tbody > tr:nth-child(odd) > th {
+  background-color: #eeeeee;
+}
+
+.listTable-green tbody tr:hover > td,
+.listTable-green tbody tr:hover > th {
+  background-color: rgb(214, 252, 185);
+}
+
+.listTable-blue {
+    width: 97%;
+}
+
+.listTable-blue tbody > tr:nth-child(odd) > td,
+.listTable-blue tbody > tr:nth-child(odd) > th {
+  background-color: #eeeeee;
+}
+
+.listTable-blue tbody tr:hover > td,
+.listTable-blue tbody tr:hover > th {
+  background-color: rgb(232, 255, 253);
+}
+
+.ui-widget-dialog-message{
+    font-family:Verdana,Arial,sans-serif;
+    font-size:0.9em;
+}

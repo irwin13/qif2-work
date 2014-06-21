@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- For assistance related to logback-translator or configuration  -->
+<!-- files web general, please contact the logback user mailing list -->
+<!-- at http://www.qos.ch/mailman/listinfo/logback-user             -->
+<!--                                                                -->
+<!-- For professional support please see                            -->
+<!--    http://www.qos.ch/shop/products/professionalSupport         -->
+<!--                                                                -->
+<configuration debug="false" scan="false" scanPeriod="120 seconds">
+
+    <Encoding>utf-8</Encoding>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!--
+              encoders are assigned the type
+              ch.qos.logback.classic.encoder.PatternLayoutEncoder by default
+          -->
+        <encoder>
+            <pattern>[%X{nodeName}][%d{dd-MM-yyyy HH:mm:ss.SSS}][%-5level][%logger{36}] - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="LOG-DEBUG"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--
+              See also
+              http://logback.qos.ch/manual/appenders.html#RollingFileAppender
+          -->
+        <file>${app.log.file.debug}</file>
+        <encoder>
+            <pattern>[%X{nodeName}][%d{dd-MM-yyyy HH:mm:ss.SSS}][%-5level][%logger{36}] - %msg%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <minIndex>1</minIndex>
+            <maxIndex>${app.log.file.debug.maxFileCount}</maxIndex>
+            <fileNamePattern>${app.log.file.debug}%i</fileNamePattern>
+        </rollingPolicy>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <maxFileSize>${app.log.file.debug.maxFileSize}</maxFileSize>
+        </triggeringPolicy>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+    </appender>
+
+    <appender name="LOG-ERROR"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--
+              See also
+              http://logback.qos.ch/manual/appenders.html#RollingFileAppender
+          -->
+        <File>${app.log.file.error}</File>
+        <encoder>
+            <pattern>[%X{nodeName}][%d{dd-MM-yyyy HH:mm:ss.SSS}][%-5level][%logger{36}] - %msg%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <minIndex>1</minIndex>
+            <maxIndex>${app.log.file.error.maxFileCount}</maxIndex>
+            <fileNamePattern>${app.log.file.error}%i</fileNamePattern>
+        </rollingPolicy>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <maxFileSize>${app.log.file.error.maxFileSize}</maxFileSize>
+        </triggeringPolicy>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+    </appender>
+
+    <root level="${app.log.level.root}">
+    </root>
+
+    <logger name="id.co.quadras" level="${app.log.level.apps}">
+        <appender-ref ref="LOG-DEBUG" />
+        <appender-ref ref="LOG-ERROR" />
+    </logger>
+
+</configuration>

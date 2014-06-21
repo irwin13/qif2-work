@@ -1,0 +1,36 @@
+#parse("vita/common/list_paging.vm")
+<table class="table table-condensed listTable-blue">
+    <thead>
+        <tr>
+            <th>$winWorkUtil.getLabel($loginUser.displayLang, 'list.no')</th>
+            <th>$winWorkUtil.getLabel($loginUser.displayLang, 'appPermission.name')</th>
+            <th>$winWorkUtil.getLabel($loginUser.displayLang, 'appPermission.httpPath')</th>
+            <th>$winWorkUtil.getLabel($loginUser.displayLang, 'appPermission.httpMethod')</th>
+            <th>$winWorkUtil.getLabel($loginUser.displayLang, 'global.action')</th>
+        </tr>
+    </thead>
+    <tbody>
+        #set ($index = 1)
+        #set ($pageMark = ($pagingModel.currentPage * $pageSize) - $pageSize)
+
+        #foreach($model in $list)
+        #set ($counter = $pageMark + $index)
+        <tr>
+            <td>$counter</td>
+            <td>$displayTool.alt($model.name, '&nbsp;')</td>
+            <td>$displayTool.alt($model.httpPath, '&nbsp;')</td>
+            <td>$displayTool.alt($model.httpMethod, '&nbsp;')</td>
+            <td>
+                <span class="add-on">
+                    <a href="${web.context}/$modelName/edit?id=$model.id"><i class="icon-pencil"></i></a>
+                </span>
+                &nbsp;
+                <span class="add-on">
+                    <a href="#" onclick="deleteConfirmation('$model.id')"><i class="icon-trash"></i></a>
+                </span>
+            </td>
+        </tr>
+        #set ($index = $index + 1)
+        #end
+    </tbody>
+</table>

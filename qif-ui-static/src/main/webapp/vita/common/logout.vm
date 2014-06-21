@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>${pom.name} ${pom.version} - Logout</title>
+        #include("vita/common/common_head_tag.html")
+    </head>
+    <body>
+        <script type="text/javascript">
+            document.location.href = '${web.context}/login';
+    	</script>
+    </body>
+</html>

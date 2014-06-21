@@ -1,0 +1,38 @@
+<!-- PAGE HEADER START-->
+<div>
+    <ul class="inline">
+        <li>
+            <h1>${pom.name}</h1>
+        </li>
+    </ul>
+</div>
+<!-- PAGE HEADER END -->
+
+<!-- TOP MENU START -->
+<div class="row-fluid">
+    <div class="navbar navbar-static-top">
+        <div class="navbar-inner">
+            <ul class="nav">
+                <li>
+                    <a href="${web.context}">
+                        <span class="add-on">
+                            <i class="icon-home"></i>
+                        </span>
+                        <strong>$winWorkUtil.getLabel($loginUser.displayLang, 'global.home')</strong>
+                    </a>
+                </li>
+                <li><a href="${web.context}/changePassword">$winWorkUtil.getLabel($loginUser.displayLang, 'global.changePassword')</a></li>
+                <li><a href="${web.context}/logout">$winWorkUtil.getLabel($loginUser.displayLang, 'global.logout')</a></li>
+            </ul>
+            <ul class="nav pull-right">
+                <li>
+                    <span class="add-on">
+                        <i class="icon-user"></i>
+                    </span>
+                    $loginUser.firstName&nbsp;$loginUser.lastName
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- TOP MENU END -->
