@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
-<hibernate-mapping package="id.co.quadras.winwork.model.entity.app">
+<hibernate-mapping package="com.irwin13.winwork.basic.model.entity.app">
     <class name="AppRole" table="APP_ROLE" lazy="false">
 
         <id name="id" type="string" column="ID">
@@ -18,12 +18,12 @@
 
         <bag name="appUserList" table="APP_USER_ROLE">
             <key column="APP_ROLE_ID"/>
-            <many-to-many column="APP_USER_ID" class="id.co.quadras.winwork.model.entity.app.AppUser"/>
+            <many-to-many column="APP_USER_ID" class="com.irwin13.winwork.basic.model.entity.app.AppUser"/>
         </bag>
 
         <bag name="appPermissionList" table="APP_ROLE_PERMISSION">
             <key column="APP_ROLE_ID"/>
-            <many-to-many column="APP_PERMISSION_ID" class="id.co.quadras.winwork.model.entity.app.AppPermission"/>
+            <many-to-many column="APP_PERMISSION_ID" class="com.irwin13.winwork.basic.model.entity.app.AppPermission"/>
         </bag>
 
 

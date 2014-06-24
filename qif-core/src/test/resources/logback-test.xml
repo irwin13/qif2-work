@@ -24,56 +24,10 @@
         </encoder>
     </appender>
 
-    <appender name="LOG-DEBUG"
-              class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <!--
-              See also
-              http://logback.qos.ch/manual/appenders.html#RollingFileAppender
-          -->
-        <file>${app.log.file.debug}</file>
-        <encoder>
-            <pattern>[%d{dd-MM-yyyy HH:mm:ss.SSS}][%-5level][%logger{36}] - %msg%n</pattern>
-        </encoder>
-        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-            <minIndex>1</minIndex>
-            <maxIndex>${app.log.file.debug.maxFileCount}</maxIndex>
-            <fileNamePattern>${app.log.file.debug}%i</fileNamePattern>
-        </rollingPolicy>
-        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-            <maxFileSize>${app.log.file.debug.maxFileSize}</maxFileSize>
-        </triggeringPolicy>
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>DEBUG</level>
-        </filter>
-    </appender>
-
-    <appender name="LOG-ERROR"
-              class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <!--
-              See also
-              http://logback.qos.ch/manual/appenders.html#RollingFileAppender
-          -->
-        <File>${app.log.file.error}</File>
-        <encoder>
-            <pattern>[%d{dd-MM-yyyy HH:mm:ss.SSS}][%-5level][%logger{36}] - %msg%n</pattern>
-        </encoder>
-        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-            <minIndex>1</minIndex>
-            <maxIndex>${app.log.file.error.maxFileCount}</maxIndex>
-            <fileNamePattern>${app.log.file.error}%i</fileNamePattern>
-        </rollingPolicy>
-        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-            <maxFileSize>${app.log.file.error.maxFileSize}</maxFileSize>
-        </triggeringPolicy>
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>ERROR</level>
-        </filter>
-    </appender>
-
-    <root level="${app.log.level}">
+    <root level="DEBUG">
     </root>
 
-    <logger name="id.co.quadras" level="${app.log.level}">
+    <logger name="id.co.quadras" level="DEBUG">
         <appender-ref ref="STDOUT" />
     </logger>
 

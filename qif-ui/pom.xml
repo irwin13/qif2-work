@@ -173,11 +173,11 @@
                 <configuration>
                     <connectors>
                         <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
-                            <port>8081</port>
+                            <port>9000</port>
                         </connector>
                     </connectors>
                     <webApp>
-                        <contextPath>/qif-dev</contextPath>
+                        <contextPath>/qif-ui</contextPath>
                     </webApp>
                 </configuration>
             </plugin>
@@ -220,6 +220,12 @@
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-core</artifactId>
             <version>${logback.version}</version>
+        </dependency>
+        <!-- Include this to handle error from hibernate version 4 = java.lang.NoSuchFieldError: TRACE -->
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
         </dependency>
 
         <!-- DATABASE -->

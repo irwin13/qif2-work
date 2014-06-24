@@ -89,7 +89,7 @@ public class LoginController {
 
             AppUser user = appUserService.getById(userList.get(0).getId(), true);
             user.setLastLogin(new DateTime().toDate());
-            user.setLastIpAddress(request.getRemoteAddr());
+            user.setLastLoginFrom(request.getRemoteAddr());
             appUserService.update(user);
 
             List<AppRole> initRoleList = new LinkedList<AppRole>();
@@ -126,4 +126,7 @@ public class LoginController {
         return Response.ok(content).build();
     }
 
+    public static void main(String[] arg) throws NoSuchAlgorithmException {
+        System.out.println(SecurityUtil.createHash("123", SecurityUtil.DEFAULT_HASH));
+    }
 }
