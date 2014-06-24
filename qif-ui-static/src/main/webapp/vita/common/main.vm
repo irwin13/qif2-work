@@ -5,10 +5,10 @@
         #include("vita/common/common_head_tag.html")
     </head>
     <body>
-        <div id="container-fluid">
+        <div id="container">
             #parse("vita/common/header.vm")
             <!-- BODY START -->
-            <div class="row-fluid">
+            <div class="row">
                 #include("vita/common/leftMenu.html")
             </div>
             #include("vita/common/footer.html")
