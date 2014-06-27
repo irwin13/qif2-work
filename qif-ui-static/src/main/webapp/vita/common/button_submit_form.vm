@@ -1,2 +1,2 @@
-<a href="${web.context}/$modelName/list" class="btn">$winWorkUtil.getLabel($loginUser.displayLang, 'global.cancel')</a>
-<button type="submit" class="btn btn-info" data-loading-text="Loading...">$winWorkUtil.getLabel($loginUser.displayLang, 'global.save')</button>
+<a href="${web.context}/$modelName/list" class="btn btn-default">$winWorkUtil.getLabel($loginUser.displayLang, 'global.cancel')</a>
+<button type="submit" class="btn btn-primary" data-loading-text="Loading...">$winWorkUtil.getLabel($loginUser.displayLang, 'global.save')</button>

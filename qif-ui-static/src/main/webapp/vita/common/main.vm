@@ -5,11 +5,14 @@
         #include("vita/common/common_head_tag.html")
     </head>
     <body>
-        <div id="container">
+        <div class="container">
             #parse("vita/common/header.vm")
             <!-- BODY START -->
-            <div class="row">
+            <div class="container">
                 #include("vita/common/leftMenu.html")
+                <div class="col-md-10">
+                    Welcome
+                </div>
             </div>
             #include("vita/common/footer.html")
         </div>

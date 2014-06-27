@@ -1,6 +1,6 @@
 #if ($pagingModel.totalRecord > 0)
-<div class="pagination pagination-small">
-    <ul>
+<div>
+    <ul class="pagination">
         <li>
             <a href="#">
                 $winWorkUtil.getLabel($loginUser.displayLang, 'list.page') $pagingModel.currentPage $winWorkUtil.getLabel($loginUser.displayLang, 'list.of') $winWorkUtil.formatNumericInteger('###,###', $pagingModel.totalPage) ($winWorkUtil.formatNumericLong('###,###', $pagingModel.totalRecord) $winWorkUtil.getLabel($loginUser.displayLang, 'list.record'))

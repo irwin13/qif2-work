@@ -5,14 +5,14 @@
         #include("vita/common/common_head_tag.html")
     </head>
     <body>
-        <div id="container-fluid">
+        <div id="container">
             #parse("vita/common/header.vm")
 
             <!-- BODY START -->
-            <div class="row-fluid">
+            <div class="container">
                 #include("vita/common/leftMenu.html")
                 <!-- CONTENT START -->
-                <div class="span10">
+                <div class="col-md-10">
                     <!-- function onKeyPress to prevent the form to be submitted when Enter button is pressed -->
                     <form action="#" class="form-horizontal" name="listForm" id="listForm" onkeypress="return event.keyCode != 13;">
                         <input type="hidden" name="pageStart" id="pageStart" />
@@ -21,15 +21,10 @@
                             <legend>
                                 $winWorkUtil.camelCaseToReadable($modelName, true) $winWorkUtil.getLabel($loginUser.displayLang, 'global.search')
                             </legend>
-                            <div class="input-append input-prepend">
-                                <span class="add-on">
-                                    <i class="icon-search"></i>
-                                </span>
-                                <input type="text" class="input-xlarge" id="searchKeyword" name="searchKeyword" />
-                                <button class="btn" type="button" onclick="doSearch('${web.context}');">$winWorkUtil.getLabel($loginUser.displayLang, 'global.search')</button>
-                                <button class="btn" type="button" onclick="doReset('${web.context}');">$winWorkUtil.getLabel($loginUser.displayLang, 'global.reset')</button>
-                            </div>
-                            <a href="${web.context}/$modelName/create" class="btn btn-info">$winWorkUtil.getLabel($loginUser.displayLang, 'global.create')</a>
+                            <input type="text" class="input-xlarge" id="searchKeyword" name="searchKeyword" />
+                            <button class="btn btn-default" type="button" onclick="doSearch('${web.context}');">$winWorkUtil.getLabel($loginUser.displayLang, 'global.search')</button>
+                            <button class="btn btn-default" type="button" onclick="doReset('${web.context}');">$winWorkUtil.getLabel($loginUser.displayLang, 'global.reset')</button>
+                            <a href="${web.context}/$modelName/create" class="btn btn-primary">$winWorkUtil.getLabel($loginUser.displayLang, 'global.create')</a>
                         </fieldset>
                         <br />
                         <p class="text-left">
@@ -57,13 +52,17 @@
                         </p>
                         <div id="listContent"></div>
                         <div id="delete-confirm" title="$winWorkUtil.getLabel($loginUser.displayLang, 'global.deleteConfirmation')"
-                             class="modal hide fade" aria-hidden="true">
-                            <div class="modal-body">
-                                <p><strong>$winWorkUtil.getLabel($loginUser.displayLang, 'global.deleteConfirmation')</strong></p>
-                            </div>
-                            <div class="modal-footer">
-                                <button class="btn" data-dismiss="modal" aria-hidden="true">$winWorkUtil.getLabel($loginUser.displayLang, 'global.cancel')</button>
-                                <a class="btn btn-info" onclick="doDelete()">$winWorkUtil.getLabel($loginUser.displayLang, 'global.delete')</a>
+                             class="modal fade" aria-hidden="true" tabindex="-1" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <p><strong>$winWorkUtil.getLabel($loginUser.displayLang, 'global.deleteConfirmation')</strong></p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">$winWorkUtil.getLabel($loginUser.displayLang, 'global.cancel')</button>
+                                        <a class="btn btn-danger" onclick="doDelete()">$winWorkUtil.getLabel($loginUser.displayLang, 'global.delete')</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </form>
