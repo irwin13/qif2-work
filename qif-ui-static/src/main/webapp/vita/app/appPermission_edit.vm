@@ -20,7 +20,7 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label" for="name">$winWorkUtil.getLabel($loginUser.displayLang, 'appPermission.name')</label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="name" name="name" value="$displayTool.alt($model.name, '')" readonly/>
+                                    <input type="text" class="form-control" id="name" name="name" value="$displayTool.alt($model.name, '')" />
                                     <span class="help-inline">$displayTool.alt($errorMessage.name, '')</span>
                                 </div>
                             </div>
