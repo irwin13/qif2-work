@@ -18,7 +18,7 @@ public class SessionFactoryEntityResolver implements EntityResolver {
 
     @Override
     public <T> T getById(String id, Class<T> clazz) {
-        Session session = null;
+        Session session = sessionFactory.openSession();
         T t = null;
         try {
             t = (T) session.get(clazz, id);

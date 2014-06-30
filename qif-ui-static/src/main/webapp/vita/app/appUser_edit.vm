@@ -5,67 +5,70 @@
         #include("vita/common/common_head_tag.html")
     </head>
     <body>
-        <div id="container-fluid">
+        <div id="container">
             #parse("vita/common/header.vm")
 
             <!-- BODY START -->
-            <div class="row-fluid">
+            <div class="container">
                 #include("vita/common/leftMenu.html")
-                <div class="span10">
-                    <form action="${web.context}/$modelName/edit" method="post" enctype="application/x-www-form-urlencoded" class="form-horizontal" name="editForm">
+                <div class="col-md-10">
+                    <form action="${web.context}/$modelName/edit" method="post" enctype="application/x-www-form-urlencoded" class="form-horizontal" name="editForm" role="form">
                         <input type="hidden" name="id" value="$displayTool.alt($model.id, '')" />
                         <fieldset>
                             <legend>
                                 $winWorkUtil.camelCaseToReadable($modelName, true) $winWorkUtil.getLabel($loginUser.displayLang, 'global.edit')
                             </legend>
-                            <div class="control-group">
-                                <label class="control-label" for="username">$winWorkUtil.getLabel($loginUser.displayLang, 'appUser.username')</label>
-                                <div class="controls">
-                                    <input type="text" class="input-large" id="username" name="username" readonly="readonly" value="$displayTool.alt($model.username, '')" />
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="username">$winWorkUtil.getLabel($loginUser.displayLang, 'appUser.username')</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="username" name="username" readonly="readonly" value="$displayTool.alt($model.username, '')" />
                                     <span class="help-inline">$displayTool.alt($errorMessage.username, '')</span>
                                 </div>
                             </div>
-                            <div class="control-group">
-                                <label class="control-label" for="firstName">$winWorkUtil.getLabel($loginUser.displayLang, 'appUser.firstName')</label>
-                                <div class="controls">
-                                    <input type="text" class="input-large" id="firstName" name="firstName" value="$displayTool.alt($model.firstName, '')" />
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="firstName">$winWorkUtil.getLabel($loginUser.displayLang, 'appUser.firstName')</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="firstName" name="firstName" value="$displayTool.alt($model.firstName, '')" />
                                     <span class="help-inline">$displayTool.alt($errorMessage.firstname, '')</span>
                                 </div>
                             </div>
-                            <div class="control-group">
-                                <label class="control-label" for="lastName">$winWorkUtil.getLabel($loginUser.displayLang, 'appUser.lastName')</label>
-                                <div class="controls">
-                                    <input type="text" class="input-large" id="lastName" name="lastName" value="$displayTool.alt($model.lastName, '')" />
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="lastName">$winWorkUtil.getLabel($loginUser.displayLang, 'appUser.lastName')</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="lastName" name="lastName" value="$displayTool.alt($model.lastName, '')" />
                                     <span class="help-inline">$displayTool.alt($errorMessage.lastname, '')</span>
                                 </div>
                             </div>
-                            <div class="control-group">
-                                <label class="control-label" for="email">$winWorkUtil.getLabel($loginUser.displayLang, 'appUser.email')</label>
-                                <div class="controls">
-                                    <input type="text" class="input-large" id="email" name="email" value="$displayTool.alt($model.email, '')" />
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="email">$winWorkUtil.getLabel($loginUser.displayLang, 'appUser.email')</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="email" name="email" value="$displayTool.alt($model.email, '')" />
                                 </div>
                             </div>
-                            <div class="control-group">
-                                <label class="control-label" for="phone">$winWorkUtil.getLabel($loginUser.displayLang, 'appUser.phone')</label>
-                                <div class="controls">
-                                    <input type="text" class="input-large" id="phone" name="phone" value="$displayTool.alt($model.phone, '')" />
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="phone">$winWorkUtil.getLabel($loginUser.displayLang, 'appUser.phone')</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="phone" name="phone" value="$displayTool.alt($model.phone, '')" />
                                 </div>
                             </div>
-                            <div class="control-group">
-                                <div class="controls">
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
                                     #foreach($appRole in $appRoleList)
-                                    <input type="checkbox" name="appRole_$appRole.id"
-                                        #foreach($role in $model.appRoleList)
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="appRole_$appRole.id"
+                                            #foreach($role in $model.appRoleList)
                                             #if($appRole.id == $role.id)
-                                                checked="checked"
+                                            checked="checked"
                                             #end
-                                        #end
-                                    /> $appRole.name
-                                    <br />
+                                            #end
+                                            /> $appRole.name
+                                        </label>
+                                    </div>
                                     #end
                                 </div>
                             </div>
-                            <div class="controls">
+                            <div class="col-sm-offset-2 col-sm-10">
                                 #parse("vita/common/button_submit_form.vm")
                             </div>
                         </fieldset>

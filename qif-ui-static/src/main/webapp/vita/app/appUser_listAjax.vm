@@ -1,48 +1,48 @@
 #parse("vita/common/list_paging.vm")
-<table class="table table-condensed listTable-blue">
-    <thead>
-        <tr>
-            <th>$winWorkUtil.getLabel($loginUser.displayLang, 'list.no')</th>
-            <th>$winWorkUtil.getLabel($loginUser.displayLang, 'appUser.username')</th>
-            <th>$winWorkUtil.getLabel($loginUser.displayLang, 'appUser.firstName')</th>
-            <th>$winWorkUtil.getLabel($loginUser.displayLang, 'appUser.lastName')</th>
-            <th>$winWorkUtil.getLabel($loginUser.displayLang, 'appUser.email')</th>
-            <th>$winWorkUtil.getLabel($loginUser.displayLang, 'appUser.phone')</th>
-            <th>$winWorkUtil.getLabel($loginUser.displayLang, 'global.resetPassword')</th>
-            <th>$winWorkUtil.getLabel($loginUser.displayLang, 'global.action')</th>
-        </tr>
-    </thead>
-    <tbody>
-    #set ($index = 1)
-    #set ($pageMark = ($pagingModel.currentPage * $pageSize) - $pageSize)
+<div class="table-responsive">
+    <table class="table table-bordered table-condensed listTable-blue">
+        <thead>
+            <tr>
+                <th>$winWorkUtil.getLabel($loginUser.displayLang, 'list.no')</th>
+                <th>$winWorkUtil.getLabel($loginUser.displayLang, 'appUser.username')</th>
+                <th>$winWorkUtil.getLabel($loginUser.displayLang, 'appUser.firstName')</th>
+                <th>$winWorkUtil.getLabel($loginUser.displayLang, 'appUser.lastName')</th>
+                <th>$winWorkUtil.getLabel($loginUser.displayLang, 'appUser.email')</th>
+                <th>$winWorkUtil.getLabel($loginUser.displayLang, 'appUser.phone')</th>
+                <th>$winWorkUtil.getLabel($loginUser.displayLang, 'global.resetPassword')</th>
+                <th>$winWorkUtil.getLabel($loginUser.displayLang, 'global.action')</th>
+            </tr>
+        </thead>
+        <tbody>
+        #set ($index = 1)
+        #set ($pageMark = ($pagingModel.currentPage * $pageSize) - $pageSize)
 
-    #foreach($model in $list)
-    #set ($counter = $pageMark + $index)
-    <tr>
-        <td>$counter</td>
-        <td>$displayTool.alt($model.username, '&nbsp;')</td>
-        <td>$displayTool.alt($model.firstName, '&nbsp;')</td>
-        <td>$displayTool.alt($model.lastName, '&nbsp;')</td>
-        <td>$displayTool.alt($model.email, '&nbsp;')</td>
-        <td>$displayTool.alt($model.phone, '&nbsp;')</td>
-        <td>
-            <span class="add-on">
-                <a href="${web.context}/$modelName/resetPassword.html?id=$model.id" class="btn">
+        #foreach($model in $list)
+        #set ($counter = $pageMark + $index)
+        <tr>
+            <td>$counter</td>
+            <td>$displayTool.alt($model.username, '&nbsp;')</td>
+            <td>$displayTool.alt($model.firstName, '&nbsp;')</td>
+            <td>$displayTool.alt($model.lastName, '&nbsp;')</td>
+            <td>$displayTool.alt($model.email, '&nbsp;')</td>
+            <td>$displayTool.alt($model.phone, '&nbsp;')</td>
+            <td>
+                <a href="${web.context}/$modelName/resetPassword?id=$model.id">
                     $winWorkUtil.getLabel($loginUser.displayLang, 'global.resetPassword')
                 </a>
-            </span>
-        </td>
-        <td>
-            <span class="add-on">
-                <a href="${web.context}/$modelName/edit?id=$model.id"><i class="icon-pencil"></i></a>
-            </span>
-            &nbsp;
-            <span class="add-on">
-                <a href="#" onclick="deleteConfirmation('$model.id')"><i class="icon-trash"></i></a>
-            </span>
-        </td>
-    </tr>
-    #set ($index = $index + 1)
-    #end
-    </tbody>
-</table>
+            </td>
+            <td>
+                <a href="${web.context}/$modelName/edit?id=$model.id">
+                    $winWorkUtil.getLabel($loginUser.displayLang, 'global.edit')
+                </a>
+                &nbsp;
+                <a href="#" onclick="deleteConfirmation('$model.id')">
+                    $winWorkUtil.getLabel($loginUser.displayLang, 'global.delete')
+                </a>
+            </td>
+        </tr>
+        #set ($index = $index + 1)
+        #end
+        </tbody>
+    </table>
+</div>

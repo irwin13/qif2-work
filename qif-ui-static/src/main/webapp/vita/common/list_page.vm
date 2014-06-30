@@ -21,10 +21,16 @@
                             <legend>
                                 $winWorkUtil.camelCaseToReadable($modelName, true) $winWorkUtil.getLabel($loginUser.displayLang, 'global.search')
                             </legend>
-                            <input type="text" class="input-xlarge" id="searchKeyword" name="searchKeyword" />
-                            <button class="btn btn-default" type="button" onclick="doSearch('${web.context}');">$winWorkUtil.getLabel($loginUser.displayLang, 'global.search')</button>
-                            <button class="btn btn-default" type="button" onclick="doReset('${web.context}');">$winWorkUtil.getLabel($loginUser.displayLang, 'global.reset')</button>
-                            <a href="${web.context}/$modelName/create" class="btn btn-primary">$winWorkUtil.getLabel($loginUser.displayLang, 'global.create')</a>
+                            <div class="row">
+                                <div class="col-xs-4">
+                                    <input type="text" class="form-control" id="searchKeyword" name="searchKeyword" />
+                                </div>
+                                <div class="col-xs-4">
+                                    <button class="btn btn-default" type="button" onclick="doSearch('${web.context}');">$winWorkUtil.getLabel($loginUser.displayLang, 'global.search')</button>
+                                    <button class="btn btn-default" type="button" onclick="doReset('${web.context}');">$winWorkUtil.getLabel($loginUser.displayLang, 'global.reset')</button>
+                                    <a href="${web.context}/$modelName/create" class="btn btn-primary">$winWorkUtil.getLabel($loginUser.displayLang, 'global.create')</a>
+                                </div>
+                            </div>
                         </fieldset>
                         <br />
                         <p class="text-left">
