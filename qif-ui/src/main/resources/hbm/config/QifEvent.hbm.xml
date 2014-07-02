@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="id.co.quadras.qif.core.model.entity">
+    <class name="QifEvent" table="QIF_EVENT" lazy="true">
+
+        <id name="id" type="string" column="ID">
+            <generator class="uuid" />
+        </id>
+        <property name="active" column="ACTIVE" type="yes_no" not-null="false"  />
+        <property name="createDate" column="CREATE_DATE" type="timestamp" not-null="false"  />
+        <property name="createBy" column="CREATE_BY" type="string" not-null="false"  />
+        <property name="lastUpdateDate" column="LAST_UPDATE_DATE" type="timestamp" not-null="false"  />
+        <property name="lastUpdateBy" column="LAST_UPDATE_BY" type="string" not-null="false"  />
+
+        <property name="name" column="NAME" type="string" not-null="false"/>
+        <property name="description" column="DESCRIPTION" type="string" not-null="false"/>
+        <property name="eventType" column="EVENT_TYPE" type="string" not-null="false"/>
+        <property name="eventInterface" column="EVENT_INTERFACE" type="string" not-null="false"/>
+        <property name="qifProcess" column="QIF_PROCESS" type="string" not-null="false"/>
+        <property name="auditTrailEnabled" column="AUDIT_TRAIL_ENABLED" type="yes_no" not-null="false"/>
+        <property name="keepMessageContent" column="KEEP_MESSAGE_CONTENT" type="yes_no" not-null="false"/>
+        <property name="activeAcceptMessage" column="ACTIVE_ACCEPT_MESSAGE" type="yes_no" not-null="false"/>
+
+        <bag name="qifEventPropertyList" table="QIF_EVENT_PROPERTY" cascade="all" order-by="PROPERTY_KEY ASC">
+            <key column="QIF_EVENT_ID"/>
+            <one-to-many class="id.co.quadras.qif.core.model.entity.QifEventProperty"/>
+        </bag>
+
+    </class>
+</hibernate-mapping>

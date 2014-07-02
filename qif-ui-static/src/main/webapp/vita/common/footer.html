@@ -1,10 +1,5 @@
-<!-- FOOTER START -->
-<div class="footer">
-    <div class="container">
-        <p class="text-center"><strong>Copyright 2014 <a href="http://www.quadras.co.id" target="_blank">Quadra Solution</a></strong></p>
-    </div>
+<!-- close content tag -->
 </div>
-<!-- FOOTER END -->
 
 <!--
 JavaScript
@@ -25,6 +20,7 @@ http://developer.yahoo.com/performance/rules.html#js_bottom
             success: function(data, textStatus) {
                 if (textStatus == "success") {
                     $('#leftMenu').html(data);
+                    $('#leftMenu').append('<br /><div><small><a href="http://www.quadras.co.id" target="_blank">Quadra Solution</a> &copy; 2014</small></div>')
                 }
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {

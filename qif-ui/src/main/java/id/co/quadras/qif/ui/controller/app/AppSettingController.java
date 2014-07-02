@@ -105,7 +105,6 @@ public class AppSettingController extends CrudController {
                 AppSetting.MODEL_NAME, PACKAGE_PAGE_PREFIX, formMap, abstractValidator);
     }
 
-    //    @PUT -- somehow http form @method doesn't support PUT, so we use POST instead
     @POST
     @Path("/edit")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)

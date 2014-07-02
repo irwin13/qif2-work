@@ -8,6 +8,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 /**
@@ -23,7 +24,7 @@ public class NoAccessController {
     private WebPage webPage;
 
     @GET
-    @Produces("text/html")
+    @Produces(MediaType.TEXT_HTML)
     public Response leftMenu() {
         String content = webPage.stringFromVm(WebPage.COMMON_PAGE_PACKAGE + "noAccess.vm", webPage.mapWithLoginUser(request));
         return Response.ok(content).build();

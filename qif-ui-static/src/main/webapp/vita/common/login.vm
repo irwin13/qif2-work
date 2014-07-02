@@ -39,7 +39,7 @@
                                         <input type="password" class="form-control" id="password" name="password" />
                                     </div>
                                 </div>
-                                <button type="button" class="btn btn-info" title="Login" id="buttonLogin">
+                                <button type="button" class="btn btn-primary" title="Login" id="buttonLogin">
                                     Login
                                 </button>
                                 <div>
@@ -49,6 +49,9 @@
                                 </div>
                             </fieldset>
                         </form>
+                    </div>
+                    <div class="text-center">
+                        <small><a href="http://www.quadras.co.id" target="_blank">Quadra Solution</a> &copy; 2014</small>
                     </div>
                 </div>
             </div>

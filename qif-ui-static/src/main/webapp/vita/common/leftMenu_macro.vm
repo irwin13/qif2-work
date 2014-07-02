@@ -1,5 +1,5 @@
 #macro( printMenu $userMenuList $isRoot )
-<ul class="nav nav-list">
+<ul class="nav nav-stacked">
     #foreach($menu in $userMenuList)
         #if ($menu.httpPath == "#")
         <li class="nav-header">$menu.name</li>
