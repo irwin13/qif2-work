@@ -5,46 +5,36 @@
         #include("vita/common/common_head_tag.html")
     </head>
     <body>
-        <div id="container">
-            #parse("vita/common/header.vm")
-
-            <!-- BODY START -->
-            <div class="container">
-                #include("vita/common/leftMenu.html")
-                <div class="col-md-10">
-                    <form action="${web.context}/$modelName/create" method="post" enctype="application/x-www-form-urlencoded" class="form-horizontal" name="createForm" role="form">
-                        <fieldset>
-                            <legend>
-                                $winWorkUtil.camelCaseToReadable($modelName, true) $winWorkUtil.getLabel($loginUser.displayLang, 'global.create')
-                            </legend>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label" for="optionCategory">$winWorkUtil.getLabel($loginUser.displayLang, 'appOption.optionCategory')</label>
-                                <div class="col-sm-6">
-                                    <input type="text" id="optionCategory" name="optionCategory" class="form-control" value="$displayTool.alt($model.optionCategory, '')" />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label" for="name">$winWorkUtil.getLabel($loginUser.displayLang, 'appOption.name')</label>
-                                <div class="col-sm-6">
-                                    <input type="text" id="name" name="name" class="form-control" value="$displayTool.alt($model.name, '')" />
-                                    <span class="help-inline">$displayTool.alt($errorMessage.name, '')</span>
-                                </div>
-                            </div>
-                            <div class="col-sm-offset-2 col-sm-10">
-                                #parse("vita/common/button_submit_form.vm")
-                            </div>
-                        </fieldset>
-                    </form>
+        #parse("vita/common/header.vm")
+        #include("vita/common/leftMenu.html")
+        <form action="${web.context}/$modelName/create" method="post" enctype="application/x-www-form-urlencoded" class="form-horizontal" name="createForm" role="form">
+            <fieldset>
+                <legend>
+                    $winWorkUtil.camelCaseToReadable($modelName, true) $winWorkUtil.getLabel($loginUser.displayLang, 'global.create')
+                </legend>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="optionCategory">$winWorkUtil.getLabel($loginUser.displayLang, 'appOption.optionCategory')</label>
+                    <div class="col-sm-6">
+                        <input type="text" id="optionCategory" name="optionCategory" class="form-control" value="$displayTool.alt($model.optionCategory, '')" />
+                    </div>
                 </div>
-                <!-- CONTENT END -->
-
-            </div>
-            #include("vita/common/footer.html")
-            <script type="text/javascript">
-                setModel('$modelName');
-                setContextUrl('${web.context}');
-                doSearch();
-            </script>
-        </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="name">$winWorkUtil.getLabel($loginUser.displayLang, 'appOption.name')</label>
+                    <div class="col-sm-6">
+                        <input type="text" id="name" name="name" class="form-control" value="$displayTool.alt($model.name, '')" />
+                        <span class="help-inline">$displayTool.alt($errorMessage.name, '')</span>
+                    </div>
+                </div>
+                <div class="col-sm-offset-2 col-sm-10">
+                    #parse("vita/common/button_submit_form.vm")
+                </div>
+            </fieldset>
+        </form>
+        #include("vita/common/footer.html")
+        <script type="text/javascript">
+            setModel('$modelName');
+            setContextUrl('${web.context}');
+            doSearch();
+        </script>
     </body>
 </html>

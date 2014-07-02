@@ -1,48 +1,50 @@
-<table class="table table-condensed listTable-blue">
-    <thead>
-    <tr>
-        <td><strong>$winWorkUtil.getLabel($loginUser.displayLang, 'list.no')</strong></td>
-        <td><strong>$winWorkUtil.getLabel($loginUser.displayLang, 'bpAdapterProperty.propertyKey')</strong></td>
-        <td><strong>$winWorkUtil.getLabel($loginUser.displayLang, 'bpAdapterProperty.propertyValue')</strong></td>
-        <td><strong>$winWorkUtil.getLabel($loginUser.displayLang, 'bpAdapterProperty.description')</strong></td>        
-        <td><strong>$winWorkUtil.getLabel($loginUser.displayLang, 'global.action')</strong></td>
-    </tr>
-    </thead>
-    <tbody>
-    #set( $index = 0 )
-    #set( $chart = 1 )
-    #foreach ($child in $bpAdapterPropertyList)
-    <tr>
-        <td>$chart</td>
-        <td>$displayTool.alt($child.propertyKey, '')</td>
-        <td>$displayTool.alt($child.propertyValue, '')</td>
-		<td>$displayTool.alt($child.description, '')</td>
-        <td>
-            <input type="button" class="btn" value="Edit" onclick="editItem('$index')" />&nbsp;
-            <input type="button" class="btn" value="Remove" onclick="removeItem('$index')" />
-        </td>
-    </tr>
-    #set( $index = $index + 1)
-    #set( $chart = $chart + 1)
-    #end
-    </tbody>
-</table>
-<table>
-    <thead>
+<div class="table-responsive">
+    <table class="table table-condensed table-bordered listTable-blue">
+        <thead>
         <tr>
+            <td><strong>$winWorkUtil.getLabel($loginUser.displayLang, 'list.no')</strong></td>
+            <td><strong>$winWorkUtil.getLabel($loginUser.displayLang, 'qifAdapterProperty.propertyKey')</strong></td>
+            <td><strong>$winWorkUtil.getLabel($loginUser.displayLang, 'qifAdapterProperty.propertyValue')</strong></td>
+            <td><strong>$winWorkUtil.getLabel($loginUser.displayLang, 'qifAdapterProperty.description')</strong></td>
+            <td><strong>$winWorkUtil.getLabel($loginUser.displayLang, 'global.action')</strong></td>
+        </tr>
+        </thead>
+        <tbody>
+        #set( $index = 0 )
+        #set( $chart = 1 )
+        #foreach ($child in $qifAdapterPropertyList)
+        <tr>
+            <td>$chart</td>
+            <td>$displayTool.alt($child.propertyKey, '')</td>
+            <td>$displayTool.alt($child.propertyValue, '')</td>
+            <td>$displayTool.alt($child.description, '')</td>
             <td>
-                <font color="red">$displayTool.alt($errors.propertyKey, '')</font><br />
-                <font color="red">$displayTool.alt($errors.propertyValue, '')</font><br />
-				<font color="red">$displayTool.alt($errors.description, '')</font><br />
+                <input type="button" class="btn btn-primary" value="Edit" onclick="editItem('$index')" />&nbsp;
+                <input type="button" class="btn btn-danger" value="Remove" onclick="removeItem('$index')" />
             </td>
         </tr>
-    </thead>
-</table>
+        #set( $index = $index + 1)
+        #set( $chart = $chart + 1)
+        #end
+        </tbody>
+    </table>
+    <table>
+        <thead>
+            <tr>
+                <td>
+                    <font color="red">$displayTool.alt($errors.propertyKey, '')</font><br />
+                    <font color="red">$displayTool.alt($errors.propertyValue, '')</font><br />
+                    <font color="red">$displayTool.alt($errors.description, '')</font><br />
+                </td>
+            </tr>
+        </thead>
+    </table>
+</div>
 
 <script type="text/javascript">
-    $('#bpAdapterProperty_propertyKey').val('$displayTool.alt($bpAdapterProperty.propertyKey,'')');
-    $('#bpAdapterProperty_propertyValue').val('$displayTool.alt($bpAdapterProperty.propertyValue,'')');
-	$('#bpAdapterProperty_description').val('$displayTool.alt($bpAdapterProperty.description,'')');
+    $('#qifAdapterProperty_propertyKey').val('$displayTool.alt($qifAdapterProperty.propertyKey,'')');
+    $('#qifAdapterProperty_propertyValue').val('$displayTool.alt($qifAdapterProperty.propertyValue,'')');
+	$('#qifAdapterProperty_description').val('$displayTool.alt($qifAdapterProperty.description,'')');
     
     #if($isCleanError)
         resetItem();

@@ -1,105 +1,97 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>${pom.name} ${pom.version} - $winWorkUtil.getLabel($loginUser.displayLang, 'global.create') $winWorkUtil.camelCaseToReadable($modelName, true)</title>
+        <title>${pom.name} ${pom.version} - $winWorkUtil.getLabel($loginUser.displayLang, 'global.edit') $winWorkUtil.camelCaseToReadable($modelName, true)</title>
         #include("vita/common/common_head_tag.html")
     </head>
     <body>
-        <div id="container">
-            #parse("vita/common/header.vm")
-            <!-- BODY START -->
-            <div class="container">
-                #include("vita/common/leftMenu.html")
-                <div class="col-md-10">
-                    <form action="${web.context}/$modelName/edit" method="post" enctype="application/x-www-form-urlencoded" class="form-horizontal" name="editForm" role="form">
-                        <input type="hidden" name="id" value="$displayTool.alt($model.id, '')" />
-                        <fieldset>
-                            <legend>
-                                $winWorkUtil.camelCaseToReadable($modelName, true) $winWorkUtil.getLabel($loginUser.displayLang, 'global.create')
-                            </legend>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label" for="name">$winWorkUtil.getLabel($loginUser.displayLang, 'appPermission.name')</label>
-                                <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="name" name="name" value="$displayTool.alt($model.name, '')" />
-                                    <span class="help-inline">$displayTool.alt($errorMessage.name, '')</span>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label" for="httpPath">$winWorkUtil.getLabel($loginUser.displayLang, 'appPermission.httpPath')</label>
-                                <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="httpPath" name="httpPath" value="$displayTool.alt($model.httpPath, '')" />
-                                    <span class="help-inline">$displayTool.alt($errorMessage.httpPath, '')</span>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label" for="httpMethod">$winWorkUtil.getLabel($loginUser.displayLang, 'appPermission.httpMethod')</label>
-                                <div class="col-sm-6">
-                                    <select name="httpMethod" id="httpMethod" class="form-control">
-                                        <option value=""></option>
-                                        #foreach($httpMethod in $httpMethodList)
-                                        <option value="$httpMethod.name"
-                                        #if($httpMethod.name == $model.httpMethod)
-                                        selected="selected"
-                                        #end
-                                        >$httpMethod.name</option>
-                                    #end
-                                </select><span class="help-inline">$displayTool.alt($errorMessage.httpMethod, '')</span>
-                            </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label" for="menuOrder">$winWorkUtil.getLabel($loginUser.displayLang, 'appPermission.menuOrder')</label>
-                                <div class="col-sm-6">
-                                    <input type="text" class="input-sm" id="menuOrder" name="menuOrder" value="$displayTool.alt($model.menuOrder, '')"
-                                           onkeypress="return isNumberKey(event)" />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label" for="parentMenu">$winWorkUtil.getLabel($loginUser.displayLang, 'appPermission.parentMenu')</label>
-                                    <div class="col-sm-6">
-                                        <select name="parentMenu" id="parentMenu" class="form-control">
-                                            <option value=""></option>
-                                            #foreach($appPermission in $appPermissionList)
-                                            <option value="$appPermission.id"
-                                            #if($appPermission.id == $model.parentMenu.id)
-                                            selected="selected"
-                                            #end
-                                            >$displayTool.alt($appPermission.tab, '') $appPermission.name [$appPermission.httpPath - $appPermission.httpMethod]</option>
-                                        #end
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-sm-offset-2 col-sm-10">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="asMenu" id="asMenu"
-                                            #if ($model.asMenu) checked="checked" #end
-                                            />
-                                            $winWorkUtil.getLabel($loginUser.displayLang, 'appPermission.asMenu')
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label" for="description">$winWorkUtil.getLabel($loginUser.displayLang, 'appPermission.description')</label>
-                                <div class="col-sm-6">
-                                    <textarea rows="3" class="form-control" name="description" id="description">$displayTool.alt($model.description, '')</textarea>
-                                </div>
-                            </div>
-                            <div class="col-sm-offset-2 col-sm-10">
-                                #parse("vita/common/button_submit_form.vm")
-                            </div>
-                        </fieldset>
-                    </form>
+        #parse("vita/common/header.vm")
+        #include("vita/common/leftMenu.html")
+        <form action="${web.context}/$modelName/edit" method="post" enctype="application/x-www-form-urlencoded" class="form-horizontal" name="editForm" role="form">
+            <input type="hidden" name="id" value="$displayTool.alt($model.id, '')" />
+            <fieldset>
+                <legend>
+                    $winWorkUtil.camelCaseToReadable($modelName, true) $winWorkUtil.getLabel($loginUser.displayLang, 'global.edit')
+                </legend>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="name">$winWorkUtil.getLabel($loginUser.displayLang, 'appPermission.name')</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" id="name" name="name" value="$displayTool.alt($model.name, '')" />
+                        <span class="help-inline">$displayTool.alt($errorMessage.name, '')</span>
+                    </div>
                 </div>
-                <!-- CONTENT END -->
-            </div>
-            #include("vita/common/footer.html")
-            <script type="text/javascript">
-                setModel('$modelName');
-                setContextUrl('${web.context}');
-                doSearch();
-            </script>
-        </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="httpPath">$winWorkUtil.getLabel($loginUser.displayLang, 'appPermission.httpPath')</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" id="httpPath" name="httpPath" value="$displayTool.alt($model.httpPath, '')" />
+                        <span class="help-inline">$displayTool.alt($errorMessage.httpPath, '')</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="httpMethod">$winWorkUtil.getLabel($loginUser.displayLang, 'appPermission.httpMethod')</label>
+                    <div class="col-sm-6">
+                        <select name="httpMethod" id="httpMethod" class="form-control">
+                            <option value=""></option>
+                            #foreach($httpMethod in $httpMethodList)
+                            <option value="$httpMethod.name"
+                            #if($httpMethod.name == $model.httpMethod)
+                            selected="selected"
+                            #end
+                            >$httpMethod.name</option>
+                        #end
+                    </select><span class="help-inline">$displayTool.alt($errorMessage.httpMethod, '')</span>
+                </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="menuOrder">$winWorkUtil.getLabel($loginUser.displayLang, 'appPermission.menuOrder')</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="input-sm" id="menuOrder" name="menuOrder" value="$displayTool.alt($model.menuOrder, '')"
+                               onkeypress="return isNumberKey(event)" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="parentMenu">$winWorkUtil.getLabel($loginUser.displayLang, 'appPermission.parentMenu')</label>
+                        <div class="col-sm-6">
+                            <select name="parentMenu" id="parentMenu" class="form-control">
+                                <option value=""></option>
+                                #foreach($appPermission in $appPermissionList)
+                                <option value="$appPermission.id"
+                                #if($appPermission.id == $model.parentMenu.id)
+                                selected="selected"
+                                #end
+                                >$displayTool.alt($appPermission.tab, '') $appPermission.name [$appPermission.httpPath - $appPermission.httpMethod]</option>
+                            #end
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="asMenu" id="asMenu"
+                                #if ($model.asMenu) checked="checked" #end
+                                />
+                                $winWorkUtil.getLabel($loginUser.displayLang, 'appPermission.asMenu')
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="description">$winWorkUtil.getLabel($loginUser.displayLang, 'appPermission.description')</label>
+                    <div class="col-sm-6">
+                        <textarea rows="3" class="form-control" name="description" id="description">$displayTool.alt($model.description, '')</textarea>
+                    </div>
+                </div>
+                <div class="col-sm-offset-2 col-sm-10">
+                    #parse("vita/common/button_submit_form.vm")
+                </div>
+            </fieldset>
+        </form>
+        #include("vita/common/footer.html")
+        <script type="text/javascript">
+            setModel('$modelName');
+            setContextUrl('${web.context}');
+            doSearch();
+        </script>
     </body>
 </html>

@@ -4,6 +4,8 @@ import com.sun.jersey.guice.JerseyServletModule;
 import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
 import id.co.quadras.qif.ui.controller.*;
 import id.co.quadras.qif.ui.controller.app.*;
+import id.co.quadras.qif.ui.controller.config.QifAdapterController;
+import id.co.quadras.qif.ui.controller.config.QifEventController;
 import id.co.quadras.qif.ui.filter.MDCNodeNameFilter;
 import id.co.quadras.qif.ui.filter.UserAccessFilter;
 import id.co.quadras.qif.ui.filter.UserSessionFilter;
@@ -65,6 +67,10 @@ public class WebModule extends JerseyServletModule {
         bind(AppUserController.class);
         bind(AppPermissionController.class);
         bind(AppRoleController.class);
+
+        // CONFIG
+        bind(QifEventController.class);
+        bind(QifAdapterController.class);
 
         serve("/*").with(GuiceContainer.class);
     }

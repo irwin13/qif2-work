@@ -172,18 +172,18 @@ public class QifAdapterController extends CrudController {
         String id = formMap.getFirst("id");
 
         LOGGER.debug("id = {}", id);
-        QifAdapter qifEvent = null;
+        QifAdapter qifAdapter = null;
         if (!Strings.isNullOrEmpty(id)) {
-            qifEvent = qifAdapterService.getById(id, true);
-            if (qifEvent == null) {
+            qifAdapter = qifAdapterService.getById(id, true);
+            if (qifAdapter == null) {
                 throw new NullPointerException("FATAL ERROR :: QifAdapter with id = " + id + " is missing in database");
             }
         }
 
         List<QifAdapterProperty> qifAdapterPropertyList = (List<QifAdapterProperty>) webSession.get(request, "qifAdapterPropertyList");
         if (qifAdapterPropertyList == null) {
-            if (qifEvent != null && qifEvent.getQifAdapterPropertyList() != null) {
-                qifAdapterPropertyList = qifEvent.getQifAdapterPropertyList();
+            if (qifAdapter != null && qifAdapter.getQifAdapterPropertyList() != null) {
+                qifAdapterPropertyList = qifAdapter.getQifAdapterPropertyList();
             } else {
                 qifAdapterPropertyList = new LinkedList<QifAdapterProperty>();
             }
@@ -227,7 +227,7 @@ public class QifAdapterController extends CrudController {
 
         Map<String, Object> objectMap = webPage.mapWithLoginUser(request);
         objectMap.put("qifAdapterProperty", qifAdapterProperty);
-        objectMap.put("model", qifEvent);
+        objectMap.put("model", qifAdapter);
         objectMap.put("qifAdapterPropertyList", qifAdapterPropertyList);
         objectMap.put("errors", errors);
 
@@ -239,7 +239,7 @@ public class QifAdapterController extends CrudController {
             objectMap.put("isCleanError", false);
         }
 
-        String content = webPage.stringFromVm(PACKAGE_PAGE_PREFIX + "qifEvent_child_qifAdapterProperty.vm", objectMap);
+        String content = webPage.stringFromVm(PACKAGE_PAGE_PREFIX + "qifAdapter_child_qifAdapterProperty.vm", objectMap);
         return webPage.okResponse(content);
     }
 
