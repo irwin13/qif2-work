@@ -19,8 +19,8 @@
             <td>$displayTool.alt($child.propertyValue, '')</td>
             <td>$displayTool.alt($child.description, '')</td>
             <td>
-                <input type="button" class="btn btn-primary" value="Edit" onclick="editItem('$index')" />&nbsp;
-                <input type="button" class="btn btn-danger" value="Remove" onclick="removeItem('$index')" />
+                <input type="button" class="btn btn-primary btn-sm" value="Edit" onclick="editItem('$index')" />&nbsp;
+                <input type="button" class="btn btn-danger btn-sm" value="Remove" onclick="removeItem('$index')" />
             </td>
         </tr>
         #set( $index = $index + 1)

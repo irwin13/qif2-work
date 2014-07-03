@@ -41,7 +41,7 @@
             <input type="hidden" name="qifAdapterPropertyIndex" id="qifAdapterPropertyIndex" value="" />
             <input type="hidden" name="qifAdapterPropertyAction" id="qifAdapterPropertyAction" value="" />
             <div class="table-responsive">
-                <table class="table table-condensed table-bordered">
+                <table class="table table-condensed">
                     <thead>
                         <tr>
                             <td>$winWorkUtil.getLabel($loginUser.displayLang, 'qifAdapterProperty.propertyKey')</td>
@@ -62,8 +62,8 @@
                                 <textarea rows="3" name="qifAdapterProperty_description" id="qifAdapterProperty_description" class="form-control"></textarea>
                             </td>
                             <td>
-                                <input type="button" name="qifAdapterProperty_buttonAdd" class="btn btn-primary" value="Add" onclick="addItem()"/>
-                                <input type="button" name="qifAdapterProperty_buttonReset" class="btn btn-default" disabled="disabled" value="Reset" onclick="resetItem()"/>
+                                <input type="button" name="qifAdapterProperty_buttonAdd" class="btn btn-primary btn-sm" value="Add" onclick="addItem()"/>
+                                <input type="button" name="qifAdapterProperty_buttonReset" class="btn btn-default btn-sm" disabled="disabled" value="Reset" onclick="resetItem()"/>
                             </td>
                         </tr>
                     </tbody>

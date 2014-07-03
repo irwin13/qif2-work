@@ -1,5 +1,6 @@
 package id.co.quadras.qif.core.model.entity;
 
+import com.irwin13.winwork.basic.annotations.FormReadExclude;
 import com.irwin13.winwork.basic.annotations.Searchable;
 import com.irwin13.winwork.basic.annotations.Sortable;
 import com.irwin13.winwork.basic.model.entity.WinWorkBasicEntity;
@@ -12,6 +13,7 @@ import java.util.List;
  */
 public class QifAdapter extends WinWorkBasicEntity {
 
+    @FormReadExclude
     public static final String MODEL_NAME = "qifAdapter";
 
     @Searchable

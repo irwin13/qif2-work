@@ -28,5 +28,10 @@
         <mapping resource="hbm/app/AppRole.hbm.xml" />
         <mapping resource="hbm/app/AppPermission.hbm.xml" />
 
+        <mapping resource="hbm/config/QifEvent.hbm.xml" />
+        <mapping resource="hbm/config/QifEventProperty.hbm.xml" />
+        <mapping resource="hbm/config/QifAdapter.hbm.xml" />
+        <mapping resource="hbm/config/QifAdapterProperty.hbm.xml" />
+
     </session-factory>
 </hibernate-configuration>

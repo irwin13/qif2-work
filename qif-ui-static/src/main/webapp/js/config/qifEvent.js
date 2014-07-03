@@ -1,52 +1,52 @@
-function loadBpListenerProperty() {
+function loadQifEventProperty() {
     jQuery.ajax({
         type: "post",
-        url: '${web.context}/bpListener/bpListenerProperty',
+        url: '${web.context}/qifEvent/qifEventProperty',
         dataType: "text",
-        data: $('#bpListenerPropertyForm').serialize(),
+        data: $('#qifEventPropertyForm').serialize(),
         success: function(data, textStatus) {
             if (textStatus == "success") {
-                $('#child_bpListenerProperty').html(data);
+                $('#child_qifEventProperty').html(data);
             }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
             var html = textStatus + " " + errorThrown;
-            $('#child_bpListenerProperty').html(html);
+            $('#child_qifEventProperty').html(html);
         }
 
     });
 }
 
 function addItem() {
-    $("#bpListenerPropertyProperty").val('add');    
-    loadBpListenerProperty();
+    $("#qifEventPropertyAction").val('add');
+    loadQifEventProperty();
 }
 
 function editItem(index) {
-    $("#bpListenerPropertyIndex").val(index);
-    $("#bpListenerPropertyProperty").val('edit');    
-    $("input[name='bpListenerProperty_buttonAdd']")[0].value = "Update";
-    $("input[name='bpListenerProperty_buttonReset']")[0].disabled = false;    
-    loadBpListenerProperty();        
+    $("#qifEventPropertyIndex").val(index);
+    $("#qifEventPropertyAction").val('edit');
+    $("input[name='qifEventProperty_buttonAdd']")[0].value = "Update";
+    $("input[name='qifEventProperty_buttonReset']")[0].disabled = false;    
+    loadQifEventProperty();        
 }
 
 function removeItem(index) {
-    $("#bpListenerPropertyIndex").val(index);
-    $("#bpListenerPropertyProperty").val('remove');        
-    $("input[name='bpListenerProperty_buttonReset']")[0].disabled = "disabled";
-    loadBpListenerProperty();        
+    $("#qifEventPropertyIndex").val(index);
+    $("#qifEventPropertyAction").val('remove');
+    $("input[name='qifEventProperty_buttonReset']")[0].disabled = "disabled";
+    loadQifEventProperty();        
 }
 
 function resetItem() {
-    $("#bpListenerProperty_propertyKey").val('');
-    $("#bpListenerProperty_propertyValue").val('');
-    $("#bpListenerProperty_description").val('');
+    $("#qifEventProperty_propertyKey").val('');
+    $("#qifEventProperty_propertyValue").val('');
+    $("#qifEventProperty_description").val('');
 
-    $("input[name='bpListenerPropertyIndex']")[0].value = "";
+    $("input[name='qifEventPropertyIndex']")[0].value = "";
 
-    $("input[name='bpListenerProperty_buttonAdd']")[0].value = "Add";    
-    $("input[name='bpListenerProperty_buttonAdd']")[0].disabled = false;
+    $("input[name='qifEventProperty_buttonAdd']")[0].value = "Add";    
+    $("input[name='qifEventProperty_buttonAdd']")[0].disabled = false;
 
-    $("input[name='bpListenerProperty_buttonReset']")[0].disabled = true;
+    $("input[name='qifEventProperty_buttonReset']")[0].disabled = true;
 
 }

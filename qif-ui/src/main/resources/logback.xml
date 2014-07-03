@@ -75,7 +75,7 @@
         <appender-ref ref="LOG-ERROR" />
     </logger>
 
-    <logger name="com.irwin13" level="${app.log.level.apps}">
+    <logger name="com.irwin13.hibernate" level="${app.log.level.apps}">
         <appender-ref ref="LOG-DEBUG" />
         <appender-ref ref="LOG-ERROR" />
     </logger>

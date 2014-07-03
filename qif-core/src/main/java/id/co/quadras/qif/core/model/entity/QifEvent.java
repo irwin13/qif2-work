@@ -1,5 +1,6 @@
 package id.co.quadras.qif.core.model.entity;
 
+import com.irwin13.winwork.basic.annotations.FormReadExclude;
 import com.irwin13.winwork.basic.annotations.Searchable;
 import com.irwin13.winwork.basic.annotations.Sortable;
 import com.irwin13.winwork.basic.model.entity.WinWorkBasicEntity;
@@ -12,6 +13,7 @@ import java.util.List;
  */
 public class QifEvent extends WinWorkBasicEntity {
 
+    @FormReadExclude
     public static final String MODEL_NAME = "qifEvent";
 
     @Searchable
@@ -30,8 +32,6 @@ public class QifEvent extends WinWorkBasicEntity {
     @Sortable
     private String qifProcess;
 
-    @Searchable
-    @Sortable
     private String description;
 
     private Boolean auditTrailEnabled;
