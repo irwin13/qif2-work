@@ -42,4 +42,23 @@
         <servlet-name>AppStatusServlet</servlet-name>
         <url-pattern>/appStatus</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>TaskApiServlet</servlet-name>
+        <servlet-class>id.co.quadras.qif.engine.web.servlet.TaskApiServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TaskApiServlet</servlet-name>
+        <url-pattern>/taskApi</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ProcessApiServlet</servlet-name>
+        <servlet-class>id.co.quadras.qif.engine.web.servlet.ProcessApiServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ProcessApiServlet</servlet-name>
+        <url-pattern>/processApi</url-pattern>
+    </servlet-mapping>
+
 </web-app>
