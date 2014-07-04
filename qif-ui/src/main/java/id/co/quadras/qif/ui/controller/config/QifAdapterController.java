@@ -8,6 +8,8 @@ import com.irwin13.winwork.basic.validator.ValidationStatus;
 import com.irwin13.winwork.basic.validator.ValidatorResult;
 import id.co.quadras.qif.core.model.entity.QifAdapter;
 import id.co.quadras.qif.core.model.entity.QifAdapterProperty;
+import id.co.quadras.qif.core.model.vo.adapter.AdapterInterface;
+import id.co.quadras.qif.core.model.vo.event.EventType;
 import id.co.quadras.qif.ui.WebPage;
 import id.co.quadras.qif.ui.WebSession;
 import id.co.quadras.qif.ui.controller.CrudController;
@@ -51,6 +53,11 @@ public class QifAdapterController extends CrudController {
 
     @Override
     protected void setReferenceData(Map<String, Object> objectMap) {
+        List<String> adapterInterfaceList = new LinkedList<String>();
+        for (AdapterInterface adapterInterface : AdapterInterface.values()) {
+            adapterInterfaceList.add(adapterInterface.getName());
+        }
+        objectMap.put("adapterInterfaceList", adapterInterfaceList);
     }
 
     @Override

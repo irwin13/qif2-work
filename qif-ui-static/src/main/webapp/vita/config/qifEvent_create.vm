@@ -22,14 +22,32 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label" for="eventType">$winWorkUtil.getLabel($loginUser.displayLang, 'qifEvent.eventType')<font color="red">*</font></label>
                     <div class="col-sm-6">
-                        <input type="text" id="eventType" name="eventType" class="form-control" value="$displayTool.alt($model.eventType, '')" />
+                        <select name="eventType" id="eventType" class="form-control">
+                            <option value=""></option>
+                            #foreach($eventType in $eventTypeList)
+                            <option value="$eventType"
+                            #if($eventType == $model.eventType)
+                            selected="selected"
+                            #end
+                            >$displayTool.alt($eventType, '')</option>
+                            #end
+                        </select>
                         <span class="help-inline">$displayTool.alt($errorMessage.eventType, '')</span>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label" for="eventInterface">$winWorkUtil.getLabel($loginUser.displayLang, 'qifEvent.eventInterface')<font color="red">*</font></label>
                     <div class="col-sm-6">
-                        <input type="text" id="eventInterface" name="eventInterface" class="form-control" value="$displayTool.alt($model.eventInterface, '')" />
+                        <select name="eventInterface" id="eventInterface" class="form-control">
+                            <option value=""></option>
+                            #foreach($eventInterface in $eventInterfaceList)
+                            <option value="$eventInterface"
+                            #if($eventInterface == $model.eventInterface)
+                            selected="selected"
+                            #end
+                            >$displayTool.alt($eventInterface, '')</option>
+                            #end
+                        </select>
                         <span class="help-inline">$displayTool.alt($errorMessage.eventInterface, '')</span>
                     </div>
                 </div>

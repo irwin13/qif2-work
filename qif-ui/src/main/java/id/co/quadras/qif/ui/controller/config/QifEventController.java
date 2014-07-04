@@ -9,6 +9,8 @@ import com.irwin13.winwork.basic.validator.ValidationStatus;
 import com.irwin13.winwork.basic.validator.ValidatorResult;
 import id.co.quadras.qif.core.model.entity.QifEvent;
 import id.co.quadras.qif.core.model.entity.QifEventProperty;
+import id.co.quadras.qif.core.model.vo.event.EventInterface;
+import id.co.quadras.qif.core.model.vo.event.EventType;
 import id.co.quadras.qif.ui.WebPage;
 import id.co.quadras.qif.ui.WebSession;
 import id.co.quadras.qif.ui.controller.CrudController;
@@ -54,6 +56,19 @@ public class QifEventController extends CrudController {
     protected void setReferenceData(Map<String, Object> objectMap) {
         List<KeyValue> processList = qifEventService.getQifProcessList();
         objectMap.put("processList", processList);
+
+        List<String> eventTypeList = new LinkedList<String>();
+        for (EventType eventType : EventType.values()) {
+            eventTypeList.add(eventType.getName());
+        }
+        objectMap.put("eventTypeList", eventTypeList);
+
+        List<String> eventInterfaceList = new LinkedList<String>();
+        for (EventInterface eventInterface : EventInterface.values()) {
+            eventInterfaceList.add(eventInterface.getName());
+        }
+        objectMap.put("eventInterfaceList", eventInterfaceList);
+
     }
 
     @Override

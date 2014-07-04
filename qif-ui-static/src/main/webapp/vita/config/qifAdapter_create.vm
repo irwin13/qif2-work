@@ -13,16 +13,26 @@
                     $winWorkUtil.camelCaseToReadable($modelName, true) $winWorkUtil.getLabel($loginUser.displayLang, 'global.create')
                 </legend>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label" for="name">$winWorkUtil.getLabel($loginUser.displayLang, 'qifAdapter.name')</label>
+                    <label class="col-sm-2 control-label" for="name">$winWorkUtil.getLabel($loginUser.displayLang, 'qifAdapter.name')<font color="red">*</font></label>
                     <div class="col-sm-6">
                         <input type="text" id="name" name="name" class="form-control" value="$displayTool.alt($model.name, '')" />
                         <span class="help-inline">$displayTool.alt($errorMessage.name, '')</span>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label" for="adapterInterface">$winWorkUtil.getLabel($loginUser.displayLang, 'qifAdapter.adapterInterface')</label>
+                    <label class="col-sm-2 control-label" for="adapterInterface">$winWorkUtil.getLabel($loginUser.displayLang, 'qifAdapter.adapterInterface')<font color="red">*</font></label>
                     <div class="col-sm-6">
-                        <input type="text" id="adapterInterface" name="adapterInterface" class="form-control" value="$displayTool.alt($model.adapterInterface, '')" />
+                        <select name="adapterInterface" id="adapterInterface" class="form-control">
+                            <option value=""></option>
+                            #foreach($adapterInterface in $adapterInterfaceList)
+                            <option value="$adapterInterface"
+                            #if($adapterInterface == $model.adapterInterface)
+                            selected="selected"
+                            #end
+                            >$displayTool.alt($adapterInterface, '')</option>
+                            #end
+                        </select>
+                        <span class="help-inline">$displayTool.alt($errorMessage.adapterInterface, '')</span>
                     </div>
                 </div>
                 <div class="form-group">
