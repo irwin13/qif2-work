@@ -4,7 +4,9 @@ import com.google.common.base.Strings;
 import id.co.quadras.qif.core.QifActivity;
 import id.co.quadras.qif.core.QifConstants;
 import id.co.quadras.qif.core.QifProcess;
+import id.co.quadras.qif.core.QifUtil;
 import id.co.quadras.qif.core.model.entity.QifEvent;
+import id.co.quadras.qif.core.model.entity.QifEventProperty;
 import id.co.quadras.qif.core.model.vo.HttpRequestMessage;
 import id.co.quadras.qif.core.model.vo.QifActivityResult;
 import id.co.quadras.qif.core.model.vo.event.EventHttp;
@@ -48,20 +50,19 @@ public class EventDispatcherServlet extends HttpServlet {
         LOGGER.debug("incoming request for path {}", path);
 
         EventService eventService = EngineFactory.getInjector().getInstance(EventService.class);
-        QifEvent qifEvent = eventService.selectByProperty(EventHttp.HTTP_PATH.getName(), path);
-        if (qifEvent == null) {
+        QifEvent qifEventPath = eventService.selectByProperty(EventHttp.HTTP_PATH.getName(), path);
+        QifEvent qifEventMethod = eventService.selectByProperty(EventHttp.HTTP_METHOD.getName(), request.getMethod().toLowerCase());
+        if (qifEventPath == null) {
             buildResponse(response, HttpServletResponse.SC_NOT_FOUND, TEXT_PLAIN,
                     "404 : Not Found. No QifEvent configured with HTTP path '" + path + "'", null);
         } else {
-            if (qifEvent.getActiveAcceptMessage()) {
-
-                if (QifConstants.GET.equalsIgnoreCase(request.getMethod()) ||
-                        QifConstants.POST.equalsIgnoreCase(request.getMethod())) {
-
-                    QifActivityResult result = executeEvent(request, qifEvent);
+            if (qifEventPath.getActiveAcceptMessage()) {
+                if (qifEventMethod != null) {
+                    QifActivityResult result = executeEvent(request, qifEventPath);
                     buildResponseFromResult(response, result);
                 } else {
-                    String errorMessage = "405 : Method Not Allowed. HTTP Method " + request.getMethod() + " not supported, currently only support for GET and POST";
+                    String errorMessage = "405 : Method Not Allowed. HTTP Method not match, QifEvent '" + qifEventPath.getName()
+                            + "' is not configured with HTTP Method '" + request.getMethod().toLowerCase() + "'";
                     buildResponse(response, HttpServletResponse.SC_METHOD_NOT_ALLOWED, TEXT_PLAIN, errorMessage, null);
                 }
 

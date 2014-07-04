@@ -13,7 +13,7 @@
                     $winWorkUtil.camelCaseToReadable($modelName, true) $winWorkUtil.getLabel($loginUser.displayLang, 'global.create')
                 </legend>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label required" for="name">$winWorkUtil.getLabel($loginUser.displayLang, 'qifEvent.name') </label>
+                    <label class="col-sm-2 control-label required" for="name">$winWorkUtil.getLabel($loginUser.displayLang, 'qifEvent.name')<font color="red">*</font></label>
                     <div class="col-sm-6">
                         <input type="text" id="name" name="name" class="form-control" value="$displayTool.alt($model.name, '')" />
                         <span class="help-inline">$displayTool.alt($errorMessage.name, '')</span>

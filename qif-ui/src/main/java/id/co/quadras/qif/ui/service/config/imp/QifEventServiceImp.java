@@ -92,6 +92,17 @@ public class QifEventServiceImp implements QifEventService {
                 commonService.onInsert(property);
             }
         }
+
+        String apiUrl = appSettingService.getSettingStringValue("engine.api.url");
+        LOGGER.debug("apiUrl = {}", apiUrl);
+
+        try {
+            String json = jsonParser.parseToString(false, model);
+            LOGGER.debug("put json = {}", json);
+            restClient.put(apiUrl + "event-api", json);
+        } catch (IOException e) {
+            LOGGER.error(e.getLocalizedMessage(), e);
+        }
         return dao.insert(model);
     }
 
@@ -106,6 +117,18 @@ public class QifEventServiceImp implements QifEventService {
                 commonService.onInsertOrUpdate(property);
             }
         }
+
+        String apiUrl = appSettingService.getSettingStringValue("engine.api.url");
+        LOGGER.debug("apiUrl = {}", apiUrl);
+
+        try {
+            String json = jsonParser.parseToString(false, model);
+            LOGGER.debug("post json = {}", json);
+            restClient.post(apiUrl + "event-api", json);
+        } catch (IOException e) {
+            LOGGER.error(e.getLocalizedMessage(), e);
+        }
+
         dao.merge(model);
     }
 
@@ -119,6 +142,17 @@ public class QifEventServiceImp implements QifEventService {
                 commonService.onSoftDelete(property);
             }
         }
+
+        String apiUrl = appSettingService.getSettingStringValue("engine.api.url");
+        LOGGER.debug("apiUrl = {}", apiUrl);
+
+        try {
+            LOGGER.debug("delete id = {}", model.getId());
+            restClient.delete(apiUrl + "event-api?id=" + model.getId());
+        } catch (IOException e) {
+            LOGGER.error(e.getLocalizedMessage(), e);
+        }
+
         dao.merge(model);
     }
 
@@ -144,7 +178,7 @@ public class QifEventServiceImp implements QifEventService {
         LOGGER.debug("apiUrl = {}", apiUrl);
 
         try {
-            String json = restClient.get(apiUrl + "processApi");
+            String json = restClient.get(apiUrl + "process-api");
             LOGGER.debug("json response = {}", json);
             if (!Strings.isNullOrEmpty(json)) {
                 List<String> stringList = jsonParser.parseToObject(false, json, new TypeReference<List<String>>(){});

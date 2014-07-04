@@ -40,7 +40,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>AppStatusServlet</servlet-name>
-        <url-pattern>/appStatus</url-pattern>
+        <url-pattern>/app-status</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -49,7 +49,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>TaskApiServlet</servlet-name>
-        <url-pattern>/taskApi</url-pattern>
+        <url-pattern>/task-api</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -58,7 +58,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>ProcessApiServlet</servlet-name>
-        <url-pattern>/processApi</url-pattern>
+        <url-pattern>/process-api</url-pattern>
     </servlet-mapping>
 
 </web-app>
