@@ -5,6 +5,8 @@ import id.co.quadras.qif.engine.job.internal.*;
 import id.co.quadras.qif.engine.service.AdapterService;
 import id.co.quadras.qif.engine.service.CounterService;
 import id.co.quadras.qif.engine.service.EventService;
+import id.co.quadras.qif.engine.service.app.AppSettingService;
+import id.co.quadras.qif.engine.service.app.imp.AppSettingServiceImp;
 import id.co.quadras.qif.engine.service.imp.AdapterServiceImp;
 import id.co.quadras.qif.engine.service.imp.CounterServiceImp;
 import id.co.quadras.qif.engine.service.imp.EventServiceImp;
@@ -44,5 +46,8 @@ public class ServiceModule extends AbstractModule {
         // COUNTER
         bind(CounterService.class).to(CounterServiceImp.class);
         bind(CounterUpdate.class);
+
+        // APP
+        bind(AppSettingService.class).to(AppSettingServiceImp.class);
     }
 }

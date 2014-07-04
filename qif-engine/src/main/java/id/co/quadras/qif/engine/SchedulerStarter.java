@@ -37,6 +37,10 @@ public final class SchedulerStarter {
         this.schedulerManager = schedulerManager;
     }
 
+    public void startScheduler() throws SchedulerException {
+        schedulerManager.start();
+    }
+
     public void startEvent(List<QifEvent> qifEventList) throws SchedulerException {
         LOGGER.info("=====================================");
         LOGGER.info("Configure BP Listener with type SCHEDULER ");
@@ -101,75 +105,70 @@ public final class SchedulerStarter {
                 }
             }
         }
-
-        if (!schedulerManager.isStarted()) {
-            schedulerManager.start();
-        }
     }
 
     public void startInternalScheduler(Qif qif) throws SchedulerException {
-        // event log
-        schedulerManager.add(
-                schedulerManager.createJobDetail(EventLogMsgPersist.class,
-                                                schedulerManager.createJobKey(EventLogMsgPersist.class.getName()),
-                                                null),
-                schedulerManager.createIntervalTrigger(schedulerManager.createTriggerKey(EventLogMsgPersist.class.getName()),
-                                                        Integer.valueOf(qif.getBatchConfig().getEventLogMsgPersistInterval()),
-                                                        true));
-
-        schedulerManager.add(
-                schedulerManager.createJobDetail(EventLogPersist.class,
-                        schedulerManager.createJobKey(EventLogPersist.class.getName()),
-                        null),
-                schedulerManager.createIntervalTrigger(schedulerManager.createTriggerKey(EventLogPersist.class.getName()),
-                        Integer.valueOf(qif.getBatchConfig().getEventLogPersistInterval()),
-                        true));
-
-        // activity log
-        schedulerManager.add(
-                schedulerManager.createJobDetail(ActivityLogPersist.class,
-                        schedulerManager.createJobKey(ActivityLogPersist.class.getName()),
-                        null),
-                schedulerManager.createIntervalTrigger(schedulerManager.createTriggerKey(ActivityLogPersist.class.getName()),
-                        Integer.valueOf(qif.getBatchConfig().getActivityLogPersistInterval()),
-                        true));
-
-        schedulerManager.add(
-                schedulerManager.createJobDetail(ActivityLogDataPersist.class,
-                        schedulerManager.createJobKey(ActivityLogDataPersist.class.getName()),
-                        null),
-                schedulerManager.createIntervalTrigger(schedulerManager.createTriggerKey(ActivityLogDataPersist.class.getName()),
-                        Integer.valueOf(qif.getBatchConfig().getActivityLogDataPersistInterval()),
-                        true));
-
-        schedulerManager.add(
-                schedulerManager.createJobDetail(ActivityLogInputMsgPersist.class,
-                        schedulerManager.createJobKey(ActivityLogInputMsgPersist.class.getName()),
-                        null),
-                schedulerManager.createIntervalTrigger(schedulerManager.createTriggerKey(ActivityLogInputMsgPersist.class.getName()),
-                        Integer.valueOf(qif.getBatchConfig().getActivityLogInputMsgPersistInterval()),
-                        true));
-
-        schedulerManager.add(
-                schedulerManager.createJobDetail(ActivityLogOutputMsgPersist.class,
-                        schedulerManager.createJobKey(ActivityLogOutputMsgPersist.class.getName()),
-                        null),
-                schedulerManager.createIntervalTrigger(schedulerManager.createTriggerKey(ActivityLogOutputMsgPersist.class.getName()),
-                        Integer.valueOf(qif.getBatchConfig().getActivityLogOutputMsgPersistInterval()),
-                        true));
+        LOGGER.info("Start Internal Scheduler ");
 
         // Counter update
         schedulerManager.add(
                 schedulerManager.createJobDetail(CounterUpdate.class,
-                        schedulerManager.createJobKey(CounterUpdate.class.getName()),
+                        schedulerManager.createJobKey(CounterUpdate.class.getSimpleName()),
                         null),
-                schedulerManager.createIntervalTrigger(schedulerManager.createTriggerKey(CounterUpdate.class.getName()),
+                schedulerManager.createIntervalTrigger(schedulerManager.createTriggerKey(CounterUpdate.class.getSimpleName()),
                         Integer.valueOf(qif.getBatchConfig().getCounterUpdateInterval()),
-                        true));
+                        false));
 
-        if (!schedulerManager.isStarted()) {
-            schedulerManager.start();
-        }
+        // event log
+        schedulerManager.add(
+                schedulerManager.createJobDetail(EventLogMsgPersist.class,
+                                                schedulerManager.createJobKey(EventLogMsgPersist.class.getSimpleName()),
+                                                null),
+                schedulerManager.createIntervalTrigger(schedulerManager.createTriggerKey(EventLogMsgPersist.class.getSimpleName()),
+                                                        Integer.valueOf(qif.getBatchConfig().getEventLogMsgPersistInterval()),
+                        false));
 
+        schedulerManager.add(
+                schedulerManager.createJobDetail(EventLogPersist.class,
+                        schedulerManager.createJobKey(EventLogPersist.class.getSimpleName()),
+                        null),
+                schedulerManager.createIntervalTrigger(schedulerManager.createTriggerKey(EventLogPersist.class.getSimpleName()),
+                        Integer.valueOf(qif.getBatchConfig().getEventLogPersistInterval()),
+                        false));
+
+        // activity log
+        schedulerManager.add(
+                schedulerManager.createJobDetail(ActivityLogPersist.class,
+                        schedulerManager.createJobKey(ActivityLogPersist.class.getSimpleName()),
+                        null),
+                schedulerManager.createIntervalTrigger(schedulerManager.createTriggerKey(ActivityLogPersist.class.getSimpleName()),
+                        Integer.valueOf(qif.getBatchConfig().getActivityLogPersistInterval()),
+                        false));
+
+        schedulerManager.add(
+                schedulerManager.createJobDetail(ActivityLogDataPersist.class,
+                        schedulerManager.createJobKey(ActivityLogDataPersist.class.getSimpleName()),
+                        null),
+                schedulerManager.createIntervalTrigger(schedulerManager.createTriggerKey(ActivityLogDataPersist.class.getSimpleName()),
+                        Integer.valueOf(qif.getBatchConfig().getActivityLogDataPersistInterval()),
+                        false));
+
+        schedulerManager.add(
+                schedulerManager.createJobDetail(ActivityLogInputMsgPersist.class,
+                        schedulerManager.createJobKey(ActivityLogInputMsgPersist.class.getSimpleName()),
+                        null),
+                schedulerManager.createIntervalTrigger(schedulerManager.createTriggerKey(ActivityLogInputMsgPersist.class.getSimpleName()),
+                        Integer.valueOf(qif.getBatchConfig().getActivityLogInputMsgPersistInterval()),
+                        false));
+
+        schedulerManager.add(
+                schedulerManager.createJobDetail(ActivityLogOutputMsgPersist.class,
+                        schedulerManager.createJobKey(ActivityLogOutputMsgPersist.class.getSimpleName()),
+                        null),
+                schedulerManager.createIntervalTrigger(schedulerManager.createTriggerKey(ActivityLogOutputMsgPersist.class.getSimpleName()),
+                        Integer.valueOf(qif.getBatchConfig().getActivityLogOutputMsgPersistInterval()),
+                        false));
+
+        LOGGER.info("Start Internal Scheduler complete");
     }
 }

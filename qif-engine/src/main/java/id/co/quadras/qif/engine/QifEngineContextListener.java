@@ -42,6 +42,7 @@ public class QifEngineContextListener implements ServletContextListener {
         try {
             schedulerStarter.startEvent(eventList);
             schedulerStarter.startInternalScheduler(EngineFactory.getInjector().getInstance(Qif.class));
+            schedulerStarter.startScheduler();
         } catch (SchedulerException e) {
             LOGGER.error(e.getLocalizedMessage(), e);
         }

@@ -83,9 +83,9 @@ public abstract class QifProcess implements QifActivity {
             Object processInput = receiveEvent(qifEvent, inputMessage);
             qifEventLog = insertEventLog(qifEvent, inputMessage);
             if (processInput != null) {
-                processLog = insertProcessLog(qifEventLog, inputMessage, parentProcessLog);
+                processLog = insertProcessLog(qifEvent, inputMessage, parentProcessLog);
                 qifActivityResult = implementProcess(processInput);
-                updateProcessLog(qifEventLog, qifActivityResult);
+                updateProcessLog(qifActivityResult);
             } else {
                 qifActivityResult = new QifActivityResult(SUCCESS, null, null);
             }
@@ -95,10 +95,10 @@ public abstract class QifProcess implements QifActivity {
         return qifActivityResult;
     }
 
-    private QifActivityLog insertProcessLog(QifEventLog qifEventLog, Object inputMessage,
+    private QifActivityLog insertProcessLog(QifEvent qifEvent, Object inputMessage,
                                             QifActivityLog parentProcessLog) {
 
-        boolean auditTrailEnabled = qifEventLog.getQifEvent().getAuditTrailEnabled();
+        boolean auditTrailEnabled = qifEvent.getAuditTrailEnabled();
 
         if (auditTrailEnabled) {
             String id = StringUtil.random32UUID();
@@ -121,7 +121,7 @@ public abstract class QifProcess implements QifActivity {
 
             activityLogQueue.put(processLog);
 
-            boolean keepMessageContent = qifEventLog.getQifEvent().getKeepMessageContent();
+            boolean keepMessageContent = qifEvent.getKeepMessageContent();
 
             if (keepMessageContent) {
                 if (inputMessage != null) {
@@ -142,7 +142,11 @@ public abstract class QifProcess implements QifActivity {
                     }
                     inputMessageQueue.put(inputMsg);
                 }
+            } else {
+                logger.debug("Process {} keepMessageContent disabled", getClass().getName());
             }
+        } else {
+            logger.debug("Process {} auditTrailEnabled disabled", getClass().getName());
         }
 
         addCounterProcess();
@@ -150,7 +154,7 @@ public abstract class QifProcess implements QifActivity {
         return processLog;
     }
 
-    private void updateProcessLog(QifEventLog qifEventLog, QifActivityResult qifActivityResult) {
+    private void updateProcessLog(QifActivityResult qifActivityResult) {
 
         if (processLog != null) {
 
@@ -201,6 +205,8 @@ public abstract class QifProcess implements QifActivity {
                     }
                     outputMessageQueue.put(outputMessage);
                 }
+            } else {
+                logger.debug("Process {} keepMessageContent disabled", getClass().getName());
             }
         }
     }
@@ -227,7 +233,7 @@ public abstract class QifProcess implements QifActivity {
 
             eventLogQueue.put(qifEventLog);
 
-            if (qifEvent.getKeepMessageContent() != null && qifEvent.getKeepMessageContent()) {
+            if (qifEvent.getKeepMessageContent() != null && qifEvent.getKeepMessageContent() && inputMessage != null) {
                 QifEventLogMsg logContent = new QifEventLogMsg();
                 logContent.setId(StringUtil.random32UUID());
 
@@ -246,6 +252,8 @@ public abstract class QifProcess implements QifActivity {
                 logContent.setLastUpdateDate(today);
 
                 messageQueue.put(logContent);
+            } else {
+                logger.debug("Process {} keepMessageContent disabled", getClass().getName());
             }
 
         } else {

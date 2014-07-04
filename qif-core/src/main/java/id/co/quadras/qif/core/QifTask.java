@@ -175,7 +175,11 @@ public abstract class QifTask implements QifActivity {
                     }
                     outputMessageQueue.put(outputMessage);
                 }
+            } else {
+                logger.debug("Task {} keepMessageContent disabled", getClass().getName());
             }
+        } else {
+            logger.debug("Task {} auditTrail disabled", getClass().getName());
         }
     }
 

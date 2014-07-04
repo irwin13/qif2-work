@@ -32,7 +32,8 @@ public class EventLogPersist implements Job {
         int maxFetch = QifConstants.DEFAULT_LOG_FETCH;
 
         try {
-            maxFetch = Integer.valueOf(appSettingService.selectByCode("queue.eventLog.maxFetch").getCode());
+            String max = appSettingService.selectByCode("queue.activityLogData.maxFetch").getStringValue();
+            maxFetch = Integer.valueOf(max);
         } catch (NumberFormatException e) {
             LOGGER.error(e.getLocalizedMessage());
         } catch (NullPointerException e) {
@@ -40,6 +41,11 @@ public class EventLogPersist implements Job {
         }
 
         List<QifEventLog> list = queueReader.getLogList(maxFetch);
-        service.batchInsert(list);
+        LOGGER.debug("maxFetch = {}", maxFetch);
+        LOGGER.debug("list size = {}", list.size());
+
+        if (!list.isEmpty()) {
+            service.batchInsert(list);
+        }
     }
 }
