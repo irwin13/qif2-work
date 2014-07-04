@@ -37,7 +37,16 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label" for="qifProcess">$winWorkUtil.getLabel($loginUser.displayLang, 'qifEvent.qifProcess')<font color="red">*</font></label>
                     <div class="col-sm-6">
-                        <input type="text" id="qifProcess" name="qifProcess" class="form-control" value="$displayTool.alt($model.qifProcess, '')" />
+                        <select name="qifProcess" id="qifProcess" class="form-control">
+                            <option value=""></option>
+                            #foreach($keyValue in $processList)
+                            <option value="$keyValue.key"
+                            #if($model.qifProcess == $keyValue.key)
+                            selected="selected"
+                            #end
+                            >$displayTool.alt($keyValue.value, '')</option>
+                            #end
+                        </select>
                         <span class="help-inline">$displayTool.alt($errorMessage.qifProcess, '')</span>
                     </div>
                 </div>

@@ -11,7 +11,6 @@ import com.irwin13.winwork.basic.config.WinWorkConfig;
 import com.irwin13.winwork.basic.log.MDCLogInterceptor;
 import com.irwin13.winwork.basic.utilities.WinWorkVelocityUtil;
 import id.co.quadras.qif.ui.QifUiConfig;
-import id.co.quadras.qif.ui.RestClient;
 import id.co.quadras.qif.ui.dao.EntityResolver;
 import id.co.quadras.qif.ui.dao.SessionFactoryEntityResolver;
 import id.co.quadras.qif.ui.guice.provider.DataSourceProvider;
@@ -27,8 +26,6 @@ public class SharedModule extends AbstractModule {
 
     @Override
     protected void configure() {
-
-        bind(RestClient.class);
 
         // JACKSON JSON MAPPER
         bind(ObjectMapper.class).toProvider(ObjectMapperProvider.class);

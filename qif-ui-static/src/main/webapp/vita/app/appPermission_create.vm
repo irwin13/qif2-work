@@ -51,7 +51,7 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label" for="parentMenu">$winWorkUtil.getLabel($loginUser.displayLang, 'appPermission.parentMenu')</label>
                     <div class="col-sm-6">
-                        <select name="parentMenu" id="parentMenu" class="input-xxlarge">
+                        <select name="parentMenu" id="parentMenu" class="form-control">
                             <option value=""></option>
                             #foreach($appPermission in $appPermissionList)
                             <option value="$appPermission.id"

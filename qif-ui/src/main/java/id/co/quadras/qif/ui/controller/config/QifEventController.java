@@ -3,6 +3,7 @@ package id.co.quadras.qif.ui.controller.config;
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
+import com.irwin13.winwork.basic.model.KeyValue;
 import com.irwin13.winwork.basic.validator.AbstractValidator;
 import com.irwin13.winwork.basic.validator.ValidationStatus;
 import com.irwin13.winwork.basic.validator.ValidatorResult;
@@ -51,6 +52,8 @@ public class QifEventController extends CrudController {
 
     @Override
     protected void setReferenceData(Map<String, Object> objectMap) {
+        List<KeyValue> processList = qifEventService.getQifProcessList();
+        objectMap.put("processList", processList);
     }
 
     @Override

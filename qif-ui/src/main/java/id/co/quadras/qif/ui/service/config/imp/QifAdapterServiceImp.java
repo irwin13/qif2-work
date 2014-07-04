@@ -5,6 +5,7 @@ import com.irwin13.winwork.basic.model.SearchParameter;
 import com.irwin13.winwork.basic.model.SortParameter;
 import com.irwin13.winwork.basic.service.BasicEntityCommonService;
 import id.co.quadras.qif.core.model.entity.QifAdapter;
+import id.co.quadras.qif.core.model.entity.QifAdapterProperty;
 import id.co.quadras.qif.ui.dao.config.QifAdapterDao;
 import id.co.quadras.qif.ui.service.config.QifAdapterService;
 
@@ -65,24 +66,55 @@ public class QifAdapterServiceImp implements QifAdapterService {
     @Override
     public String insert(QifAdapter model) {
         commonService.onInsert(model);
+        if (model.getQifAdapterPropertyList() != null) {
+            for (QifAdapterProperty property : model.getQifAdapterPropertyList()) {
+                property.setQifAdapterId(model.getId());
+                property.setCreateBy(model.getCreateBy());
+                property.setLastUpdateBy(model.getLastUpdateBy());
+                commonService.onInsert(property);
+            }
+        }
         return dao.insert(model);
     }
 
     @Override
     public void update(QifAdapter model) {
         commonService.onUpdate(model);
+        if (model.getQifAdapterPropertyList() != null) {
+            for (QifAdapterProperty property : model.getQifAdapterPropertyList()) {
+                property.setQifAdapterId(model.getId());
+                property.setCreateBy(model.getCreateBy());
+                property.setLastUpdateBy(model.getLastUpdateBy());
+                commonService.onInsertOrUpdate(property);
+            }
+        }
         dao.merge(model);
     }
 
     @Override
     public void softDelete(QifAdapter model) {
         commonService.onSoftDelete(model);
+        if (model.getQifAdapterPropertyList() != null) {
+            for (QifAdapterProperty property : model.getQifAdapterPropertyList()) {
+                property.setQifAdapterId(model.getId());
+                property.setLastUpdateBy(model.getLastUpdateBy());
+                commonService.onSoftDelete(property);
+            }
+        }
         dao.merge(model);
     }
 
     @Override
     public void insertOrUpdate(QifAdapter model) {
         commonService.onInsertOrUpdate(model) ;
+        if (model.getQifAdapterPropertyList() != null) {
+            for (QifAdapterProperty property : model.getQifAdapterPropertyList()) {
+                property.setQifAdapterId(model.getId());
+                property.setCreateBy(model.getCreateBy());
+                property.setLastUpdateBy(model.getLastUpdateBy());
+                commonService.onInsertOrUpdate(property);
+            }
+        }
         dao.saveOrUpdate(model);
     }
 }

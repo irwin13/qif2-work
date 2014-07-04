@@ -11,6 +11,7 @@ import com.irwin13.winwork.basic.log.MDCLogInterceptor;
 import com.irwin13.winwork.basic.scheduler.BasicSchedulerManager;
 import com.irwin13.winwork.basic.scheduler.SchedulerProvider;
 import com.irwin13.winwork.basic.service.BasicEntityCommonService;
+import com.irwin13.winwork.basic.utilities.RestClient;
 import com.irwin13.winwork.basic.utilities.WinWorkVelocityUtil;
 import id.co.quadras.qif.core.helper.JsonParser;
 import id.co.quadras.qif.core.helper.QifTransactionCounter;
@@ -53,6 +54,8 @@ public class SharedModule extends AbstractModule {
 
         bind(WinWorkConfig.class).to(QifConfig.class).in(Singleton.class);
         bind(WinWorkVelocityUtil.class);
+
+        bind(RestClient.class);
 
         // json
         bind(ObjectMapper.class).toProvider(JsonMapperProvider.class);

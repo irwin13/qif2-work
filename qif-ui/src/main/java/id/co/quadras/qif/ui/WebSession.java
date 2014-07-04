@@ -3,6 +3,7 @@ package id.co.quadras.qif.ui;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import com.irwin13.winwork.basic.config.WinWorkConfig;
+import com.irwin13.winwork.basic.utilities.RestClient;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
