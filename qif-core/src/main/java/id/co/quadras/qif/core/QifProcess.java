@@ -81,7 +81,7 @@ public abstract class QifProcess implements QifActivity {
         QifActivityResult qifActivityResult;
         if (qifEvent.getActiveAcceptMessage() != null && qifEvent.getActiveAcceptMessage()) {
             Object processInput = receiveEvent(qifEvent, inputMessage);
-            qifEventLog = insertEventLog(qifEvent, inputMessage);
+            qifEventLog = insertEventLog(qifEvent, processInput);
             if (processInput != null) {
                 processLog = insertProcessLog(qifEvent, inputMessage, parentProcessLog);
                 qifActivityResult = implementProcess(processInput);
@@ -128,6 +128,7 @@ public abstract class QifProcess implements QifActivity {
                     QifActivityLogInputMsg inputMsg = new QifActivityLogInputMsg();
                     inputMsg.setId(StringUtil.random32UUID());
                     inputMsg.setActivityLogId(id);
+                    inputMsg.setMsgType(QifTask.MSG_TEXT);
                     inputMsg.setActive(Boolean.TRUE);
                     inputMsg.setCreateBy(activityName());
                     inputMsg.setLastUpdateBy(activityName());
@@ -191,6 +192,8 @@ public abstract class QifProcess implements QifActivity {
                     QifActivityLogOutputMsg outputMessage = new QifActivityLogOutputMsg();
                     outputMessage.setId(StringUtil.random32UUID());
                     outputMessage.setActivityLogId(processLog.getId());
+                    outputMessage.setMsgType(QifTask.MSG_TEXT);
+
                     outputMessage.setActive(Boolean.TRUE);
                     outputMessage.setCreateBy(activityName());
                     outputMessage.setLastUpdateBy(activityName());
@@ -236,6 +239,7 @@ public abstract class QifProcess implements QifActivity {
             if (qifEvent.getKeepMessageContent() != null && qifEvent.getKeepMessageContent() && inputMessage != null) {
                 QifEventLogMsg logContent = new QifEventLogMsg();
                 logContent.setId(StringUtil.random32UUID());
+                logContent.setMsgType(QifTask.MSG_TEXT);
 
                 logContent.setEventLogId(generatedId);
                 try {

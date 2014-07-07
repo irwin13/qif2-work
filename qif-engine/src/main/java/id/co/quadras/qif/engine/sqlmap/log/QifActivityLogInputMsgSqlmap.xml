@@ -16,6 +16,7 @@
 
         <result property="activityLogId" column="activity_log_id" />
         <result property="inputMessageContent" column="input_message_content" />
+        <result property="msgType" column="msg_type" />
 
     </resultMap>
 
@@ -23,13 +24,13 @@
         INSERT INTO qif_activity_log_input_msg
         (
         id, active, create_by, create_date, last_update_by, last_update_date,
-        activity_log_id, input_message_content
+        activity_log_id, input_message_content, msg_type
         )
         VALUES
         (
         #{id}, #{active, typeHandler=com.irwin13.winwork.mybatis.typehandler.YesNoBooleanTypeHandler},
         #{createBy}, #{createDate}, #{lastUpdateBy}, #{lastUpdateDate},
-        #{activityLogId}, #{inputMessageContent}
+        #{activityLogId}, #{inputMessageContent}, #{msgType}
         )
     </insert>
 

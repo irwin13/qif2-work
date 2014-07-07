@@ -36,8 +36,6 @@ public class ActivityLogDataPersist implements Job {
             maxFetch = Integer.valueOf(max);
         } catch (NumberFormatException e) {
             LOGGER.error(e.getLocalizedMessage());
-        } catch (NullPointerException e) {
-            LOGGER.error(e.getLocalizedMessage());
         }
 
         List<QifActivityLogData> list = queueReader.getLogList(maxFetch);

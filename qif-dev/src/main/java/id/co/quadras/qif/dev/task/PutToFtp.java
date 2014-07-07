@@ -1,13 +1,15 @@
 package id.co.quadras.qif.dev.task;
 
-import id.co.quadras.qif.core.QifTaskMessage;
 import id.co.quadras.qif.connector.adapter.FtpAdapter;
+import id.co.quadras.qif.core.QifTaskMessage;
 import id.co.quadras.qif.core.model.entity.QifAdapter;
 import id.co.quadras.qif.core.model.vo.QifActivityResult;
 import id.co.quadras.qif.engine.AbstractTask;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author irwin Timestamp : 25/05/2014 0:39
@@ -18,16 +20,21 @@ public class PutToFtp extends AbstractTask {
     protected QifActivityResult implementTask(QifTaskMessage qifTaskMessage) {
         QifAdapter qifAdapter = getAdapter("IrwinFtp");
         logger.debug("IrwinFtp adapter = {}", qifAdapter);
+        String fileName = "book.xml";
+
+        Map<String, String> mapData = new HashMap<String, String>();
+        mapData.put("fileName", fileName);
+
         FtpAdapter ftpAdapter = new FtpAdapter(qifAdapter);
         try {
             ftpAdapter.connect();
-            ftpAdapter.storeFile("book.xml",
+            ftpAdapter.storeFile(fileName,
                     new ByteArrayInputStream(((String) qifTaskMessage.getMessage()).getBytes()));
             ftpAdapter.disconnect();
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
-        return new QifActivityResult(SUCCESS, null, null);
+        return new QifActivityResult(SUCCESS, null, mapData);
     }
 
 }

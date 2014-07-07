@@ -1,18 +1,16 @@
-package id.co.quadras.qif.core.model.entity.log;
+package id.co.quadras.qif.ui.dto.monitoring;
 
 import com.irwin13.winwork.basic.model.entity.WinWorkBasicEntity;
 import com.irwin13.winwork.basic.utilities.PojoUtil;
 
 /**
- * @author irwin Timestamp : 24/04/2014 19:30
+ * @author irwin Timestamp : 07/07/2014 15:27
  */
-public class QifEventLogMsg extends WinWorkBasicEntity {
+public class EventMsg extends WinWorkBasicEntity {
 
     private String eventLogId;
     private String messageContent;
     private String msgType;
-
-    private QifEventLog qifEventLog;
 
     public String getEventLogId() {
         return eventLogId;
@@ -30,14 +28,6 @@ public class QifEventLogMsg extends WinWorkBasicEntity {
         this.messageContent = messageContent;
     }
 
-    public QifEventLog getQifEventLog() {
-        return qifEventLog;
-    }
-
-    public void setQifEventLog(QifEventLog qifEventLog) {
-        this.qifEventLog = qifEventLog;
-    }
-
     public String getMsgType() {
         return msgType;
     }
@@ -50,5 +40,4 @@ public class QifEventLogMsg extends WinWorkBasicEntity {
     public String toString() {
         return PojoUtil.beanToString(this, true);
     }
-
 }

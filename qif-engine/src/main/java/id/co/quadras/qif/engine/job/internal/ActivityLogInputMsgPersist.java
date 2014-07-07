@@ -32,11 +32,9 @@ public class ActivityLogInputMsgPersist implements Job {
         int maxFetch = QifConstants.DEFAULT_LOG_FETCH;
 
         try {
-            String max = appSettingService.selectByCode("queue.activityLogData.maxFetch").getStringValue();
+            String max = appSettingService.selectByCode("queue.activityLogInputMsg.maxFetch").getStringValue();
             maxFetch = Integer.valueOf(max);
         } catch (NumberFormatException e) {
-            LOGGER.error(e.getLocalizedMessage());
-        } catch (NullPointerException e) {
             LOGGER.error(e.getLocalizedMessage());
         }
 

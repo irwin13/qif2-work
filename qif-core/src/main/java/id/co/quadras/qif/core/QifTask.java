@@ -6,6 +6,7 @@ import com.irwin13.winwork.basic.utilities.StringUtil;
 import com.irwin13.winwork.basic.utilities.WinWorkUtil;
 import id.co.quadras.qif.core.helper.JsonParser;
 import id.co.quadras.qif.core.helper.QifTransactionCounter;
+import id.co.quadras.qif.core.helper.queue.ActivityLogDataQueue;
 import id.co.quadras.qif.core.helper.queue.ActivityLogInputMsgQueue;
 import id.co.quadras.qif.core.helper.queue.ActivityLogOutputMsgQueue;
 import id.co.quadras.qif.core.helper.queue.ActivityLogQueue;
@@ -32,6 +33,9 @@ public abstract class QifTask implements QifActivity {
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     public static final String TYPE = "task";
+
+    public static final String MSG_TEXT = "text";
+    public static final String MSG_BINARY = "binary";
 
     @Override
     public String activityType() {
@@ -78,6 +82,9 @@ public abstract class QifTask implements QifActivity {
     private ActivityLogQueue activityLogQueue;
 
     @Inject
+    private ActivityLogDataQueue activityLogDataQueue;
+
+    @Inject
     private ActivityLogInputMsgQueue inputMessageQueue;
 
     @Inject
@@ -102,11 +109,23 @@ public abstract class QifTask implements QifActivity {
                 if (qifActivityResult.getAdditionalData() != null) {
                     activityLogDataList = new LinkedList<QifActivityLogData>();
                     for (Map.Entry<String, String> entry : qifActivityResult.getAdditionalData().entrySet()) {
+                        logger.debug("log data key = {} with value = {}", entry.getKey(), entry.getValue());
+
                         QifActivityLogData logData = new QifActivityLogData();
+
+                        logData.setId(StringUtil.random32UUID());
+                        logData.setCreateBy(activityName());
+                        logData.setLastUpdateBy(activityName());
+                        logData.setCreateDate(today);
+                        logData.setLastUpdateDate(today);
+                        logData.setActive(Boolean.TRUE);
+
                         logData.setDataKey(entry.getKey());
                         logData.setDataValue(entry.getValue());
                         logData.setActivityLogId(taskLogId);
+
                         activityLogDataList.add(logData);
+                        activityLogDataQueue.put(logData);
                     }
                 }
 
@@ -140,7 +159,7 @@ public abstract class QifTask implements QifActivity {
                     QifActivityLogInputMsg inputMessage = new QifActivityLogInputMsg();
                     inputMessage.setId(StringUtil.random32UUID());
                     inputMessage.setActivityLogId(taskLogId);
-
+                    inputMessage.setMsgType(MSG_TEXT);
                     inputMessage.setActive(Boolean.TRUE);
                     inputMessage.setCreateBy(activityName());
                     inputMessage.setLastUpdateBy(activityName());
@@ -160,7 +179,7 @@ public abstract class QifTask implements QifActivity {
                     QifActivityLogOutputMsg outputMessage = new QifActivityLogOutputMsg();
                     outputMessage.setId(StringUtil.random32UUID());
                     outputMessage.setActivityLogId(taskLogId);
-
+                    outputMessage.setMsgType(MSG_TEXT);
                     outputMessage.setActive(Boolean.TRUE);
                     outputMessage.setCreateBy(activityName());
                     outputMessage.setLastUpdateBy(activityName());

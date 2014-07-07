@@ -16,6 +16,7 @@
 
         <result property="eventLogId" column="event_log_id" />
         <result property="messageContent" column="message_content" />
+        <result property="msgType" column="msg_type" />
 
     </resultMap>
 
@@ -23,13 +24,13 @@
         INSERT INTO qif_event_log_msg
         (
         id, active, create_by, create_date, last_update_by, last_update_date,
-        event_log_id, message_content
+        event_log_id, message_content, msg_type
         )
         VALUES
         (
         #{id}, #{active, typeHandler=com.irwin13.winwork.mybatis.typehandler.YesNoBooleanTypeHandler},
         #{createBy}, #{createDate}, #{lastUpdateBy}, #{lastUpdateDate},
-        #{eventLogId}, #{messageContent}
+        #{eventLogId}, #{messageContent}, #{msgType}
         )
     </insert>
 

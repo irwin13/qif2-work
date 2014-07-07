@@ -7,6 +7,7 @@
 
     <preConditions>
         <dbms type="postgresql" />
+        <runningAs username="qif" />
     </preConditions>
 
     <changeSet id="init" author="irwin">
@@ -168,7 +169,7 @@
         </createTable>
     </changeSet>
     <changeSet id="alter-table" author="irwin">
-        <renameColumn newColumnName="QIF_PROCESS" oldColumnName="QIF_RECEIVER" tableName="QIF_EVENT" />
+        <renameColumn newColumnName="QIF_PROCESS" oldColumnName="QIF_RECEIVER" tableName="QIF_EVENT" schemaName="qif" />
     </changeSet>
     <changeSet id="create-function" author="irwin">
         <sql dbms="postgresql" stripComments="true" splitStatements="true" endDelimiter=";">
@@ -182,10 +183,10 @@
         </sql>
     </changeSet>
     <changeSet id="alter-tables-1" author="irwin">
-        <addColumn tableName="QIF_EVENT_PROPERTY">
+        <addColumn tableName="QIF_EVENT_PROPERTY" schemaName="qif">
             <column name="QIF_EVENT_ID" type="char(32)" />
         </addColumn>
-        <addColumn tableName="QIF_ADAPTER_PROPERTY">
+        <addColumn tableName="QIF_ADAPTER_PROPERTY" schemaName="qif">
             <column name="QIF_ADAPTER_ID" type="char(32)" />
         </addColumn>
     </changeSet>
@@ -205,5 +206,18 @@
             <column name="SETTING_CATEGORY" type="character varying(500)" />
             <column name="DESCRIPTION" type="character varying(500)" />
         </createTable>
+    </changeSet>
+    <changeSet id="alter-tables-2" author="irwin">
+        <addColumn tableName="QIF_ACTIVITY_LOG_INPUT_MSG" schemaName="qif">
+            <column name="MSG_TYPE" type="character varying(255)" />
+        </addColumn>
+        <addColumn tableName="QIF_ACTIVITY_LOG_OUTPUT_MSG" schemaName="qif">
+            <column name="MSG_TYPE" type="character varying(255)" />
+        </addColumn>
+    </changeSet>
+    <changeSet id="alter-tables-3" author="irwin">
+        <addColumn tableName="QIF_EVENT_LOG_MSG" schemaName="qif">
+            <column name="MSG_TYPE" type="character varying(255)" />
+        </addColumn>
     </changeSet>
 </databaseChangeLog>

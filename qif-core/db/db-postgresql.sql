@@ -2,6 +2,8 @@ CREATE role qif LOGIN PASSWORD 'qif' CREATEDB VALID UNTIL 'infinity' CONNECTION 
 
 CREATE SCHEMA qif AUTHORIZATION qif;
 
+ALTER ROLE qif SET search_path TO qif;
+
 CREATE OR REPLACE FUNCTION qif.gen_uuid()
   RETURNS character varying AS
 'select md5(clock_timestamp()::text||random()::text)::character varying'

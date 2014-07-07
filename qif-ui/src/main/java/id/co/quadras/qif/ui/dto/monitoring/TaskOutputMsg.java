@@ -1,18 +1,21 @@
-package id.co.quadras.qif.core.model.entity.log;
+package id.co.quadras.qif.ui.dto.monitoring;
 
 import com.irwin13.winwork.basic.model.entity.WinWorkBasicEntity;
 import com.irwin13.winwork.basic.utilities.PojoUtil;
 
 /**
- * @author irwin Timestamp : 24/04/2014 19:30
+ * @author irwin Timestamp : 07/07/2014 15:42
  */
-public class QifActivityLogOutputMsg extends WinWorkBasicEntity {
+public class TaskOutputMsg extends WinWorkBasicEntity {
 
     private String activityLogId;
     private String outputMessageContent;
     private String msgType;
 
-    private QifActivityLog qifActivityLog;
+    @Override
+    public String toString() {
+        return PojoUtil.beanToString(this, true);
+    }
 
     public String getActivityLogId() {
         return activityLogId;
@@ -30,24 +33,11 @@ public class QifActivityLogOutputMsg extends WinWorkBasicEntity {
         this.outputMessageContent = outputMessageContent;
     }
 
-    public QifActivityLog getQifActivityLog() {
-        return qifActivityLog;
-    }
-
-    public void setQifActivityLog(QifActivityLog qifActivityLog) {
-        this.qifActivityLog = qifActivityLog;
-    }
-
     public String getMsgType() {
         return msgType;
     }
 
     public void setMsgType(String msgType) {
         this.msgType = msgType;
-    }
-
-    @Override
-    public String toString() {
-        return PojoUtil.beanToString(this, true);
     }
 }
