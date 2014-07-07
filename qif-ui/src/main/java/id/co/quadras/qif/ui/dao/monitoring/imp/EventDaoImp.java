@@ -7,6 +7,8 @@ import id.co.quadras.qif.ui.dto.monitoring.EventInstance;
 import id.co.quadras.qif.ui.dto.monitoring.EventMsg;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.transform.Transformers;
+import org.hibernate.type.StringType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,14 +41,32 @@ public class EventDaoImp implements EventDao {
     }
 
     @Override
-    public List<EventInstance> selectEventInstance(int start, int fetchSize) {
+    @SuppressWarnings("unchecked")
+    public List selectEventInstance(int start, int fetchSize) {
         Session session = null;
         List<EventInstance> result = null;
 
-        StringBuilder query = new StringBuilder();
-        query.append("SELECT ");
+        StringBuilder sqlQuery = new StringBuilder();
+        sqlQuery.append("SELECT event_id AS eventId, ");
+        sqlQuery.append(" reference_key AS referenceKey, ");
+        sqlQuery.append(" node_name AS nodeName, ");
+        sqlQuery.append(" event_type AS eventType, ");
+        sqlQuery.append(" event_interface AS eventInterface, ");
+        sqlQuery.append(" qif_process AS qifProcess ");
+
         try {
             session = openNewSession();
+            result = session.createSQLQuery(sqlQuery.toString())
+                    .addScalar("eventId", StringType.INSTANCE)
+                    .addScalar("referenceKey", StringType.INSTANCE)
+                    .addScalar("nodeName", StringType.INSTANCE)
+                    .addScalar("eventType", StringType.INSTANCE)
+                    .addScalar("eventInterface", StringType.INSTANCE)
+                    .addScalar("qifProcess", StringType.INSTANCE)
+                    .setResultTransformer(Transformers.aliasToBean(EventInstance.class))
+                    .setFirstResult(start)
+                    .setFetchSize(fetchSize)
+                    .list();
 
         } finally {
             closeSession(session);
@@ -56,6 +76,7 @@ public class EventDaoImp implements EventDao {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public EventMsg getEventMsg(String id) {
         Session session = null;
         EventMsg result = null;
