@@ -24,7 +24,7 @@ public class EventInstance extends WinWorkBasicEntity {
     }
 
     public String getCreateBySimple() {
-        return getCreateBy().substring(getCreateBy().lastIndexOf("."), getCreateBy().length());
+        return getCreateBy().substring(getCreateBy().lastIndexOf(".") + 1, getCreateBy().length());
     }
 
     public void setCreateBySimple(String createBySimple) {

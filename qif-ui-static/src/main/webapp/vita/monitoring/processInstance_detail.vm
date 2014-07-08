@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>${pom.name} ${pom.version} - $winWorkUtil.getLabel($loginUser.displayLang, 'global.list') Process Instance</title>
+        #include("vita/common/common_head_tag.html")
+    </head>
+    <body>
+        #parse("vita/common/header.vm")
+        #include("vita/common/leftMenu.html")
+
+        <form action="#" method="get" class="form-horizontal" name="listForm" id="listForm" onkeypress="return event.keyCode != 13;">
+            <fieldset>
+                <legend>
+                    Process Instance Detail
+                </legend>
+            </fieldset>
+            <div class="table-responsive">
+                <table class="table table-bordered table-condensed listTable-blue">
+                    <thead>
+                    <tr>
+                        <th>$winWorkUtil.getLabel($loginUser.displayLang, 'list.no')</th>
+                        <th>Task Name</th>
+                        <th>Status</th>
+                        <th>Start Date</th>
+                        <th>Execution Time</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    #set ($index = 1)
+                    #foreach($model in $list)
+                    <tr>
+                        <td>$index</td>
+                        <td>$displayTool.alt($model.createBySimple, '&nbsp;')</td>
+                        <td>$displayTool.alt($model.activityStatus, '&nbsp;')</td>
+                        <td>$dateTool.format('dd-MM-yyyy HH:mm:ss.SSS', $model.createDate)</td>
+                        <td>$model.executionTime milliseconds</td>
+                        <td>
+                            <button type="button" class="btn btn-primary btn-sm"
+                                    onclick="showMessageContent('$model.id')"
+                                    onkeypress="showMessageContent('$model.id')">
+                                View Message Content
+                            </button>
+                        </td>
+                    </tr>
+                    #set ($index = $index + 1)
+                    #end
+                    </tbody>
+                </table>
+            </div>
+            <div id="viewMessageContent" title="Task Message Content"
+                 class="modal fade" aria-hidden="true" tabindex="-1" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <p id="taskMessageContent"></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">$winWorkUtil.getLabel($loginUser.displayLang, 'global.close')</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        #include("vita/common/footer.html")
+        <script type="text/javascript">
+            setContextUrl('${web.context}');
+            function showMessageContent(id) {
+                $.ajax({
+                    type: 'GET',
+                    url: contextUrl + '/processInstance/taskMsgContent?id=' + id,
+                    success:function(data, textStatus) {
+                        $("#taskMessageContent").html(data);
+                        $("#viewMessageContent").modal('show');
+                    }
+                });
+            }
+
+        </script>
+    </body>
+</html>

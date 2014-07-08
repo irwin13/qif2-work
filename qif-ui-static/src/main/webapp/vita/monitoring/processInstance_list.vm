@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>${pom.name} ${pom.version} - $winWorkUtil.getLabel($loginUser.displayLang, 'global.list') Process Instance</title>
+        #include("vita/common/common_head_tag.html")
+    </head>
+    <body>
+        #parse("vita/common/header.vm")
+        #include("vita/common/leftMenu.html")
+
+        <form action="${web.context}/processInstance/list" method="get" class="form-horizontal" name="listForm" id="listForm" onkeypress="return event.keyCode != 13;">
+            <input type="hidden" name="pageStart" id="pageStart" />
+            <fieldset>
+                <legend>
+                    Process Instance $winWorkUtil.getLabel($loginUser.displayLang, 'global.list')
+                </legend>
+                <div class="row">
+                    <div class="col-xs-4">
+                        <button class="btn btn-default" type="submit">$winWorkUtil.getLabel($loginUser.displayLang, 'global.refresh')</button>
+                    </div>
+                </div>
+            </fieldset>
+            <br />
+            <p class="text-left">
+                <strong>$winWorkUtil.getLabel($loginUser.displayLang, 'list.displayResult')</strong>
+                <select class="input-mini" name="pageSize" id="pageSize">
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                    <option value="25">25</option>
+                    <option value="30">30</option>
+                </select>
+            </p>
+            #parse("vita/common/list_paging.vm")
+            <div class="table-responsive">
+                <table class="table table-bordered table-condensed listTable-blue">
+                    <thead>
+                    <tr>
+                        <th>$winWorkUtil.getLabel($loginUser.displayLang, 'list.no')</th>
+                        <th>Process Name</th>
+                        <th>From Event</th>
+                        <th>Node Name</th>
+                        <th>Status</th>
+                        <th>Execution Time</th>
+                        <th>Process Date</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    #set ($index = 1)
+                    #set ($pageMark = ($pagingModel.currentPage * $pageSize) - $pageSize)
+
+                    #foreach($model in $list)
+                    #set ($counter = $pageMark + $index)
+                    <tr>
+                        <td>$counter</td>
+                        <td>$displayTool.alt($model.createBySimple, '&nbsp;')</td>
+                        <td>$displayTool.alt($model.eventName, '&nbsp;')</td>
+                        <td>$displayTool.alt($model.nodeName, '&nbsp;')</td>
+                        <td>$displayTool.alt($model.activityStatus, '&nbsp;')</td>
+                        <td>$model.executionTime milliseconds</td>
+                        <td>$dateTool.format('dd-MM-yyyy HH:mm:ss', $model.createDate)</td>
+                        <td>
+                            <a href="${web.context}/processInstance/detail?id=$model.id" class="btn btn-primary btn-sm">
+                                View Detail
+                            </a>
+                        </td>
+                    </tr>
+                    #set ($index = $index + 1)
+                    #end
+                    </tbody>
+                </table>
+            </div>
+        </form>
+
+        #include("vita/common/footer.html")
+        <script type="text/javascript">
+            setContextUrl('${web.context}');
+        </script>
+    </body>
+</html>

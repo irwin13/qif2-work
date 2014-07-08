@@ -8,7 +8,9 @@ import id.co.quadras.qif.ui.dao.config.QifEventDao;
 import id.co.quadras.qif.ui.dao.config.imp.QifAdapterDaoImp;
 import id.co.quadras.qif.ui.dao.config.imp.QifEventDaoImp;
 import id.co.quadras.qif.ui.dao.monitoring.EventInstanceDao;
+import id.co.quadras.qif.ui.dao.monitoring.ProcessInstanceDao;
 import id.co.quadras.qif.ui.dao.monitoring.imp.EventInstanceDaoImp;
+import id.co.quadras.qif.ui.dao.monitoring.imp.ProcessInstanceDaoImp;
 
 /**
  * @author irwin Timestamp : 22/09/13 0:02
@@ -30,6 +32,6 @@ public class DaoModule extends AbstractModule {
 
         // MONITORING
         bind(EventInstanceDao.class).to(EventInstanceDaoImp.class);
-
+        bind(ProcessInstanceDao.class).to(ProcessInstanceDaoImp.class);
     }
 }
