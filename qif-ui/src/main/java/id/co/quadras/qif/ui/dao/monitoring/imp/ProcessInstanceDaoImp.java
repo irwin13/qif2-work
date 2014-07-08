@@ -2,7 +2,7 @@ package id.co.quadras.qif.ui.dao.monitoring.imp;
 
 import com.google.inject.Inject;
 import com.irwin13.hibernate.dao.BasicHibernateDao;
-import id.co.quadras.qif.ui.dao.monitoring.ProcessDao;
+import id.co.quadras.qif.ui.dao.monitoring.ProcessInstanceDao;
 import id.co.quadras.qif.ui.dto.monitoring.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * @author irwin Timestamp : 07/07/2014 17:19
  */
-public class ProcessDaoImp implements ProcessDao {
+public class ProcessInstanceDaoImp implements ProcessInstanceDao {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventInstanceDaoImp.class);
 
@@ -24,7 +24,7 @@ public class ProcessDaoImp implements ProcessDao {
             new BasicHibernateDao<EventInstance, String>(EventInstance.class);
 
     @Inject
-    public ProcessDaoImp(SessionFactory sessionFactory) {
+    public ProcessInstanceDaoImp(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
         basicDao.setSessionFactory(sessionFactory);
     }

@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * @author irwin Timestamp : 07/07/2014 17:18
  */
-public interface ProcessDao {
+public interface ProcessInstanceDao {
     public List<ProcessInstance> selectProcessInstance(int start, int fetchSize);
     public List<ProcessInstanceData> selectProcessData(String processInstanceId);
     public TaskInputMsg getTaskInputMsg(String processId);
