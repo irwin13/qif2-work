@@ -7,6 +7,8 @@ import id.co.quadras.qif.ui.service.config.QifAdapterService;
 import id.co.quadras.qif.ui.service.config.QifEventService;
 import id.co.quadras.qif.ui.service.config.imp.QifAdapterServiceImp;
 import id.co.quadras.qif.ui.service.config.imp.QifEventServiceImp;
+import id.co.quadras.qif.ui.service.monitoring.EventInstanceService;
+import id.co.quadras.qif.ui.service.monitoring.imp.EventInstanceServiceImp;
 
 
 /**
@@ -26,5 +28,8 @@ public class ServiceModule extends AbstractModule {
         // CONFIG
         bind(QifEventService.class).to(QifEventServiceImp.class);
         bind(QifAdapterService.class).to(QifAdapterServiceImp.class);
+
+        // MONITORING
+        bind(EventInstanceService.class).to(EventInstanceServiceImp.class);
     }
 }

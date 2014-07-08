@@ -6,6 +6,7 @@ import id.co.quadras.qif.ui.controller.*;
 import id.co.quadras.qif.ui.controller.app.*;
 import id.co.quadras.qif.ui.controller.config.QifAdapterController;
 import id.co.quadras.qif.ui.controller.config.QifEventController;
+import id.co.quadras.qif.ui.controller.monitoring.EventInstanceController;
 import id.co.quadras.qif.ui.filter.MDCNodeNameFilter;
 import id.co.quadras.qif.ui.filter.UserAccessFilter;
 import id.co.quadras.qif.ui.filter.UserSessionFilter;
@@ -71,6 +72,9 @@ public class WebModule extends JerseyServletModule {
         // CONFIG
         bind(QifEventController.class);
         bind(QifAdapterController.class);
+
+        // MONITORING
+        bind(EventInstanceController.class);
 
         serve("/*").with(GuiceContainer.class);
     }

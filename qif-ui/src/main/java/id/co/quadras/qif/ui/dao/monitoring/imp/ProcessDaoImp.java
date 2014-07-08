@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class ProcessDaoImp implements ProcessDao {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(EventDaoImp.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EventInstanceDaoImp.class);
 
     private final SessionFactory sessionFactory;
     private final BasicHibernateDao<EventInstance, String> basicDao =
