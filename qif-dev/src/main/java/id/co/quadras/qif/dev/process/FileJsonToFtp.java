@@ -7,6 +7,7 @@ import id.co.quadras.qif.dev.task.PutToFtp;
 import id.co.quadras.qif.engine.guice.EngineFactory;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author irwin Timestamp : 25/05/2014 0:40
@@ -15,10 +16,12 @@ public class FileJsonToFtp extends BasicFileProcess {
 
     @Override
     protected QifActivityResult implementProcess(Object processInput) {
-        List<String> stringList = (List<String>) processInput;
+        List<Map<String, String>> fileList = (List<Map<String, String>>) processInput;
 
-        if (!stringList.isEmpty()) {
-            QifActivityResult xmlResult = executeTask(EngineFactory.getInjector(), JsonToXml.class, stringList.get(0));
+        if (!fileList.isEmpty()) {
+            Map<String, String> fileMap = fileList.get(0);
+            QifActivityResult xmlResult = executeTask(EngineFactory.getInjector(), JsonToXml.class,
+                    fileMap.get("fileContent"));
             executeTask(EngineFactory.getInjector(), PutToFtp.class, xmlResult.getResult());
         }
 

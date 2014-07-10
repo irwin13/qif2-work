@@ -9,9 +9,7 @@ import org.joda.time.Duration;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author irwin Timestamp : 05/06/2014 14:31
@@ -20,12 +18,13 @@ public abstract class BasicFileProcess extends QifProcess {
 
     @Override
     protected Object receiveEvent(QifEvent qifEvent, Object inputMessage) {
-        List<String> fileContentList = getFiles(qifEvent);
-        return (fileContentList.isEmpty()) ? null : fileContentList;
+        List<Map<String, String>> fileList = getFiles(qifEvent);
+        return (fileList.isEmpty()) ? null : fileList;
     }
 
-    private List<String> getFiles(final QifEvent qifEvent) {
-        List<String> result = new LinkedList<String>();
+    private List<Map<String, String>> getFiles(final QifEvent qifEvent) {
+        List<Map<String, String>> fileList = new LinkedList<Map<String, String>>();
+
         String deleteAfterRead = getPropertyValue(qifEvent, EventFile.DELETE_AFTER_READ.getName());
         String folderName = getPropertyValue(qifEvent, EventFile.FOLDER.getName());
         final String endWith = getPropertyValue(qifEvent, EventFile.END_WITH.getName());
@@ -63,7 +62,14 @@ public abstract class BasicFileProcess extends QifProcess {
                 for (int i = 0; i < files.length; i++) {
                     File file = files[i];
                     String fileContent = FileUtils.readFileToString(file);
-                    result.add(fileContent);
+
+                    Map<String, String> fileMap = new WeakHashMap<String, String>();
+                    fileMap.put("fileContent", fileContent);
+                    fileMap.put("fileName", file.getName());
+                    fileMap.put("fileSize", String.valueOf(file.length()));
+
+                    fileList.add(fileMap);
+
                     if (Boolean.valueOf(deleteAfterRead)) {
                         file.delete();
                         logger.debug("delete file after read {}", file.getName());
@@ -74,7 +80,7 @@ public abstract class BasicFileProcess extends QifProcess {
             }
         }
 
-        return result;
+        return fileList;
     }
 
     private boolean isFileReady(QifEvent qifEvent, long fileLastModified) {

@@ -81,8 +81,8 @@ public abstract class QifProcess implements QifActivity {
         QifActivityResult qifActivityResult;
         if (qifEvent.getActiveAcceptMessage() != null && qifEvent.getActiveAcceptMessage()) {
             Object processInput = receiveEvent(qifEvent, inputMessage);
-            qifEventLog = insertEventLog(qifEvent, processInput);
             if (processInput != null) {
+                qifEventLog = insertEventLog(qifEvent, processInput);
                 processLog = insertProcessLog(qifEvent, inputMessage, parentProcessLog);
                 qifActivityResult = implementProcess(processInput);
                 updateProcessLog(qifActivityResult);

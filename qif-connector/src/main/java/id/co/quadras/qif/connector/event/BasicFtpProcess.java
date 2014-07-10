@@ -15,6 +15,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 /**
  * @author irwin Timestamp : 05/06/2014 14:32
@@ -23,12 +25,12 @@ public abstract class BasicFtpProcess extends QifProcess {
 
     @Override
     protected Object receiveEvent(QifEvent qifEvent, Object inputMessage) {
-        List<String> stringList = getFiles(qifEvent);
-        return (stringList.isEmpty()) ? null : stringList;
+        List<Map<String, String>> fileList = getFiles(qifEvent);
+        return (fileList.isEmpty()) ? null : fileList;
     }
 
-    private List<String> getFiles(final QifEvent qifEvent) {
-        List<String> result = new LinkedList<String>();
+    private List<Map<String, String>> getFiles(final QifEvent qifEvent) {
+        List<Map<String, String>> fileList = new LinkedList<Map<String, String>>();
 
         String host = getPropertyValue(qifEvent, EventFtp.HOST.getName());
         int port = Integer.valueOf(getPropertyValue(qifEvent, EventFtp.PORT.getName()));
@@ -82,7 +84,13 @@ public abstract class BasicFtpProcess extends QifProcess {
                     ByteArrayOutputStream bos = new ByteArrayOutputStream();
                     ftpClient.retrieveFile(folderName + ftpFile.getName(), bos);
                     logger.debug("file content = {}", bos.toString());
-                    result.add(bos.toString());
+
+                    Map<String, String> fileMap = new WeakHashMap<String, String>();
+                    fileMap.put("fileContent", bos.toString());
+                    fileMap.put("fileName", ftpFile.getName());
+                    fileMap.put("fileSize", String.valueOf(ftpFile.getSize()));
+                    fileList.add(fileMap);
+
                     fileCounter++;
                     logger.debug("ftpFile fileCounter = {}", fileCounter);
                     if (Boolean.valueOf(deleteAfterRead)) {
@@ -104,7 +112,8 @@ public abstract class BasicFtpProcess extends QifProcess {
                 }
             }
         }
-        return result;
+
+        return fileList;
     }
 
     private boolean isFileReady(QifEvent qifEvent, long fileLastModified) {
