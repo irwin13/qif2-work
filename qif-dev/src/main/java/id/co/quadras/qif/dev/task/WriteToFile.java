@@ -1,13 +1,12 @@
 package id.co.quadras.qif.dev.task;
 
 import id.co.quadras.qif.connector.adapter.FileAdapter;
-import id.co.quadras.qif.core.QifTaskMessage;
+import id.co.quadras.qif.core.QifActivityMessage;
 import id.co.quadras.qif.core.model.entity.QifAdapter;
 import id.co.quadras.qif.core.model.vo.QifActivityResult;
 import id.co.quadras.qif.engine.AbstractTask;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,15 +15,14 @@ import java.util.Map;
 public class WriteToFile extends AbstractTask {
 
     @Override
-    protected QifActivityResult implementTask(QifTaskMessage qifTaskMessage) {
-        List<Map<String, String>> fileContentList = (List<Map<String, String>>) qifTaskMessage.getMessage();
+    protected QifActivityResult implementTask(QifActivityMessage qifActivityMessage) {
         QifAdapter qifAdapter = getAdapter("IrwinFile");
         FileAdapter fileAdapter = new FileAdapter(qifAdapter);
 
+        Map<String, Object> messageHeader = qifActivityMessage.getMessageHeader();
+        String fileName = (String) messageHeader.get("fileName");
         try {
-            for (Map<String, String> fileMap : fileContentList) {
-                fileAdapter.writeCharacter(fileMap.get("fileName") + ".xml", fileMap.get("fileContent"));
-            }
+            fileAdapter.writeCharacter(fileName + ".xml", new String(qifActivityMessage.getContent()));
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         }

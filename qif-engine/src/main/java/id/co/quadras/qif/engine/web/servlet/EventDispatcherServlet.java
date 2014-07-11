@@ -13,6 +13,7 @@ import id.co.quadras.qif.core.model.vo.event.EventHttp;
 import id.co.quadras.qif.engine.guice.EngineFactory;
 import id.co.quadras.qif.engine.service.EventService;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -82,7 +83,12 @@ public class EventDispatcherServlet extends HttpServlet {
             LOGGER.error(e.getLocalizedMessage(), e);
             String error = "FATAL : Class not found " + qifEvent.getQifProcess();
             result = new QifActivityResult(QifActivity.ERROR, error, null);
+        } catch (Exception e) {
+            LOGGER.error(e.getLocalizedMessage(), e);
+            String error = ExceptionUtils.getStackTrace(e);
+            result = new QifActivityResult(QifActivity.ERROR, error, null);
         }
+
         return result;
     }
 

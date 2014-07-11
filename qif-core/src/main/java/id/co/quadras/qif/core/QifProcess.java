@@ -13,6 +13,8 @@ import id.co.quadras.qif.core.model.entity.QifEvent;
 import id.co.quadras.qif.core.model.entity.QifEventProperty;
 import id.co.quadras.qif.core.model.entity.log.*;
 import id.co.quadras.qif.core.model.vo.QifActivityResult;
+import id.co.quadras.qif.core.model.vo.message.QifMessageType;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,18 +76,18 @@ public abstract class QifProcess implements QifActivity {
     }
     protected QifEventLog getQifEventLog() { return qifEventLog; }
 
-    protected abstract Object receiveEvent(QifEvent qifEvent, Object inputMessage);
-    protected abstract QifActivityResult implementProcess(Object processInput);
+    protected abstract QifActivityMessage receiveEvent(QifEvent qifEvent, Object inputMessage);
+    protected abstract QifActivityResult implementProcess(QifActivityMessage qifActivityMessage) throws Exception;
 
-    public QifActivityResult executeProcess(QifEvent qifEvent, Object inputMessage, QifActivityLog parentProcessLog) {
+    public QifActivityResult executeProcess(QifEvent qifEvent, Object inputMessage, QifActivityLog parentProcessLog) throws Exception {
         QifActivityResult qifActivityResult;
         if (qifEvent.getActiveAcceptMessage() != null && qifEvent.getActiveAcceptMessage()) {
-            Object processInput = receiveEvent(qifEvent, inputMessage);
-            if (processInput != null) {
-                qifEventLog = insertEventLog(qifEvent, processInput);
-                processLog = insertProcessLog(qifEvent, inputMessage, parentProcessLog);
-                qifActivityResult = implementProcess(processInput);
-                updateProcessLog(qifActivityResult);
+            QifActivityMessage qifActivityMessage = receiveEvent(qifEvent, inputMessage);
+            if (qifActivityMessage != null) {
+                qifEventLog = insertEventLog(qifEvent, qifActivityMessage);
+                processLog = insertProcessLog(qifEvent, qifActivityMessage, parentProcessLog);
+                qifActivityResult = implementProcess(qifActivityMessage);
+                updateProcessLog(qifActivityMessage, qifActivityResult);
             } else {
                 qifActivityResult = new QifActivityResult(SUCCESS, null, null);
             }
@@ -95,7 +97,7 @@ public abstract class QifProcess implements QifActivity {
         return qifActivityResult;
     }
 
-    private QifActivityLog insertProcessLog(QifEvent qifEvent, Object inputMessage,
+    private QifActivityLog insertProcessLog(QifEvent qifEvent, QifActivityMessage qifActivityMessage,
                                             QifActivityLog parentProcessLog) {
 
         boolean auditTrailEnabled = qifEvent.getAuditTrailEnabled();
@@ -124,19 +126,25 @@ public abstract class QifProcess implements QifActivity {
             boolean keepMessageContent = qifEvent.getKeepMessageContent();
 
             if (keepMessageContent) {
-                if (inputMessage != null) {
+                if (qifActivityMessage != null) {
                     QifActivityLogInputMsg inputMsg = new QifActivityLogInputMsg();
                     inputMsg.setId(StringUtil.random32UUID());
                     inputMsg.setActivityLogId(id);
-                    inputMsg.setMsgType(QifTask.MSG_TEXT);
+                    inputMsg.setMsgType(qifActivityMessage.getMessageType().getName());
                     inputMsg.setActive(Boolean.TRUE);
                     inputMsg.setCreateBy(activityName());
                     inputMsg.setLastUpdateBy(activityName());
                     inputMsg.setCreateDate(new Date());
                     inputMsg.setLastUpdateDate(new Date());
                     try {
-                        inputMsg.setInputMessageContent(jsonParser.parseToString(
-                                true, inputMessage));
+                        if (QifMessageType.TEXT.equals(qifActivityMessage.getMessageType())) {
+                            inputMsg.setInputMessageContent(
+                                    jsonParser.parseToString(true,
+                                            new String(qifActivityMessage.getContent(), WinWorkConstants.UTF_8)));
+                        } else if (QifMessageType.BINARY.equals(qifActivityMessage.getMessageType())) {
+                            inputMsg.setInputMessageContent(
+                                    Base64.encodeBase64String(qifActivityMessage.getContent()));
+                        }
                     } catch (IOException e) {
                         logger.error(e.getLocalizedMessage(), e);
                         inputMsg.setInputMessageContent(ExceptionUtils.getStackTrace(e.getCause()));
@@ -155,7 +163,7 @@ public abstract class QifProcess implements QifActivity {
         return processLog;
     }
 
-    private void updateProcessLog(QifActivityResult qifActivityResult) {
+    private void updateProcessLog(QifActivityMessage qifActivityMessage, QifActivityResult qifActivityResult) {
 
         if (processLog != null) {
 
@@ -192,7 +200,7 @@ public abstract class QifProcess implements QifActivity {
                     QifActivityLogOutputMsg outputMessage = new QifActivityLogOutputMsg();
                     outputMessage.setId(StringUtil.random32UUID());
                     outputMessage.setActivityLogId(processLog.getId());
-                    outputMessage.setMsgType(QifTask.MSG_TEXT);
+                    outputMessage.setMsgType(qifActivityMessage.getMessageType().getName());
 
                     outputMessage.setActive(Boolean.TRUE);
                     outputMessage.setCreateBy(activityName());
@@ -214,7 +222,7 @@ public abstract class QifProcess implements QifActivity {
         }
     }
 
-    private QifEventLog insertEventLog(QifEvent qifEvent, Object inputMessage) {
+    private QifEventLog insertEventLog(QifEvent qifEvent, QifActivityMessage qifActivityMessage) {
 
         QifEventLog qifEventLog = new QifEventLog();
 
@@ -236,14 +244,22 @@ public abstract class QifProcess implements QifActivity {
 
             eventLogQueue.put(qifEventLog);
 
-            if (qifEvent.getKeepMessageContent() != null && qifEvent.getKeepMessageContent() && inputMessage != null) {
+            if (qifEvent.getKeepMessageContent() != null && qifEvent.getKeepMessageContent()
+                    && qifActivityMessage != null) {
                 QifEventLogMsg logContent = new QifEventLogMsg();
                 logContent.setId(StringUtil.random32UUID());
-                logContent.setMsgType(QifTask.MSG_TEXT);
+                logContent.setMsgType(qifActivityMessage.getMessageType().getName());
 
                 logContent.setEventLogId(generatedId);
                 try {
-                    logContent.setMessageContent(jsonParser.parseToString(true, inputMessage));
+                    if (QifMessageType.TEXT.equals(qifActivityMessage.getMessageType())) {
+                        logContent.setMessageContent(
+                                jsonParser.parseToString(true,
+                                        new String(qifActivityMessage.getContent(), WinWorkConstants.UTF_8)));
+                    } else if (QifMessageType.BINARY.equals(qifActivityMessage.getMessageType())) {
+                        logContent.setMessageContent(
+                                Base64.encodeBase64String(qifActivityMessage.getContent()));
+                    }
                 } catch (IOException e) {
                     logger.error(e.getLocalizedMessage(), e);
                     logContent.setMessageContent(ExceptionUtils.getStackTrace(e.getCause()));
@@ -298,23 +314,23 @@ public abstract class QifProcess implements QifActivity {
     }
 
     protected QifActivityResult executeTask(Injector injector, Class<? extends QifTask> taskClass,
-                                            Object taskInput) {
+                                            QifActivityMessage qifActivityMessage) throws Exception{
         QifTask qifTask = injector.getInstance(taskClass);
-        return qifTask.executeTask(new QifTaskMessage(this, taskInput));
+        return qifTask.executeTask(this, qifActivityMessage);
     }
 
     protected QifActivityResult executeTaskAsynchronous(Injector injector, Class<? extends QifTask> taskClass,
-                                            Object taskInput) {
+                                                        QifActivityMessage qifActivityMessage) throws Exception {
         // TODO use ExecutorService and Future here
         QifTask qifTask = injector.getInstance(taskClass);
-        return qifTask.executeTask(new QifTaskMessage(this, taskInput));
+        return qifTask.executeTask(this, qifActivityMessage);
     }
 
     protected void executeTaskParallel(Injector injector, Class<? extends QifTask> taskClass,
-                                                       Object taskInput) {
+                                       QifActivityMessage qifActivityMessage) throws Exception {
         // TODO use ThreadRunnable here
         QifTask qifTask = injector.getInstance(taskClass);
-        qifTask.executeTask(new QifTaskMessage(this, taskInput));
+        qifTask.executeTask(this, qifActivityMessage);
     }
 
 }

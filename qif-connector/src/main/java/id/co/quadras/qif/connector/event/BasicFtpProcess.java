@@ -1,10 +1,12 @@
 package id.co.quadras.qif.connector.event;
 
 import com.google.common.base.Strings;
+import id.co.quadras.qif.core.QifActivityMessage;
 import id.co.quadras.qif.core.QifProcess;
 import id.co.quadras.qif.core.exception.QifException;
 import id.co.quadras.qif.core.model.entity.QifEvent;
 import id.co.quadras.qif.core.model.vo.event.EventFtp;
+import id.co.quadras.qif.core.model.vo.message.QifMessageType;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
@@ -13,8 +15,8 @@ import org.joda.time.Duration;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -24,13 +26,13 @@ import java.util.WeakHashMap;
 public abstract class BasicFtpProcess extends QifProcess {
 
     @Override
-    protected Object receiveEvent(QifEvent qifEvent, Object inputMessage) {
-        List<Map<String, String>> fileList = getFiles(qifEvent);
-        return (fileList.isEmpty()) ? null : fileList;
+    protected QifActivityMessage receiveEvent(QifEvent qifEvent, Object inputMessage) {
+        return getFile(qifEvent);
     }
 
-    private List<Map<String, String>> getFiles(final QifEvent qifEvent) {
-        List<Map<String, String>> fileList = new LinkedList<Map<String, String>>();
+    private QifActivityMessage getFile(final QifEvent qifEvent) {
+
+        QifActivityMessage qifActivityMessage = null;
 
         String host = getPropertyValue(qifEvent, EventFtp.HOST.getName());
         int port = Integer.valueOf(getPropertyValue(qifEvent, EventFtp.PORT.getName()));
@@ -47,7 +49,7 @@ public abstract class BasicFtpProcess extends QifProcess {
         logger.debug("FTP deleteAfterRead = {}", deleteAfterRead);
         logger.debug("FTP folderName = {}", folderName);
         logger.debug("FTP endWith = {}", endWith);
-        logger.debug("FTP maxFetch = {}", maxFetch);
+        logger.debug("FTP maxFetch [DEPRECATED] = {}", maxFetch);
 
         FTPClient ftpClient = new FTPClient();
 
@@ -67,32 +69,34 @@ public abstract class BasicFtpProcess extends QifProcess {
                 ftpFiles = ftpClient.listFiles(folderName);
             }
 
-            ftpClient.enterLocalPassiveMode();
-            ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-            int fileCounter = 1;
-            fileLoop:
-            for (int i = 0; i < ftpFiles.length; i++) {
-                if (fileCounter > maxFetch) {
-                    break fileLoop;
-                }
-                FTPFile ftpFile = ftpFiles[i];
+            if (ftpFiles != null && ftpFiles.length > 0) {
+                ftpClient.enterLocalPassiveMode();
+                ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+                Arrays.sort(ftpFiles,  new Comparator<FTPFile>() {
+                    @Override
+                    public int compare(FTPFile o1, FTPFile o2) {
+                        return Long.valueOf(o1.getTimestamp().getTimeInMillis())
+                                .compareTo(o2.getTimestamp().getTimeInMillis());
+                    }});
+
+                FTPFile ftpFile = ftpFiles[0]; // just take 1 file at a time
                 logger.debug("ftpFile name = {}", ftpFile.getName());
                 logger.debug("ftpFile size = {}", ftpFile.getSize());
                 logger.debug("ftpFile timestamp = {}", ftpFile.getTimestamp().getTime());
                 if (ftpFile.getName().endsWith(endWith) &&
                         isFileReady(qifEvent, ftpFile.getTimestamp().getTimeInMillis())) {
+
                     ByteArrayOutputStream bos = new ByteArrayOutputStream();
                     ftpClient.retrieveFile(folderName + ftpFile.getName(), bos);
                     logger.debug("file content = {}", bos.toString());
 
-                    Map<String, String> fileMap = new WeakHashMap<String, String>();
-                    fileMap.put("fileContent", bos.toString());
-                    fileMap.put("fileName", ftpFile.getName());
-                    fileMap.put("fileSize", String.valueOf(ftpFile.getSize()));
-                    fileList.add(fileMap);
+                    Map<String, Object> messageHeader = new WeakHashMap<String, Object>();
+                    messageHeader.put("fileName", ftpFile.getName());
+                    messageHeader.put("fileSize", ftpFile.getSize());
+                    messageHeader.put("fileDate", ftpFile.getTimestamp());
 
-                    fileCounter++;
-                    logger.debug("ftpFile fileCounter = {}", fileCounter);
+                    qifActivityMessage = new QifActivityMessage(bos.toByteArray(), QifMessageType.TEXT, messageHeader);
+
                     if (Boolean.valueOf(deleteAfterRead)) {
                         ftpClient.deleteFile(folderName + ftpFile.getName());
                         logger.debug("delete file after read {}", folderName + ftpFile.getName());
@@ -113,7 +117,7 @@ public abstract class BasicFtpProcess extends QifProcess {
             }
         }
 
-        return fileList;
+        return qifActivityMessage;
     }
 
     private boolean isFileReady(QifEvent qifEvent, long fileLastModified) {

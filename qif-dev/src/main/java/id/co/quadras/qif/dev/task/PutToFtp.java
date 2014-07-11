@@ -1,7 +1,7 @@
 package id.co.quadras.qif.dev.task;
 
 import id.co.quadras.qif.connector.adapter.FtpAdapter;
-import id.co.quadras.qif.core.QifTaskMessage;
+import id.co.quadras.qif.core.QifActivityMessage;
 import id.co.quadras.qif.core.model.entity.QifAdapter;
 import id.co.quadras.qif.core.model.vo.QifActivityResult;
 import id.co.quadras.qif.engine.AbstractTask;
@@ -17,7 +17,7 @@ import java.util.Map;
 public class PutToFtp extends AbstractTask {
 
     @Override
-    protected QifActivityResult implementTask(QifTaskMessage qifTaskMessage) {
+    protected QifActivityResult implementTask(QifActivityMessage qifActivityMessage) {
         QifAdapter qifAdapter = getAdapter("IrwinFtp");
         logger.debug("IrwinFtp adapter = {}", qifAdapter);
         String fileName = "book.xml";
@@ -29,7 +29,7 @@ public class PutToFtp extends AbstractTask {
         try {
             ftpAdapter.connect();
             ftpAdapter.storeFile(fileName,
-                    new ByteArrayInputStream(((String) qifTaskMessage.getMessage()).getBytes()));
+                    new ByteArrayInputStream(qifActivityMessage.getContent()));
             ftpAdapter.disconnect();
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);

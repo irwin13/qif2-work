@@ -1,15 +1,20 @@
 package id.co.quadras.qif.connector.event;
 
+import id.co.quadras.qif.core.QifActivityMessage;
 import id.co.quadras.qif.core.QifProcess;
 import id.co.quadras.qif.core.model.entity.QifEvent;
 import id.co.quadras.qif.core.model.vo.event.EventFile;
+import id.co.quadras.qif.core.model.vo.message.QifMessageType;
 import org.apache.commons.io.FileUtils;
 import org.joda.time.Duration;
 
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 /**
  * @author irwin Timestamp : 05/06/2014 14:31
@@ -17,13 +22,12 @@ import java.util.*;
 public abstract class BasicFileProcess extends QifProcess {
 
     @Override
-    protected Object receiveEvent(QifEvent qifEvent, Object inputMessage) {
-        List<Map<String, String>> fileList = getFiles(qifEvent);
-        return (fileList.isEmpty()) ? null : fileList;
+    protected QifActivityMessage receiveEvent(QifEvent qifEvent, Object inputMessage) {
+        return getFile(qifEvent);
     }
 
-    private List<Map<String, String>> getFiles(final QifEvent qifEvent) {
-        List<Map<String, String>> fileList = new LinkedList<Map<String, String>>();
+    private QifActivityMessage getFile(final QifEvent qifEvent) {
+        QifActivityMessage qifActivityMessage = null;
 
         String deleteAfterRead = getPropertyValue(qifEvent, EventFile.DELETE_AFTER_READ.getName());
         String folderName = getPropertyValue(qifEvent, EventFile.FOLDER.getName());
@@ -32,7 +36,8 @@ public abstract class BasicFileProcess extends QifProcess {
         logger.debug("deleteAfterRead = {}", deleteAfterRead);
         logger.debug("folderName = {}", folderName);
         logger.debug("endWith = {}", endWith);
-        logger.debug("maxFetch = {}", maxFetch);
+        logger.debug("maxFetch [DEPRECATED] = {}", maxFetch);
+        maxFetch = 1; // always be 1
 
         File folder = new File(folderName);
         File[] files;
@@ -58,29 +63,37 @@ public abstract class BasicFileProcess extends QifProcess {
                 files = Arrays.copyOf(all, maxFetch, File[].class);
             }
 
-            try {
-                for (int i = 0; i < files.length; i++) {
-                    File file = files[i];
+            Arrays.sort(all, new Comparator<File>() {
+                @Override
+                public int compare(File o1, File o2) {
+                    return Long.valueOf(o1.lastModified())
+                            .compareTo(o2.lastModified());
+                }
+            });
+
+            if (files != null & files.length > 0) {
+                try {
+                    File file = files[0];
                     String fileContent = FileUtils.readFileToString(file);
 
-                    Map<String, String> fileMap = new WeakHashMap<String, String>();
-                    fileMap.put("fileContent", fileContent);
-                    fileMap.put("fileName", file.getName());
-                    fileMap.put("fileSize", String.valueOf(file.length()));
+                    Map<String, Object> messageHeader = new WeakHashMap<String, Object>();
+                    messageHeader.put("fileLastModified", file.lastModified());
+                    messageHeader.put("fileName", file.getName());
+                    messageHeader.put("fileSize", file.length());
 
-                    fileList.add(fileMap);
+                    qifActivityMessage = new QifActivityMessage(fileContent.getBytes(), QifMessageType.TEXT, messageHeader);
 
                     if (Boolean.valueOf(deleteAfterRead)) {
                         file.delete();
                         logger.debug("delete file after read {}", file.getName());
                     }
+                } catch (IOException e) {
+                    logger.error(e.getLocalizedMessage(), e);
                 }
-            } catch (IOException e) {
-                logger.error(e.getLocalizedMessage(), e);
             }
         }
 
-        return fileList;
+        return qifActivityMessage;
     }
 
     private boolean isFileReady(QifEvent qifEvent, long fileLastModified) {
