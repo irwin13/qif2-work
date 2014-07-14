@@ -39,7 +39,9 @@
                         <th>$winWorkUtil.getLabel($loginUser.displayLang, 'list.no')</th>
                         <th>Process Name</th>
                         <th>From Event</th>
+                        <!--
                         <th>Node Name</th>
+                        -->
                         <th>Status</th>
                         <th>Execution Time</th>
                         <th>Process Date</th>
@@ -56,12 +58,26 @@
                         <td>$counter</td>
                         <td>$displayTool.alt($model.createBySimple, '&nbsp;')</td>
                         <td>$displayTool.alt($model.eventName, '&nbsp;')</td>
+                        <!--
                         <td>$displayTool.alt($model.nodeName, '&nbsp;')</td>
+                        -->
                         <td>$displayTool.alt($model.activityStatus, '&nbsp;')</td>
                         <td>$model.executionTime milliseconds</td>
                         <td>$dateTool.format('dd-MM-yyyy HH:mm:ss', $model.createDate)</td>
                         <td>
-                            <a href="${web.context}/processInstance/detail?id=$model.id" class="btn btn-primary btn-sm">
+                            <button type="button" class="btn btn-primary btn-xs"
+                                    onclick="showMessageContent('$model.id')"
+                                    onkeypress="showMessageContent('$model.id')">
+                                View Message Content
+                            </button>
+                            &nbsp;
+                            <button type="button" class="btn btn-primary btn-xs"
+                                    onclick="showActivityData('$model.id')"
+                                    onkeypress="showActivityData('$model.id')">
+                                View Activity Data
+                            </button>
+                            &nbsp;
+                            <a href="${web.context}/processInstance/detail?id=$model.id" class="btn btn-primary btn-xs">
                                 View Detail
                             </a>
                         </td>
@@ -71,11 +87,59 @@
                     </tbody>
                 </table>
             </div>
+            <div id="viewMessageContent" title="Task Message Content"
+                 class="modal fade" aria-hidden="true" tabindex="-1" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <p id="taskMessageContent"></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">$winWorkUtil.getLabel($loginUser.displayLang, 'global.close')</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="viewActivityData" title="Activity Data"
+                 class="modal fade" aria-hidden="true" tabindex="-1" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <p id="activityDataContent"></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">$winWorkUtil.getLabel($loginUser.displayLang, 'global.close')</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </form>
 
         #include("vita/common/footer.html")
         <script type="text/javascript">
             setContextUrl('${web.context}');
+            function showMessageContent(id) {
+                $.ajax({
+                    type: 'GET',
+                    url: contextUrl + '/processInstance/taskMsgContent?id=' + id,
+                    success:function(data, textStatus) {
+                        $("#taskMessageContent").html(data);
+                        $("#viewMessageContent").modal('show');
+                    }
+                });
+            }
+
+            function showActivityData(id) {
+                $.ajax({
+                    type: 'GET',
+                    url: contextUrl + '/processInstance/viewActivityData?id=' + id,
+                    success:function(data, textStatus) {
+                        $("#activityDataContent").html(data);
+                        $("#viewActivityData").modal('show');
+                    }
+                });
+            }
+
         </script>
     </body>
 </html>

@@ -2,14 +2,12 @@ package id.co.quadras.qif.engine.web.servlet;
 
 import com.google.common.base.Strings;
 import id.co.quadras.qif.core.QifActivity;
-import id.co.quadras.qif.core.QifConstants;
 import id.co.quadras.qif.core.QifProcess;
-import id.co.quadras.qif.core.QifUtil;
 import id.co.quadras.qif.core.model.entity.QifEvent;
-import id.co.quadras.qif.core.model.entity.QifEventProperty;
 import id.co.quadras.qif.core.model.vo.HttpRequestMessage;
 import id.co.quadras.qif.core.model.vo.QifActivityResult;
 import id.co.quadras.qif.core.model.vo.event.EventHttp;
+import id.co.quadras.qif.core.model.vo.message.QifMessageType;
 import id.co.quadras.qif.engine.guice.EngineFactory;
 import id.co.quadras.qif.engine.service.EventService;
 import org.apache.commons.io.IOUtils;
@@ -78,15 +76,15 @@ public class EventDispatcherServlet extends HttpServlet {
         QifActivityResult result;
         try {
             QifProcess qifProcess = (QifProcess) EngineFactory.getInjector().getInstance(Class.forName(qifEvent.getQifProcess()));
-            result = qifProcess.executeProcess(qifEvent, copyHttpServletRequest(request), null);
+            result = qifProcess.executeProcess(qifEvent, copyHttpServletRequest(request), QifMessageType.TEXT, null);
         } catch (ClassNotFoundException e) {
             LOGGER.error(e.getLocalizedMessage(), e);
             String error = "FATAL : Class not found " + qifEvent.getQifProcess();
-            result = new QifActivityResult(QifActivity.ERROR, error, null);
+            result = new QifActivityResult(QifActivity.ERROR, error, QifMessageType.TEXT, null);
         } catch (Exception e) {
             LOGGER.error(e.getLocalizedMessage(), e);
             String error = ExceptionUtils.getStackTrace(e);
-            result = new QifActivityResult(QifActivity.ERROR, error, null);
+            result = new QifActivityResult(QifActivity.ERROR, error, QifMessageType.TEXT, null);
         }
 
         return result;

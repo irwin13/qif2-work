@@ -4,6 +4,7 @@ import id.co.quadras.qif.connector.adapter.FileAdapter;
 import id.co.quadras.qif.core.QifActivityMessage;
 import id.co.quadras.qif.core.model.entity.QifAdapter;
 import id.co.quadras.qif.core.model.vo.QifActivityResult;
+import id.co.quadras.qif.core.model.vo.message.QifMessageType;
 import id.co.quadras.qif.engine.AbstractTask;
 
 import java.io.IOException;
@@ -26,7 +27,7 @@ public class WriteToFile extends AbstractTask {
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
-        return new QifActivityResult(SUCCESS, null, null);
+        return new QifActivityResult(SUCCESS, null, QifMessageType.TEXT, null);
     }
 
 }

@@ -15,7 +15,7 @@ import java.util.WeakHashMap;
 public abstract class BasicHttpProcess extends QifProcess {
 
     @Override
-    protected QifActivityMessage receiveEvent(QifEvent qifEvent, Object inputMessage) {
+    protected QifActivityMessage receiveEvent(QifEvent qifEvent, Object inputMessage, QifMessageType messageType) {
         HttpRequestMessage requestMessage = (HttpRequestMessage) inputMessage;
         Map<String, Object> messageHeader = new WeakHashMap<String, Object>();
         Map<String, String> httpHeader = requestMessage.getHttpHeader();

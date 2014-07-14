@@ -3,6 +3,7 @@ package id.co.quadras.qif.dev.task;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import id.co.quadras.qif.core.QifActivityMessage;
 import id.co.quadras.qif.core.model.vo.QifActivityResult;
+import id.co.quadras.qif.core.model.vo.message.QifMessageType;
 import id.co.quadras.qif.dev.message.Book;
 import id.co.quadras.qif.engine.AbstractTask;
 
@@ -33,6 +34,6 @@ public class JsonToXml extends AbstractTask {
             logger.error(e.getLocalizedMessage(), e);
         }
         logger.debug("xml output = {}", result);
-        return new QifActivityResult(SUCCESS, result, mapData);
+        return new QifActivityResult(SUCCESS, result, QifMessageType.TEXT, mapData);
     }
 }

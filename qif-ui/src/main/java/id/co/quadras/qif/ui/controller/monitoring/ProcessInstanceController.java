@@ -1,14 +1,18 @@
 package id.co.quadras.qif.ui.controller.monitoring;
 
+import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.irwin13.winwork.basic.model.PagingModel;
 import com.irwin13.winwork.basic.utilities.PagingUtil;
 import com.irwin13.winwork.basic.utilities.StringCompressor;
+import id.co.quadras.qif.core.model.vo.message.QifMessageType;
 import id.co.quadras.qif.ui.WebPage;
 import id.co.quadras.qif.ui.dto.monitoring.ProcessInstance;
+import id.co.quadras.qif.ui.dto.monitoring.ProcessInstanceData;
 import id.co.quadras.qif.ui.dto.monitoring.TaskInputMsg;
 import id.co.quadras.qif.ui.dto.monitoring.TaskOutputMsg;
 import id.co.quadras.qif.ui.service.monitoring.ProcessInstanceService;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,8 +33,8 @@ import java.util.Map;
 @Path("/processInstance")
 public class ProcessInstanceController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProcessInstanceController.class);
     private static final String PACKAGE_PAGE_PREFIX = "vita/monitoring/";
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProcessInstanceController.class);
 
     @Context
     HttpServletRequest request;
@@ -88,16 +92,54 @@ public class ProcessInstanceController {
 
         TaskInputMsg taskInputMsg = service.getTaskInputMsg(id);
         if (taskInputMsg != null) {
-            inputContent = StringCompressor.decompress(taskInputMsg.getInputMessageContent());
+            LOGGER.debug("taskInputMsg = {}", taskInputMsg);
+            if (QifMessageType.TEXT.getName().equalsIgnoreCase(taskInputMsg.getMsgType())) {
+                inputContent = StringEscapeUtils.escapeXml11(StringCompressor.decompress(taskInputMsg.getInputMessageContent()));
+
+                LOGGER.debug("inputContent = {}", inputContent);
+            } else {
+                inputContent = "Message in binary format";
+            }
         }
 
         TaskOutputMsg taskOutputMsg = service.getTaskOutputMsg(id);
         if (taskOutputMsg != null) {
-            outputContent = StringCompressor.decompress(taskOutputMsg.getOutputMessageContent());
+            LOGGER.debug("taskOutputMsg = {}", taskOutputMsg);
+            if (QifMessageType.TEXT.getName().equalsIgnoreCase(taskOutputMsg.getMsgType())) {
+                outputContent = StringEscapeUtils.escapeXml11(StringCompressor.decompress(taskOutputMsg.getOutputMessageContent()));
+                LOGGER.debug("outputContent = {}", outputContent);
+            } else {
+                outputContent = "Message in binary format";
+            }
         }
 
         String allContent = inputContentTitle + inputContent + "<br />" + outputContentTitle + outputContent;
         return webPage.okResponse(allContent);
     }
 
+    @GET
+    @Path("/viewActivityData")
+    @Produces(MediaType.TEXT_HTML)
+    public Response viewActivityData(@QueryParam("id") String id) {
+        StringBuilder content = new StringBuilder("<table class='table table-condensed table-bordered table-striped'>");
+        content.append("<thead><tr>");
+        content.append("<th>Data Key</th>");
+        content.append("<th>Data Value</th>");
+        content.append("</tr></thead>");
+        content.append("<tbody>");
+        List<ProcessInstanceData> dataList = service.selectActivityData(id);
+        for (ProcessInstanceData data : dataList) {
+            content.append("<tr>");
+            content.append("<td>");
+            content.append(data.getDataKey());
+            content.append("</td>");
+            content.append("<td>");
+            content.append(Strings.nullToEmpty(data.getDataValue()));
+            content.append("</td>");
+            content.append("</tr>");
+        }
+        content.append("</tbody>");
+        content.append("</table>");
+        return webPage.okResponse(content.toString());
+    }
 }

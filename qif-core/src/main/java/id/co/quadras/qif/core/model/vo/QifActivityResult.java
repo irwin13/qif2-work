@@ -1,6 +1,7 @@
 package id.co.quadras.qif.core.model.vo;
 
 import com.irwin13.winwork.basic.utilities.PojoUtil;
+import id.co.quadras.qif.core.model.vo.message.QifMessageType;
 
 import java.util.Map;
 
@@ -11,11 +12,15 @@ public class QifActivityResult {
 
     private final String status;
     private final Object result;
+    private final QifMessageType messageType;
     private final Map<String, String> additionalData;
 
-    public QifActivityResult(String status, Object result, Map<String, String> additionalData) {
+
+    public QifActivityResult(String status, Object result, QifMessageType messageType,
+                             Map<String, String> additionalData) {
         this.status = status;
         this.result = result;
+        this.messageType = messageType;
         this.additionalData = additionalData;
     }
 
@@ -25,6 +30,10 @@ public class QifActivityResult {
 
     public Object getResult() {
         return result;
+    }
+
+    public QifMessageType getMessageType() {
+        return messageType;
     }
 
     public Map<String, String> getAdditionalData() {

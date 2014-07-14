@@ -2,6 +2,7 @@ package id.co.quadras.qif.core;
 
 import com.google.inject.Inject;
 import com.irwin13.winwork.basic.WinWorkConstants;
+import com.irwin13.winwork.basic.utilities.StringCompressor;
 import com.irwin13.winwork.basic.utilities.StringUtil;
 import com.irwin13.winwork.basic.utilities.WinWorkUtil;
 import id.co.quadras.qif.core.helper.JsonParser;
@@ -17,11 +18,9 @@ import id.co.quadras.qif.core.model.entity.log.QifActivityLogOutputMsg;
 import id.co.quadras.qif.core.model.vo.QifActivityResult;
 import id.co.quadras.qif.core.model.vo.message.QifMessageType;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -161,19 +160,14 @@ public abstract class QifTask implements QifActivity {
                     inputMessage.setLastUpdateBy(activityName());
                     inputMessage.setCreateDate(today);
                     inputMessage.setLastUpdateDate(today);
-                    try {
-                        if (QifMessageType.TEXT.equals(qifActivityMessage.getMessageType())) {
-                            inputMessage.setInputMessageContent(
-                                    jsonParser.parseToString(true,
-                                            new String(qifActivityMessage.getContent(), WinWorkConstants.UTF_8)));
-                        } else if (QifMessageType.BINARY.equals(qifActivityMessage.getMessageType())) {
-                            inputMessage.setInputMessageContent(
-                                    Base64.encodeBase64String(qifActivityMessage.getContent()));
-                        }
-                    } catch (IOException e) {
-                        logger.error(e.getLocalizedMessage(), e);
-                        inputMessage.setInputMessageContent(ExceptionUtils.getStackTrace(e.getCause()));
+
+                    if (QifMessageType.TEXT.equals(qifActivityMessage.getMessageType())) {
+                        inputMessage.setInputMessageContent(StringCompressor.compress(new String (qifActivityMessage.getContent())));
+                    } else if (QifMessageType.BINARY.equals(qifActivityMessage.getMessageType())) {
+                        inputMessage.setInputMessageContent(
+                                Base64.encodeBase64String(qifActivityMessage.getContent()));
                     }
+
                     inputMessageQueue.put(inputMessage);
                 }
 
@@ -181,25 +175,20 @@ public abstract class QifTask implements QifActivity {
                     QifActivityLogOutputMsg outputMessage = new QifActivityLogOutputMsg();
                     outputMessage.setId(StringUtil.random32UUID());
                     outputMessage.setActivityLogId(taskLogId);
-                    outputMessage.setMsgType(qifActivityMessage.getMessageType().getName());
+                    outputMessage.setMsgType(qifActivityResult.getMessageType().getName());
                     outputMessage.setActive(Boolean.TRUE);
                     outputMessage.setCreateBy(activityName());
                     outputMessage.setLastUpdateBy(activityName());
                     outputMessage.setCreateDate(today);
                     outputMessage.setLastUpdateDate(today);
-                    try {
-                        if (QifMessageType.TEXT.equals(qifActivityMessage.getMessageType())) {
-                            outputMessage.setOutputMessageContent(
-                                    jsonParser.parseToString(true,
-                                            new String(qifActivityMessage.getContent(), WinWorkConstants.UTF_8)));
-                        } else if (QifMessageType.BINARY.equals(qifActivityMessage.getMessageType())) {
-                            outputMessage.setOutputMessageContent(
-                                    Base64.encodeBase64String(qifActivityMessage.getContent()));
-                        }
-                    } catch (IOException e) {
-                        logger.error(e.getLocalizedMessage(), e);
-                        outputMessage.setOutputMessageContent(ExceptionUtils.getStackTrace(e.getCause()));
+
+                    if (QifMessageType.TEXT.equals(qifActivityResult.getMessageType())) {
+                        outputMessage.setOutputMessageContent(StringCompressor.compress((String) qifActivityResult.getResult()));
+                    } else if (QifMessageType.BINARY.equals(qifActivityResult.getMessageType())) {
+                        outputMessage.setOutputMessageContent(
+                                Base64.encodeBase64String((byte[]) qifActivityResult.getResult()));
                     }
+
                     outputMessageQueue.put(outputMessage);
                 }
             } else {

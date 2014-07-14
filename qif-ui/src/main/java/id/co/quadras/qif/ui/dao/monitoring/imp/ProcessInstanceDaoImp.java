@@ -95,7 +95,7 @@ public class ProcessInstanceDaoImp implements ProcessInstanceDao {
 
         StringBuilder sqlQuery = new StringBuilder();
         sqlQuery.append("SELECT data_key AS dataKey, ");
-        sqlQuery.append("data_value AS dataValue, ");
+        sqlQuery.append("data_value AS dataValue ");
         sqlQuery.append("FROM qif_activity_log_data ");
         sqlQuery.append("WHERE activity_log_id = :processId ");
 

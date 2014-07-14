@@ -4,6 +4,7 @@ import com.irwin13.winwork.basic.exception.WinWorkException;
 import id.co.quadras.qif.core.QifConstants;
 import id.co.quadras.qif.core.QifProcess;
 import id.co.quadras.qif.core.model.entity.QifEvent;
+import id.co.quadras.qif.core.model.vo.message.QifMessageType;
 import id.co.quadras.qif.engine.guice.EngineFactory;
 import id.co.quadras.qif.engine.service.EventService;
 import org.quartz.Job;
@@ -29,7 +30,7 @@ public class QifEventConcurrentJob implements Job {
                 try {
                     QifProcess qifProcess = (QifProcess) EngineFactory.getInjector()
                             .getInstance(Class.forName(qifEvent.getQifProcess()));
-                    qifProcess.executeProcess(qifEvent, null, null);
+                    qifProcess.executeProcess(qifEvent, null, QifMessageType.TEXT, null);
                 } catch (Exception e) {
                     LOGGER.error(e.getLocalizedMessage(), e);
                 }

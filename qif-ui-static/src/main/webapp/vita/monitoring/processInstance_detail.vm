@@ -36,10 +36,16 @@
                         <td>$dateTool.format('dd-MM-yyyy HH:mm:ss.SSS', $model.createDate)</td>
                         <td>$model.executionTime milliseconds</td>
                         <td>
-                            <button type="button" class="btn btn-primary btn-sm"
+                            <button type="button" class="btn btn-primary btn-xs"
                                     onclick="showMessageContent('$model.id')"
                                     onkeypress="showMessageContent('$model.id')">
                                 View Message Content
+                            </button>
+                            &nbsp;
+                            <button type="button" class="btn btn-primary btn-xs"
+                                    onclick="showActivityData('$model.id')"
+                                    onkeypress="showActivityData('$model.id')">
+                                View Activity Data
                             </button>
                         </td>
                     </tr>
@@ -61,6 +67,19 @@
                     </div>
                 </div>
             </div>
+            <div id="viewActivityData" title="Activity Data"
+                 class="modal fade" aria-hidden="true" tabindex="-1" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <p id="activityDataContent"></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">$winWorkUtil.getLabel($loginUser.displayLang, 'global.close')</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </form>
 
         #include("vita/common/footer.html")
@@ -73,6 +92,17 @@
                     success:function(data, textStatus) {
                         $("#taskMessageContent").html(data);
                         $("#viewMessageContent").modal('show');
+                    }
+                });
+            }
+
+            function showActivityData(id) {
+                $.ajax({
+                    type: 'GET',
+                    url: contextUrl + '/processInstance/viewActivityData?id=' + id,
+                    success:function(data, textStatus) {
+                        $("#activityDataContent").html(data);
+                        $("#viewActivityData").modal('show');
                     }
                 });
             }

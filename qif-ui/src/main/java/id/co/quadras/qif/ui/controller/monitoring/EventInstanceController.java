@@ -4,10 +4,12 @@ import com.google.inject.Inject;
 import com.irwin13.winwork.basic.model.PagingModel;
 import com.irwin13.winwork.basic.utilities.PagingUtil;
 import com.irwin13.winwork.basic.utilities.StringCompressor;
+import id.co.quadras.qif.core.model.vo.message.QifMessageType;
 import id.co.quadras.qif.ui.WebPage;
 import id.co.quadras.qif.ui.dto.monitoring.EventInstance;
 import id.co.quadras.qif.ui.dto.monitoring.EventMsg;
 import id.co.quadras.qif.ui.service.monitoring.EventInstanceService;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,7 +73,11 @@ public class EventInstanceController {
         String content = "No content";
         if (eventMsg != null) {
             LOGGER.debug("eventMsg = {}", eventMsg);
-            content = StringCompressor.decompress(eventMsg.getMessageContent());
+            if (QifMessageType.TEXT.getName().equalsIgnoreCase(eventMsg.getMsgType())) {
+                content = StringEscapeUtils.escapeXml11(StringCompressor.decompress(eventMsg.getMessageContent()));
+            } else {
+                content = "Message in binary format";
+            }
         }
         return webPage.okResponse(content);
     }

@@ -26,7 +26,7 @@ import java.util.WeakHashMap;
 public abstract class BasicFtpProcess extends QifProcess {
 
     @Override
-    protected QifActivityMessage receiveEvent(QifEvent qifEvent, Object inputMessage) {
+    protected QifActivityMessage receiveEvent(QifEvent qifEvent, Object inputMessage, QifMessageType messageType) {
         return getFile(qifEvent);
     }
 

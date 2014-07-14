@@ -28,6 +28,6 @@ public class FileJsonToFtp extends BasicFileProcess {
         }
 
 
-        return new QifActivityResult(SUCCESS, null, null);
+        return new QifActivityResult(SUCCESS, null, QifMessageType.TEXT, null);
     }
 }

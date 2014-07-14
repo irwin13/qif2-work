@@ -26,6 +26,6 @@ public class HttpToFtp extends BasicHttpProcess {
             logger.error(e.getLocalizedMessage(), e);
         }
 
-        return new QifActivityResult(SUCCESS, SUCCESS, null);
+        return new QifActivityResult(SUCCESS, SUCCESS, QifMessageType.TEXT, null);
     }
 }
