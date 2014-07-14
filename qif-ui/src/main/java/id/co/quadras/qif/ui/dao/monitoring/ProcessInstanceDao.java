@@ -17,4 +17,5 @@ public interface ProcessInstanceDao {
     public List<ProcessInstanceData> selectActivityData(String processInstanceId);
     public TaskInputMsg getTaskInputMsg(String processId);
     public TaskOutputMsg getTaskOutputMsg(String processId);
+    public ProcessInstance selectProcessInstance(String processId);
 }

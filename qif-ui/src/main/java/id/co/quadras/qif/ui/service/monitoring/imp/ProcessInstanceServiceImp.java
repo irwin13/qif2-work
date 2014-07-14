@@ -51,4 +51,9 @@ public class ProcessInstanceServiceImp implements ProcessInstanceService {
     public TaskOutputMsg getTaskOutputMsg(String processId) {
         return dao.getTaskOutputMsg(processId);
     }
+
+    @Override
+    public ProcessInstance selectProcessInstance(String processId) {
+        return dao.selectProcessInstance(processId);
+    }
 }

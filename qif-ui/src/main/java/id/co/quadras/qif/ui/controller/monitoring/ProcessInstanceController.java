@@ -73,8 +73,10 @@ public class ProcessInstanceController {
     public Response detailProcessInstance(@QueryParam("id") String id) {
         List<ProcessInstance> list = service.selectProcessTasks(id);
         Map<String, Object> objectMap = webPage.mapWithLoginUser(request);
+        ProcessInstance model = service.selectProcessInstance(id);
         objectMap.put("modelName", "processInstance");
         objectMap.put("list", list);
+        objectMap.put("model", model);
 
         String content = webPage.stringFromVm(PACKAGE_PAGE_PREFIX + "processInstance_detail.vm", objectMap);
         return webPage.okResponse(content);

@@ -13,7 +13,25 @@
                 <legend>
                     Process Instance Detail
                 </legend>
+                <dl class="dl-horizontal">
+                    <dt>Event Name : </dt>
+                    <dd>$displayTool.alt($model.eventName, '')</dd>
+
+                    <dt>Status : </dt>
+                    <dd>$displayTool.alt($model.activityStatus, '')</dd>
+
+                    <dt>Execution Time : </dt>
+                    <dd>$model.executionTime milliseconds</dd>
+
+                    <dt>Create Date : </dt>
+                    <dd>$dateTool.format('dd-MM-yyyy HH:mm:ss.SSS', $model.createDate)</dd>
+
+                </dl>
+                <div class="col-sm-offset-2 col-sm-10">
+                    <a href="${web.context}/processInstance/list" class="btn btn-primary">$winWorkUtil.getLabel($loginUser.displayLang, 'global.back')</a>
+                </div>
             </fieldset>
+            <br />
             <div class="table-responsive">
                 <table class="table table-bordered table-condensed listTable-blue">
                     <thead>

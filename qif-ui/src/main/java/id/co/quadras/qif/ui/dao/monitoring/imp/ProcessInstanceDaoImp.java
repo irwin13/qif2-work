@@ -231,4 +231,47 @@ public class ProcessInstanceDaoImp implements ProcessInstanceDao {
 
         return (result == null) ? Collections.EMPTY_LIST : result;
     }
+
+    @Override
+    public ProcessInstance selectProcessInstance(String processId) {
+        Session session = null;
+        ProcessInstance result = null;
+
+        StringBuilder sqlQuery = new StringBuilder();
+        sqlQuery.append("SELECT al.id AS id, ");
+        sqlQuery.append("e.name AS eventName, ");
+        sqlQuery.append("el.node_name AS nodeName, ");
+        sqlQuery.append("al.activity_type AS activityType, ");
+        sqlQuery.append("al.activity_status AS activityStatus, ");
+        sqlQuery.append("al.execution_time AS executionTime, ");
+        sqlQuery.append("al.create_date AS createDate, ");
+        sqlQuery.append("al.create_by AS createBy ");
+        sqlQuery.append("FROM qif_activity_log AS al ");
+        sqlQuery.append("LEFT JOIN qif_event_log AS el ON al.event_log_id = el.id ");
+        sqlQuery.append("LEFT JOIN qif_event AS e ON el.event_id = e.id ");
+        sqlQuery.append("WHERE al.id = :processId ");
+
+        LOGGER.debug("sql query = {}", sqlQuery.toString());
+
+        try {
+            session = openNewSession();
+            result = (ProcessInstance) session.createSQLQuery(sqlQuery.toString())
+                    .addScalar("id", StringType.INSTANCE)
+                    .addScalar("eventName", StringType.INSTANCE)
+                    .addScalar("nodeName", StringType.INSTANCE)
+                    .addScalar("activityType", StringType.INSTANCE)
+                    .addScalar("activityStatus", StringType.INSTANCE)
+                    .addScalar("executionTime", LongType.INSTANCE)
+                    .addScalar("createDate", TimestampType.INSTANCE)
+                    .addScalar("createBy", StringType.INSTANCE)
+                    .setString("processId", processId)
+                    .setResultTransformer(Transformers.aliasToBean(ProcessInstance.class))
+                    .uniqueResult();
+
+        } finally {
+            closeSession(session);
+        }
+
+        return result;
+    }
 }
