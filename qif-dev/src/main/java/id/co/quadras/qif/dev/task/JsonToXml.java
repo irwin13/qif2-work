@@ -22,7 +22,7 @@ public class JsonToXml extends AbstractTask {
         String json = new String(qifActivityMessage.getContent());
         logger.debug("json input = {}", json);
         XmlMapper xmlMapper = new XmlMapper();
-        Map<String, String> mapData = new HashMap<String, String>();
+        Map<String, Object> mapData = new HashMap<String, Object>();
 
         try {
             Book book = jsonParser.parseToObject(false, json, Book.class);

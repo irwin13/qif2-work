@@ -23,7 +23,7 @@ public class PutToFtp extends AbstractTask {
         logger.debug("IrwinFtp adapter = {}", qifAdapter);
         String fileName = "book.xml";
 
-        Map<String, String> mapData = new HashMap<String, String>();
+        Map<String, Object> mapData = new HashMap<String, Object>();
         mapData.put("fileName", fileName);
 
         FtpAdapter ftpAdapter = new FtpAdapter(qifAdapter);

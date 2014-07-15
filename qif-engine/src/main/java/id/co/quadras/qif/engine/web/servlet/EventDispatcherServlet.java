@@ -29,6 +29,7 @@ import java.util.Map;
  */
 public class EventDispatcherServlet extends HttpServlet {
 
+    public static final String EVENT_PATH = "/http-event/";
     public static final String TEXT_PLAIN = "text/plain;charset=UTF-8";
     private static final Logger LOGGER = LoggerFactory.getLogger(EventDispatcherServlet.class);
 
@@ -45,7 +46,7 @@ public class EventDispatcherServlet extends HttpServlet {
     }
 
     private void handleRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String path = request.getRequestURI().substring(request.getContextPath().length()).replaceFirst("/http-event/", "");
+        String path = request.getRequestURI().substring(request.getContextPath().length()).replaceFirst(EVENT_PATH, "");
         LOGGER.debug("incoming request for path {}", path);
 
         EventService eventService = EngineFactory.getInjector().getInstance(EventService.class);
@@ -91,7 +92,7 @@ public class EventDispatcherServlet extends HttpServlet {
     }
 
     private void buildResponse(HttpServletResponse response, int statusCode, String contentType, String message,
-                               Map<String, String> resultHeader)
+                               Map<String, Object> resultHeader)
             throws IOException {
 
         if (Strings.isNullOrEmpty(contentType)) {
@@ -106,10 +107,10 @@ public class EventDispatcherServlet extends HttpServlet {
         }
 
         if (resultHeader != null) {
-            for (Map.Entry<String, String> entry : resultHeader.entrySet()) {
+            for (Map.Entry<String, Object> entry : resultHeader.entrySet()) {
                 LOGGER.debug("set header for HTTP response with key = {} | value = {}", entry.getKey(), entry.getValue());
-                response.setHeader(entry.getKey(), entry.getValue());
-            }
+                Object value = entry.getValue();
+                response.setHeader(entry.getKey(), (value != null) ? entry.getValue().toString() : null); }
         }
         response.getWriter().println(message);
     }

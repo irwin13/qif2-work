@@ -18,9 +18,11 @@ import id.co.quadras.qif.core.model.entity.log.QifActivityLogOutputMsg;
 import id.co.quadras.qif.core.model.vo.QifActivityResult;
 import id.co.quadras.qif.core.model.vo.message.QifMessageType;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -104,7 +106,7 @@ public abstract class QifTask implements QifActivity {
                 activityStatus = qifActivityResult.getStatus();
                 if (qifActivityResult.getAdditionalData() != null) {
                     activityLogDataList = new LinkedList<QifActivityLogData>();
-                    for (Map.Entry<String, String> entry : qifActivityResult.getAdditionalData().entrySet()) {
+                    for (Map.Entry<String, Object> entry : qifActivityResult.getAdditionalData().entrySet()) {
                         logger.debug("log data key = {} with value = {}", entry.getKey(), entry.getValue());
 
                         QifActivityLogData logData = new QifActivityLogData();
@@ -117,7 +119,8 @@ public abstract class QifTask implements QifActivity {
                         logData.setActive(Boolean.TRUE);
 
                         logData.setDataKey(entry.getKey());
-                        logData.setDataValue(entry.getValue());
+                        Object value = entry.getValue();
+                        logData.setDataValue((value != null) ? value.toString() : null);
                         logData.setActivityLogId(taskLogId);
 
                         activityLogDataList.add(logData);
@@ -183,7 +186,19 @@ public abstract class QifTask implements QifActivity {
                     outputMessage.setLastUpdateDate(today);
 
                     if (QifMessageType.TEXT.equals(qifActivityResult.getMessageType())) {
-                        outputMessage.setOutputMessageContent(StringCompressor.compress((String) qifActivityResult.getResult()));
+                        String content;
+                        if (qifActivityResult.getResult() instanceof String) {
+                            content = (String) qifActivityResult.getResult();
+                        } else {
+                            try {
+                                content = jsonParser.parseToString(false, qifActivityResult.getResult());
+                            } catch (IOException e) {
+                                logger.error(e.getLocalizedMessage(), e);
+                                content = ExceptionUtils.getStackTrace(e);
+                            }
+                        }
+
+                        outputMessage.setOutputMessageContent(StringCompressor.compress(content));
                     } else if (QifMessageType.BINARY.equals(qifActivityResult.getMessageType())) {
                         outputMessage.setOutputMessageContent(
                                 Base64.encodeBase64String((byte[]) qifActivityResult.getResult()));

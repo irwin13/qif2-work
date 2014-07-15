@@ -16,9 +16,11 @@ import id.co.quadras.qif.core.model.entity.log.*;
 import id.co.quadras.qif.core.model.vo.QifActivityResult;
 import id.co.quadras.qif.core.model.vo.message.QifMessageType;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -167,10 +169,11 @@ public abstract class QifProcess implements QifActivity {
                 activityStatus = qifActivityResult.getStatus();
                 if (qifActivityResult.getAdditionalData() != null) {
                     activityLogDataList = new LinkedList<QifActivityLogData>();
-                    for (Map.Entry<String, String> entry : qifActivityResult.getAdditionalData().entrySet()) {
+                    for (Map.Entry<String, Object> entry : qifActivityResult.getAdditionalData().entrySet()) {
                         QifActivityLogData logData = new QifActivityLogData();
                         logData.setDataKey(entry.getKey());
-                        logData.setDataValue(entry.getValue());
+                        Object value = entry.getValue();
+                        logData.setDataValue((value != null) ? value.toString() : null);
                         logData.setActivityLogId(processLog.getId());
                         activityLogDataList.add(logData);
                     }
@@ -201,7 +204,19 @@ public abstract class QifProcess implements QifActivity {
                     outputMessage.setCreateDate(new Date());
                     outputMessage.setLastUpdateDate(new Date());
                     if (QifMessageType.TEXT.equals(qifActivityResult.getMessageType())) {
-                        outputMessage.setOutputMessageContent(StringCompressor.compress((String) qifActivityResult.getResult()));
+                        String content;
+                        if (qifActivityResult.getResult() instanceof String) {
+                            content = (String) qifActivityResult.getResult();
+                        } else {
+                            try {
+                                content = jsonParser.parseToString(false, qifActivityResult.getResult());
+                            } catch (IOException e) {
+                                logger.error(e.getLocalizedMessage(), e);
+                                content = ExceptionUtils.getStackTrace(e);
+                            }
+                        }
+
+                        outputMessage.setOutputMessageContent(StringCompressor.compress(content));
                     } else if (QifMessageType.BINARY.equals(qifActivityResult.getMessageType())) {
                         outputMessage.setOutputMessageContent(
                                 Base64.encodeBase64String((byte[]) qifActivityResult.getResult()));
@@ -244,9 +259,20 @@ public abstract class QifProcess implements QifActivity {
 
                 logContent.setEventLogId(generatedId);
 
-                if (QifMessageType.TEXT.equals(messageType.getName())) {
-                    logContent.setMessageContent(StringCompressor.compress((String) inputMessage));
-                } else if (QifMessageType.BINARY.equals(messageType.getName())) {
+                if (QifMessageType.TEXT.equals(messageType)) {
+                    String content;
+                    if (inputMessage instanceof String) {
+                        content = (String) inputMessage;
+                    } else {
+                        try {
+                            content = jsonParser.parseToString(false, inputMessage);
+                        } catch (IOException e) {
+                            logger.error(e.getLocalizedMessage(), e);
+                            content = ExceptionUtils.getStackTrace(e);
+                        }
+                    }
+                    logContent.setMessageContent(StringCompressor.compress(content));
+                } else if (QifMessageType.BINARY.equals(messageType)) {
                     logContent.setMessageContent(
                             Base64.encodeBase64String((byte[]) inputMessage));
                 }

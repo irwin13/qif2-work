@@ -18,7 +18,6 @@ public class HttpToFtp extends BasicHttpProcess {
 
         try {
             QifActivityResult xmlResult = executeTask(EngineFactory.getInjector(), JsonToXml.class, qifActivityMessage);
-
             QifActivityMessage xmlMessage = new QifActivityMessage(((String) xmlResult.getResult()).getBytes(),
                     QifMessageType.TEXT, null);
             executeTask(EngineFactory.getInjector(), PutToFtp.class, xmlMessage);
