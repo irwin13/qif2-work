@@ -48,7 +48,17 @@ public class ProcessInstanceController {
     @GET
     @Path("/list")
     @Produces(MediaType.TEXT_HTML)
-    public Response selectProcessInstance() {
+    public Response list() {
+        Map<String, Object> objectMap = webPage.mapWithLoginUser(request);
+        objectMap.put("modelName", "processInstance");
+        String content = webPage.stringFromVm(PACKAGE_PAGE_PREFIX + "processInstance_list.vm", objectMap);
+        return webPage.okResponse(content);
+    }
+
+    @GET
+    @Path("/listAjax")
+    @Produces(MediaType.TEXT_HTML)
+    public Response listAjax() {
         int pageStart = webPage.readParameterPageStart(request);
         int pageSize = webPage.readParameterPageSize(request);
 
@@ -63,7 +73,7 @@ public class ProcessInstanceController {
         objectMap.put("pagingModel", pagingModel);
         objectMap.put("pageSize", pageSize);
 
-        String content = webPage.stringFromVm(PACKAGE_PAGE_PREFIX + "processInstance_list.vm", objectMap);
+        String content = webPage.stringFromVm(PACKAGE_PAGE_PREFIX + "processInstance_listAjax.vm", objectMap);
         return webPage.okResponse(content);
     }
 

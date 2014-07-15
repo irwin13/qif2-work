@@ -77,7 +77,7 @@ public class ProcessInstanceDaoImp implements ProcessInstanceDao {
                     .addScalar("createBy", StringType.INSTANCE)
                     .setResultTransformer(Transformers.aliasToBean(ProcessInstance.class))
                     .setFirstResult(start)
-                    .setFetchSize(fetchSize)
+                    .setMaxResults(fetchSize)
                     .list();
 
         } finally {

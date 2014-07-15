@@ -1,0 +1,56 @@
+#parse("vita/common/list_paging.vm")
+<div class="table-responsive">
+    <table class="table table-bordered table-condensed listTable-blue">
+        <thead>
+        <tr>
+            <th>$winWorkUtil.getLabel($loginUser.displayLang, 'list.no')</th>
+            <th>Process Name</th>
+            <th>From Event</th>
+            <!--
+            <th>Node Name</th>
+            -->
+            <th>Status</th>
+            <th>Execution Time</th>
+            <th>Process Date</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        #set ($index = 1)
+        #set ($pageMark = ($pagingModel.currentPage * $pageSize) - $pageSize)
+
+        #foreach($model in $list)
+        #set ($counter = $pageMark + $index)
+        <tr>
+            <td>$counter</td>
+            <td>$displayTool.alt($model.createBySimple, '&nbsp;')</td>
+            <td>$displayTool.alt($model.eventName, '&nbsp;')</td>
+            <!--
+            <td>$displayTool.alt($model.nodeName, '&nbsp;')</td>
+            -->
+            <td>$displayTool.alt($model.activityStatus, '&nbsp;')</td>
+            <td>$model.executionTime milliseconds</td>
+            <td>$dateTool.format('dd-MM-yyyy HH:mm:ss', $model.createDate)</td>
+            <td>
+                <button type="button" class="btn btn-primary btn-xs"
+                        onclick="showMessageContent('$model.id')"
+                        onkeypress="showMessageContent('$model.id')">
+                    View Message Content
+                </button>
+                &nbsp;
+                <button type="button" class="btn btn-primary btn-xs"
+                        onclick="showActivityData('$model.id')"
+                        onkeypress="showActivityData('$model.id')">
+                    View Activity Data
+                </button>
+                &nbsp;
+                <a href="${web.context}/$modelName/detail?id=$model.id" class="btn btn-primary btn-xs">
+                    View Detail
+                </a>
+            </td>
+        </tr>
+        #set ($index = $index + 1)
+        #end
+        </tbody>
+    </table>
+</div>

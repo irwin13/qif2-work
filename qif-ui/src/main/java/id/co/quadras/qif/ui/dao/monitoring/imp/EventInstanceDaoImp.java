@@ -77,7 +77,7 @@ public class EventInstanceDaoImp implements EventInstanceDao {
                     .addScalar("createDate", TimestampType.INSTANCE)
                     .setResultTransformer(Transformers.aliasToBean(EventInstance.class))
                     .setFirstResult(start)
-                    .setFetchSize(fetchSize)
+                    .setMaxResults(fetchSize)
                     .list();
 
         } finally {

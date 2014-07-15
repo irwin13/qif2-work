@@ -8,15 +8,16 @@
         #parse("vita/common/header.vm")
         #include("vita/common/leftMenu.html")
 
-        <form action="${web.context}/eventInstance/list" method="get" class="form-horizontal" name="listForm" id="listForm" onkeypress="return event.keyCode != 13;">
+        <form action="#" method="get" class="form-horizontal" name="listForm" id="listForm" onkeypress="return event.keyCode != 13;">
             <input type="hidden" name="pageStart" id="pageStart" />
+            <input type="hidden" name="searchKeyword" id="searchKeyword" />
             <fieldset>
                 <legend>
                     Event Instance $winWorkUtil.getLabel($loginUser.displayLang, 'global.list')
                 </legend>
                 <div class="row">
                     <div class="col-xs-4">
-                        <button class="btn btn-default" type="submit">$winWorkUtil.getLabel($loginUser.displayLang, 'global.refresh')</button>
+                        <button class="btn btn-default" type="button" onclick="doSearch();" onkeypress="doSearch();">$winWorkUtil.getLabel($loginUser.displayLang, 'global.refresh')</button>
                     </div>
                 </div>
             </fieldset>
@@ -25,48 +26,13 @@
                 <strong>$winWorkUtil.getLabel($loginUser.displayLang, 'list.displayResult')</strong>
                 <select class="input-mini" name="pageSize" id="pageSize">
                     <option value="10">10</option>
-                    <option value="15">15</option>
                     <option value="20">20</option>
-                    <option value="25">25</option>
                     <option value="30">30</option>
+                    <option value="40">40</option>
+                    <option value="50">50</option>
                 </select>
             </p>
-            #parse("vita/common/list_paging.vm")
-            <div class="table-responsive">
-                <table class="table table-bordered table-condensed listTable-blue">
-                    <thead>
-                    <tr>
-                        <th>$winWorkUtil.getLabel($loginUser.displayLang, 'list.no')</th>
-                        <th>Event Name</th>
-                        <th>Node Name</th>
-                        <th>Event Date</th>
-                        <th>Action</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    #set ($index = 1)
-                    #set ($pageMark = ($pagingModel.currentPage * $pageSize) - $pageSize)
-
-                    #foreach($model in $list)
-                    #set ($counter = $pageMark + $index)
-                    <tr>
-                        <td>$counter</td>
-                        <td>$displayTool.alt($model.eventName, '&nbsp;')</td>
-                        <td>$displayTool.alt($model.nodeName, '&nbsp;')</td>
-                        <td>$dateTool.format('dd-MM-yyyy HH:mm:ss', $model.createDate)</td>
-                        <td>
-                            <button type="button" class="btn btn-primary btn-sm"
-                                    onclick="showMessageContent('$model.id')"
-                                    onkeypress="showMessageContent('$model.id')">
-                                View Message Content
-                            </button>
-                        </td>
-                    </tr>
-                    #set ($index = $index + 1)
-                    #end
-                    </tbody>
-                </table>
-            </div>
+            <div id="listContent"></div>
             <div id="viewMessageContent" title="Event Message Content"
                  class="modal fade" aria-hidden="true" tabindex="-1" role="dialog">
                 <div class="modal-dialog">
@@ -85,6 +51,7 @@
         #include("vita/common/footer.html")
         <script type="text/javascript">
             setContextUrl('${web.context}');
+            setModel('$modelName');
             function showMessageContent(id) {
                 $.ajax({
                     type: 'GET',
@@ -95,7 +62,7 @@
                     }
                 });
             }
-
+            doSearch();
         </script>
     </body>
 </html>

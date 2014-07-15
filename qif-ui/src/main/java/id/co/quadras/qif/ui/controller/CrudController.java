@@ -83,7 +83,6 @@ public abstract class CrudController {
         String content = webPage.stringFromVm(packageName + modelName + WebPage.LIST_AJAX_PAGE_SUFFIX, objectMap);
 
         return webPage.okResponse(content);
-
     }
 
     public Response basicDetailPage(HttpServletRequest request, WinWorkService service,

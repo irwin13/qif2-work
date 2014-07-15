@@ -1,0 +1,36 @@
+#parse("vita/common/list_paging.vm")
+<div class="table-responsive">
+    <table class="table table-bordered table-condensed listTable-blue">
+        <thead>
+        <tr>
+            <th>$winWorkUtil.getLabel($loginUser.displayLang, 'list.no')</th>
+            <th>Event Name</th>
+            <th>Node Name</th>
+            <th>Event Date</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        #set ($index = 1)
+        #set ($pageMark = ($pagingModel.currentPage * $pageSize) - $pageSize)
+
+        #foreach($model in $list)
+        #set ($counter = $pageMark + $index)
+        <tr>
+            <td>$counter</td>
+            <td>$displayTool.alt($model.eventName, '&nbsp;')</td>
+            <td>$displayTool.alt($model.nodeName, '&nbsp;')</td>
+            <td>$dateTool.format('dd-MM-yyyy HH:mm:ss', $model.createDate)</td>
+            <td>
+                <button type="button" class="btn btn-primary btn-sm"
+                        onclick="showMessageContent('$model.id')"
+                        onkeypress="showMessageContent('$model.id')">
+                    View Message Content
+                </button>
+            </td>
+        </tr>
+        #set ($index = $index + 1)
+        #end
+        </tbody>
+    </table>
+</div>

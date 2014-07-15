@@ -6,6 +6,7 @@ import com.irwin13.winwork.basic.utilities.PagingUtil;
 import com.irwin13.winwork.basic.utilities.StringCompressor;
 import id.co.quadras.qif.core.model.vo.message.QifMessageType;
 import id.co.quadras.qif.ui.WebPage;
+import id.co.quadras.qif.ui.controller.CrudController;
 import id.co.quadras.qif.ui.dto.monitoring.EventInstance;
 import id.co.quadras.qif.ui.dto.monitoring.EventMsg;
 import id.co.quadras.qif.ui.service.monitoring.EventInstanceService;
@@ -45,7 +46,17 @@ public class EventInstanceController {
     @GET
     @Path("/list")
     @Produces(MediaType.TEXT_HTML)
-    public Response selectEventInstance() {
+    public Response list() {
+        Map<String, Object> objectMap = webPage.mapWithLoginUser(request);
+        objectMap.put("modelName", "eventInstance");
+        String content = webPage.stringFromVm(PACKAGE_PAGE_PREFIX + "eventInstance_list.vm", objectMap);
+        return webPage.okResponse(content);
+    }
+
+    @GET
+    @Path("/listAjax")
+    @Produces(MediaType.TEXT_HTML)
+    public Response listAjax() {
         int pageStart = webPage.readParameterPageStart(request);
         int pageSize = webPage.readParameterPageSize(request);
 
@@ -60,7 +71,7 @@ public class EventInstanceController {
         objectMap.put("pagingModel", pagingModel);
         objectMap.put("pageSize", pageSize);
 
-        String content = webPage.stringFromVm(PACKAGE_PAGE_PREFIX + "eventInstance_list.vm", objectMap);
+        String content = webPage.stringFromVm(PACKAGE_PAGE_PREFIX + "eventInstance_listAjax.vm", objectMap);
         return webPage.okResponse(content);
     }
 
