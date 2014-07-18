@@ -6,22 +6,32 @@ import id.co.quadras.qif.core.model.vo.message.QifMessageType;
 import java.util.Map;
 
 /**
- * @author irwin Timestamp : 05/05/2014 20:04
+ * @author irwin Timestamp : 18/07/2014 14:16
  */
 public class QifActivityMessage {
 
-    private final byte[] content;
+    private final Object messageContent;
     private final QifMessageType messageType;
-    private final Map<String, Object> messageHeader;
+    private Map<String, Object> messageHeader;
 
-    public QifActivityMessage(byte[] content, QifMessageType messageType, Map<String, Object> messageHeader) {
-        this.content = content;
+    public QifActivityMessage(Object messageContent, QifMessageType messageType) {
+        if (messageContent != null) {
+            if (QifMessageType.STRING.equals(messageType)) {
+                if (!messageContent.getClass().equals(String.class)) {
+                    throw new IllegalArgumentException("If the messageType is STRING, then the messageContent type must be String");
+                }
+            } else if (QifMessageType.BINARY.equals(messageType)) {
+                if (!messageContent.getClass().equals(byte[].class)) {
+                    throw new IllegalArgumentException("If the messageType is BINARY, then the messageContent type must be byte[]");
+                }
+            }
+        }
+        this.messageContent = messageContent;
         this.messageType = messageType;
-        this.messageHeader = messageHeader;
     }
 
-    public byte[] getContent() {
-        return content;
+    public Object getMessageContent() {
+        return messageContent;
     }
 
     public QifMessageType getMessageType() {
@@ -32,9 +42,12 @@ public class QifActivityMessage {
         return messageHeader;
     }
 
+    public void setMessageHeader(Map<String, Object> messageHeader) {
+        this.messageHeader = messageHeader;
+    }
+
     @Override
     public String toString() {
         return PojoUtil.beanToString(this, false);
     }
-
 }

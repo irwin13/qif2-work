@@ -22,12 +22,15 @@ public class WriteToFile extends AbstractTask {
 
         Map<String, Object> messageHeader = qifActivityMessage.getMessageHeader();
         String fileName = (String) messageHeader.get("fileName");
+        String content = (String) qifActivityMessage.getMessageContent();
         try {
-            fileAdapter.writeCharacter(fileName + ".xml", new String(qifActivityMessage.getContent()));
+            fileAdapter.writeCharacter(fileName + ".xml", content);
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
-        return new QifActivityResult(SUCCESS, null, QifMessageType.TEXT, null);
+        QifActivityResult result = new QifActivityResult(SUCCESS, SUCCESS, QifMessageType.STRING);
+        result.setAdditionalData(messageHeader);
+        return result;
     }
 
 }

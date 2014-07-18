@@ -27,15 +27,19 @@ public class PutToFtp extends AbstractTask {
         mapData.put("fileName", fileName);
 
         FtpAdapter ftpAdapter = new FtpAdapter(qifAdapter);
+        String content = (String) qifActivityMessage.getMessageContent();
         try {
             ftpAdapter.connect();
             ftpAdapter.storeFile(fileName,
-                    new ByteArrayInputStream(qifActivityMessage.getContent()));
+                    new ByteArrayInputStream(content.getBytes()));
             ftpAdapter.disconnect();
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
-        return new QifActivityResult(SUCCESS, null, QifMessageType.TEXT, mapData);
+
+        QifActivityResult result = new QifActivityResult(SUCCESS, SUCCESS, QifMessageType.STRING);
+        result.setAdditionalData(mapData);
+        return result;
     }
 
 }

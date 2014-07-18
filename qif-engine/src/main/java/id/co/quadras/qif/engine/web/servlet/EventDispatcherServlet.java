@@ -1,8 +1,10 @@
 package id.co.quadras.qif.engine.web.servlet;
 
 import com.google.common.base.Strings;
+import com.google.common.net.MediaType;
 import id.co.quadras.qif.core.QifActivity;
 import id.co.quadras.qif.core.QifProcess;
+import id.co.quadras.qif.core.helper.JsonParser;
 import id.co.quadras.qif.core.model.entity.QifEvent;
 import id.co.quadras.qif.core.model.vo.HttpRequestMessage;
 import id.co.quadras.qif.core.model.vo.QifActivityResult;
@@ -12,6 +14,7 @@ import id.co.quadras.qif.engine.guice.EngineFactory;
 import id.co.quadras.qif.engine.service.EventService;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.commons.net.util.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,6 +35,8 @@ public class EventDispatcherServlet extends HttpServlet {
     public static final String EVENT_PATH = "/http-event/";
     public static final String TEXT_PLAIN = "text/plain;charset=UTF-8";
     private static final Logger LOGGER = LoggerFactory.getLogger(EventDispatcherServlet.class);
+
+    private final JsonParser jsonParser = EngineFactory.getInjector().getInstance(JsonParser.class);
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -77,15 +82,15 @@ public class EventDispatcherServlet extends HttpServlet {
         QifActivityResult result;
         try {
             QifProcess qifProcess = (QifProcess) EngineFactory.getInjector().getInstance(Class.forName(qifEvent.getQifProcess()));
-            result = qifProcess.executeProcess(qifEvent, copyHttpServletRequest(request), QifMessageType.TEXT, null);
+            result = qifProcess.executeProcess(qifEvent, copyHttpServletRequest(request), QifMessageType.OBJECT, null);
         } catch (ClassNotFoundException e) {
             LOGGER.error(e.getLocalizedMessage(), e);
             String error = "FATAL : Class not found " + qifEvent.getQifProcess();
-            result = new QifActivityResult(QifActivity.ERROR, error, QifMessageType.TEXT, null);
+            result = new QifActivityResult(QifActivity.ERROR, error, QifMessageType.STRING);
         } catch (Exception e) {
             LOGGER.error(e.getLocalizedMessage(), e);
             String error = ExceptionUtils.getStackTrace(e);
-            result = new QifActivityResult(QifActivity.ERROR, error, QifMessageType.TEXT, null);
+            result = new QifActivityResult(QifActivity.ERROR, error, QifMessageType.STRING);
         }
 
         return result;
@@ -110,7 +115,8 @@ public class EventDispatcherServlet extends HttpServlet {
             for (Map.Entry<String, Object> entry : resultHeader.entrySet()) {
                 LOGGER.debug("set header for HTTP response with key = {} | value = {}", entry.getKey(), entry.getValue());
                 Object value = entry.getValue();
-                response.setHeader(entry.getKey(), (value != null) ? entry.getValue().toString() : null); }
+                response.setHeader(entry.getKey(), (value != null) ? entry.getValue().toString() : null);
+            }
         }
         response.getWriter().println(message);
     }
@@ -121,13 +127,21 @@ public class EventDispatcherServlet extends HttpServlet {
         if (result != null) {
             if (QifActivity.SUCCESS.equals(result.getStatus())) {
                 if (result.getResult() != null) {
-                    String body = result.getResult().toString();
-                    buildResponse(response, HttpServletResponse.SC_OK, TEXT_PLAIN, body, result.getAdditionalData());
+                    if (QifMessageType.STRING.equals(result.getMessageType())) {
+                        String body = (String) result.getResult();
+                        buildResponse(response, HttpServletResponse.SC_OK, TEXT_PLAIN, body, result.getAdditionalData());
+                    } else if (QifMessageType.OBJECT.equals(result.getMessageType())) {
+                        String body = jsonParser.parseToString(false, result.getResult());
+                        buildResponse(response, HttpServletResponse.SC_OK, MediaType.JSON_UTF_8.toString(), body, result.getAdditionalData());
+                    } else if (QifMessageType.BINARY.equals(result.getMessageType())) {
+                        String body = new String(Base64.encodeBase64((byte[]) result.getResult()));
+                        buildResponse(response, HttpServletResponse.SC_OK, MediaType.APPLICATION_BINARY.toString(), body, result.getAdditionalData());
+                    }
                 } else {
                     buildResponse(response, HttpServletResponse.SC_OK, TEXT_PLAIN, QifActivity.SUCCESS, result.getAdditionalData());
                 }
             } else if (QifActivity.ERROR.equals(result.getStatus())) {
-                String body = "500 Internal Server Error. " + result.getResult().toString();
+                String body = "500 Internal Server Error. " + result.getResult();
                 buildResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, TEXT_PLAIN, body, result.getAdditionalData());
             } else {
                 String body = "500 Internal Server Error. Response status should be SUCCESS or ERROR";

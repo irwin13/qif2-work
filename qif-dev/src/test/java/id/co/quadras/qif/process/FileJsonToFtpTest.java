@@ -60,7 +60,7 @@ public class FileJsonToFtpTest extends DbUnitCleanInsert {
         EventService eventService = EngineFactory.getInjector().getInstance(EventService.class);
         QifEvent qifEvent = eventService.selectById("f9bd1632beb04e498f915a0975ae4831");
         LOGGER.debug("qifEvent = {}", qifEvent);
-        QifActivityResult result = qifProcess.executeProcess(qifEvent, null, QifMessageType.TEXT, null);
+        QifActivityResult result = qifProcess.executeProcess(qifEvent, null, QifMessageType.STRING, null);
         Assert.assertNotNull(result);
     }
 }

@@ -13,15 +13,24 @@ public class QifActivityResult {
     private final String status;
     private final Object result;
     private final QifMessageType messageType;
-    private final Map<String, Object> additionalData;
+    private Map<String, Object> additionalData;
 
 
-    public QifActivityResult(String status, Object result, QifMessageType messageType,
-                             Map<String, Object> additionalData) {
+    public QifActivityResult(String status, Object result, QifMessageType messageType) {
+        if (result != null) {
+            if (QifMessageType.STRING.equals(messageType)) {
+                if (!result.getClass().equals(String.class)) {
+                    throw new IllegalArgumentException("If the messageType is STRING, then the result type must be String");
+                }
+            } else if (QifMessageType.BINARY.equals(messageType)) {
+                if (!result.getClass().equals(byte[].class)) {
+                    throw new IllegalArgumentException("If the messageType is BINARY, then the result type must be byte[]");
+                }
+            }
+        }
         this.status = status;
         this.result = result;
         this.messageType = messageType;
-        this.additionalData = additionalData;
     }
 
     public String getStatus() {
@@ -34,6 +43,10 @@ public class QifActivityResult {
 
     public QifMessageType getMessageType() {
         return messageType;
+    }
+
+    public void setAdditionalData(Map<String, Object> additionalData) {
+        this.additionalData = additionalData;
     }
 
     public Map<String, Object> getAdditionalData() {

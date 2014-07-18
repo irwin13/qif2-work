@@ -1,5 +1,8 @@
 package id.co.quadras.qif.ui.controller.monitoring;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.irwin13.winwork.basic.model.PagingModel;
@@ -102,13 +105,22 @@ public class ProcessInstanceController {
         String inputContent = "No content";
         String outputContent = "No content";
 
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+
         TaskInputMsg taskInputMsg = service.getTaskInputMsg(id);
         if (taskInputMsg != null) {
             LOGGER.debug("taskInputMsg = {}", taskInputMsg);
-            if (QifMessageType.TEXT.getName().equalsIgnoreCase(taskInputMsg.getMsgType())) {
+            if (QifMessageType.STRING.getName().equalsIgnoreCase(taskInputMsg.getMsgType())) {
                 inputContent = StringEscapeUtils.escapeXml11(StringCompressor.decompress(taskInputMsg.getInputMessageContent()));
-
                 LOGGER.debug("inputContent = {}", inputContent);
+            } else if (QifMessageType.OBJECT.getName().equalsIgnoreCase(taskInputMsg.getMsgType())) {
+                String decompress = StringCompressor.decompress(taskInputMsg.getInputMessageContent());
+                try {
+                    inputContent = objectMapper.writeValueAsString(decompress);
+                } catch (JsonProcessingException e) {
+                    LOGGER.error(e.getLocalizedMessage(), e);
+                }
             } else {
                 inputContent = "Message in binary format";
             }
@@ -117,9 +129,16 @@ public class ProcessInstanceController {
         TaskOutputMsg taskOutputMsg = service.getTaskOutputMsg(id);
         if (taskOutputMsg != null) {
             LOGGER.debug("taskOutputMsg = {}", taskOutputMsg);
-            if (QifMessageType.TEXT.getName().equalsIgnoreCase(taskOutputMsg.getMsgType())) {
+            if (QifMessageType.STRING.getName().equalsIgnoreCase(taskOutputMsg.getMsgType())) {
                 outputContent = StringEscapeUtils.escapeXml11(StringCompressor.decompress(taskOutputMsg.getOutputMessageContent()));
                 LOGGER.debug("outputContent = {}", outputContent);
+            } else if (QifMessageType.OBJECT.getName().equalsIgnoreCase(taskOutputMsg.getMsgType())) {
+                String decompress = StringCompressor.decompress(taskOutputMsg.getOutputMessageContent());
+                try {
+                    outputContent = objectMapper.writeValueAsString(decompress);
+                } catch (JsonProcessingException e) {
+                    LOGGER.error(e.getLocalizedMessage(), e);
+                }
             } else {
                 outputContent = "Message in binary format";
             }

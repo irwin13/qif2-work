@@ -19,7 +19,7 @@ import java.util.WeakHashMap;
 /**
  * @author irwin Timestamp : 05/06/2014 14:31
  */
-public abstract class BasicFileProcess extends QifProcess {
+public abstract class BasicFileStringContentProcess extends QifProcess {
 
     @Override
     protected QifActivityMessage receiveEvent(QifEvent qifEvent, Object inputMessage, QifMessageType messageType) {
@@ -81,7 +81,8 @@ public abstract class BasicFileProcess extends QifProcess {
                     messageHeader.put("fileName", file.getName());
                     messageHeader.put("fileSize", file.length());
 
-                    qifActivityMessage = new QifActivityMessage(fileContent.getBytes(), QifMessageType.TEXT, messageHeader);
+                    qifActivityMessage = new QifActivityMessage(fileContent, QifMessageType.STRING);
+                    qifActivityMessage.setMessageHeader(messageHeader);
 
                     if (Boolean.valueOf(deleteAfterRead)) {
                         file.delete();

@@ -19,7 +19,7 @@ public class JsonToXml extends AbstractTask {
     @Override
     protected QifActivityResult implementTask(QifActivityMessage qifActivityMessage) {
         String result = null;
-        String json = new String(qifActivityMessage.getContent());
+        String json = (String) qifActivityMessage.getMessageContent();
         logger.debug("json input = {}", json);
         XmlMapper xmlMapper = new XmlMapper();
         Map<String, Object> mapData = new HashMap<String, Object>();
@@ -33,7 +33,10 @@ public class JsonToXml extends AbstractTask {
         } catch (IOException e) {
             logger.error(e.getLocalizedMessage(), e);
         }
+
         logger.debug("xml output = {}", result);
-        return new QifActivityResult(SUCCESS, result, QifMessageType.TEXT, mapData);
+        QifActivityResult qifActivityResult = new QifActivityResult(SUCCESS, result, QifMessageType.STRING);
+        qifActivityResult.setAdditionalData(mapData);
+        return qifActivityResult;
     }
 }

@@ -32,7 +32,7 @@ public class QifEventSingleInstanceJob implements Job {
                 try {
                     QifProcess qifProcess = (QifProcess) EngineFactory.getInjector()
                             .getInstance(Class.forName(qifEvent.getQifProcess()));
-                    qifProcess.executeProcess(qifEvent, null, QifMessageType.TEXT, null);
+                    qifProcess.executeProcess(qifEvent, null, QifMessageType.STRING, null);
                 } catch (Exception e) {
                     LOGGER.error(e.getLocalizedMessage(), e);
                 }

@@ -1,12 +1,14 @@
 package id.co.quadras.qif.ui.controller.monitoring;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.inject.Inject;
 import com.irwin13.winwork.basic.model.PagingModel;
 import com.irwin13.winwork.basic.utilities.PagingUtil;
 import com.irwin13.winwork.basic.utilities.StringCompressor;
 import id.co.quadras.qif.core.model.vo.message.QifMessageType;
 import id.co.quadras.qif.ui.WebPage;
-import id.co.quadras.qif.ui.controller.CrudController;
 import id.co.quadras.qif.ui.dto.monitoring.EventInstance;
 import id.co.quadras.qif.ui.dto.monitoring.EventMsg;
 import id.co.quadras.qif.ui.service.monitoring.EventInstanceService;
@@ -83,9 +85,19 @@ public class EventInstanceController {
         EventMsg eventMsg = service.getEventMsg(id);
         String content = "No content";
         if (eventMsg != null) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+
             LOGGER.debug("eventMsg = {}", eventMsg);
-            if (QifMessageType.TEXT.getName().equalsIgnoreCase(eventMsg.getMsgType())) {
+            if (QifMessageType.STRING.getName().equalsIgnoreCase(eventMsg.getMsgType())) {
                 content = StringEscapeUtils.escapeXml11(StringCompressor.decompress(eventMsg.getMessageContent()));
+            } else if (QifMessageType.OBJECT.getName().equalsIgnoreCase(eventMsg.getMsgType())) {
+                String decompress = StringCompressor.decompress(eventMsg.getMessageContent());
+                try {
+                    content = objectMapper.writeValueAsString(decompress);
+                } catch (JsonProcessingException e) {
+                    LOGGER.error(e.getLocalizedMessage(), e);
+                }
             } else {
                 content = "Message in binary format";
             }

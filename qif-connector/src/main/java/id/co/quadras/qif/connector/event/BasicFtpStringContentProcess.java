@@ -23,7 +23,7 @@ import java.util.WeakHashMap;
 /**
  * @author irwin Timestamp : 05/06/2014 14:32
  */
-public abstract class BasicFtpProcess extends QifProcess {
+public abstract class BasicFtpStringContentProcess extends QifProcess {
 
     @Override
     protected QifActivityMessage receiveEvent(QifEvent qifEvent, Object inputMessage, QifMessageType messageType) {
@@ -93,9 +93,10 @@ public abstract class BasicFtpProcess extends QifProcess {
                     Map<String, Object> messageHeader = new WeakHashMap<String, Object>();
                     messageHeader.put("fileName", ftpFile.getName());
                     messageHeader.put("fileSize", ftpFile.getSize());
-                    messageHeader.put("fileDate", ftpFile.getTimestamp());
+                    messageHeader.put("fileTimestam", ftpFile.getTimestamp());
 
-                    qifActivityMessage = new QifActivityMessage(bos.toByteArray(), QifMessageType.TEXT, messageHeader);
+                    qifActivityMessage = new QifActivityMessage(bos.toString(), QifMessageType.STRING);
+                    qifActivityMessage.setMessageHeader(messageHeader);
 
                     if (Boolean.valueOf(deleteAfterRead)) {
                         ftpClient.deleteFile(folderName + ftpFile.getName());
