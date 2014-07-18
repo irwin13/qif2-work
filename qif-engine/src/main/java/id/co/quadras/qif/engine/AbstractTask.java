@@ -2,6 +2,7 @@ package id.co.quadras.qif.engine;
 
 import com.google.inject.Inject;
 import id.co.quadras.qif.core.QifTask;
+import id.co.quadras.qif.core.QifUtil;
 import id.co.quadras.qif.core.exception.QifException;
 import id.co.quadras.qif.core.model.entity.QifAdapter;
 import id.co.quadras.qif.core.model.entity.QifAdapterProperty;
@@ -22,17 +23,7 @@ public abstract class AbstractTask extends QifTask {
     }
 
     protected String getPropertyValue(QifAdapter qifAdapter, String propertyKey) {
-        List<QifAdapterProperty> list = qifAdapter.getQifAdapterPropertyList();
-        String result = null;
-        if (list == null && list.isEmpty()) {
-            throw new QifException("FATAL : empty property list on QifAdapter " + qifAdapter.getName());
-        } else {
-            for (QifAdapterProperty property : qifAdapter.getQifAdapterPropertyList()) {
-                if (property.getPropertyKey().equals(propertyKey)) {
-                    result = property.getPropertyValue();
-                }
-            }
-        }
-        return result;
+        QifAdapterProperty qifAdapterProperty = QifUtil.getAdapterProperty(qifAdapter, propertyKey);
+        return (qifAdapterProperty == null) ? null : qifAdapterProperty.getPropertyValue();
     }
 }

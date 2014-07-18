@@ -264,7 +264,7 @@ public abstract class QifProcess implements QifActivity {
 
     protected String getPropertyValue(QifEvent qifEvent, String propertyKey) {
         QifEventProperty qifEventProperty = QifUtil.getEventProperty(qifEvent, propertyKey);
-        return qifEventProperty.getPropertyValue();
+        return (qifEventProperty == null) ? null : qifEventProperty.getPropertyValue();
     }
 
     private void addCounterEvent(QifEvent qifEvent) {
