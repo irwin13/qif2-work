@@ -36,7 +36,7 @@ public class JsonToXml extends AbstractTask {
 
         logger.debug("xml output = {}", result);
         QifActivityResult qifActivityResult = new QifActivityResult(SUCCESS, result, QifMessageType.STRING);
-        qifActivityResult.setAdditionalData(mapData);
+        qifActivityResult.setActivityData(mapData);
         return qifActivityResult;
     }
 }

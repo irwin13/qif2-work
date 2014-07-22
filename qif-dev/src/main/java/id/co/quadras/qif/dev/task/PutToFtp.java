@@ -38,7 +38,7 @@ public class PutToFtp extends AbstractTask {
         }
 
         QifActivityResult result = new QifActivityResult(SUCCESS, SUCCESS, QifMessageType.STRING);
-        result.setAdditionalData(mapData);
+        result.setActivityData(mapData);
         return result;
     }
 

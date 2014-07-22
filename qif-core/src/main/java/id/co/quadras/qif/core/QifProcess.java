@@ -6,6 +6,7 @@ import com.irwin13.winwork.basic.WinWorkConstants;
 import com.irwin13.winwork.basic.utilities.StringUtil;
 import com.irwin13.winwork.basic.utilities.WinWorkUtil;
 import id.co.quadras.qif.core.helper.JsonParser;
+import id.co.quadras.qif.core.helper.JsonPrettyPrint;
 import id.co.quadras.qif.core.helper.QifTransactionCounter;
 import id.co.quadras.qif.core.helper.queue.*;
 import id.co.quadras.qif.core.model.entity.QifEvent;
@@ -42,6 +43,9 @@ public abstract class QifProcess implements QifActivity {
 
     @Inject
     protected JsonParser jsonParser;
+
+    @Inject
+    protected JsonPrettyPrint jsonPrettyPrint;
 
     @Inject
     protected QifTransactionCounter transactionCounter;
@@ -136,7 +140,8 @@ public abstract class QifProcess implements QifActivity {
                     inputMsg.setLastUpdateDate(now);
                     inputMsg.setInputMessageContent(QifUtil
                             .convertObjectContentToString(
-                                    qifActivityMessage.getMessageContent(), qifActivityMessage.getMessageType(), jsonParser));
+                                    qifActivityMessage.getMessageContent(), qifActivityMessage.getMessageType(),
+                                    jsonPrettyPrint.getObjectMapper()));
                     inputMessageQueue.put(inputMsg);
                 }
             } else {
@@ -161,9 +166,9 @@ public abstract class QifProcess implements QifActivity {
 
             if (qifActivityResult != null) {
                 activityStatus = qifActivityResult.getStatus();
-                if (qifActivityResult.getAdditionalData() != null) {
+                if (qifActivityResult.getActivityData() != null) {
                     activityLogDataList = new LinkedList<QifActivityLogData>();
-                    for (Map.Entry<String, Object> entry : qifActivityResult.getAdditionalData().entrySet()) {
+                    for (Map.Entry<String, Object> entry : qifActivityResult.getActivityData().entrySet()) {
                         QifActivityLogData logData = new QifActivityLogData();
                         logData.setDataKey(entry.getKey());
                         Object value = entry.getValue();
@@ -199,7 +204,8 @@ public abstract class QifProcess implements QifActivity {
                     outputMessage.setLastUpdateDate(now);
                     outputMessage.setOutputMessageContent(QifUtil
                             .convertObjectContentToString(
-                                    qifActivityResult.getResult(), qifActivityResult.getMessageType(), jsonParser));
+                                    qifActivityResult.getResult(), qifActivityResult.getMessageType(),
+                                    jsonPrettyPrint.getObjectMapper()));
                     outputMessageQueue.put(outputMessage);
                 }
             } else {
@@ -244,7 +250,7 @@ public abstract class QifProcess implements QifActivity {
                 logContent.setCreateDate(now);
                 logContent.setLastUpdateDate(now);
                 logContent.setMessageContent(QifUtil
-                        .convertObjectContentToString(eventMessage, messageType, jsonParser));
+                        .convertObjectContentToString(eventMessage, messageType, jsonPrettyPrint.getObjectMapper()));
                 messageQueue.put(logContent);
             } else {
                 logger.debug("Process {} keepMessageContent disabled", getClass().getName());

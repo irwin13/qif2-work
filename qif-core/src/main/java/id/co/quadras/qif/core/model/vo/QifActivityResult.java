@@ -13,7 +13,7 @@ public class QifActivityResult {
     private final String status;
     private final Object result;
     private final QifMessageType messageType;
-    private Map<String, Object> additionalData;
+    private Map<String, Object> activityData;
 
 
     public QifActivityResult(String status, Object result, QifMessageType messageType) {
@@ -45,12 +45,12 @@ public class QifActivityResult {
         return messageType;
     }
 
-    public void setAdditionalData(Map<String, Object> additionalData) {
-        this.additionalData = additionalData;
+    public void setActivityData(Map<String, Object> activityData) {
+        this.activityData = activityData;
     }
 
-    public Map<String, Object> getAdditionalData() {
-        return additionalData;
+    public Map<String, Object> getActivityData() {
+        return activityData;
     }
 
     @Override

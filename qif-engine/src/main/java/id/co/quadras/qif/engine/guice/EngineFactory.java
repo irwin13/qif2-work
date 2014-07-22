@@ -60,7 +60,7 @@ public final class EngineFactory {
 
         LOGGER.info("=== Starting Guice ... ===");
         List<AbstractModule> moduleList = new LinkedList<AbstractModule>();
-        moduleList.add(new SharedModule(qif));
+        moduleList.add(new QifSharedModule(qif));
         moduleList.add(new DaoModule());
         moduleList.add(new ServiceModule());
         moduleList.add(new TaskModule(TaskRegister.getTaskSet()));

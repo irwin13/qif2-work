@@ -129,23 +129,23 @@ public class EventDispatcherServlet extends HttpServlet {
                 if (result.getResult() != null) {
                     if (QifMessageType.STRING.equals(result.getMessageType())) {
                         String body = (String) result.getResult();
-                        buildResponse(response, HttpServletResponse.SC_OK, TEXT_PLAIN, body, result.getAdditionalData());
+                        buildResponse(response, HttpServletResponse.SC_OK, TEXT_PLAIN, body, result.getActivityData());
                     } else if (QifMessageType.OBJECT.equals(result.getMessageType())) {
                         String body = jsonParser.parseToString(false, result.getResult());
-                        buildResponse(response, HttpServletResponse.SC_OK, MediaType.JSON_UTF_8.toString(), body, result.getAdditionalData());
+                        buildResponse(response, HttpServletResponse.SC_OK, MediaType.JSON_UTF_8.toString(), body, result.getActivityData());
                     } else if (QifMessageType.BINARY.equals(result.getMessageType())) {
                         String body = new String(Base64.encodeBase64((byte[]) result.getResult()));
-                        buildResponse(response, HttpServletResponse.SC_OK, MediaType.APPLICATION_BINARY.toString(), body, result.getAdditionalData());
+                        buildResponse(response, HttpServletResponse.SC_OK, MediaType.APPLICATION_BINARY.toString(), body, result.getActivityData());
                     }
                 } else {
-                    buildResponse(response, HttpServletResponse.SC_OK, TEXT_PLAIN, QifActivity.SUCCESS, result.getAdditionalData());
+                    buildResponse(response, HttpServletResponse.SC_OK, TEXT_PLAIN, QifActivity.SUCCESS, result.getActivityData());
                 }
             } else if (QifActivity.ERROR.equals(result.getStatus())) {
                 String body = "500 Internal Server Error. " + result.getResult();
-                buildResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, TEXT_PLAIN, body, result.getAdditionalData());
+                buildResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, TEXT_PLAIN, body, result.getActivityData());
             } else {
                 String body = "500 Internal Server Error. Response status should be SUCCESS or ERROR";
-                buildResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, TEXT_PLAIN, body, result.getAdditionalData());
+                buildResponse(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, TEXT_PLAIN, body, result.getActivityData());
             }
         } else {
             buildResponse(response, HttpServletResponse.SC_OK, TEXT_PLAIN, null, null);

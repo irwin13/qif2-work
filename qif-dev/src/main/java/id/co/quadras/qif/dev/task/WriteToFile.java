@@ -29,7 +29,7 @@ public class WriteToFile extends AbstractTask {
             logger.error(e.getLocalizedMessage(), e);
         }
         QifActivityResult result = new QifActivityResult(SUCCESS, SUCCESS, QifMessageType.STRING);
-        result.setAdditionalData(messageHeader);
+        result.setActivityData(messageHeader);
         return result;
     }
 

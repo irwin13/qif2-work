@@ -1,8 +1,8 @@
 package id.co.quadras.qif.core;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Preconditions;
 import com.irwin13.winwork.basic.utilities.StringCompressor;
-import id.co.quadras.qif.core.helper.JsonParser;
 import id.co.quadras.qif.core.model.entity.QifAdapter;
 import id.co.quadras.qif.core.model.entity.QifAdapterProperty;
 import id.co.quadras.qif.core.model.entity.QifEvent;
@@ -48,14 +48,14 @@ public class QifUtil {
         return null;
     }
 
-    public static String convertObjectContentToString(Object content, QifMessageType messageType, JsonParser jsonParser) {
+    public static String convertObjectContentToString(Object content, QifMessageType messageType, ObjectMapper objectMapper) {
         String result = null;
 
         if (QifMessageType.STRING.equals(messageType)) {
             result = StringCompressor.compress((String) content);
         } else if (QifMessageType.OBJECT.equals(messageType)) {
             try {
-                 result = jsonParser.parseToString(true, content);
+                 result = StringCompressor.compress(objectMapper.writeValueAsString(content));
             } catch (IOException e) {
                 LOGGER.error(e.getLocalizedMessage(), e);
                 result = convertThrowableToJson(e);

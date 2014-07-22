@@ -5,6 +5,7 @@ import com.irwin13.winwork.basic.WinWorkConstants;
 import com.irwin13.winwork.basic.utilities.StringUtil;
 import com.irwin13.winwork.basic.utilities.WinWorkUtil;
 import id.co.quadras.qif.core.helper.JsonParser;
+import id.co.quadras.qif.core.helper.JsonPrettyPrint;
 import id.co.quadras.qif.core.helper.QifTransactionCounter;
 import id.co.quadras.qif.core.helper.queue.ActivityLogDataQueue;
 import id.co.quadras.qif.core.helper.queue.ActivityLogInputMsgQueue;
@@ -45,6 +46,9 @@ public abstract class QifTask implements QifActivity {
 
     @Inject
     protected JsonParser jsonParser;
+
+    @Inject
+    protected JsonPrettyPrint jsonPrettyPrint;
 
     /**
      * Typical execution will be like this :
@@ -99,9 +103,9 @@ public abstract class QifTask implements QifActivity {
 
             if (qifActivityResult != null) {
                 activityStatus = qifActivityResult.getStatus();
-                if (qifActivityResult.getAdditionalData() != null) {
+                if (qifActivityResult.getActivityData() != null) {
                     activityLogDataList = new LinkedList<QifActivityLogData>();
-                    for (Map.Entry<String, Object> entry : qifActivityResult.getAdditionalData().entrySet()) {
+                    for (Map.Entry<String, Object> entry : qifActivityResult.getActivityData().entrySet()) {
                         logger.debug("log data key = {} with value = {}", entry.getKey(), entry.getValue());
 
                         QifActivityLogData logData = new QifActivityLogData();
@@ -160,7 +164,8 @@ public abstract class QifTask implements QifActivity {
                     inputMessage.setLastUpdateDate(now);
                     inputMessage.setInputMessageContent(QifUtil
                             .convertObjectContentToString(
-                                    qifActivityMessage.getMessageContent(), qifActivityMessage.getMessageType(), jsonParser));
+                                    qifActivityMessage.getMessageContent(), qifActivityMessage.getMessageType(),
+                                    jsonPrettyPrint.getObjectMapper()));
 
                     inputMessageQueue.put(inputMessage);
                 }
@@ -177,7 +182,8 @@ public abstract class QifTask implements QifActivity {
                     outputMessage.setLastUpdateDate(now);
                     outputMessage.setOutputMessageContent(QifUtil
                             .convertObjectContentToString(
-                                    qifActivityResult.getResult(), qifActivityResult.getMessageType(), jsonParser));
+                                    qifActivityResult.getResult(), qifActivityResult.getMessageType(),
+                                    jsonPrettyPrint.getObjectMapper()));
 
                     outputMessageQueue.put(outputMessage);
                 }
