@@ -16,6 +16,7 @@ import id.co.quadras.qif.ui.dto.monitoring.TaskInputMsg;
 import id.co.quadras.qif.ui.dto.monitoring.TaskOutputMsg;
 import id.co.quadras.qif.ui.service.monitoring.ProcessInstanceService;
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -143,6 +144,14 @@ public class ProcessInstanceController {
                 outputContent = "Message in binary format";
             }
         }
+
+        inputContent = inputContent.replaceAll("(\\\\r\\\\n|\\\\n)", "<br />");
+        inputContent = inputContent.replaceAll("\\\\", "");
+        inputContent = inputContent.replaceAll("\t", "&nbsp;&nbsp;&nbsp;&nbsp;");
+
+        outputContent = outputContent.replaceAll("(\\\\r\\\\n|\\\\n)", "<br />");
+        outputContent = outputContent.replaceAll("\\\\", "");
+        outputContent = outputContent.replaceAll("\t", "&nbsp;&nbsp;&nbsp;&nbsp;");
 
         String allContent = inputContentTitle + inputContent + "<br />" + outputContentTitle + outputContent;
         return webPage.okResponse(allContent);

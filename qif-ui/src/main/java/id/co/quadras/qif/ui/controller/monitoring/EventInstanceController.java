@@ -13,6 +13,7 @@ import id.co.quadras.qif.ui.dto.monitoring.EventInstance;
 import id.co.quadras.qif.ui.dto.monitoring.EventMsg;
 import id.co.quadras.qif.ui.service.monitoring.EventInstanceService;
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -102,6 +103,11 @@ public class EventInstanceController {
                 content = "Message in binary format";
             }
         }
+
+        content = content.replaceAll("(\\\\r\\\\n|\\\\n)", "<br />");
+        content = content.replaceAll("\\\\", "");
+        content = content.replaceAll("\t", "&nbsp;&nbsp;&nbsp;&nbsp;");
+
         return webPage.okResponse(content);
     }
 
