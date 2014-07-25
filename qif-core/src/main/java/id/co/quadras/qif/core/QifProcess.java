@@ -76,7 +76,7 @@ public abstract class QifProcess implements QifActivity {
     }
     protected QifEventLog getQifEventLog() { return qifEventLog; }
 
-    protected abstract QifActivityMessage receiveEvent(QifEvent qifEvent, Object eventMessage, QifMessageType messageType);
+    protected abstract QifActivityMessage receiveEvent(QifEvent qifEvent, Object eventMessage, QifMessageType messageType) throws Exception;
     protected abstract QifActivityResult implementProcess(QifActivityMessage qifActivityMessage) throws Exception;
 
     public QifActivityResult executeProcess(QifEvent qifEvent, Object eventMessage, QifMessageType messageType, QifActivityLog parentProcessLog) throws Exception {
