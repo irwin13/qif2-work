@@ -7,10 +7,7 @@ import id.co.quadras.qif.core.exception.QifException;
 import id.co.quadras.qif.core.model.entity.QifEvent;
 import id.co.quadras.qif.core.model.vo.event.EventFtp;
 import id.co.quadras.qif.core.model.vo.message.QifMessageType;
-import org.apache.commons.net.ftp.FTP;
-import org.apache.commons.net.ftp.FTPClient;
-import org.apache.commons.net.ftp.FTPFile;
-import org.apache.commons.net.ftp.FTPReply;
+import org.apache.commons.net.ftp.*;
 import org.joda.time.Duration;
 
 import java.io.ByteArrayOutputStream;
@@ -62,11 +59,13 @@ public abstract class BasicFtpStringContentProcess extends QifProcess {
             }
 
             FTPFile[] ftpFiles;
+            FTPListParseEngine parseEngine;
             if (Strings.isNullOrEmpty(folderName)) {
-                folderName = "";
-                ftpFiles = ftpClient.listFiles();
+                parseEngine = ftpClient.initiateListParsing();
+                ftpFiles = parseEngine.getNext(maxFetch);
             } else {
-                ftpFiles = ftpClient.listFiles(folderName);
+                parseEngine = ftpClient.initiateListParsing(folderName);
+                ftpFiles = parseEngine.getNext(maxFetch);
             }
 
             if (ftpFiles != null && ftpFiles.length > 0) {
@@ -93,7 +92,7 @@ public abstract class BasicFtpStringContentProcess extends QifProcess {
                     Map<String, Object> messageHeader = new WeakHashMap<String, Object>();
                     messageHeader.put("fileName", ftpFile.getName());
                     messageHeader.put("fileSize", ftpFile.getSize());
-                    messageHeader.put("fileTimestam", ftpFile.getTimestamp());
+                    messageHeader.put("fileTimestamp", ftpFile.getTimestamp());
 
                     qifActivityMessage = new QifActivityMessage(bos.toString(), QifMessageType.STRING);
                     qifActivityMessage.setMessageHeader(messageHeader);
