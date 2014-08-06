@@ -39,7 +39,7 @@ public class EventLogMsgQueueReaderImp implements EventLogMsgQueueReader {
                 break loopQueue;
             }
         }
-        LOGGER.debug("total message = {}", result.size());
+        LOGGER.trace("total message = {}", result.size());
         return result;
     }
 

@@ -60,7 +60,7 @@ public class FtpXmlToFileTest extends DbUnitCleanInsert {
         EventService eventService = EngineFactory.getInjector().getInstance(EventService.class);
         QifEvent qifEvent = eventService.selectById("f9bd1632beb04e498f915a0975ae4832");
         LOGGER.debug("qifEvent = {}", qifEvent);
-        QifActivityResult result = qifProcess.executeProcess(qifEvent, null, QifMessageType.STRING, null);
+        QifActivityResult result = qifProcess.executeEvent(qifEvent, null, QifMessageType.STRING);
         Assert.assertNotNull(result);
     }
 }

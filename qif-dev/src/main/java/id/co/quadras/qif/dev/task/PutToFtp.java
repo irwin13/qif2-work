@@ -5,7 +5,7 @@ import id.co.quadras.qif.core.QifActivityMessage;
 import id.co.quadras.qif.core.model.entity.QifAdapter;
 import id.co.quadras.qif.core.model.vo.QifActivityResult;
 import id.co.quadras.qif.core.model.vo.message.QifMessageType;
-import id.co.quadras.qif.engine.AbstractTask;
+import id.co.quadras.qif.engine.task.AbstractTask;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

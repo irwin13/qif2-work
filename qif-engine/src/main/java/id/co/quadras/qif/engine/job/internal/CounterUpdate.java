@@ -7,8 +7,8 @@ import id.co.quadras.qif.core.helper.QifTransactionCounter;
 import id.co.quadras.qif.core.helper.imp.QifTransactionCounterGuava;
 import id.co.quadras.qif.core.model.entity.QifCounter;
 import id.co.quadras.qif.core.model.entity.QifEvent;
-import id.co.quadras.qif.engine.ProcessRegister;
-import id.co.quadras.qif.engine.TaskRegister;
+import id.co.quadras.qif.engine.process.ProcessRegister;
+import id.co.quadras.qif.engine.task.TaskRegister;
 import id.co.quadras.qif.engine.guice.EngineFactory;
 import id.co.quadras.qif.engine.service.CounterService;
 import id.co.quadras.qif.engine.service.EventService;
@@ -49,7 +49,7 @@ public class CounterUpdate implements Job {
             int count = mapCounter.get(counter.getSequenceKey());
             QifTransactionCounterGuava counterGuava = (QifTransactionCounterGuava) transactionCounter;
             counterGuava.subtract(counter.getSequenceKey(), count);
-            LOGGER.debug("subtract key {} with count {}", counter.getSequenceKey(), count);
+            LOGGER.trace("subtract key {} with count {}", counter.getSequenceKey(), count);
         }
     }
 

@@ -82,7 +82,7 @@ public class EventDispatcherServlet extends HttpServlet {
         QifActivityResult result;
         try {
             QifProcess qifProcess = (QifProcess) EngineFactory.getInjector().getInstance(Class.forName(qifEvent.getQifProcess()));
-            result = qifProcess.executeProcess(qifEvent, copyHttpServletRequest(request), QifMessageType.OBJECT, null);
+            result = qifProcess.executeEvent(qifEvent, copyHttpServletRequest(request), QifMessageType.OBJECT);
         } catch (ClassNotFoundException e) {
             LOGGER.error(e.getLocalizedMessage(), e);
             String error = "FATAL : Class not found " + qifEvent.getQifProcess();

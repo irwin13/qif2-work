@@ -39,7 +39,7 @@ public class ActivityLogDataQueueReaderImp implements ActivityLogDataQueueReader
                 break loopQueue;
             }
         }
-        LOGGER.debug("total message = {}", result.size());
+        LOGGER.trace("total message = {}", result.size());
         return result;
     }
 }

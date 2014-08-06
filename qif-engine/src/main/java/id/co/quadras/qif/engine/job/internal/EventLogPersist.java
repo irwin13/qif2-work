@@ -39,8 +39,8 @@ public class EventLogPersist implements Job {
         }
 
         List<QifEventLog> list = queueReader.getLogList(maxFetch);
-        LOGGER.debug("maxFetch = {}", maxFetch);
-        LOGGER.debug("list size = {}", list.size());
+        LOGGER.trace("maxFetch = {}", maxFetch);
+        LOGGER.trace("list size = {}", list.size());
 
         if (!list.isEmpty()) {
             service.batchInsert(list);

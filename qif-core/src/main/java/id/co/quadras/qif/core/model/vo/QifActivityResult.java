@@ -15,7 +15,6 @@ public class QifActivityResult {
     private final QifMessageType messageType;
     private Map<String, Object> activityData;
 
-
     public QifActivityResult(String status, Object result, QifMessageType messageType) {
         if (result != null) {
             if (QifMessageType.STRING.equals(messageType)) {

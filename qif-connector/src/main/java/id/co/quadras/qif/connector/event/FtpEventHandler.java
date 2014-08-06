@@ -1,52 +1,54 @@
 package id.co.quadras.qif.connector.event;
 
 import com.google.common.base.Strings;
-import id.co.quadras.qif.core.QifActivityMessage;
-import id.co.quadras.qif.core.QifProcess;
+import id.co.quadras.qif.core.QifEventHandler;
 import id.co.quadras.qif.core.exception.QifException;
 import id.co.quadras.qif.core.model.entity.QifEvent;
 import id.co.quadras.qif.core.model.vo.event.EventFtp;
-import id.co.quadras.qif.core.model.vo.message.QifMessageType;
+import id.co.quadras.qif.core.model.vo.message.FileMessage;
 import org.apache.commons.net.ftp.*;
 import org.joda.time.Duration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Map;
-import java.util.WeakHashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author irwin Timestamp : 05/06/2014 14:32
  */
-public abstract class BasicFtpStringContentProcess extends QifProcess {
+public class FtpEventHandler extends QifEventHandler {
 
-    @Override
-    protected QifActivityMessage receiveEvent(QifEvent qifEvent, Object inputMessage, QifMessageType messageType) {
-        return getFile(qifEvent);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FtpEventHandler.class);
+
+    public FtpEventHandler(QifEvent qifEvent, Object eventMessage) {
+        super(qifEvent, eventMessage);
     }
 
-    private QifActivityMessage getFile(final QifEvent qifEvent) {
+    public List<FileMessage> getFiles() {
 
-        QifActivityMessage qifActivityMessage = null;
+        List<FileMessage> fileMessageList = new LinkedList<FileMessage>();
 
         String host = getPropertyValue(qifEvent, EventFtp.HOST.getName());
         int port = Integer.valueOf(getPropertyValue(qifEvent, EventFtp.PORT.getName()));
         String user = getPropertyValue(qifEvent, EventFtp.USER.getName());
         String password = getPropertyValue(qifEvent, EventFtp.PASSWORD.getName());
-        logger.debug("FTP host = {}", host);
-        logger.debug("FTP port = {}", port);
-        logger.debug("FTP user = {}", user);
+        LOGGER.debug("FTP host = {}", host);
+        LOGGER.debug("FTP port = {}", port);
+        LOGGER.debug("FTP user = {}", user);
 
         String deleteAfterRead = getPropertyValue(qifEvent, EventFtp.DELETE_AFTER_READ.getName());
         String folderName = getPropertyValue(qifEvent, EventFtp.FOLDER.getName());
         final String endWith = getPropertyValue(qifEvent, EventFtp.END_WITH.getName());
         int maxFetch = Integer.valueOf(getPropertyValue(qifEvent, EventFtp.MAX_FETCH.getName()));
-        logger.debug("FTP deleteAfterRead = {}", deleteAfterRead);
-        logger.debug("FTP folderName = {}", folderName);
-        logger.debug("FTP endWith = {}", endWith);
-        logger.debug("FTP maxFetch [DEPRECATED] = {}", maxFetch);
+        LOGGER.debug("FTP deleteAfterRead = {}", deleteAfterRead);
+        LOGGER.debug("FTP folderName = {}", folderName);
+        LOGGER.debug("FTP endWith = {}", endWith);
+        LOGGER.debug("FTP maxFetch = {}", maxFetch);
 
         FTPClient ftpClient = new FTPClient();
 
@@ -78,33 +80,39 @@ public abstract class BasicFtpStringContentProcess extends QifProcess {
                                 .compareTo(o2.getTimestamp().getTimeInMillis());
                     }});
 
-                FTPFile ftpFile = ftpFiles[0]; // just take 1 file at a time
-                logger.debug("ftpFile name = {}", ftpFile.getName());
-                logger.debug("ftpFile size = {}", ftpFile.getSize());
-                logger.debug("ftpFile timestamp = {}", ftpFile.getTimestamp().getTime());
-                if (ftpFile.getName().endsWith(endWith) &&
-                        isFileReady(qifEvent, ftpFile.getTimestamp().getTimeInMillis())) {
+                for (int i = 0; i < ftpFiles.length; i++) {
+                    FTPFile ftpFile = ftpFiles[i];
+                    LOGGER.debug("ftpFile name = {}", ftpFile.getName());
+                    if (ftpFile.getName().endsWith(endWith) &&
+                            isFileReady(ftpFile.getTimestamp().getTimeInMillis())) {
 
-                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                    ftpClient.retrieveFile(folderName + ftpFile.getName(), bos);
-                    logger.debug("file content = {}", bos.toString());
+                        FileMessage fileMessage = new FileMessage();
 
-                    Map<String, Object> messageHeader = new WeakHashMap<String, Object>();
-                    messageHeader.put("fileName", ftpFile.getName());
-                    messageHeader.put("fileSize", ftpFile.getSize());
-                    messageHeader.put("fileTimestamp", ftpFile.getTimestamp());
+                        fileMessage.setFileName(ftpFile.getName());
+                        fileMessage.setFileSize(ftpFile.getSize());
+                        fileMessage.setFileTimestamp(ftpFile.getTimestamp().getTime());
 
-                    qifActivityMessage = new QifActivityMessage(bos.toString(), QifMessageType.STRING);
-                    qifActivityMessage.setMessageHeader(messageHeader);
+                        fileMessage.setQifEventId(qifEvent.getId());
+                        fileMessage.setQifEventName(qifEvent.getName());
+                        fileMessage.setQifEventInterface(qifEvent.getEventInterface());
+                        fileMessage.setQifEventType(qifEvent.getEventType());
 
-                    if (Boolean.valueOf(deleteAfterRead)) {
-                        ftpClient.deleteFile(folderName + ftpFile.getName());
-                        logger.debug("delete file after read {}", folderName + ftpFile.getName());
+                        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                        ftpClient.retrieveFile(folderName + ftpFile.getName(), bos);
+                        fileMessage.setFileContent(bos.toString());
+
+                        LOGGER.debug("add fileMessage = {}", fileMessage);
+                        fileMessageList.add(fileMessage);
+
+                        if (Boolean.valueOf(deleteAfterRead)) {
+                            ftpClient.deleteFile(folderName + ftpFile.getName());
+                            LOGGER.debug("delete file after read {}", folderName + ftpFile.getName());
+                        }
                     }
                 }
             }
         } catch (IOException e) {
-            logger.error(e.getLocalizedMessage(), e);
+            LOGGER.error(e.getLocalizedMessage(), e);
             throw new QifException("Error : " + e.getMessage());
         } finally {
             if (ftpClient.isConnected()) {
@@ -112,20 +120,20 @@ public abstract class BasicFtpStringContentProcess extends QifProcess {
                     ftpClient.logout();
                     ftpClient.disconnect();
                 } catch (IOException e) {
-                    logger.error(e.getLocalizedMessage(), e);
+                    LOGGER.error(e.getLocalizedMessage(), e);
                 }
             }
         }
 
-        return qifActivityMessage;
+        return fileMessageList;
     }
 
-    private boolean isFileReady(QifEvent qifEvent, long fileLastModified) {
+    private boolean isFileReady(long fileLastModified) {
         Duration duration = new Duration(System.currentTimeMillis() - fileLastModified);
         long lastModifiedIntervalSeconds = Long.valueOf(getPropertyValue(qifEvent,
                 EventFtp.LAST_MODIFIED_INTERVAL_SECONDS.getName()));
         long period = duration.getStandardSeconds();
-        logger.debug("lastModifiedIntervalSeconds = {} seconds", period);
+        LOGGER.debug("lastModifiedIntervalSeconds = {} seconds", period);
         if (period > lastModifiedIntervalSeconds) {
             return true;
         } else {

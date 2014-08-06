@@ -1,4 +1,4 @@
-package id.co.quadras.qif.engine;
+package id.co.quadras.qif.engine.task;
 
 import com.google.inject.Inject;
 import id.co.quadras.qif.core.QifTask;

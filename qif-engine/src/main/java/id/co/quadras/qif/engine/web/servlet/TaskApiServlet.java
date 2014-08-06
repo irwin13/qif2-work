@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableSortedSet;
 import com.google.common.net.MediaType;
 import id.co.quadras.qif.core.QifTask;
 import id.co.quadras.qif.core.helper.JsonParser;
-import id.co.quadras.qif.engine.TaskRegister;
+import id.co.quadras.qif.engine.task.TaskRegister;
 import id.co.quadras.qif.engine.guice.EngineFactory;
 
 import javax.servlet.ServletException;

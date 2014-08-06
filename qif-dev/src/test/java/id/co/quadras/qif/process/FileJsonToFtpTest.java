@@ -3,10 +3,10 @@ package id.co.quadras.qif.process;
 import com.irwin13.winwork.basic.config.WinWorkConfig;
 import com.irwin13.winwork.basic.test.DbUnitCleanInsert;
 import id.co.quadras.qif.core.QifProcess;
-import id.co.quadras.qif.core.model.vo.message.QifMessageType;
-import id.co.quadras.qif.dev.process.FileJsonToFtp;
 import id.co.quadras.qif.core.model.entity.QifEvent;
 import id.co.quadras.qif.core.model.vo.QifActivityResult;
+import id.co.quadras.qif.core.model.vo.message.QifMessageType;
+import id.co.quadras.qif.dev.process.FileJsonToFtp;
 import id.co.quadras.qif.engine.guice.EngineFactory;
 import id.co.quadras.qif.engine.service.EventService;
 import org.junit.Assert;
@@ -60,7 +60,7 @@ public class FileJsonToFtpTest extends DbUnitCleanInsert {
         EventService eventService = EngineFactory.getInjector().getInstance(EventService.class);
         QifEvent qifEvent = eventService.selectById("f9bd1632beb04e498f915a0975ae4831");
         LOGGER.debug("qifEvent = {}", qifEvent);
-        QifActivityResult result = qifProcess.executeProcess(qifEvent, null, QifMessageType.STRING, null);
+        QifActivityResult result = qifProcess.executeEvent(qifEvent, null, QifMessageType.STRING);
         Assert.assertNotNull(result);
     }
 }

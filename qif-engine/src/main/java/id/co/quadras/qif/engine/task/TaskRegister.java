@@ -1,8 +1,8 @@
-package id.co.quadras.qif.engine;
+package id.co.quadras.qif.engine.task;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.reflect.ClassPath;
-import id.co.quadras.qif.core.QifProcess;
+import id.co.quadras.qif.core.QifTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,14 +14,14 @@ import java.util.Set;
 /**
  * @author irwin Timestamp : 05/06/2014 20:01
  */
-public class ProcessRegister {
+public class TaskRegister {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProcessRegister.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TaskRegister.class);
 
-    private static Set<Class<? extends QifProcess>> processSet;
+    private static Set<Class<? extends QifTask>> taskSet;
 
     public static void init(String rootPackage) {
-        if (processSet == null) {
+        if (taskSet == null) {
             ClassPath classPath;
             try {
                 classPath = ClassPath.from(Thread.currentThread().getContextClassLoader());
@@ -30,18 +30,19 @@ public class ProcessRegister {
                 throw new RuntimeException(e.getMessage());
             }
 
-            ImmutableSet<ClassPath.ClassInfo> immutableSetProcess = classPath.getTopLevelClassesRecursive(rootPackage);
+            ImmutableSet<ClassPath.ClassInfo> immutableSetTask = classPath.getTopLevelClassesRecursive(rootPackage);
 
-            processSet = new HashSet<Class<? extends QifProcess>>();
-            for (ClassPath.ClassInfo classInfo : immutableSetProcess) {
+            taskSet = new HashSet<Class<? extends QifTask>>();
+            for (ClassPath.ClassInfo classInfo : immutableSetTask) {
                 if (!Modifier.isAbstract(classInfo.load().getModifiers())) {
-                    processSet.add((Class<? extends QifProcess>) classInfo.load());
+                    taskSet.add((Class<? extends QifTask>) classInfo.load());
                 }
             }
         }
     }
 
-    public static Set<Class<? extends QifProcess>> getProcessSet() {
-        return processSet;
+    public static Set<Class<? extends QifTask>> getTaskSet() {
+        return taskSet;
     }
+
 }
