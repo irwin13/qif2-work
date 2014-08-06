@@ -24,7 +24,8 @@ public class FileJsonToFtp extends FileProcess {
         try {
             FileMessage fileMessage = (FileMessage) qifActivityMessage.getMessageContent();
 
-            QifActivityResult xmlResult = executeTask(EngineFactory.getInjector(), JsonToXml.class, qifActivityMessage);
+            QifActivityResult xmlResult = executeTask(EngineFactory.getInjector(), JsonToXml.class,
+                    new QifActivityMessage(fileMessage.getFileContent(), QifMessageType.STRING));
 
             executeTask(EngineFactory.getInjector(), PutToFtp.class,
                     new QifActivityMessage(xmlResult.getResult(), xmlResult.getMessageType()));
