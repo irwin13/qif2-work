@@ -95,7 +95,7 @@ public class EventInstanceController {
             } else if (QifMessageType.OBJECT.getName().equalsIgnoreCase(eventMsg.getMsgType())) {
                 String decompress = StringCompressor.decompress(eventMsg.getMessageContent());
                 try {
-                    content = objectMapper.writeValueAsString(decompress);
+                    content = StringEscapeUtils.escapeXml11(objectMapper.writeValueAsString(decompress));
                 } catch (JsonProcessingException e) {
                     LOGGER.error(e.getLocalizedMessage(), e);
                 }

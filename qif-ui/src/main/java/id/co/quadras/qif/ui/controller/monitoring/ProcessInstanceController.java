@@ -118,7 +118,7 @@ public class ProcessInstanceController {
             } else if (QifMessageType.OBJECT.getName().equalsIgnoreCase(taskInputMsg.getMsgType())) {
                 String decompress = StringCompressor.decompress(taskInputMsg.getInputMessageContent());
                 try {
-                    inputContent = objectMapper.writeValueAsString(decompress);
+                    inputContent = StringEscapeUtils.escapeXml11(objectMapper.writeValueAsString(decompress));
                 } catch (JsonProcessingException e) {
                     LOGGER.error(e.getLocalizedMessage(), e);
                 }
@@ -136,7 +136,7 @@ public class ProcessInstanceController {
             } else if (QifMessageType.OBJECT.getName().equalsIgnoreCase(taskOutputMsg.getMsgType())) {
                 String decompress = StringCompressor.decompress(taskOutputMsg.getOutputMessageContent());
                 try {
-                    outputContent = objectMapper.writeValueAsString(decompress);
+                    outputContent = StringEscapeUtils.escapeXml11(objectMapper.writeValueAsString(decompress));
                 } catch (JsonProcessingException e) {
                     LOGGER.error(e.getLocalizedMessage(), e);
                 }
