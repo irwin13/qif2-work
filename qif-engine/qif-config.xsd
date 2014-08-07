@@ -40,11 +40,23 @@
       </xs:simpleContent>
     </xs:complexType>
   </xs:element>
+  <xs:element name="guiceModule">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="moduleClass" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="qif">
     <xs:complexType>
       <xs:sequence>
-        <xs:element ref="rootPackage"/>
+        <xs:element ref="rootPackage">
+          <xs:annotation>
+            <xs:documentation>THIS IS JUST A EXAMPLE FILE</xs:documentation>
+          </xs:annotation>
+        </xs:element>
         <xs:element ref="batchConfig"/>
+        <xs:element ref="guiceModule"/>
         <xs:element ref="databaseRepository">
           <xs:annotation>
             <xs:documentation>JNDI This implementation of DataSource is intended for use with containers such as EJB or Application Servers
@@ -68,6 +80,7 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="moduleClass" type="xs:string"/>
   <xs:element name="databaseRepository">
     <xs:complexType>
       <xs:sequence>

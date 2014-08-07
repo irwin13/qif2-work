@@ -158,3 +158,33 @@ CREATE TABLE QIF_ACTIVITY_LOG_DATA
   data_value VARCHAR2(1000),
   CONSTRAINT pk_act_log_data PRIMARY KEY (id)
 );
+
+CREATE TABLE QIF_ACTIVITY_RAW_CONTENT
+(
+  id CHAR(32 BYTE) NOT NULL,
+  active char(1) default 'Y',
+  create_by VARCHAR2(500),
+  create_date timestamp default SYSTIMESTAMP(),
+  last_update_by VARCHAR2(500),
+  last_update_date timestamp default SYSTIMESTAMP(),
+  raw_content clob,
+  activity_log_id CHAR(32),
+  content_type VARCHAR2(100),
+  content_name VARCHAR2(100),
+  CONSTRAINT PK_ACT_RAW_CONTENT PRIMARY KEY (id)
+);
+
+CREATE TABLE QIF_EVENT_RAW_CONTENT
+(
+  id CHAR(32 BYTE) NOT NULL,
+  active char(1) default 'Y',
+  create_by VARCHAR2(500),
+  create_date timestamp default SYSTIMESTAMP(),
+  last_update_by VARCHAR2(500),
+  last_update_date timestamp default SYSTIMESTAMP(),
+  raw_content clob,
+  event_log_id CHAR(32),
+  content_type VARCHAR2(100),
+  content_name VARCHAR2(100),
+  CONSTRAINT PK_EVENT_RAW_CONTENT PRIMARY KEY (id)
+);

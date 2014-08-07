@@ -5,10 +5,10 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.irwin13.winwork.basic.utilities.WinWorkUtil;
 import id.co.quadras.qif.core.exception.QifException;
+import id.co.quadras.qif.engine.jaxb.Qif;
 import id.co.quadras.qif.engine.process.ProcessRegister;
 import id.co.quadras.qif.engine.task.TaskRegister;
 import id.co.quadras.qif.engine.guice.module.*;
-import id.co.quadras.qif.engine.jaxb.Qif;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -65,6 +65,25 @@ public final class EngineFactory {
         moduleList.add(new ServiceModule());
         moduleList.add(new TaskModule(TaskRegister.getTaskSet()));
         moduleList.add(new ProcessModule(ProcessRegister.getProcessSet()));
+
+        if (qif.getGuiceModule().getModuleClass() != null && !qif.getGuiceModule().getModuleClass().isEmpty()) {
+            List<String> moduleClassList = qif.getGuiceModule().getModuleClass();
+            for (String moduleClass : moduleClassList) {
+                try {
+                    AbstractModule module = (AbstractModule) Class.forName(moduleClass).newInstance();
+                    moduleList.add(module);
+                } catch (InstantiationException e) {
+                    LOGGER.error(e.getLocalizedMessage(), e);
+                    throw new QifException("Error InstantiationException for Guice module class " + moduleClass);
+                } catch (IllegalAccessException e) {
+                    LOGGER.error(e.getLocalizedMessage(), e);
+                    throw new QifException("Error IllegalAccessException for Guice module class " + moduleClass);
+                } catch (ClassNotFoundException e) {
+                    LOGGER.error(e.getLocalizedMessage(), e);
+                    throw new QifException("Error ClassNotFoundException for Guice module class " + moduleClass);
+                }
+            }
+        }
 
         injector = Guice.createInjector(moduleList);
         LOGGER.info("=== Starting Guice complete ===");

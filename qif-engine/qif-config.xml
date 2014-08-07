@@ -18,6 +18,11 @@
         counterUpdateInterval="10"
         />
 
+    <guiceModule>
+        <moduleClass></moduleClass>
+        <moduleClass></moduleClass>
+    </guiceModule>
+
     <databaseRepository>
         <!--
         set value to "" for defaultStatementTimeout if the JDBC driver doesn't support it, for example : PostgreSQL

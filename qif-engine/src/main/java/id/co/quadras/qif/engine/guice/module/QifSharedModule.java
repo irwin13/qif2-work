@@ -25,8 +25,8 @@ import id.co.quadras.qif.engine.SchedulerStarter;
 import id.co.quadras.qif.engine.guice.provider.JsonMapperProvider;
 import id.co.quadras.qif.engine.guice.provider.QifSqlSessionFactoryProvider;
 import id.co.quadras.qif.engine.guice.provider.TomcatDataSourceProvider;
-import id.co.quadras.qif.engine.jaxb.Qif;
 import id.co.quadras.qif.core.helper.JsonPrettyPrint;
+import id.co.quadras.qif.engine.jaxb.Qif;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.quartz.Scheduler;
 

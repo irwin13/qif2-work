@@ -1,18 +1,24 @@
+----------------------------------------------------
+----- CREATE USER, ROLE AND SCHEMA----------------------------
+
 CREATE role qif LOGIN PASSWORD 'qif' CREATEDB VALID UNTIL 'infinity' CONNECTION LIMIT 300;
 
 CREATE SCHEMA qif AUTHORIZATION qif;
 
 ALTER ROLE qif SET search_path TO qif;
 
-CREATE OR REPLACE FUNCTION qif.gen_uuid()
+----------------------------------------------------
+----- CREATE FUNCTION ----------------------------
+CREATE OR REPLACE FUNCTION gen_uuid()
   RETURNS character varying AS
 'select md5(clock_timestamp()::text||random()::text)::character varying'
   LANGUAGE sql VOLATILE
   COST 100;
 
-ALTER FUNCTION qif.gen_uuid() OWNER TO qif;
-
-CREATE TABLE qif.QIF_COUNTER
+ALTER FUNCTION gen_uuid() OWNER TO qif;
+----------------------------------------------------------
+--- CREATE TABLES ----------------------------------------
+CREATE TABLE QIF_COUNTER
 (
   id CHAR(32) NOT NULL,
   active char(1) default 'Y',
@@ -25,7 +31,7 @@ CREATE TABLE qif.QIF_COUNTER
   CONSTRAINT pk_counter PRIMARY KEY (id)
 );
 
-CREATE TABLE qif.QIF_EVENT
+CREATE TABLE QIF_EVENT
 (
   id CHAR(32) NOT NULL,
   active char(1) default 'Y',
@@ -44,7 +50,7 @@ CREATE TABLE qif.QIF_EVENT
   CONSTRAINT pk_event PRIMARY KEY (id)
 );
 
-CREATE TABLE qif.QIF_EVENT_PROPERTY
+CREATE TABLE QIF_EVENT_PROPERTY
 (
   id CHAR(32) NOT NULL,
   active char(1) default 'Y',
@@ -59,7 +65,7 @@ CREATE TABLE qif.QIF_EVENT_PROPERTY
   CONSTRAINT pk_event_prop PRIMARY KEY (id)
 );
 
-CREATE TABLE qif.QIF_ADAPTER
+CREATE TABLE QIF_ADAPTER
 (
   id CHAR(32) NOT NULL,
   active char(1) default 'Y',
@@ -73,7 +79,7 @@ CREATE TABLE qif.QIF_ADAPTER
   CONSTRAINT pk_adapter PRIMARY KEY (id)
 );
 
-CREATE TABLE qif.QIF_ADAPTER_PROPERTY
+CREATE TABLE QIF_ADAPTER_PROPERTY
 (
   id CHAR(32) NOT NULL,
   active char(1) default 'Y',
@@ -88,7 +94,7 @@ CREATE TABLE qif.QIF_ADAPTER_PROPERTY
   CONSTRAINT pk_adapter_prop PRIMARY KEY (id)
 );
 
-CREATE TABLE qif.QIF_EVENT_LOG
+CREATE TABLE QIF_EVENT_LOG
 (
   id CHAR(32) NOT NULL,
   active char(1) default 'Y',
@@ -102,7 +108,7 @@ CREATE TABLE qif.QIF_EVENT_LOG
   CONSTRAINT pk_event_log PRIMARY KEY (id)
 );
 
-CREATE TABLE qif.QIF_EVENT_LOG_MSG
+CREATE TABLE QIF_EVENT_LOG_MSG
 (
   id CHAR(32) NOT NULL,
   active char(1) default 'Y',
@@ -115,7 +121,7 @@ CREATE TABLE qif.QIF_EVENT_LOG_MSG
   CONSTRAINT pk_event_log_msg PRIMARY KEY (id)
 );
 
-CREATE TABLE qif.QIF_ACTIVITY_LOG
+CREATE TABLE QIF_ACTIVITY_LOG
 (
   id CHAR(32) NOT NULL,
   active char(1) default 'Y',
@@ -133,7 +139,7 @@ CREATE TABLE qif.QIF_ACTIVITY_LOG
   CONSTRAINT pk_act_log PRIMARY KEY (id)
 );
 
-CREATE TABLE qif.QIF_ACTIVITY_LOG_INPUT_MSG
+CREATE TABLE QIF_ACTIVITY_LOG_INPUT_MSG
 (
   id CHAR(32) NOT NULL,
   active char(1) default 'Y',
@@ -146,7 +152,7 @@ CREATE TABLE qif.QIF_ACTIVITY_LOG_INPUT_MSG
   CONSTRAINT pk_act_log_in PRIMARY KEY (id)
 );
 
-CREATE TABLE qif.QIF_ACTIVITY_LOG_OUTPUT_MSG
+CREATE TABLE QIF_ACTIVITY_LOG_OUTPUT_MSG
 (
   id CHAR(32) NOT NULL,
   active char(1) default 'Y',
@@ -159,7 +165,7 @@ CREATE TABLE qif.QIF_ACTIVITY_LOG_OUTPUT_MSG
   CONSTRAINT pk_act_log_out PRIMARY KEY (id)
 );
 
-CREATE TABLE qif.QIF_ACTIVITY_LOG_DATA
+CREATE TABLE QIF_ACTIVITY_LOG_DATA
 (
   id CHAR(32) NOT NULL,
   active char(1) default 'Y',
@@ -173,7 +179,7 @@ CREATE TABLE qif.QIF_ACTIVITY_LOG_DATA
   CONSTRAINT pk_act_log_data PRIMARY KEY (id)
 );
 
-CREATE TABLE qif.APP_SETTING
+CREATE TABLE APP_SETTING
 (
   id CHAR(32) NOT NULL,
   active char(1) default 'Y',
@@ -188,15 +194,33 @@ CREATE TABLE qif.APP_SETTING
   CONSTRAINT pk_app_setting PRIMARY KEY (id)
 );
 
-ALTER TABLE qif.QIF_COUNTER OWNER TO qif;
-ALTER TABLE qif.QIF_EVENT OWNER TO qif;
-ALTER TABLE qif.QIF_EVENT_PROPERTY OWNER TO qif;
-ALTER TABLE qif.QIF_ADAPTER OWNER TO qif;
-ALTER TABLE qif.QIF_ADAPTER_PROPERTY OWNER TO qif;
-ALTER TABLE qif.QIF_EVENT_LOG OWNER TO qif;
-ALTER TABLE qif.QIF_EVENT_LOG_MSG OWNER TO qif;
-ALTER TABLE qif.QIF_ACTIVITY_LOG OWNER TO qif;
-ALTER TABLE qif.QIF_ACTIVITY_LOG_DATA OWNER TO qif;
-ALTER TABLE qif.QIF_ACTIVITY_LOG_INPUT_MSG OWNER TO qif;
-ALTER TABLE qif.QIF_ACTIVITY_LOG_OUTPUT_MSG OWNER TO qif;
-ALTER TABLE qif.APP_SETTING OWNER TO qif;
+
+CREATE TABLE QIF_ACTIVITY_RAW_CONTENT
+(
+  id CHAR(32) NOT NULL,
+  active char(1) default 'Y',
+  create_by character varying(500),
+  create_date timestamp default now(),
+  last_update_by character varying(500),
+  last_update_date timestamp default now(),
+  raw_content text,
+  activity_log_id CHAR(32),
+  content_type character varying(100),
+  content_name character varying(500),
+  CONSTRAINT pk_act_raw_content PRIMARY KEY (id)
+);
+
+CREATE TABLE QIF_EVENT_RAW_CONTENT
+(
+  id CHAR(32) NOT NULL,
+  active char(1) default 'Y',
+  create_by character varying(500),
+  create_date timestamp default now(),
+  last_update_by character varying(500),
+  last_update_date timestamp default now(),
+  raw_content text,
+  event_log_id CHAR(32),
+  content_type character varying(100),
+  content_name character varying(500),
+  CONSTRAINT pk_event_raw_content PRIMARY KEY (id)
+);
