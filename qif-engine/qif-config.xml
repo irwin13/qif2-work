@@ -2,6 +2,9 @@
 <qif>
     <!-- THIS IS JUST A EXAMPLE FILE -->
 
+	<generalConfiguration
+		maxThreadInThreadPool="" />
+		
     <rootPackage
             processRootPackage="id.co.quadras.qif.dev.process"
             taskRootPackage="id.co.quadras.qif.dev.task" />
@@ -19,7 +22,6 @@
         />
 
     <guiceModule>
-        <moduleClass></moduleClass>
         <moduleClass></moduleClass>
     </guiceModule>
 

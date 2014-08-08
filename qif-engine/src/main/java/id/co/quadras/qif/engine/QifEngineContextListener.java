@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 
 /**
  * @author irwin Timestamp : 07/05/2014 17:59
@@ -69,6 +70,11 @@ public class QifEngineContextListener implements ServletContextListener {
             LOGGER.error(e.getLocalizedMessage(), e);
         }
         LOGGER.info("=== Shutdown Quartz scheduler complete ===");
+
+        LOGGER.info("=== Shutdown ExecutorService ... ===");
+        ExecutorService executorService = EngineFactory.getInjector().getInstance(ExecutorService.class);
+        executorService.shutdown();
+        LOGGER.info("=== Shutdown ExecutorService complete ===");
 
         LOGGER.info("===== Shutdown QifEngineContextListener complete =====");
 

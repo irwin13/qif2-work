@@ -1,7 +1,11 @@
 package id.co.quadras.qif.engine.guice.module;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.AbstractModule;
+import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.google.inject.matcher.Matchers;
 import com.google.inject.name.Names;
@@ -99,5 +103,22 @@ public class QifSharedModule extends AbstractModule {
         bind(SqlSessionFactory.class).toProvider(QifSqlSessionFactoryProvider.class).in(Singleton.class);
 
         bind(BasicEntityCommonService.class);
+        
+        bind(ExecutorService.class).toProvider(ThreadPoolProvider.class).in(Singleton.class);
+    }
+    
+    private class ThreadPoolProvider implements Provider<ExecutorService> {
+
+    	private ExecutorService threadPool;
+    	
+		@Override
+		public ExecutorService get() {
+			if (threadPool != null) {
+		        threadPool = Executors.newFixedThreadPool(
+		        		Integer.valueOf(qifConfig.getGeneralConfiguration().getMaxThreadInThreadPool()));
+			}
+			
+			return threadPool;
+		}    	    	
     }
 }

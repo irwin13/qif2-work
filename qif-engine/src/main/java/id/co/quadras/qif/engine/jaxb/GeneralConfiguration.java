@@ -25,8 +25,7 @@ import javax.xml.bind.annotation.XmlValue;
  * &lt;complexType>
  *   &lt;simpleContent>
  *     &lt;extension base="&lt;http://www.w3.org/2001/XMLSchema>string">
- *       &lt;attribute name="processRootPackage" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="taskRootPackage" type="{http://www.w3.org/2001/XMLSchema}string" />
+ *       &lt;attribute name="maxThreadInThreadPool" type="{http://www.w3.org/2001/XMLSchema}int" />
  *     &lt;/extension>
  *   &lt;/simpleContent>
  * &lt;/complexType>
@@ -38,15 +37,13 @@ import javax.xml.bind.annotation.XmlValue;
 @XmlType(name = "", propOrder = {
     "value"
 })
-@XmlRootElement(name = "rootPackage")
-public class RootPackage {
+@XmlRootElement(name = "generalConfiguration")
+public class GeneralConfiguration {
 
     @XmlValue
     protected String value;
     @XmlAttribute
-    protected String processRootPackage;
-    @XmlAttribute
-    protected String taskRootPackage;
+    protected Integer maxThreadInThreadPool;
 
     /**
      * Gets the value of the value property.
@@ -73,51 +70,27 @@ public class RootPackage {
     }
 
     /**
-     * Gets the value of the processRootPackage property.
+     * Gets the value of the maxThreadInThreadPool property.
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link Integer }
      *     
      */
-    public String getProcessRootPackage() {
-        return processRootPackage;
+    public Integer getMaxThreadInThreadPool() {
+        return maxThreadInThreadPool;
     }
 
     /**
-     * Sets the value of the processRootPackage property.
+     * Sets the value of the maxThreadInThreadPool property.
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link Integer }
      *     
      */
-    public void setProcessRootPackage(String value) {
-        this.processRootPackage = value;
-    }
-
-    /**
-     * Gets the value of the taskRootPackage property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getTaskRootPackage() {
-        return taskRootPackage;
-    }
-
-    /**
-     * Sets the value of the taskRootPackage property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setTaskRootPackage(String value) {
-        this.taskRootPackage = value;
+    public void setMaxThreadInThreadPool(Integer value) {
+        this.maxThreadInThreadPool = value;
     }
 
 }

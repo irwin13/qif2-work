@@ -20,6 +20,10 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author irwin Timestamp : 07/04/2014 11:53
@@ -40,6 +44,9 @@ public abstract class QifProcess implements QifActivity {
         return getClass().getName();
     }
 
+    @Inject
+    private ExecutorService threadPool;
+    
     @Inject
     protected JsonParser jsonParser;
 
@@ -296,17 +303,42 @@ public abstract class QifProcess implements QifActivity {
     }
 
     protected QifActivityResult executeTaskWithFuture(Injector injector, Class<? extends QifTask> taskClass,
-                                                      QifActivityMessage qifActivityMessage) throws Exception {
-        // TODO use ExecutorService and Future here
-        QifTask qifTask = injector.getInstance(taskClass);
-        return qifTask.executeTask(this, qifActivityMessage);
+                                                      final QifActivityMessage qifActivityMessage,
+                                                      long timeout, TimeUnit timeUnit) throws Exception {
+    	    	
+        final QifTask qifTask = injector.getInstance(taskClass);
+        final QifProcess qifProcess = this;
+        Future<QifActivityResult> future = threadPool.submit(new Callable<QifActivityResult>() {
+			@Override
+			public QifActivityResult call() throws Exception {
+				return qifTask.executeTask(qifProcess, qifActivityMessage);
+			}
+        	
+		});
+
+        if (timeout <= 0 || timeUnit == null) {
+        	return future.get();
+        } else {
+        	return future.get(timeout, timeUnit);
+        }
+       
     }
 
     protected void executeTaskWithThread(Injector injector, Class<? extends QifTask> taskClass,
-                                         QifActivityMessage qifActivityMessage) throws Exception {
-        // TODO use ThreadRunnable here
-        QifTask qifTask = injector.getInstance(taskClass);
-        qifTask.executeTask(this, qifActivityMessage);
+                                         final QifActivityMessage qifActivityMessage) throws Exception {
+        
+        final QifTask qifTask = injector.getInstance(taskClass);
+        final QifProcess qifProcess = this; 
+        threadPool.submit(new Runnable() {			
+			@Override
+			public void run() {
+				try {
+					qifTask.executeTask(qifProcess, qifActivityMessage);
+				} catch (Exception e) {
+					logger.error(e.getLocalizedMessage(), e);
+				}
+			}
+		});
     }
 
 }
