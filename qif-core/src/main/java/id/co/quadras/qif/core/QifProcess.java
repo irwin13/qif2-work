@@ -13,6 +13,7 @@ import id.co.quadras.qif.core.model.entity.QifEvent;
 import id.co.quadras.qif.core.model.entity.log.*;
 import id.co.quadras.qif.core.model.vo.QifActivityResult;
 import id.co.quadras.qif.core.model.vo.message.QifMessageType;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,10 +21,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * @author irwin Timestamp : 07/04/2014 11:53
@@ -316,12 +314,28 @@ public abstract class QifProcess implements QifActivity {
         	
 		});
 
+        QifActivityResult result;
         if (timeout <= 0 || timeUnit == null) {
-        	return future.get();
+        	result = future.get();
         } else {
-        	return future.get(timeout, timeUnit);
+            try {
+                result = future.get(timeout, timeUnit);
+            } catch (InterruptedException e) {
+                logger.error(e.getLocalizedMessage(), e);
+                future.cancel(true);
+                result = new QifActivityResult(ERROR, ExceptionUtils.getStackTrace(e), QifMessageType.STRING);
+            } catch (ExecutionException e) {
+                logger.error(e.getLocalizedMessage(), e);
+                future.cancel(true);
+                result = new QifActivityResult(ERROR, ExceptionUtils.getStackTrace(e), QifMessageType.STRING);
+            } catch (TimeoutException e) {
+                logger.error(e.getLocalizedMessage(), e);
+                future.cancel(true);
+                result = new QifActivityResult(ERROR, ExceptionUtils.getStackTrace(e), QifMessageType.STRING);
+            }
         }
-       
+
+        return result;
     }
 
     protected void executeTaskWithThread(Injector injector, Class<? extends QifTask> taskClass,
