@@ -6,7 +6,7 @@ import id.co.quadras.qif.core.helper.JsonParser;
 import id.co.quadras.qif.core.model.entity.QifEvent;
 import id.co.quadras.qif.core.model.vo.event.EventType;
 import id.co.quadras.qif.engine.SchedulerStarter;
-import id.co.quadras.qif.engine.guice.EngineFactory;
+import id.co.quadras.qif.engine.guice.QifGuiceFactory;
 import id.co.quadras.qif.engine.service.EventService;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -27,10 +27,10 @@ import java.util.Arrays;
 public class EventApiServlet extends HttpServlet {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventApiServlet.class);
-    private final BasicSchedulerManager schedulerManager = EngineFactory.getInjector().getInstance(BasicSchedulerManager.class);
-    private final SchedulerStarter schedulerStarter = EngineFactory.getInjector().getInstance(SchedulerStarter.class);
-    private final JsonParser jsonParser = EngineFactory.getInjector().getInstance(JsonParser.class);
-    private final EventService eventService = EngineFactory.getInjector().getInstance(EventService.class);
+    private final BasicSchedulerManager schedulerManager = QifGuiceFactory.getInjector().getInstance(BasicSchedulerManager.class);
+    private final SchedulerStarter schedulerStarter = QifGuiceFactory.getInjector().getInstance(SchedulerStarter.class);
+    private final JsonParser jsonParser = QifGuiceFactory.getInjector().getInstance(JsonParser.class);
+    private final EventService eventService = QifGuiceFactory.getInjector().getInstance(EventService.class);
 
     // ADD
     @Override

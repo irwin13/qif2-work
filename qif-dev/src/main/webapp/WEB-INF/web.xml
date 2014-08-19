@@ -7,7 +7,7 @@
     <display-name>Quadra Integration Framework</display-name>
 
     <listener>
-        <listener-class>id.co.quadras.qif.engine.QifEngineContextListener</listener-class>
+        <listener-class>id.co.quadras.qif.engine.QifEngine</listener-class>
     </listener>
     <!-- Init parameter -->
     <context-param>

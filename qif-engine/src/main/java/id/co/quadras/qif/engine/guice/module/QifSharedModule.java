@@ -1,11 +1,7 @@
 package id.co.quadras.qif.engine.guice.module;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.AbstractModule;
-import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.google.inject.matcher.Matchers;
 import com.google.inject.name.Names;
@@ -18,6 +14,7 @@ import com.irwin13.winwork.basic.service.BasicEntityCommonService;
 import com.irwin13.winwork.basic.utilities.RestClient;
 import com.irwin13.winwork.basic.utilities.WinWorkVelocityUtil;
 import id.co.quadras.qif.core.helper.JsonParser;
+import id.co.quadras.qif.core.helper.JsonPrettyPrint;
 import id.co.quadras.qif.core.helper.QifTransactionCounter;
 import id.co.quadras.qif.core.helper.imp.QifTransactionCounterGuava;
 import id.co.quadras.qif.core.helper.queue.*;
@@ -26,15 +23,16 @@ import id.co.quadras.qif.core.helper.queue.reader.*;
 import id.co.quadras.qif.core.helper.queue.reader.imp.*;
 import id.co.quadras.qif.engine.QifConfig;
 import id.co.quadras.qif.engine.SchedulerStarter;
+import id.co.quadras.qif.engine.guice.provider.ExecutorServiceProvider;
 import id.co.quadras.qif.engine.guice.provider.JsonMapperProvider;
 import id.co.quadras.qif.engine.guice.provider.QifSqlSessionFactoryProvider;
 import id.co.quadras.qif.engine.guice.provider.TomcatDataSourceProvider;
-import id.co.quadras.qif.core.helper.JsonPrettyPrint;
 import id.co.quadras.qif.engine.jaxb.Qif;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.quartz.Scheduler;
 
 import javax.sql.DataSource;
+import java.util.concurrent.ExecutorService;
 
 /**
  * @author irwin Timestamp : 12/05/2014 17:15
@@ -103,22 +101,7 @@ public class QifSharedModule extends AbstractModule {
         bind(SqlSessionFactory.class).toProvider(QifSqlSessionFactoryProvider.class).in(Singleton.class);
 
         bind(BasicEntityCommonService.class);
-        
-        bind(ExecutorService.class).toProvider(ThreadPoolProvider.class).in(Singleton.class);
-    }
-    
-    private class ThreadPoolProvider implements Provider<ExecutorService> {
 
-    	private ExecutorService threadPool;
-    	
-		@Override
-		public ExecutorService get() {
-			if (threadPool != null) {
-		        threadPool = Executors.newFixedThreadPool(
-		        		Integer.valueOf(qifConfig.getGeneralConfiguration().getMaxThreadInThreadPool()));
-			}
-			
-			return threadPool;
-		}    	    	
+        bind(ExecutorService.class).toProvider(ExecutorServiceProvider.class).in(Singleton.class);
     }
 }

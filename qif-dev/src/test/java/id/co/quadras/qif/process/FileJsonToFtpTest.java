@@ -7,7 +7,7 @@ import id.co.quadras.qif.core.model.entity.QifEvent;
 import id.co.quadras.qif.core.model.vo.QifActivityResult;
 import id.co.quadras.qif.core.model.vo.message.QifMessageType;
 import id.co.quadras.qif.dev.process.FileJsonToFtp;
-import id.co.quadras.qif.engine.guice.EngineFactory;
+import id.co.quadras.qif.engine.guice.QifGuiceFactory;
 import id.co.quadras.qif.engine.service.EventService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -26,7 +26,7 @@ public class FileJsonToFtpTest extends DbUnitCleanInsert {
 
     @Override
     public void initTestClass() {
-        EngineFactory.initEngine("E:\\qif-config-test.xml");
+        QifGuiceFactory.initEngine("E:\\qif-config-test.xml");
     }
 
     @Override
@@ -36,28 +36,28 @@ public class FileJsonToFtpTest extends DbUnitCleanInsert {
 
     @Override
     public String jdbcDriver() {
-        return EngineFactory.getInjector().getInstance(WinWorkConfig.class).getString("test.database.driver");
+        return QifGuiceFactory.getInjector().getInstance(WinWorkConfig.class).getString("test.database.driver");
     }
 
     @Override
     public String jdbcUrl() {
-        return EngineFactory.getInjector().getInstance(WinWorkConfig.class).getString("test.database.url");
+        return QifGuiceFactory.getInjector().getInstance(WinWorkConfig.class).getString("test.database.url");
     }
 
     @Override
     public String jdbcUser() {
-        return EngineFactory.getInjector().getInstance(WinWorkConfig.class).getString("test.database.username");
+        return QifGuiceFactory.getInjector().getInstance(WinWorkConfig.class).getString("test.database.username");
     }
 
     @Override
     public String jdbcPassword() {
-        return EngineFactory.getInjector().getInstance(WinWorkConfig.class).getString("test.database.password");
+        return QifGuiceFactory.getInjector().getInstance(WinWorkConfig.class).getString("test.database.password");
     }
 
     @Test
     public void runProcess() throws Exception {
-        QifProcess qifProcess = EngineFactory.getInjector().getInstance(FileJsonToFtp.class);
-        EventService eventService = EngineFactory.getInjector().getInstance(EventService.class);
+        QifProcess qifProcess = QifGuiceFactory.getInjector().getInstance(FileJsonToFtp.class);
+        EventService eventService = QifGuiceFactory.getInjector().getInstance(EventService.class);
         QifEvent qifEvent = eventService.selectById("f9bd1632beb04e498f915a0975ae4831");
         LOGGER.debug("qifEvent = {}", qifEvent);
         QifActivityResult result = qifProcess.executeEvent(qifEvent, null, QifMessageType.STRING);

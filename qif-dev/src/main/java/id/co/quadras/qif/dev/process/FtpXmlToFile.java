@@ -6,7 +6,7 @@ import id.co.quadras.qif.core.model.vo.QifActivityResult;
 import id.co.quadras.qif.core.model.vo.message.FileMessage;
 import id.co.quadras.qif.core.model.vo.message.QifMessageType;
 import id.co.quadras.qif.dev.task.WriteToFile;
-import id.co.quadras.qif.engine.guice.EngineFactory;
+import id.co.quadras.qif.engine.guice.QifGuiceFactory;
 import id.co.quadras.qif.engine.process.FtpProcess;
 
 import java.util.HashMap;
@@ -23,7 +23,7 @@ public class FtpXmlToFile extends FtpProcess {
         try {
             FileMessage fileMessage = (FileMessage) qifActivityMessage.getMessageContent();
 
-            executeTask(EngineFactory.getInjector(), WriteToFile.class, qifActivityMessage);
+            executeTask(QifGuiceFactory.getInjector(), WriteToFile.class, qifActivityMessage);
 
             qifActivityResult = new QifActivityResult(SUCCESS, SUCCESS, QifMessageType.STRING);
 

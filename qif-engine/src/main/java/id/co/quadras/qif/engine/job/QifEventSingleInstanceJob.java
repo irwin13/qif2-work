@@ -5,7 +5,7 @@ import id.co.quadras.qif.core.QifConstants;
 import id.co.quadras.qif.core.QifProcess;
 import id.co.quadras.qif.core.model.entity.QifEvent;
 import id.co.quadras.qif.core.model.vo.message.QifMessageType;
-import id.co.quadras.qif.engine.guice.EngineFactory;
+import id.co.quadras.qif.engine.guice.QifGuiceFactory;
 import id.co.quadras.qif.engine.service.EventService;
 import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;
@@ -25,12 +25,12 @@ public class QifEventSingleInstanceJob implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         String id = (String) context.getMergedJobDataMap().get(QifConstants.QIF_EVENT_ID);
-        EventService eventService = EngineFactory.getInjector().getInstance(EventService.class);
+        EventService eventService = QifGuiceFactory.getInjector().getInstance(EventService.class);
         QifEvent qifEvent = eventService.selectById(id);
         if (qifEvent != null) {
             if (qifEvent.getActiveAcceptMessage() != null && qifEvent.getActiveAcceptMessage()) {
                 try {
-                    QifProcess qifProcess = (QifProcess) EngineFactory.getInjector()
+                    QifProcess qifProcess = (QifProcess) QifGuiceFactory.getInjector()
                             .getInstance(Class.forName(qifEvent.getQifProcess()));
                     qifProcess.executeEvent(qifEvent, null, QifMessageType.STRING);
                 } catch (Exception e) {

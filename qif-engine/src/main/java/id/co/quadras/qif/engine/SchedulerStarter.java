@@ -10,7 +10,7 @@ import id.co.quadras.qif.core.model.entity.QifEventProperty;
 import id.co.quadras.qif.core.model.vo.event.EventType;
 import id.co.quadras.qif.core.model.vo.event.SchedulerCron;
 import id.co.quadras.qif.core.model.vo.event.SchedulerInterval;
-import id.co.quadras.qif.engine.guice.EngineFactory;
+import id.co.quadras.qif.engine.guice.QifGuiceFactory;
 import id.co.quadras.qif.engine.jaxb.Qif;
 import id.co.quadras.qif.engine.job.QifEventConcurrentJob;
 import id.co.quadras.qif.engine.job.QifEventSingleInstanceJob;
@@ -47,7 +47,7 @@ public final class SchedulerStarter {
 
         for (QifEvent qifEvent : qifEventList) {
             try {
-                LOGGER.debug(EngineFactory.getInjector().getInstance(JsonParser.class).parseToString(false, qifEvent));
+                LOGGER.debug(QifGuiceFactory.getInjector().getInstance(JsonParser.class).parseToString(false, qifEvent));
             } catch (IOException e) {
                 LOGGER.error(e.getLocalizedMessage(), e);
             }

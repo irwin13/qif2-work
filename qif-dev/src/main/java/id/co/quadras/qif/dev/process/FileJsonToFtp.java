@@ -7,7 +7,7 @@ import id.co.quadras.qif.core.model.vo.message.FileMessage;
 import id.co.quadras.qif.core.model.vo.message.QifMessageType;
 import id.co.quadras.qif.dev.task.JsonToXml;
 import id.co.quadras.qif.dev.task.PutToFtp;
-import id.co.quadras.qif.engine.guice.EngineFactory;
+import id.co.quadras.qif.engine.guice.QifGuiceFactory;
 import id.co.quadras.qif.engine.process.FileProcess;
 
 import java.util.HashMap;
@@ -24,10 +24,10 @@ public class FileJsonToFtp extends FileProcess {
         try {
             FileMessage fileMessage = (FileMessage) qifActivityMessage.getMessageContent();
 
-            QifActivityResult xmlResult = executeTask(EngineFactory.getInjector(), JsonToXml.class,
+            QifActivityResult xmlResult = executeTask(QifGuiceFactory.getInjector(), JsonToXml.class,
                     new QifActivityMessage(fileMessage.getFileContent(), QifMessageType.STRING));
 
-            executeTask(EngineFactory.getInjector(), PutToFtp.class,
+            executeTask(QifGuiceFactory.getInjector(), PutToFtp.class,
                     new QifActivityMessage(xmlResult.getResult(), xmlResult.getMessageType()));
 
             qifActivityResult = new QifActivityResult(SUCCESS, SUCCESS, QifMessageType.STRING);

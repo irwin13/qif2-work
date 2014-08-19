@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * @author irwin Timestamp : 06/08/2014 14:20
  */
-public abstract class FtpProcess extends QifProcess {
+public abstract class FtpProcess extends EventHandlerProcess {
 
     @Override
     protected QifActivityResult handleEvent(QifEvent qifEvent, Object eventMessage, QifMessageType messageType)
@@ -34,6 +34,6 @@ public abstract class FtpProcess extends QifProcess {
         }
 
         return new QifActivityResult((allSuccess) ? SUCCESS : ERROR, resultList, QifMessageType.OBJECT);
-
     }
+
 }

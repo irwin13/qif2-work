@@ -4,8 +4,8 @@ import com.google.common.collect.ImmutableSortedSet;
 import com.google.common.net.MediaType;
 import id.co.quadras.qif.core.QifProcess;
 import id.co.quadras.qif.core.helper.JsonParser;
+import id.co.quadras.qif.engine.guice.QifGuiceFactory;
 import id.co.quadras.qif.engine.process.ProcessRegister;
-import id.co.quadras.qif.engine.guice.EngineFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -31,7 +31,7 @@ public class ProcessApiServlet extends HttpServlet {
         }
 
         ImmutableSortedSet sortedSet = ImmutableSortedSet.copyOf(stringSet);
-        JsonParser jsonParser = EngineFactory.getInjector().getInstance(JsonParser.class);
+        JsonParser jsonParser = QifGuiceFactory.getInjector().getInstance(JsonParser.class);
         String json = jsonParser.parseToString(false, sortedSet);
 
         response.setContentLength(json.length());

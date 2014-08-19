@@ -1,5 +1,6 @@
 package id.co.quadras.qif.engine.guice;
 
+import com.google.common.base.Strings;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -23,13 +24,13 @@ import java.util.List;
 /**
  * @author irwin Timestamp : 07/05/2014 17:41
  */
-public final class EngineFactory {
+public final class QifGuiceFactory {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(EngineFactory.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(QifGuiceFactory.class);
 
     private static Injector injector;
 
-    private EngineFactory(String qifConfigFile) {
+    private QifGuiceFactory(String qifConfigFile) {
 
         String nodeName = System.getProperty("nodeName");
         LOGGER.info("nodeName = {}", nodeName);
@@ -66,21 +67,25 @@ public final class EngineFactory {
         moduleList.add(new TaskModule(TaskRegister.getTaskSet()));
         moduleList.add(new ProcessModule(ProcessRegister.getProcessSet()));
 
-        if (qif.getGuiceModule().getModuleClass() != null && !qif.getGuiceModule().getModuleClass().isEmpty()) {
-            List<String> moduleClassList = qif.getGuiceModule().getModuleClass();
-            for (String moduleClass : moduleClassList) {
-                try {
-                    AbstractModule module = (AbstractModule) Class.forName(moduleClass).newInstance();
-                    moduleList.add(module);
-                } catch (InstantiationException e) {
-                    LOGGER.error(e.getLocalizedMessage(), e);
-                    throw new QifException("Error InstantiationException for Guice module class " + moduleClass);
-                } catch (IllegalAccessException e) {
-                    LOGGER.error(e.getLocalizedMessage(), e);
-                    throw new QifException("Error IllegalAccessException for Guice module class " + moduleClass);
-                } catch (ClassNotFoundException e) {
-                    LOGGER.error(e.getLocalizedMessage(), e);
-                    throw new QifException("Error ClassNotFoundException for Guice module class " + moduleClass);
+        if (qif.getGuiceModule() != null) {
+            if (qif.getGuiceModule().getModuleClass() != null && !qif.getGuiceModule().getModuleClass().isEmpty()) {
+                List<String> moduleClassList = qif.getGuiceModule().getModuleClass();
+                for (String moduleClass : moduleClassList) {
+                    if (!Strings.isNullOrEmpty(moduleClass)) {
+                        try {
+                            AbstractModule module = (AbstractModule) Class.forName(moduleClass).newInstance();
+                            moduleList.add(module);
+                        } catch (InstantiationException e) {
+                            LOGGER.error(e.getLocalizedMessage(), e);
+                            throw new QifException("Error InstantiationException for Guice module class " + moduleClass);
+                        } catch (IllegalAccessException e) {
+                            LOGGER.error(e.getLocalizedMessage(), e);
+                            throw new QifException("Error IllegalAccessException for Guice module class " + moduleClass);
+                        } catch (ClassNotFoundException e) {
+                            LOGGER.error(e.getLocalizedMessage(), e);
+                            throw new QifException("Error ClassNotFoundException for Guice module class " + moduleClass);
+                        }
+                    }
                 }
             }
         }
@@ -91,7 +96,7 @@ public final class EngineFactory {
 
     public static void initEngine(String qifConfigFile) {
         if (injector == null) {
-            new EngineFactory(qifConfigFile);
+            new QifGuiceFactory(qifConfigFile);
         }
     }
 

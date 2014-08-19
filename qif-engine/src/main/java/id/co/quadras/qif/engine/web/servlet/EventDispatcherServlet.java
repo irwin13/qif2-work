@@ -10,7 +10,7 @@ import id.co.quadras.qif.core.model.vo.HttpRequestMessage;
 import id.co.quadras.qif.core.model.vo.QifActivityResult;
 import id.co.quadras.qif.core.model.vo.event.EventHttp;
 import id.co.quadras.qif.core.model.vo.message.QifMessageType;
-import id.co.quadras.qif.engine.guice.EngineFactory;
+import id.co.quadras.qif.engine.guice.QifGuiceFactory;
 import id.co.quadras.qif.engine.service.EventService;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -36,7 +36,7 @@ public class EventDispatcherServlet extends HttpServlet {
     public static final String TEXT_PLAIN = "text/plain;charset=UTF-8";
     private static final Logger LOGGER = LoggerFactory.getLogger(EventDispatcherServlet.class);
 
-    private final JsonParser jsonParser = EngineFactory.getInjector().getInstance(JsonParser.class);
+    private final JsonParser jsonParser = QifGuiceFactory.getInjector().getInstance(JsonParser.class);
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -54,7 +54,7 @@ public class EventDispatcherServlet extends HttpServlet {
         String path = request.getRequestURI().substring(request.getContextPath().length()).replaceFirst(EVENT_PATH, "");
         LOGGER.debug("incoming request for path {}", path);
 
-        EventService eventService = EngineFactory.getInjector().getInstance(EventService.class);
+        EventService eventService = QifGuiceFactory.getInjector().getInstance(EventService.class);
         QifEvent qifEventPath = eventService.selectByProperty(EventHttp.HTTP_PATH.getName(), path);
         QifEvent qifEventMethod = eventService.selectByProperty(EventHttp.HTTP_METHOD.getName(), request.getMethod().toLowerCase());
         if (qifEventPath == null) {
@@ -81,7 +81,7 @@ public class EventDispatcherServlet extends HttpServlet {
     private QifActivityResult executeEvent(HttpServletRequest request, QifEvent qifEvent) {
         QifActivityResult result;
         try {
-            QifProcess qifProcess = (QifProcess) EngineFactory.getInjector().getInstance(Class.forName(qifEvent.getQifProcess()));
+            QifProcess qifProcess = (QifProcess) QifGuiceFactory.getInjector().getInstance(Class.forName(qifEvent.getQifProcess()));
             result = qifProcess.executeEvent(qifEvent, copyHttpServletRequest(request), QifMessageType.OBJECT);
         } catch (ClassNotFoundException e) {
             LOGGER.error(e.getLocalizedMessage(), e);

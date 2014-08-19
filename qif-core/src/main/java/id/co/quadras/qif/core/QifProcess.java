@@ -43,7 +43,7 @@ public abstract class QifProcess implements QifActivity {
     }
 
     @Inject
-    private ExecutorService threadPool;
+    protected ExecutorService threadPool;
     
     @Inject
     protected JsonParser jsonParser;
@@ -110,6 +110,8 @@ public abstract class QifProcess implements QifActivity {
         updateProcessLog(qifActivityMessage, qifActivityResult);
         return qifActivityResult;
     }
+
+    public abstract Runnable createDaemon(QifEvent qifEvent);
 
     private QifActivityLog insertProcessLog(QifEvent qifEvent, QifActivityMessage qifActivityMessage) {
 

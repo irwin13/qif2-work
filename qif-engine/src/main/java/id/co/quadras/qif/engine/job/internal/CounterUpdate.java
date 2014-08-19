@@ -7,9 +7,9 @@ import id.co.quadras.qif.core.helper.QifTransactionCounter;
 import id.co.quadras.qif.core.helper.imp.QifTransactionCounterGuava;
 import id.co.quadras.qif.core.model.entity.QifCounter;
 import id.co.quadras.qif.core.model.entity.QifEvent;
+import id.co.quadras.qif.engine.guice.QifGuiceFactory;
 import id.co.quadras.qif.engine.process.ProcessRegister;
 import id.co.quadras.qif.engine.task.TaskRegister;
-import id.co.quadras.qif.engine.guice.EngineFactory;
 import id.co.quadras.qif.engine.service.CounterService;
 import id.co.quadras.qif.engine.service.EventService;
 import org.quartz.DisallowConcurrentExecution;
@@ -34,9 +34,9 @@ public class CounterUpdate implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
 
-        transactionCounter = EngineFactory.getInjector().getInstance(QifTransactionCounter.class);
-        CounterService counterService = EngineFactory.getInjector().getInstance(CounterService.class);
-        eventService = EngineFactory.getInjector().getInstance(EventService.class);
+        transactionCounter = QifGuiceFactory.getInjector().getInstance(QifTransactionCounter.class);
+        CounterService counterService = QifGuiceFactory.getInjector().getInstance(CounterService.class);
+        eventService = QifGuiceFactory.getInjector().getInstance(EventService.class);
 
         List<QifCounter> qifCounterList = new LinkedList<QifCounter>();
         Map<String, Integer> mapCounter = new WeakHashMap<String, Integer>();

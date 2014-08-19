@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * @author irwin Timestamp : 06/08/2014 14:14
  */
-public abstract class FileProcess extends QifProcess {
+public abstract class FileProcess extends EventHandlerProcess {
 
     @Override
     protected QifActivityResult handleEvent(QifEvent qifEvent, Object eventMessage, QifMessageType messageType)
