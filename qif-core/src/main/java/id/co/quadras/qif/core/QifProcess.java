@@ -10,6 +10,7 @@ import id.co.quadras.qif.core.helper.JsonPrettyPrint;
 import id.co.quadras.qif.core.helper.QifTransactionCounter;
 import id.co.quadras.qif.core.helper.queue.*;
 import id.co.quadras.qif.core.model.entity.QifEvent;
+import id.co.quadras.qif.core.model.entity.QifEventProperty;
 import id.co.quadras.qif.core.model.entity.log.*;
 import id.co.quadras.qif.core.model.vo.QifActivityResult;
 import id.co.quadras.qif.core.model.vo.message.QifMessageType;
@@ -105,13 +106,16 @@ public abstract class QifProcess implements QifActivity {
     }
 
     protected QifActivityResult executeProcess(QifEvent qifEvent, QifActivityMessage qifActivityMessage) throws Exception {
+        if (qifEventLog == null) {
+            insertEventLog(qifEvent, qifActivityMessage.getMessageContent(), qifActivityMessage.getMessageType());
+        }
         processLog = insertProcessLog(qifEvent, qifActivityMessage);
         QifActivityResult qifActivityResult = implementProcess(qifActivityMessage);
         updateProcessLog(qifActivityMessage, qifActivityResult);
         return qifActivityResult;
     }
 
-    public abstract Runnable createDaemon(QifEvent qifEvent);
+    public abstract Runnable createDaemon(QifEvent qifEvent) throws Exception;
 
     private QifActivityLog insertProcessLog(QifEvent qifEvent, QifActivityMessage qifActivityMessage) {
 
@@ -294,6 +298,11 @@ public abstract class QifProcess implements QifActivity {
     private void addCounterProcess() {
         transactionCounter.add(this.getClass().getName());
         transactionCounter.add(this.getClass().getName() + "_" + WinWorkConstants.SDF_DEFAULT.format(new Date()));
+    }
+
+    protected String getPropertyValue(QifEvent qifEvent, String propertyKey) {
+        QifEventProperty property = QifUtil.getEventProperty(qifEvent, propertyKey);
+        return (property == null) ? null : property.getPropertyValue();
     }
 
     protected QifActivityResult executeTask(Injector injector, Class<? extends QifTask> taskClass,
