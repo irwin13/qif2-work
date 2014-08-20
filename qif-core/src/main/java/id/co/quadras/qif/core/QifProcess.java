@@ -107,7 +107,7 @@ public abstract class QifProcess implements QifActivity {
 
     protected QifActivityResult executeProcess(QifEvent qifEvent, QifActivityMessage qifActivityMessage) throws Exception {
         if (qifEventLog == null) {
-            insertEventLog(qifEvent, qifActivityMessage.getMessageContent(), qifActivityMessage.getMessageType());
+            qifEventLog = insertEventLog(qifEvent, qifActivityMessage.getMessageContent(), qifActivityMessage.getMessageType());
         }
         processLog = insertProcessLog(qifEvent, qifActivityMessage);
         QifActivityResult qifActivityResult = implementProcess(qifActivityMessage);

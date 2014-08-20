@@ -240,4 +240,19 @@
             <column name="CONTENT_NAME" type="varchar2(500)" />
         </createTable>
     </changeSet>
+    <changeSet id="create-tables-3" author="irwin">
+        <createTable tableName="QIF_COUNTER">
+            <column name="ID" type="char(32)" defaultValue="SYS_GUID()">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="PK_COUNTER" />
+            </column>
+            <column name="ACTIVE" type="char(1)" defaultValue="Y" />
+            <column name="CREATE_BY" type="varchar2(500)" />
+            <column name="CREATE_DATE" type="timestamp" defaultValue="SYSTIMESTAMP" />
+            <column name="LAST_UPDATE_BY" type="varchar2(500)" />
+            <column name="LAST_UPDATE_DATE" type="timestamp" defaultValue="SYSTIMESTAMP" />
+
+            <column name="SEQUENCE_KEY" type="varchar2(500)" />
+            <column name="LAST_SEQUENCE" type="integer" defaultValue="0" />
+        </createTable>
+    </changeSet>
 </databaseChangeLog>

@@ -29,7 +29,7 @@ public abstract class JmsProcess extends DaemonProcess {
         env.put(Context.SECURITY_PRINCIPAL, getPropertyValue(qifEvent, EventJms.JNDI_USER.getName()));
         env.put(Context.SECURITY_CREDENTIALS, getPropertyValue(qifEvent, EventJms.JNDI_PASSWORD.getName()));
 
-        logger.info("JMS Process Properties : ");
+        logger.info("JmsProcess Properties : ");
         logger.info("INITIAL_CONTEXT_FACTORY = {}", getPropertyValue(qifEvent, EventJms.INITIAL_CONTEXT_FACTORY.getName()));
         logger.info("PROVIDER_URL = {}", getPropertyValue(qifEvent, EventJms.JNDI_URL_PROVIDER.getName()));
         logger.info("SECURITY_PRINCIPAL = {}", getPropertyValue(qifEvent, EventJms.JNDI_USER.getName()));
@@ -45,8 +45,6 @@ public abstract class JmsProcess extends DaemonProcess {
 
                 try {
                     Connection connection = connectionFactory.createConnection();
-                    connection.start();
-
                     Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 
                     logger.info("JNDI_DESTINATION = {}", getPropertyValue(qifEvent, EventJms.JNDI_DESTINATION.getName()));
@@ -60,6 +58,8 @@ public abstract class JmsProcess extends DaemonProcess {
                     } else {
                         consumer = session.createConsumer(destination, messageSelector);
                     }
+
+                    connection.start();
 
                     while (QifEngine.loopForever()) {
                         TextMessage textMessage = (TextMessage) consumer.receiveNoWait();
@@ -92,11 +92,16 @@ public abstract class JmsProcess extends DaemonProcess {
                         }
                     }
 
+                    logger.info("Exit loop forever");
                     if (consumer != null) consumer.close();
+                    logger.info("Close JMS MessageConsumer");
                     if (session != null) session.close();
+                    logger.info("Close JMS Session");
 
                     connection.stop();
+                    logger.info("Stop JMS Connection");
                     connection.close();
+                    logger.info("Close JMS Connection");
                 } catch (Exception e) {
                     logger.error(e.getLocalizedMessage(), e);
                 }
