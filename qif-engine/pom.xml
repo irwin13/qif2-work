@@ -141,12 +141,14 @@
             <groupId>postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>8.4-702.jdbc4</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>oracle</groupId>
             <artifactId>ojdbc6</artifactId>
             <version>11.1.0.7.0</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
