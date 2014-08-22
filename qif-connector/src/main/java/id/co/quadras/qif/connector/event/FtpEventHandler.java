@@ -1,11 +1,11 @@
 package id.co.quadras.qif.connector.event;
 
 import com.google.common.base.Strings;
-import id.co.quadras.qif.core.QifEventHandler;
-import id.co.quadras.qif.core.exception.QifException;
-import id.co.quadras.qif.core.model.entity.QifEvent;
-import id.co.quadras.qif.core.model.vo.event.EventFtp;
-import id.co.quadras.qif.core.model.vo.message.FileMessage;
+import id.co.quadras.qif.engine.QifException;
+import id.co.quadras.qif.engine.core.QifEventHandler;
+import id.co.quadras.qif.model.entity.QifEvent;
+import id.co.quadras.qif.model.vo.event.EventFtp;
+import id.co.quadras.qif.model.vo.message.FileMessage;
 import org.apache.commons.net.ftp.*;
 import org.joda.time.Duration;
 import org.slf4j.Logger;

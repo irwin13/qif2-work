@@ -1,0 +1,101 @@
+# THIS IS A REFERENCE FILE FOR QifConfig
+
+qifTaskMaxConcurrent: 1024
+
+rootPackage:
+    process: foo.qif.process
+    task: foo.qif.task
+
+batchConfig:
+    eventLogPersistInterval: 10
+    eventLogMsgPersistInterval: 10
+    activityLogPersistInterval: 10
+    activityLogDataPersistInterval: 10
+    activityLogInputMsgPersistInterval: 10
+    activityLogOutputMsgPersistInterval: 10
+    counterUpdateInterval: 10
+
+dbSetting:
+    cacheEnabled: true
+    lazyLoadingEnabled: true
+    multipleResultSetsEnabled: true
+    useColumnLabel: true
+    useGeneratedKeys: false
+    autoMappingBehavior: PARTIAL
+    defaultExecutorType: REUSE
+    safeRowBoundsEnabled: false
+    mapUnderscoreToCamelCase: true
+    localCacheScope: SESSION
+    jdbcTypeForNull: NULL
+    lazyLoadTriggerMethods: equals,clone,hashCode,toString
+    logPrefix: MyBatisLog
+    # set value to empty for defaultStatementTimeout if the JDBC driver doesn't support it, for example : PostgreSQL
+    defaultStatementTimeout:
+
+# JDBC or JNDI
+transactionManager: JDBC
+
+jdbcDataSource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    driver: org.postgresql.Driver
+    username: qif
+    password: qif
+    validationQuery: SELECT true
+    initialSize: 5
+    maxActive: 50
+    maxIdle: 5
+    minIdle: 3
+    testOnBorrow: true
+    jmxEnabled: false
+    testWhileIdle: false
+    testOnReturn: false
+    minEvictableIdleTimeMillis: 10000
+    validationInterval: 30000
+    timeBetweenEvictionRunsMillis: 5000
+    maxWait: 5000
+    logAbandoned: false
+    removeAbandoned: true
+    removeAbandonedTimeout: 60
+    jdbcInterceptors: org.apache.tomcat.jdbc.pool.interceptor.ConnectionState;org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer
+
+jndiDataSource:
+    jndiName:
+    initialContext:
+    closeConnection:
+
+# DROPWIZARD CONFIGURATION
+server:
+  type: simple
+  maxThreads: 1024
+  minThreads: 8
+  maxQueuedRequests: 1024
+  applicationContextPath: /qpusat
+  adminContextPath: /admin
+  connector:
+    type: http
+    port: 9700
+
+logging:
+
+  # Permit DEBUG, INFO, WARN and ERROR messages to be logged by appenders.
+  level: DEBUG
+
+  loggers:
+    id.co.quadras: DEBUG
+    io.dropwizard: DEBUG
+    org.eclipse.jetty: INFO
+    org.apache.http: INFO
+
+  appenders:
+    # Log warnings and errors to stderr
+    - type: console
+      threshold: DEBUG
+      target: stdout
+
+    # Log info, warnings and errors to our apps' main log.
+    # Rolled over daily and retained for 5 days.
+    - type: file
+      threshold: DEBUG
+      currentLogFilename: /var/logs/qif.log
+      archivedLogFilenamePattern: /var/logs/qpusat-%d.log.gz
+      archivedFileCount: 3

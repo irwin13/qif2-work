@@ -1,12 +1,11 @@
 package id.co.quadras.qif.engine.task;
 
 import com.google.inject.Inject;
-import id.co.quadras.qif.core.QifTask;
-import id.co.quadras.qif.core.QifUtil;
-import id.co.quadras.qif.core.exception.QifException;
-import id.co.quadras.qif.core.model.entity.QifAdapter;
-import id.co.quadras.qif.core.model.entity.QifAdapterProperty;
+import id.co.quadras.qif.engine.core.QifTask;
+import id.co.quadras.qif.engine.core.QifUtil;
 import id.co.quadras.qif.engine.service.AdapterService;
+import id.co.quadras.qif.model.entity.QifAdapter;
+import id.co.quadras.qif.model.entity.QifAdapterProperty;
 
 import java.util.List;
 

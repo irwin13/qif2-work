@@ -1,11 +1,11 @@
 package id.co.quadras.qif.engine.job.internal;
 
-import id.co.quadras.qif.core.QifConstants;
-import id.co.quadras.qif.core.helper.queue.reader.EventLogQueueReader;
-import id.co.quadras.qif.core.model.entity.log.QifEventLog;
-import id.co.quadras.qif.engine.guice.QifGuiceFactory;
+import id.co.quadras.qif.engine.QifEngineApplication;
+import id.co.quadras.qif.engine.core.QifConstants;
+import id.co.quadras.qif.engine.queue.reader.EventLogQueueReader;
 import id.co.quadras.qif.engine.service.app.AppSettingService;
 import id.co.quadras.qif.engine.service.log.EventLogService;
+import id.co.quadras.qif.model.entity.log.QifEventLog;
 import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -25,10 +25,10 @@ public class EventLogPersist implements Job {
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        EventLogQueueReader queueReader = QifGuiceFactory.getInjector().getInstance(EventLogQueueReader.class);
-        EventLogService service = QifGuiceFactory.getInjector().getInstance(EventLogService.class);
+        EventLogQueueReader queueReader = QifEngineApplication.getInjector().getInstance(EventLogQueueReader.class);
+        EventLogService service = QifEngineApplication.getInjector().getInstance(EventLogService.class);
 
-        AppSettingService appSettingService = QifGuiceFactory.getInjector().getInstance(AppSettingService.class);
+        AppSettingService appSettingService = QifEngineApplication.getInjector().getInstance(AppSettingService.class);
         int maxFetch = QifConstants.DEFAULT_LOG_FETCH;
 
         try {

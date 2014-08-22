@@ -1,11 +1,11 @@
 package id.co.quadras.qif.engine.process;
 
 import com.google.common.base.Strings;
-import id.co.quadras.qif.core.QifActivityMessage;
-import id.co.quadras.qif.core.model.entity.QifEvent;
-import id.co.quadras.qif.core.model.vo.event.EventJms;
-import id.co.quadras.qif.core.model.vo.message.QifMessageType;
-import id.co.quadras.qif.engine.QifEngine;
+import id.co.quadras.qif.engine.QifEngineApplication;
+import id.co.quadras.qif.engine.core.QifActivityMessage;
+import id.co.quadras.qif.model.entity.QifEvent;
+import id.co.quadras.qif.model.vo.event.EventJms;
+import id.co.quadras.qif.model.vo.message.QifMessageType;
 
 import javax.jms.*;
 import javax.naming.Context;
@@ -61,7 +61,7 @@ public abstract class JmsProcess extends DaemonProcess {
 
                     connection.start();
 
-                    while (QifEngine.loopForever()) {
+                    while (QifEngineApplication.loopForever()) {
                         TextMessage textMessage = (TextMessage) consumer.receiveNoWait();
                         if (textMessage != null && !Strings.isNullOrEmpty(textMessage.getText())) {
                             QifActivityMessage qifActivityMessage = new QifActivityMessage(textMessage.getText(), QifMessageType.STRING);

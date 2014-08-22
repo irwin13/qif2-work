@@ -1,9 +1,9 @@
 package id.co.quadras.qif.connector.event;
 
-import id.co.quadras.qif.core.QifEventHandler;
-import id.co.quadras.qif.core.model.entity.QifEvent;
-import id.co.quadras.qif.core.model.vo.event.EventFile;
-import id.co.quadras.qif.core.model.vo.message.FileMessage;
+import id.co.quadras.qif.engine.core.QifEventHandler;
+import id.co.quadras.qif.model.entity.QifEvent;
+import id.co.quadras.qif.model.vo.event.EventFile;
+import id.co.quadras.qif.model.vo.message.FileMessage;
 import org.apache.commons.io.FileUtils;
 import org.joda.time.Duration;
 import org.slf4j.Logger;

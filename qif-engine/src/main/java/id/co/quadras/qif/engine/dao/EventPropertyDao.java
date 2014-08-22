@@ -1,6 +1,6 @@
 package id.co.quadras.qif.engine.dao;
 
-import id.co.quadras.qif.core.model.entity.QifEventProperty;
+import id.co.quadras.qif.model.entity.QifEventProperty;
 import org.apache.ibatis.session.SqlSession;
 
 import java.util.List;

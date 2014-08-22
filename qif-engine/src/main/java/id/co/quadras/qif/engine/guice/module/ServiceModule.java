@@ -1,6 +1,7 @@
 package id.co.quadras.qif.engine.guice.module;
 
 import com.google.inject.AbstractModule;
+import com.irwin13.winwork.basic.service.BasicEntityCommonService;
 import id.co.quadras.qif.engine.job.internal.*;
 import id.co.quadras.qif.engine.service.AdapterService;
 import id.co.quadras.qif.engine.service.CounterService;
@@ -20,6 +21,8 @@ public class ServiceModule extends AbstractModule {
 
     @Override
     protected void configure() {
+
+        bind(BasicEntityCommonService.class);
 
         // LOG
         bind(ActivityLogService.class).to(ActivityLogServiceImp.class);

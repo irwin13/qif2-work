@@ -1,10 +1,11 @@
 package id.co.quadras.qif.connector.event;
 
-import id.co.quadras.qif.core.QifActivityMessage;
-import id.co.quadras.qif.core.QifEventHandler;
-import id.co.quadras.qif.core.model.entity.QifEvent;
-import id.co.quadras.qif.core.model.vo.HttpRequestMessage;
-import id.co.quadras.qif.core.model.vo.message.QifMessageType;
+
+import id.co.quadras.qif.engine.core.QifActivityMessage;
+import id.co.quadras.qif.engine.core.QifEventHandler;
+import id.co.quadras.qif.model.entity.QifEvent;
+import id.co.quadras.qif.model.vo.HttpRequestMessage;
+import id.co.quadras.qif.model.vo.message.QifMessageType;
 
 import java.util.Map;
 import java.util.WeakHashMap;

@@ -2,9 +2,9 @@ package id.co.quadras.qif.engine.dao.log.imp;
 
 import com.google.inject.Inject;
 import com.irwin13.winwork.mybatis.dao.BasicMyBatisDao;
-import id.co.quadras.qif.core.model.entity.log.QifActivityLog;
 import id.co.quadras.qif.engine.dao.log.ActivityLogDao;
 import id.co.quadras.qif.engine.sqlmap.log.QifActivityLogSqlmap;
+import id.co.quadras.qif.model.entity.log.QifActivityLog;
 import org.apache.ibatis.session.SqlSessionFactory;
 
 import java.util.List;

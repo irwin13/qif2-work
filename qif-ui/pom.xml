@@ -423,7 +423,7 @@
 
         <dependency>
             <groupId>id.co.quadras</groupId>
-            <artifactId>qif-core</artifactId>
+            <artifactId>qif-model</artifactId>
             <version>2.0-SNAPSHOT</version>
         </dependency>
 

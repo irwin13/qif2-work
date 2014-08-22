@@ -1,9 +1,9 @@
 package id.co.quadras.qif.engine.service.log.imp;
 
 import com.google.inject.Inject;
-import id.co.quadras.qif.core.model.entity.log.QifActivityLogInputMsg;
 import id.co.quadras.qif.engine.dao.log.ActivityLogInputMsgDao;
 import id.co.quadras.qif.engine.service.log.ActivityLogInputMsgService;
+import id.co.quadras.qif.model.entity.log.QifActivityLogInputMsg;
 
 import java.util.List;
 

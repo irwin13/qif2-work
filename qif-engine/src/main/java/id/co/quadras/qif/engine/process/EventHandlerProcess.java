@@ -1,7 +1,7 @@
 package id.co.quadras.qif.engine.process;
 
-import id.co.quadras.qif.core.QifProcess;
-import id.co.quadras.qif.core.model.entity.QifEvent;
+import id.co.quadras.qif.engine.core.QifProcess;
+import id.co.quadras.qif.model.entity.QifEvent;
 
 /**
  * @author irwin Timestamp : 19/08/2014 19:04

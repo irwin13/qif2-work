@@ -1,13 +1,13 @@
 package id.co.quadras.qif.engine.web.servlet;
 
 import com.irwin13.winwork.basic.scheduler.BasicSchedulerManager;
-import id.co.quadras.qif.core.QifActivity;
-import id.co.quadras.qif.core.helper.JsonParser;
-import id.co.quadras.qif.core.model.entity.QifEvent;
-import id.co.quadras.qif.core.model.vo.event.EventType;
+import id.co.quadras.qif.engine.QifEngineApplication;
 import id.co.quadras.qif.engine.SchedulerStarter;
-import id.co.quadras.qif.engine.guice.QifGuiceFactory;
+import id.co.quadras.qif.engine.core.QifActivity;
+import id.co.quadras.qif.engine.json.QifJsonParser;
 import id.co.quadras.qif.engine.service.EventService;
+import id.co.quadras.qif.model.entity.QifEvent;
+import id.co.quadras.qif.model.vo.event.EventType;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.quartz.SchedulerException;
@@ -27,17 +27,17 @@ import java.util.Arrays;
 public class EventApiServlet extends HttpServlet {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventApiServlet.class);
-    private final BasicSchedulerManager schedulerManager = QifGuiceFactory.getInjector().getInstance(BasicSchedulerManager.class);
-    private final SchedulerStarter schedulerStarter = QifGuiceFactory.getInjector().getInstance(SchedulerStarter.class);
-    private final JsonParser jsonParser = QifGuiceFactory.getInjector().getInstance(JsonParser.class);
-    private final EventService eventService = QifGuiceFactory.getInjector().getInstance(EventService.class);
+    private final BasicSchedulerManager schedulerManager = QifEngineApplication.getInjector().getInstance(BasicSchedulerManager.class);
+    private final SchedulerStarter schedulerStarter = QifEngineApplication.getInjector().getInstance(SchedulerStarter.class);
+    private final QifJsonParser qifJsonParser = QifEngineApplication.getInjector().getInstance(QifJsonParser.class);
+    private final EventService eventService = QifEngineApplication.getInjector().getInstance(EventService.class);
 
     // ADD
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String json = IOUtils.toString(req.getReader());
         LOGGER.debug("json input = {}", json);
-        QifEvent qifEvent = jsonParser.parseToObject(false, json, QifEvent.class);
+        QifEvent qifEvent = qifJsonParser.parseToObject(false, json, QifEvent.class);
         LOGGER.debug("add scheduler event = {}", qifEvent);
         try {
             schedulerStarter.startEvent(Arrays.asList(qifEvent));
@@ -54,7 +54,7 @@ public class EventApiServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String json = IOUtils.toString(req.getReader());
         LOGGER.debug("json input = {}", json);
-        QifEvent qifEvent = jsonParser.parseToObject(false, json, QifEvent.class);
+        QifEvent qifEvent = qifJsonParser.parseToObject(false, json, QifEvent.class);
         LOGGER.debug("update scheduler event = {}", qifEvent);
         if (EventType.SCHEDULER_CRON.getName().equals(qifEvent.getEventType()) ||
                 EventType.SCHEDULER_INTERVAL.getName().equals(qifEvent.getEventType())) {

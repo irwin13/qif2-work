@@ -1,8 +1,8 @@
 package id.co.quadras.qif.connector.adapter;
 
 import com.google.common.base.Strings;
-import id.co.quadras.qif.core.model.entity.QifAdapter;
-import id.co.quadras.qif.core.model.vo.adapter.AdapterFile;
+import id.co.quadras.qif.model.entity.QifAdapter;
+import id.co.quadras.qif.model.vo.adapter.AdapterFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

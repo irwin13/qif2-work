@@ -1,17 +1,17 @@
 package id.co.quadras.qif.engine.job.internal;
 
 import com.irwin13.winwork.basic.WinWorkConstants;
-import id.co.quadras.qif.core.QifProcess;
-import id.co.quadras.qif.core.QifTask;
-import id.co.quadras.qif.core.helper.QifTransactionCounter;
-import id.co.quadras.qif.core.helper.imp.QifTransactionCounterGuava;
-import id.co.quadras.qif.core.model.entity.QifCounter;
-import id.co.quadras.qif.core.model.entity.QifEvent;
-import id.co.quadras.qif.engine.guice.QifGuiceFactory;
+import id.co.quadras.qif.engine.QifEngineApplication;
+import id.co.quadras.qif.engine.core.QifProcess;
+import id.co.quadras.qif.engine.core.QifTask;
+import id.co.quadras.qif.engine.counter.QifTransactionCounter;
+import id.co.quadras.qif.engine.counter.imp.QifTransactionCounterGuava;
 import id.co.quadras.qif.engine.process.ProcessRegister;
-import id.co.quadras.qif.engine.task.TaskRegister;
 import id.co.quadras.qif.engine.service.CounterService;
 import id.co.quadras.qif.engine.service.EventService;
+import id.co.quadras.qif.engine.task.TaskRegister;
+import id.co.quadras.qif.model.entity.QifCounter;
+import id.co.quadras.qif.model.entity.QifEvent;
 import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -34,9 +34,9 @@ public class CounterUpdate implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
 
-        transactionCounter = QifGuiceFactory.getInjector().getInstance(QifTransactionCounter.class);
-        CounterService counterService = QifGuiceFactory.getInjector().getInstance(CounterService.class);
-        eventService = QifGuiceFactory.getInjector().getInstance(EventService.class);
+        transactionCounter = QifEngineApplication.getInjector().getInstance(QifTransactionCounter.class);
+        CounterService counterService = QifEngineApplication.getInjector().getInstance(CounterService.class);
+        eventService = QifEngineApplication.getInjector().getInstance(EventService.class);
 
         List<QifCounter> qifCounterList = new LinkedList<QifCounter>();
         Map<String, Integer> mapCounter = new WeakHashMap<String, Integer>();

@@ -1,7 +1,7 @@
 package id.co.quadras.qif.engine.guice.module;
 
 import com.google.inject.AbstractModule;
-import id.co.quadras.qif.core.QifProcess;
+import id.co.quadras.qif.engine.core.QifProcess;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,15 +15,15 @@ public class ProcessModule extends AbstractModule {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProcessModule.class);
 
-    private final Set<Class<? extends QifProcess>> classSet;
+    private final Set<Class<? extends QifProcess>> processSet;
 
-    public ProcessModule(Set<Class<? extends QifProcess>> classSet) {
-        this.classSet = classSet;
+    public ProcessModule(Set<Class<? extends QifProcess>> processSet) {
+        this.processSet = processSet;
     }
 
     @Override
     protected void configure() {
-        for (Class<? extends QifProcess> processClass : classSet) {
+        for (Class<? extends QifProcess> processClass : processSet) {
             if (!Modifier.isAbstract(processClass.getModifiers())) {
                 bind(processClass);
                 LOGGER.info("register QifProcess = {} ", processClass.getName());

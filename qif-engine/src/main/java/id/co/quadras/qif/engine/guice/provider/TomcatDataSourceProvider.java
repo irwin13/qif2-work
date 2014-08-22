@@ -3,7 +3,7 @@ package id.co.quadras.qif.engine.guice.provider;
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import id.co.quadras.qif.engine.jaxb.Qif;
+import id.co.quadras.qif.engine.config.QifConfig;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
 
 import javax.sql.DataSource;
@@ -13,10 +13,10 @@ import javax.sql.DataSource;
  */
 public class TomcatDataSourceProvider implements Provider<DataSource> {
 
-    private final Qif qifConfig;
+    private final QifConfig qifConfig;
 
     @Inject
-    public TomcatDataSourceProvider(Qif qifConfig) {
+    public TomcatDataSourceProvider(QifConfig qifConfig) {
         this.qifConfig = qifConfig;
     }
 
@@ -31,37 +31,37 @@ public class TomcatDataSourceProvider implements Provider<DataSource> {
 
     private void setProperties(PoolProperties poolProperties) {
 
-        poolProperties.setUrl(qifConfig.getDatabaseRepository().getDataSource().getUrl());
-        poolProperties.setDriverClassName(qifConfig.getDatabaseRepository().getDataSource().getDriver());
-        poolProperties.setUsername(qifConfig.getDatabaseRepository().getDataSource().getUsername());
-        poolProperties.setPassword(qifConfig.getDatabaseRepository().getDataSource().getPassword());
+        poolProperties.setUrl(qifConfig.getJdbcDataSource().getUrl());
+        poolProperties.setDriverClassName(qifConfig.getJdbcDataSource().getDriver());
+        poolProperties.setUsername(qifConfig.getJdbcDataSource().getUsername());
+        poolProperties.setPassword(qifConfig.getJdbcDataSource().getPassword());
 
-        poolProperties.setValidationQuery(qifConfig.getDatabaseRepository().getDataSource().getValidationQuery());
+        poolProperties.setValidationQuery(qifConfig.getJdbcDataSource().getValidationQuery());
 
-        poolProperties.setTestOnBorrow(Boolean.valueOf(qifConfig.getDatabaseRepository().getDataSource().getTestOnBorrow()));
-        poolProperties.setJmxEnabled(Boolean.valueOf(qifConfig.getDatabaseRepository().getDataSource().getJmxEnabled()));
-        poolProperties.setTestWhileIdle(Boolean.valueOf(qifConfig.getDatabaseRepository().getDataSource().getTestWhileIdle()));
-        poolProperties.setTestOnReturn(Boolean.valueOf(qifConfig.getDatabaseRepository().getDataSource().getTestOnReturn()));
+        poolProperties.setTestOnBorrow(qifConfig.getJdbcDataSource().isTestOnBorrow());
+        poolProperties.setJmxEnabled(qifConfig.getJdbcDataSource().isJmxEnabled());
+        poolProperties.setTestWhileIdle(qifConfig.getJdbcDataSource().isTestWhileIdle());
+        poolProperties.setTestOnReturn(qifConfig.getJdbcDataSource().isTestOnReturn());
 
-        poolProperties.setInitialSize(Integer.valueOf(qifConfig.getDatabaseRepository().getDataSource().getInitialSize()));
-        poolProperties.setMaxActive(Integer.valueOf(qifConfig.getDatabaseRepository().getDataSource().getMaxActive()));
-        poolProperties.setMaxIdle(Integer.valueOf(qifConfig.getDatabaseRepository().getDataSource().getMaxIdle()));
-        poolProperties.setMinIdle(Integer.valueOf(qifConfig.getDatabaseRepository().getDataSource().getMinIdle()));
+        poolProperties.setInitialSize(Integer.valueOf(qifConfig.getJdbcDataSource().getInitialSize()));
+        poolProperties.setMaxActive(Integer.valueOf(qifConfig.getJdbcDataSource().getMaxActive()));
+        poolProperties.setMaxIdle(Integer.valueOf(qifConfig.getJdbcDataSource().getMaxIdle()));
+        poolProperties.setMinIdle(Integer.valueOf(qifConfig.getJdbcDataSource().getMinIdle()));
 
-        poolProperties.setMinEvictableIdleTimeMillis(Integer.valueOf(qifConfig.getDatabaseRepository().getDataSource().getMinEvictableIdleTimeMillis()));
+        poolProperties.setMinEvictableIdleTimeMillis(Integer.valueOf(qifConfig.getJdbcDataSource().getMinEvictableIdleTimeMillis()));
 
-        poolProperties.setValidationInterval(Integer.valueOf(qifConfig.getDatabaseRepository().getDataSource().getValidationInterval()));
-        poolProperties.setTimeBetweenEvictionRunsMillis(Integer.valueOf(qifConfig.getDatabaseRepository().getDataSource().getTimeBetweenEvictionRunsMillis()));
+        poolProperties.setValidationInterval(Integer.valueOf(qifConfig.getJdbcDataSource().getValidationInterval()));
+        poolProperties.setTimeBetweenEvictionRunsMillis(Integer.valueOf(qifConfig.getJdbcDataSource().getTimeBetweenEvictionRunsMillis()));
 
-        String maxWait = qifConfig.getDatabaseRepository().getDataSource().getMaxWait();
+        String maxWait = qifConfig.getJdbcDataSource().getMaxWait();
         if (!Strings.isNullOrEmpty(maxWait)) {
             poolProperties.setMaxWait(Integer.valueOf(maxWait));
         }
 
-        poolProperties.setLogAbandoned(Boolean.valueOf(qifConfig.getDatabaseRepository().getDataSource().getLogAbandoned()));
-        poolProperties.setRemoveAbandoned(Boolean.valueOf(qifConfig.getDatabaseRepository().getDataSource().getRemoveAbandoned()));
-        poolProperties.setRemoveAbandonedTimeout(Integer.valueOf(qifConfig.getDatabaseRepository().getDataSource().getRemoveAbandonedTimeout()));
+        poolProperties.setLogAbandoned(qifConfig.getJdbcDataSource().isLogAbandoned());
+        poolProperties.setRemoveAbandoned(qifConfig.getJdbcDataSource().isRemoveAbandoned());
+        poolProperties.setRemoveAbandonedTimeout(qifConfig.getJdbcDataSource().getRemoveAbandonedTimeout());
 
-        poolProperties.setJdbcInterceptors(qifConfig.getDatabaseRepository().getDataSource().getJdbcInterceptors());
+        poolProperties.setJdbcInterceptors(qifConfig.getJdbcDataSource().getJdbcInterceptors());
     }
 }

@@ -2,19 +2,19 @@ package id.co.quadras.qif.engine;
 
 import com.google.inject.Inject;
 import com.irwin13.winwork.basic.scheduler.BasicSchedulerManager;
-import id.co.quadras.qif.core.QifConstants;
-import id.co.quadras.qif.core.QifUtil;
-import id.co.quadras.qif.core.helper.JsonParser;
-import id.co.quadras.qif.core.model.entity.QifEvent;
-import id.co.quadras.qif.core.model.entity.QifEventProperty;
-import id.co.quadras.qif.core.model.vo.event.EventType;
-import id.co.quadras.qif.core.model.vo.event.SchedulerCron;
-import id.co.quadras.qif.core.model.vo.event.SchedulerInterval;
-import id.co.quadras.qif.engine.guice.QifGuiceFactory;
-import id.co.quadras.qif.engine.jaxb.Qif;
+import id.co.quadras.qif.engine.config.QifConfig;
+import id.co.quadras.qif.engine.core.QifConstants;
+import id.co.quadras.qif.engine.core.QifUtil;
+import id.co.quadras.qif.engine.guice.QifGuice;
 import id.co.quadras.qif.engine.job.QifEventConcurrentJob;
 import id.co.quadras.qif.engine.job.QifEventSingleInstanceJob;
 import id.co.quadras.qif.engine.job.internal.*;
+import id.co.quadras.qif.engine.json.QifJsonParser;
+import id.co.quadras.qif.model.entity.QifEvent;
+import id.co.quadras.qif.model.entity.QifEventProperty;
+import id.co.quadras.qif.model.vo.event.EventType;
+import id.co.quadras.qif.model.vo.event.SchedulerCron;
+import id.co.quadras.qif.model.vo.event.SchedulerInterval;
 import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +47,7 @@ public final class SchedulerStarter {
 
         for (QifEvent qifEvent : qifEventList) {
             try {
-                LOGGER.debug(QifGuiceFactory.getInjector().getInstance(JsonParser.class).parseToString(false, qifEvent));
+                LOGGER.debug(QifEngineApplication.getInjector().getInstance(QifJsonParser.class).parseToString(false, qifEvent));
             } catch (IOException e) {
                 LOGGER.error(e.getLocalizedMessage(), e);
             }
@@ -107,7 +107,7 @@ public final class SchedulerStarter {
         }
     }
 
-    public void startInternalScheduler(Qif qif) throws SchedulerException {
+    public void startInternalScheduler(QifConfig qifConfig) throws SchedulerException {
         LOGGER.info("Start Internal Scheduler ");
 
         // Counter update
@@ -116,7 +116,7 @@ public final class SchedulerStarter {
                         schedulerManager.createJobKey(CounterUpdate.class.getSimpleName()),
                         null),
                 schedulerManager.createIntervalTrigger(schedulerManager.createTriggerKey(CounterUpdate.class.getSimpleName()),
-                        Integer.valueOf(qif.getBatchConfig().getCounterUpdateInterval()),
+                        Integer.valueOf(qifConfig.getBatchConfig().getCounterUpdateInterval()),
                         false));
 
         // event log
@@ -125,7 +125,7 @@ public final class SchedulerStarter {
                                                 schedulerManager.createJobKey(EventLogMsgPersist.class.getSimpleName()),
                                                 null),
                 schedulerManager.createIntervalTrigger(schedulerManager.createTriggerKey(EventLogMsgPersist.class.getSimpleName()),
-                                                        Integer.valueOf(qif.getBatchConfig().getEventLogMsgPersistInterval()),
+                                                        Integer.valueOf(qifConfig.getBatchConfig().getEventLogMsgPersistInterval()),
                         false));
 
         schedulerManager.add(
@@ -133,7 +133,7 @@ public final class SchedulerStarter {
                         schedulerManager.createJobKey(EventLogPersist.class.getSimpleName()),
                         null),
                 schedulerManager.createIntervalTrigger(schedulerManager.createTriggerKey(EventLogPersist.class.getSimpleName()),
-                        Integer.valueOf(qif.getBatchConfig().getEventLogPersistInterval()),
+                        Integer.valueOf(qifConfig.getBatchConfig().getEventLogPersistInterval()),
                         false));
 
         // activity log
@@ -142,7 +142,7 @@ public final class SchedulerStarter {
                         schedulerManager.createJobKey(ActivityLogPersist.class.getSimpleName()),
                         null),
                 schedulerManager.createIntervalTrigger(schedulerManager.createTriggerKey(ActivityLogPersist.class.getSimpleName()),
-                        Integer.valueOf(qif.getBatchConfig().getActivityLogPersistInterval()),
+                        Integer.valueOf(qifConfig.getBatchConfig().getActivityLogPersistInterval()),
                         false));
 
         schedulerManager.add(
@@ -150,7 +150,7 @@ public final class SchedulerStarter {
                         schedulerManager.createJobKey(ActivityLogDataPersist.class.getSimpleName()),
                         null),
                 schedulerManager.createIntervalTrigger(schedulerManager.createTriggerKey(ActivityLogDataPersist.class.getSimpleName()),
-                        Integer.valueOf(qif.getBatchConfig().getActivityLogDataPersistInterval()),
+                        Integer.valueOf(qifConfig.getBatchConfig().getActivityLogDataPersistInterval()),
                         false));
 
         schedulerManager.add(
@@ -158,7 +158,7 @@ public final class SchedulerStarter {
                         schedulerManager.createJobKey(ActivityLogInputMsgPersist.class.getSimpleName()),
                         null),
                 schedulerManager.createIntervalTrigger(schedulerManager.createTriggerKey(ActivityLogInputMsgPersist.class.getSimpleName()),
-                        Integer.valueOf(qif.getBatchConfig().getActivityLogInputMsgPersistInterval()),
+                        Integer.valueOf(qifConfig.getBatchConfig().getActivityLogInputMsgPersistInterval()),
                         false));
 
         schedulerManager.add(
@@ -166,7 +166,7 @@ public final class SchedulerStarter {
                         schedulerManager.createJobKey(ActivityLogOutputMsgPersist.class.getSimpleName()),
                         null),
                 schedulerManager.createIntervalTrigger(schedulerManager.createTriggerKey(ActivityLogOutputMsgPersist.class.getSimpleName()),
-                        Integer.valueOf(qif.getBatchConfig().getActivityLogOutputMsgPersistInterval()),
+                        Integer.valueOf(qifConfig.getBatchConfig().getActivityLogOutputMsgPersistInterval()),
                         false));
 
         LOGGER.info("Start Internal Scheduler complete");

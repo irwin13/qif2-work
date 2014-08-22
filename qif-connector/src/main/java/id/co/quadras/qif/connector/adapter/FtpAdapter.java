@@ -1,9 +1,8 @@
 package id.co.quadras.qif.connector.adapter;
 
 import com.google.common.base.Strings;
-import id.co.quadras.qif.core.exception.QifException;
-import id.co.quadras.qif.core.model.entity.QifAdapter;
-import id.co.quadras.qif.core.model.vo.adapter.AdapterFtp;
+import id.co.quadras.qif.model.entity.QifAdapter;
+import id.co.quadras.qif.model.vo.adapter.AdapterFtp;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
 import org.slf4j.Logger;
@@ -37,7 +36,7 @@ public class FtpAdapter extends AbstractAdapter {
         ftpClient.connect(host, port);
         ftpClient.login(user, password);
         if (!FTPReply.isPositiveCompletion(ftpClient.getReplyCode())) {
-            throw new QifException("Fail to complete login process to FTP server");
+            throw new RuntimeException("Fail to complete login process to FTP server");
         }
     }
 

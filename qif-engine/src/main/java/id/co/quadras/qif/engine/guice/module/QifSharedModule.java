@@ -4,30 +4,25 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 import com.google.inject.matcher.Matchers;
-import com.google.inject.name.Names;
 import com.irwin13.winwork.basic.annotations.MDCLog;
-import com.irwin13.winwork.basic.config.WinWorkConfig;
 import com.irwin13.winwork.basic.log.MDCLogInterceptor;
 import com.irwin13.winwork.basic.scheduler.BasicSchedulerManager;
 import com.irwin13.winwork.basic.scheduler.SchedulerProvider;
-import com.irwin13.winwork.basic.service.BasicEntityCommonService;
 import com.irwin13.winwork.basic.utilities.RestClient;
-import com.irwin13.winwork.basic.utilities.WinWorkVelocityUtil;
-import id.co.quadras.qif.core.helper.JsonParser;
-import id.co.quadras.qif.core.helper.JsonPrettyPrint;
-import id.co.quadras.qif.core.helper.QifTransactionCounter;
-import id.co.quadras.qif.core.helper.imp.QifTransactionCounterGuava;
-import id.co.quadras.qif.core.helper.queue.*;
-import id.co.quadras.qif.core.helper.queue.imp.*;
-import id.co.quadras.qif.core.helper.queue.reader.*;
-import id.co.quadras.qif.core.helper.queue.reader.imp.*;
-import id.co.quadras.qif.engine.QifConfig;
 import id.co.quadras.qif.engine.SchedulerStarter;
+import id.co.quadras.qif.engine.config.QifConfig;
+import id.co.quadras.qif.engine.counter.QifTransactionCounter;
+import id.co.quadras.qif.engine.counter.imp.QifTransactionCounterGuava;
 import id.co.quadras.qif.engine.guice.provider.ExecutorServiceProvider;
 import id.co.quadras.qif.engine.guice.provider.JsonMapperProvider;
 import id.co.quadras.qif.engine.guice.provider.QifSqlSessionFactoryProvider;
 import id.co.quadras.qif.engine.guice.provider.TomcatDataSourceProvider;
-import id.co.quadras.qif.engine.jaxb.Qif;
+import id.co.quadras.qif.engine.json.JsonPrettyPrint;
+import id.co.quadras.qif.engine.json.QifJsonParser;
+import id.co.quadras.qif.engine.queue.*;
+import id.co.quadras.qif.engine.queue.imp.*;
+import id.co.quadras.qif.engine.queue.reader.*;
+import id.co.quadras.qif.engine.queue.reader.imp.*;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.quartz.Scheduler;
 
@@ -39,30 +34,21 @@ import java.util.concurrent.ExecutorService;
  */
 public class QifSharedModule extends AbstractModule {
 
-    private final Qif qifConfig;
+    private final QifConfig qifConfig;
 
-    public QifSharedModule(Qif qifConfig) {
+    public QifSharedModule(QifConfig qifConfig) {
         this.qifConfig = qifConfig;
     }
 
     @Override
     protected void configure() {
 
-        // configuration file
-        bind(String.class)
-                .annotatedWith(Names.named("configFile"))
-                .toInstance("common-config.xml");
-
-        bind(Qif.class).toInstance(qifConfig);
-
-        bind(WinWorkConfig.class).to(QifConfig.class).in(Singleton.class);
-        bind(WinWorkVelocityUtil.class);
-
+        bind(QifConfig.class);
         bind(RestClient.class);
 
         // json
         bind(ObjectMapper.class).toProvider(JsonMapperProvider.class);
-        bind(JsonParser.class);
+        bind(QifJsonParser.class);
         bind(JsonPrettyPrint.class).in(Singleton.class);
 
         // MDC Log AOP Interceptor
@@ -100,8 +86,7 @@ public class QifSharedModule extends AbstractModule {
         bind(DataSource.class).toProvider(TomcatDataSourceProvider.class).in(Singleton.class);
         bind(SqlSessionFactory.class).toProvider(QifSqlSessionFactoryProvider.class).in(Singleton.class);
 
-        bind(BasicEntityCommonService.class);
-
         bind(ExecutorService.class).toProvider(ExecutorServiceProvider.class).in(Singleton.class);
     }
+
 }

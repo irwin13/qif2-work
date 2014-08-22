@@ -1,7 +1,7 @@
 package id.co.quadras.qif.engine.service;
 
-import id.co.quadras.qif.core.model.entity.QifCounter;
-import id.co.quadras.qif.core.model.entity.QifEvent;
+import id.co.quadras.qif.model.entity.QifCounter;
+import id.co.quadras.qif.model.entity.QifEvent;
 
 import java.util.List;
 

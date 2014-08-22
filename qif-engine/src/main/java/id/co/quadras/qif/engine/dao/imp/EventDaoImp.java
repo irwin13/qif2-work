@@ -2,9 +2,9 @@ package id.co.quadras.qif.engine.dao.imp;
 
 import com.google.inject.Inject;
 import com.irwin13.winwork.mybatis.dao.BasicMyBatisDao;
-import id.co.quadras.qif.core.model.entity.QifEvent;
 import id.co.quadras.qif.engine.dao.EventDao;
 import id.co.quadras.qif.engine.sqlmap.QifEventSqlmap;
+import id.co.quadras.qif.model.entity.QifEvent;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;

@@ -2,7 +2,7 @@ package id.co.quadras.qif.engine.task;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.reflect.ClassPath;
-import id.co.quadras.qif.core.QifTask;
+import id.co.quadras.qif.engine.core.QifTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

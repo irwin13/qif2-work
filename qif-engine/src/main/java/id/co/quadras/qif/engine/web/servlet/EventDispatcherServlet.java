@@ -2,16 +2,16 @@ package id.co.quadras.qif.engine.web.servlet;
 
 import com.google.common.base.Strings;
 import com.google.common.net.MediaType;
-import id.co.quadras.qif.core.QifActivity;
-import id.co.quadras.qif.core.QifProcess;
-import id.co.quadras.qif.core.helper.JsonParser;
-import id.co.quadras.qif.core.model.entity.QifEvent;
-import id.co.quadras.qif.core.model.vo.HttpRequestMessage;
-import id.co.quadras.qif.core.model.vo.QifActivityResult;
-import id.co.quadras.qif.core.model.vo.event.EventHttp;
-import id.co.quadras.qif.core.model.vo.message.QifMessageType;
-import id.co.quadras.qif.engine.guice.QifGuiceFactory;
+import id.co.quadras.qif.engine.QifEngineApplication;
+import id.co.quadras.qif.engine.core.QifActivity;
+import id.co.quadras.qif.engine.core.QifProcess;
+import id.co.quadras.qif.engine.json.QifJsonParser;
 import id.co.quadras.qif.engine.service.EventService;
+import id.co.quadras.qif.model.entity.QifEvent;
+import id.co.quadras.qif.model.vo.HttpRequestMessage;
+import id.co.quadras.qif.model.vo.QifActivityResult;
+import id.co.quadras.qif.model.vo.event.EventHttp;
+import id.co.quadras.qif.model.vo.message.QifMessageType;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.net.util.Base64;
@@ -36,7 +36,7 @@ public class EventDispatcherServlet extends HttpServlet {
     public static final String TEXT_PLAIN = "text/plain;charset=UTF-8";
     private static final Logger LOGGER = LoggerFactory.getLogger(EventDispatcherServlet.class);
 
-    private final JsonParser jsonParser = QifGuiceFactory.getInjector().getInstance(JsonParser.class);
+    private final QifJsonParser qifJsonParser = QifEngineApplication.getInjector().getInstance(QifJsonParser.class);
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -54,7 +54,7 @@ public class EventDispatcherServlet extends HttpServlet {
         String path = request.getRequestURI().substring(request.getContextPath().length()).replaceFirst(EVENT_PATH, "");
         LOGGER.debug("incoming request for path {}", path);
 
-        EventService eventService = QifGuiceFactory.getInjector().getInstance(EventService.class);
+        EventService eventService = QifEngineApplication.getInjector().getInstance(EventService.class);
         QifEvent qifEventPath = eventService.selectByProperty(EventHttp.HTTP_PATH.getName(), path);
         QifEvent qifEventMethod = eventService.selectByProperty(EventHttp.HTTP_METHOD.getName(), request.getMethod().toLowerCase());
         if (qifEventPath == null) {
@@ -81,7 +81,7 @@ public class EventDispatcherServlet extends HttpServlet {
     private QifActivityResult executeEvent(HttpServletRequest request, QifEvent qifEvent) {
         QifActivityResult result;
         try {
-            QifProcess qifProcess = (QifProcess) QifGuiceFactory.getInjector().getInstance(Class.forName(qifEvent.getQifProcess()));
+            QifProcess qifProcess = (QifProcess) QifEngineApplication.getInjector().getInstance(Class.forName(qifEvent.getQifProcess()));
             result = qifProcess.executeEvent(qifEvent, copyHttpServletRequest(request), QifMessageType.OBJECT);
         } catch (ClassNotFoundException e) {
             LOGGER.error(e.getLocalizedMessage(), e);
@@ -131,7 +131,7 @@ public class EventDispatcherServlet extends HttpServlet {
                         String body = (String) result.getResult();
                         buildResponse(response, HttpServletResponse.SC_OK, TEXT_PLAIN, body, result.getActivityData());
                     } else if (QifMessageType.OBJECT.equals(result.getMessageType())) {
-                        String body = jsonParser.parseToString(false, result.getResult());
+                        String body = qifJsonParser.parseToString(false, result.getResult());
                         buildResponse(response, HttpServletResponse.SC_OK, MediaType.JSON_UTF_8.toString(), body, result.getActivityData());
                     } else if (QifMessageType.BINARY.equals(result.getMessageType())) {
                         String body = new String(Base64.encodeBase64((byte[]) result.getResult()));

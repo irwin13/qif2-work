@@ -3,12 +3,12 @@ package id.co.quadras.qif.engine.service.imp;
 import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 import com.irwin13.winwork.basic.service.BasicEntityCommonService;
-import id.co.quadras.qif.core.exception.QifException;
-import id.co.quadras.qif.core.model.entity.QifEvent;
-import id.co.quadras.qif.core.model.entity.QifEventProperty;
+import id.co.quadras.qif.engine.QifException;
 import id.co.quadras.qif.engine.dao.EventDao;
 import id.co.quadras.qif.engine.dao.EventPropertyDao;
 import id.co.quadras.qif.engine.service.EventService;
+import id.co.quadras.qif.model.entity.QifEvent;
+import id.co.quadras.qif.model.entity.QifEventProperty;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 

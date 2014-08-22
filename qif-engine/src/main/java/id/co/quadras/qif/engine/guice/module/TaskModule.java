@@ -1,7 +1,7 @@
 package id.co.quadras.qif.engine.guice.module;
 
 import com.google.inject.AbstractModule;
-import id.co.quadras.qif.core.QifTask;
+import id.co.quadras.qif.engine.core.QifTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,15 +15,15 @@ public class TaskModule extends AbstractModule {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TaskModule.class);
 
-    private final Set<Class<? extends QifTask>> classSet;
+    private final Set<Class<? extends QifTask>> taskSet;
 
-    public TaskModule(Set<Class<? extends QifTask>> classSet) {
-        this.classSet = classSet;
+    public TaskModule(Set<Class<? extends QifTask>> taskSet) {
+        this.taskSet = taskSet;
     }
 
     @Override
     protected void configure() {
-        for (Class<? extends QifTask> taskClass : classSet) {
+        for (Class<? extends QifTask> taskClass : taskSet) {
             if (!Modifier.isAbstract(taskClass.getModifiers())) {
                 bind(taskClass);
                 LOGGER.info("register QifTask = {}", taskClass.getName());

@@ -1,11 +1,11 @@
 package id.co.quadras.qif.dev.task;
 
-import id.co.quadras.qif.connector.adapter.FtpAdapter;
-import id.co.quadras.qif.core.QifActivityMessage;
-import id.co.quadras.qif.core.model.entity.QifAdapter;
-import id.co.quadras.qif.core.model.vo.QifActivityResult;
-import id.co.quadras.qif.core.model.vo.message.QifMessageType;
+import id.co.quadras.qif.engine.connector.adapter.FtpAdapter;
+import id.co.quadras.qif.engine.core.QifActivityMessage;
 import id.co.quadras.qif.engine.task.AbstractTask;
+import id.co.quadras.qif.model.entity.QifAdapter;
+import id.co.quadras.qif.model.vo.QifActivityResult;
+import id.co.quadras.qif.model.vo.message.QifMessageType;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

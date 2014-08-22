@@ -1,10 +1,10 @@
 package id.co.quadras.adapter;
 
 import id.co.quadras.qif.connector.adapter.FileAdapter;
-import id.co.quadras.qif.core.model.entity.QifAdapter;
-import id.co.quadras.qif.core.model.entity.QifAdapterProperty;
-import id.co.quadras.qif.core.model.vo.adapter.AdapterFile;
-import id.co.quadras.qif.core.model.vo.adapter.AdapterInterface;
+import id.co.quadras.qif.model.entity.QifAdapter;
+import id.co.quadras.qif.model.entity.QifAdapterProperty;
+import id.co.quadras.qif.model.vo.adapter.AdapterFile;
+import id.co.quadras.qif.model.vo.adapter.AdapterInterface;
 import org.junit.Assert;
 import org.junit.Test;
 

@@ -1,14 +1,13 @@
 package id.co.quadras.qif.dev.process;
 
-import id.co.quadras.qif.core.QifActivityMessage;
-import id.co.quadras.qif.core.QifUtil;
-import id.co.quadras.qif.core.model.vo.QifActivityResult;
-import id.co.quadras.qif.core.model.vo.message.FileMessage;
-import id.co.quadras.qif.core.model.vo.message.QifMessageType;
 import id.co.quadras.qif.dev.task.JsonToXml;
 import id.co.quadras.qif.dev.task.PutToFtp;
-import id.co.quadras.qif.engine.guice.QifGuiceFactory;
+import id.co.quadras.qif.engine.core.QifActivityMessage;
+import id.co.quadras.qif.engine.core.QifUtil;
 import id.co.quadras.qif.engine.process.FileProcess;
+import id.co.quadras.qif.model.vo.QifActivityResult;
+import id.co.quadras.qif.model.vo.message.FileMessage;
+import id.co.quadras.qif.model.vo.message.QifMessageType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,10 +23,10 @@ public class FileJsonToFtp extends FileProcess {
         try {
             FileMessage fileMessage = (FileMessage) qifActivityMessage.getMessageContent();
 
-            QifActivityResult xmlResult = executeTask(QifGuiceFactory.getInjector(), JsonToXml.class,
+            QifActivityResult xmlResult = executeTask(JsonToXml.class,
                     new QifActivityMessage(fileMessage.getFileContent(), QifMessageType.STRING));
 
-            executeTask(QifGuiceFactory.getInjector(), PutToFtp.class,
+            executeTask(PutToFtp.class,
                     new QifActivityMessage(xmlResult.getResult(), xmlResult.getMessageType()));
 
             qifActivityResult = new QifActivityResult(SUCCESS, SUCCESS, QifMessageType.STRING);
