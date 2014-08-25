@@ -138,6 +138,10 @@ public abstract class QifEngineApplication extends Application<QifConfig> {
                 executorService.shutdown();
                 LOGGER.info("=== Shutdown ExecutorService complete ===");
 
+                LOGGER.info("=== Shutdown Hazelcast ... ===");
+                hazelcastInstance.shutdown();
+                LOGGER.info("=== Shutdown Hazelcast complete ===");
+
                 LOGGER.info("===== Shutdown QifEngineApplication complete =====");
             }
         });
