@@ -3,10 +3,12 @@ package id.co.quadras.qif.engine.guice.provider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.inject.Provider;
+import com.google.inject.Singleton;
 
 /**
  * @author irwin Timestamp : 01/06/2014 23:45
  */
+@Singleton
 public class JsonMapperProvider implements Provider<ObjectMapper> {
 
     @Override

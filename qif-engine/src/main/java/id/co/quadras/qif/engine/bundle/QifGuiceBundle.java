@@ -12,11 +12,11 @@ import java.util.List;
 /**
  * @author irwin Timestamp : 22/08/2014 20:51
  */
-public class GuiceBundle implements ConfiguredBundle<QifConfig> {
+public class QifGuiceBundle implements ConfiguredBundle<QifConfig> {
 
     private final List<AbstractModule> moduleList;
 
-    public GuiceBundle(List<AbstractModule> moduleList) {
+    public QifGuiceBundle(List<AbstractModule> moduleList) {
         this.moduleList = moduleList;
     }
 

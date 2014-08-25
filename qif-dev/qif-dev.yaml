@@ -28,7 +28,7 @@ dbSetting:
     localCacheScope: SESSION
     jdbcTypeForNull: NULL
     lazyLoadTriggerMethods: equals,clone,hashCode,toString
-    logPrefix: MyBatisLog
+    logPrefix: MyBatisLog.
     # set value to empty for defaultStatementTimeout if the JDBC driver doesn't support it, for example : PostgreSQL
     defaultStatementTimeout:
 
@@ -85,6 +85,10 @@ logging:
     io.dropwizard: DEBUG
     org.eclipse.jetty: INFO
     org.apache.http: INFO
+    MyBatisLog.id.co: INFO
+    org.apache.ibatis: INFO
+    org.quartz: INFO
+    id.co.quadras.qif.engine.sqlmap: INFO
 
   appenders:
     # Log warnings and errors to stderr

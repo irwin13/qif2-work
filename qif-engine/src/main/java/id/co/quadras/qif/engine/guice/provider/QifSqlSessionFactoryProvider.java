@@ -3,6 +3,7 @@ package id.co.quadras.qif.engine.guice.provider;
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.inject.Singleton;
 import com.irwin13.winwork.basic.model.SearchParameter;
 import com.irwin13.winwork.basic.model.entity.app.AppSetting;
 import id.co.quadras.qif.engine.QifException;
@@ -29,6 +30,7 @@ import java.util.Properties;
 /**
  * @author irwin Timestamp : 06/06/2014 18:38
  */
+@Singleton
 public class QifSqlSessionFactoryProvider implements Provider<SqlSessionFactory> {
 
     private final QifConfig qifConfig;

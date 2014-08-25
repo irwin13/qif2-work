@@ -4,14 +4,18 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
 import com.irwin13.winwork.basic.scheduler.BasicSchedulerManager;
 import com.irwin13.winwork.basic.utilities.WinWorkUtil;
-import id.co.quadras.qif.engine.bundle.GuiceBundle;
+import id.co.quadras.qif.engine.bundle.QifGuiceBundle;
 import id.co.quadras.qif.engine.config.QifConfig;
 import id.co.quadras.qif.engine.core.QifProcess;
 import id.co.quadras.qif.engine.guice.QifGuice;
 import id.co.quadras.qif.engine.process.DaemonProcess;
 import id.co.quadras.qif.engine.service.CounterService;
 import id.co.quadras.qif.engine.service.EventService;
-import id.co.quadras.qif.engine.web.servlet.*;
+import id.co.quadras.qif.engine.web.AppStatusResource;
+import id.co.quadras.qif.engine.web.servlet.EventApiServlet;
+import id.co.quadras.qif.engine.web.servlet.EventDispatcherServlet;
+import id.co.quadras.qif.engine.web.servlet.ProcessApiServlet;
+import id.co.quadras.qif.engine.web.servlet.TaskApiServlet;
 import id.co.quadras.qif.model.entity.QifEvent;
 import io.dropwizard.Application;
 import io.dropwizard.lifecycle.Managed;
@@ -30,8 +34,11 @@ import java.util.concurrent.ExecutorService;
  */
 public abstract class QifEngineApplication extends Application<QifConfig> {
 
-    private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     public static final long START = System.currentTimeMillis();
+    public static final String APP_NAME = "QIF DEV";
+    public static final String VERSION = "1.0-BETA";
+
+    private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     private static boolean LOOP_FOREVER = true;
     private static Injector injector;
 
@@ -47,8 +54,8 @@ public abstract class QifEngineApplication extends Application<QifConfig> {
         MDC.put("nodeName", WinWorkUtil.getNodeName());
 
         LOGGER.info("Initialize Guice ...");
-        GuiceBundle guiceBundle = new GuiceBundle(applicationModule());
-        bootstrap.addBundle(guiceBundle);
+        QifGuiceBundle qifGuiceBundle = new QifGuiceBundle(applicationModule());
+        bootstrap.addBundle(qifGuiceBundle);
 
         initializeApplication(bootstrap);
     }
@@ -82,11 +89,14 @@ public abstract class QifEngineApplication extends Application<QifConfig> {
 
         LOGGER.info("=== Register servlets ... ===");
         environment.getApplicationContext().addServlet(EventDispatcherServlet.class, "/http-event/*");
-        environment.getApplicationContext().addServlet(AppStatusServlet.class, "/app-status");
         environment.getApplicationContext().addServlet(EventApiServlet.class, "/event-api");
         environment.getApplicationContext().addServlet(ProcessApiServlet.class, "/process-api");
         environment.getApplicationContext().addServlet(TaskApiServlet.class, "/task-api");
         LOGGER.info("=== Register servlets complete ===");
+
+        LOGGER.info("=== Register resources ... ===");
+        environment.jersey().register(AppStatusResource.class);
+        LOGGER.info("=== Register resources complete ===");
 
         LOGGER.info("=== Submit daemon ... ===");
         submitDaemon(eventList);

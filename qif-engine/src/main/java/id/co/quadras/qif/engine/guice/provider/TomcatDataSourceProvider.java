@@ -3,6 +3,7 @@ package id.co.quadras.qif.engine.guice.provider;
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.inject.Singleton;
 import id.co.quadras.qif.engine.config.QifConfig;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
 
@@ -11,6 +12,7 @@ import javax.sql.DataSource;
 /**
  * @author irwin Timestamp : 11/06/2014 17:03
  */
+@Singleton
 public class TomcatDataSourceProvider implements Provider<DataSource> {
 
     private final QifConfig qifConfig;

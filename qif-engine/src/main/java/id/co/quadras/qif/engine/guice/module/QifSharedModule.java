@@ -43,11 +43,11 @@ public class QifSharedModule extends AbstractModule {
     @Override
     protected void configure() {
 
-        bind(QifConfig.class);
+        bind(QifConfig.class).toInstance(qifConfig);
         bind(RestClient.class);
 
         // json
-        bind(ObjectMapper.class).toProvider(JsonMapperProvider.class);
+        bind(ObjectMapper.class).toProvider(JsonMapperProvider.class).in(Singleton.class);
         bind(QifJsonParser.class);
         bind(JsonPrettyPrint.class).in(Singleton.class);
 
