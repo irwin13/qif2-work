@@ -5,7 +5,13 @@
 
 <mapper namespace="id.co.quadras.qif.engine.sqlmap.QifEventSqlmap">
 
+    <!--
     <cache type="org.mybatis.caches.hazelcast.HazelcastCache" />
+    <cache type="org.mybatis.caches.hazelcast.LoggingHazelcastCache" />
+
+    <cache type="org.mybatis.caches.hazelcast.LoggingHazelcastClientCache" />
+    -->
+    <cache type="org.mybatis.caches.hazelcast.HazelcastClientCache" />
 
     <resultMap id="QifEventResult" type="QifEvent">
         <result property="id" column="id"/>

@@ -1,7 +1,7 @@
 package id.co.quadras.qif.engine.job.internal;
 
-import id.co.quadras.qif.engine.QifEngineApplication;
 import id.co.quadras.qif.engine.core.QifConstants;
+import id.co.quadras.qif.engine.guice.QifGuice;
 import id.co.quadras.qif.engine.queue.reader.EventLogQueueReader;
 import id.co.quadras.qif.engine.service.app.AppSettingService;
 import id.co.quadras.qif.engine.service.log.EventLogService;
@@ -25,10 +25,10 @@ public class EventLogPersist implements Job {
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        EventLogQueueReader queueReader = QifEngineApplication.getInjector().getInstance(EventLogQueueReader.class);
-        EventLogService service = QifEngineApplication.getInjector().getInstance(EventLogService.class);
+        EventLogQueueReader queueReader = QifGuice.getInjector().getInstance(EventLogQueueReader.class);
+        EventLogService service = QifGuice.getInjector().getInstance(EventLogService.class);
 
-        AppSettingService appSettingService = QifEngineApplication.getInjector().getInstance(AppSettingService.class);
+        AppSettingService appSettingService = QifGuice.getInjector().getInstance(AppSettingService.class);
         int maxFetch = QifConstants.DEFAULT_LOG_FETCH;
 
         try {

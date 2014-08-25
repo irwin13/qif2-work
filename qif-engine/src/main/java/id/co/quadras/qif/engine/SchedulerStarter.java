@@ -47,7 +47,7 @@ public final class SchedulerStarter {
 
         for (QifEvent qifEvent : qifEventList) {
             try {
-                LOGGER.debug(QifEngineApplication.getInjector().getInstance(QifJsonParser.class).parseToString(false, qifEvent));
+                LOGGER.debug(QifGuice.getInjector().getInstance(QifJsonParser.class).parseToString(false, qifEvent));
             } catch (IOException e) {
                 LOGGER.error(e.getLocalizedMessage(), e);
             }

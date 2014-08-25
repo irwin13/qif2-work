@@ -1,8 +1,10 @@
 package id.co.quadras.qif.engine.web.servlet;
 
 import com.irwin13.winwork.basic.WinWorkConstants;
+import com.irwin13.winwork.basic.config.WinWorkConfig;
 import com.irwin13.winwork.basic.utilities.WinWorkUtil;
 import id.co.quadras.qif.engine.QifEngineApplication;
+import id.co.quadras.qif.engine.guice.QifGuice;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -16,13 +18,13 @@ import java.io.IOException;
 public class AppStatusServlet extends HttpServlet {
 
     private static final String TEXT_HTML = "text/html";
+    private final WinWorkConfig config = QifGuice.getInjector().getInstance(WinWorkConfig.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        String htmlContent = WinWorkUtil.appStatusView(QifEngineApplication.APP_NAME, QifEngineApplication.VERSION,
-                QifEngineApplication.START, WinWorkConstants.SDF_FULL);
+        String htmlContent = WinWorkUtil.appStatusView(config, QifEngineApplication.START, WinWorkConstants.SDF_FULL);
 
         resp.setContentType(TEXT_HTML);
         resp.setContentLength(htmlContent.length());

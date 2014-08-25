@@ -4,8 +4,8 @@ import com.google.inject.Inject;
 import com.irwin13.winwork.basic.WinWorkConstants;
 import com.irwin13.winwork.basic.utilities.StringUtil;
 import com.irwin13.winwork.basic.utilities.WinWorkUtil;
-import id.co.quadras.qif.engine.QifEngineApplication;
 import id.co.quadras.qif.engine.counter.QifTransactionCounter;
+import id.co.quadras.qif.engine.guice.QifGuice;
 import id.co.quadras.qif.engine.guice.provider.ExecutorServiceProvider;
 import id.co.quadras.qif.engine.json.JsonPrettyPrint;
 import id.co.quadras.qif.engine.json.QifJsonParser;
@@ -305,7 +305,7 @@ public abstract class QifProcess implements QifActivity {
 
     protected QifActivityResult executeTask(Class<? extends QifTask> taskClass,
                                             QifActivityMessage qifActivityMessage) throws Exception{
-        QifTask qifTask = QifEngineApplication.getInjector().getInstance(taskClass);
+        QifTask qifTask = QifGuice.getInjector().getInstance(taskClass);
         return qifTask.executeTask(this, qifActivityMessage);
     }
 
@@ -313,11 +313,13 @@ public abstract class QifProcess implements QifActivity {
                                                       final QifActivityMessage qifActivityMessage,
                                                       long timeout, TimeUnit timeUnit) throws Exception {
 
-        final QifTask qifTask = QifEngineApplication.getInjector().getInstance(taskClass);
+        final QifTask qifTask = QifGuice.getInjector().getInstance(taskClass);
         final QifProcess qifProcess = this;
         Future<QifActivityResult> future = threadPoolProvider.get().submit(new Callable<QifActivityResult>() {
+
 			@Override
 			public QifActivityResult call() throws Exception {
+                Thread.currentThread().setName(qifTask.getClass().getName());
 				return qifTask.executeTask(qifProcess, qifActivityMessage);
 			}
 
@@ -350,11 +352,12 @@ public abstract class QifProcess implements QifActivity {
     protected void executeTaskWithThread(Class<? extends QifTask> taskClass,
                                          final QifActivityMessage qifActivityMessage) throws Exception {
         
-        final QifTask qifTask = QifEngineApplication.getInjector().getInstance(taskClass);
+        final QifTask qifTask = QifGuice.getInjector().getInstance(taskClass);
         final QifProcess qifProcess = this;
         threadPoolProvider.get().submit(new Runnable() {
 			@Override
 			public void run() {
+                Thread.currentThread().setName(qifTask.getClass().getName());
 				try {
 					qifTask.executeTask(qifProcess, qifActivityMessage);
 				} catch (Exception e) {

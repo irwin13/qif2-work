@@ -5,7 +5,13 @@
 
 <mapper namespace="id.co.quadras.qif.engine.sqlmap.QifAdapterSqlmap">
 
+    <!--
     <cache type="org.mybatis.caches.hazelcast.HazelcastCache" />
+    <cache type="org.mybatis.caches.hazelcast.LoggingHazelcastCache" />
+
+    <cache type="org.mybatis.caches.hazelcast.LoggingHazelcastClientCache" />
+    -->
+    <cache type="org.mybatis.caches.hazelcast.HazelcastClientCache" />
 
     <resultMap id="QifAdapterResult" type="QifAdapter">
         <result property="id" column="id"/>

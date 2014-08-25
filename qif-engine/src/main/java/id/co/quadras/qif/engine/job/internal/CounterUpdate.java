@@ -1,11 +1,11 @@
 package id.co.quadras.qif.engine.job.internal;
 
 import com.irwin13.winwork.basic.WinWorkConstants;
-import id.co.quadras.qif.engine.QifEngineApplication;
 import id.co.quadras.qif.engine.core.QifProcess;
 import id.co.quadras.qif.engine.core.QifTask;
 import id.co.quadras.qif.engine.counter.QifTransactionCounter;
 import id.co.quadras.qif.engine.counter.imp.QifTransactionCounterGuava;
+import id.co.quadras.qif.engine.guice.QifGuice;
 import id.co.quadras.qif.engine.process.ProcessRegister;
 import id.co.quadras.qif.engine.service.CounterService;
 import id.co.quadras.qif.engine.service.EventService;
@@ -34,9 +34,9 @@ public class CounterUpdate implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
 
-        transactionCounter = QifEngineApplication.getInjector().getInstance(QifTransactionCounter.class);
-        CounterService counterService = QifEngineApplication.getInjector().getInstance(CounterService.class);
-        eventService = QifEngineApplication.getInjector().getInstance(EventService.class);
+        transactionCounter = QifGuice.getInjector().getInstance(QifTransactionCounter.class);
+        CounterService counterService = QifGuice.getInjector().getInstance(CounterService.class);
+        eventService = QifGuice.getInjector().getInstance(EventService.class);
 
         List<QifCounter> qifCounterList = new LinkedList<QifCounter>();
         Map<String, Integer> mapCounter = new WeakHashMap<String, Integer>();

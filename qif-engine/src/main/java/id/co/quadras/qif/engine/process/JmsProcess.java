@@ -23,6 +23,8 @@ public abstract class JmsProcess extends DaemonProcess {
     @Override
     public Runnable createDaemon(final QifEvent qifEvent) throws Exception {
 
+        Thread.currentThread().setName(getClass().getName());
+
         Hashtable<String, String> env = new Hashtable<String, String>();
         env.put(Context.INITIAL_CONTEXT_FACTORY, getPropertyValue(qifEvent, EventJms.INITIAL_CONTEXT_FACTORY.getName()));
         env.put(Context.PROVIDER_URL, getPropertyValue(qifEvent, EventJms.JNDI_URL_PROVIDER.getName()));

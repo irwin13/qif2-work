@@ -26,10 +26,10 @@ public class ActivityLogOutputMsgPersist implements Job {
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        ActivityLogOutputMsgQueueReader queueReader = QifEngineApplication.getInjector().getInstance(ActivityLogOutputMsgQueueReader.class);
-        ActivityLogOutputMsgService service = QifEngineApplication.getInjector().getInstance(ActivityLogOutputMsgService.class);
+        ActivityLogOutputMsgQueueReader queueReader = QifGuice.getInjector().getInstance(ActivityLogOutputMsgQueueReader.class);
+        ActivityLogOutputMsgService service = QifGuice.getInjector().getInstance(ActivityLogOutputMsgService.class);
 
-        AppSettingService appSettingService = QifEngineApplication.getInjector().getInstance(AppSettingService.class);
+        AppSettingService appSettingService = QifGuice.getInjector().getInstance(AppSettingService.class);
         int maxFetch = QifConstants.DEFAULT_LOG_FETCH;
 
         try {

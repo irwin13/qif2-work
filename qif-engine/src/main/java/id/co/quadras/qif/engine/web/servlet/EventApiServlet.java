@@ -1,9 +1,9 @@
 package id.co.quadras.qif.engine.web.servlet;
 
 import com.irwin13.winwork.basic.scheduler.BasicSchedulerManager;
-import id.co.quadras.qif.engine.QifEngineApplication;
 import id.co.quadras.qif.engine.SchedulerStarter;
 import id.co.quadras.qif.engine.core.QifActivity;
+import id.co.quadras.qif.engine.guice.QifGuice;
 import id.co.quadras.qif.engine.json.QifJsonParser;
 import id.co.quadras.qif.engine.service.EventService;
 import id.co.quadras.qif.model.entity.QifEvent;
@@ -27,10 +27,10 @@ import java.util.Arrays;
 public class EventApiServlet extends HttpServlet {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventApiServlet.class);
-    private final BasicSchedulerManager schedulerManager = QifEngineApplication.getInjector().getInstance(BasicSchedulerManager.class);
-    private final SchedulerStarter schedulerStarter = QifEngineApplication.getInjector().getInstance(SchedulerStarter.class);
-    private final QifJsonParser qifJsonParser = QifEngineApplication.getInjector().getInstance(QifJsonParser.class);
-    private final EventService eventService = QifEngineApplication.getInjector().getInstance(EventService.class);
+    private final BasicSchedulerManager schedulerManager = QifGuice.getInjector().getInstance(BasicSchedulerManager.class);
+    private final SchedulerStarter schedulerStarter = QifGuice.getInjector().getInstance(SchedulerStarter.class);
+    private final QifJsonParser qifJsonParser = QifGuice.getInjector().getInstance(QifJsonParser.class);
+    private final EventService eventService = QifGuice.getInjector().getInstance(EventService.class);
 
     // ADD
     @Override

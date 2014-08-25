@@ -32,7 +32,7 @@ public class ProcessApiServlet extends HttpServlet {
         }
 
         ImmutableSortedSet sortedSet = ImmutableSortedSet.copyOf(stringSet);
-        QifJsonParser qifJsonParser = QifEngineApplication.getInjector().getInstance(QifJsonParser.class);
+        QifJsonParser qifJsonParser = QifGuice.getInjector().getInstance(QifJsonParser.class);
         String json = qifJsonParser.parseToString(false, sortedSet);
 
         response.setContentLength(json.length());

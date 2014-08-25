@@ -2,8 +2,8 @@ package id.co.quadras.qif.engine.web.servlet;
 
 import com.google.common.collect.ImmutableSortedSet;
 import com.google.common.net.MediaType;
-import id.co.quadras.qif.engine.QifEngineApplication;
 import id.co.quadras.qif.engine.core.QifTask;
+import id.co.quadras.qif.engine.guice.QifGuice;
 import id.co.quadras.qif.engine.json.QifJsonParser;
 import id.co.quadras.qif.engine.task.TaskRegister;
 
@@ -31,7 +31,7 @@ public class TaskApiServlet extends HttpServlet {
         }
 
         ImmutableSortedSet sortedSet = ImmutableSortedSet.copyOf(stringSet);
-        QifJsonParser qifJsonParser = QifEngineApplication.getInjector().getInstance(QifJsonParser.class);
+        QifJsonParser qifJsonParser = QifGuice.getInjector().getInstance(QifJsonParser.class);
         String json = qifJsonParser.parseToString(false, sortedSet);
 
         response.setContentLength(json.length());

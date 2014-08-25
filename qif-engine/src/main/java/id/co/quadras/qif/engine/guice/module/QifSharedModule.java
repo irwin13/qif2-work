@@ -5,10 +5,12 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 import com.google.inject.matcher.Matchers;
 import com.irwin13.winwork.basic.annotations.MDCLog;
+import com.irwin13.winwork.basic.config.WinWorkConfig;
 import com.irwin13.winwork.basic.log.MDCLogInterceptor;
 import com.irwin13.winwork.basic.scheduler.BasicSchedulerManager;
 import com.irwin13.winwork.basic.scheduler.SchedulerProvider;
 import com.irwin13.winwork.basic.utilities.RestClient;
+import id.co.quadras.qif.engine.QifProperties;
 import id.co.quadras.qif.engine.SchedulerStarter;
 import id.co.quadras.qif.engine.config.QifConfig;
 import id.co.quadras.qif.engine.counter.QifTransactionCounter;
@@ -45,6 +47,7 @@ public class QifSharedModule extends AbstractModule {
 
         bind(QifConfig.class).toInstance(qifConfig);
         bind(RestClient.class);
+        bind(WinWorkConfig.class).to(QifProperties.class).in(Singleton.class);
 
         // json
         bind(ObjectMapper.class).toProvider(JsonMapperProvider.class).in(Singleton.class);

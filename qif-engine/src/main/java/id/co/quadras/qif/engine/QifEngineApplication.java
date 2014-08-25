@@ -2,15 +2,20 @@ package id.co.quadras.qif.engine;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
+import com.hazelcast.config.Config;
+import com.hazelcast.core.Hazelcast;
+import com.hazelcast.core.HazelcastInstance;
 import com.irwin13.winwork.basic.scheduler.BasicSchedulerManager;
 import com.irwin13.winwork.basic.utilities.WinWorkUtil;
 import id.co.quadras.qif.engine.bundle.QifGuiceBundle;
 import id.co.quadras.qif.engine.config.QifConfig;
 import id.co.quadras.qif.engine.core.QifProcess;
 import id.co.quadras.qif.engine.guice.QifGuice;
+import id.co.quadras.qif.engine.healthcheck.DbRepoHealthCheck;
 import id.co.quadras.qif.engine.process.DaemonProcess;
 import id.co.quadras.qif.engine.service.CounterService;
 import id.co.quadras.qif.engine.service.EventService;
+import id.co.quadras.qif.engine.service.app.AppSettingService;
 import id.co.quadras.qif.engine.web.AppStatusResource;
 import id.co.quadras.qif.engine.web.servlet.EventApiServlet;
 import id.co.quadras.qif.engine.web.servlet.EventDispatcherServlet;
@@ -35,12 +40,11 @@ import java.util.concurrent.ExecutorService;
 public abstract class QifEngineApplication extends Application<QifConfig> {
 
     public static final long START = System.currentTimeMillis();
-    public static final String APP_NAME = "QIF DEV";
-    public static final String VERSION = "1.0-BETA";
 
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
     private static boolean LOOP_FOREVER = true;
     private static Injector injector;
+    private static HazelcastInstance hazelcastInstance;
 
     protected abstract void initializeApplication(Bootstrap<QifConfig> qifConfigBootstrap);
     protected abstract void runApplication(QifConfig qifConfig, Environment environment);
@@ -63,6 +67,12 @@ public abstract class QifEngineApplication extends Application<QifConfig> {
     @Override
     public void run(QifConfig qifConfig, Environment environment) throws Exception {
         LOGGER.info("===== QifEngineApplication run =====");
+
+        LOGGER.info("===== Start Hazelcast =====");
+        Config config = new Config();
+        hazelcastInstance = Hazelcast.newHazelcastInstance(config);
+        LOGGER.info("===== Start Hazelcast complete =====");
+
         injector = QifGuice.getInjector();
 
         EventService eventService = injector.getInstance(EventService.class);
@@ -132,17 +142,20 @@ public abstract class QifEngineApplication extends Application<QifConfig> {
             }
         });
 
+        AppSettingService appSettingService = injector.getInstance(AppSettingService.class);
+        environment.healthChecks().register("databaseRepositoryHealthCheck", new DbRepoHealthCheck(appSettingService));
+
         runApplication(qifConfig, environment);
         LOGGER.info("===== QifEngineApplication run complete =====");
 
     }
 
-    public static Injector getInjector() {
-        return injector;
-    }
-
     public static boolean loopForever() {
         return LOOP_FOREVER;
+    }
+
+    public static HazelcastInstance getHazelcastInstance() {
+        return hazelcastInstance;
     }
 
     private void submitDaemon(List<QifEvent> eventList) {
