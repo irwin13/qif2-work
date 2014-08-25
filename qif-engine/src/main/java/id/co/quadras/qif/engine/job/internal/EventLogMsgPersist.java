@@ -1,5 +1,6 @@
 package id.co.quadras.qif.engine.job.internal;
 
+import com.irwin13.winwork.basic.model.entity.app.AppSetting;
 import id.co.quadras.qif.engine.core.QifConstants;
 import id.co.quadras.qif.engine.guice.QifGuice;
 import id.co.quadras.qif.engine.queue.reader.EventLogMsgQueueReader;
@@ -31,8 +32,10 @@ public class EventLogMsgPersist implements Job {
         int maxFetch = QifConstants.DEFAULT_LOG_FETCH;
 
         try {
-            String max = appSettingService.selectByCode("queue.eventLogMsg.maxFetch").getStringValue();
-            maxFetch = Integer.valueOf(max);
+            AppSetting fetchSetting = appSettingService.selectByCode("queue.eventLogMsg.maxFetch");
+            if (fetchSetting != null) {
+                maxFetch = Integer.valueOf(fetchSetting.getStringValue());
+            }
         } catch (NumberFormatException e) {
             LOGGER.error(e.getLocalizedMessage());
         }
