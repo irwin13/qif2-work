@@ -51,4 +51,9 @@ public class AdapterServiceImp implements AdapterService {
         }
         return qifAdapter;
     }
+
+    @Override
+    public void update(QifAdapter qifAdapter) {
+        adapterDao.update(qifAdapter);
+    }
 }

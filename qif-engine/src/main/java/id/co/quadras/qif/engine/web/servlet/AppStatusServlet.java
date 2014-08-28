@@ -14,7 +14,9 @@ import java.io.IOException;
 
 /**
  * @author irwin Timestamp : 18/05/2014 1:12
+ * Deprecated, moved to AppStatusResource
  */
+@Deprecated
 public class AppStatusServlet extends HttpServlet {
 
     private static final String TEXT_HTML = "text/html";

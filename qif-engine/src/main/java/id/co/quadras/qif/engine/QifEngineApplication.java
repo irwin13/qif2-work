@@ -17,10 +17,7 @@ import id.co.quadras.qif.engine.service.CounterService;
 import id.co.quadras.qif.engine.service.EventService;
 import id.co.quadras.qif.engine.service.app.AppSettingService;
 import id.co.quadras.qif.engine.web.AppStatusResource;
-import id.co.quadras.qif.engine.web.servlet.EventApiServlet;
-import id.co.quadras.qif.engine.web.servlet.EventDispatcherServlet;
-import id.co.quadras.qif.engine.web.servlet.ProcessApiServlet;
-import id.co.quadras.qif.engine.web.servlet.TaskApiServlet;
+import id.co.quadras.qif.engine.web.servlet.*;
 import id.co.quadras.qif.model.entity.QifEvent;
 import io.dropwizard.Application;
 import io.dropwizard.lifecycle.Managed;
@@ -102,6 +99,7 @@ public abstract class QifEngineApplication extends Application<QifConfig> {
         environment.getApplicationContext().addServlet(EventApiServlet.class, "/event-api");
         environment.getApplicationContext().addServlet(ProcessApiServlet.class, "/process-api");
         environment.getApplicationContext().addServlet(TaskApiServlet.class, "/task-api");
+        environment.getApplicationContext().addServlet(AdapterApiServlet.class, "/adapter-api");
         LOGGER.info("=== Register servlets complete ===");
 
         LOGGER.info("=== Register resources ... ===");

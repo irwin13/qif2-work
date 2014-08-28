@@ -9,4 +9,5 @@ import id.co.quadras.qif.model.entity.QifAdapter;
 public interface AdapterService {
     public QifAdapter selectByName(String name);
     public QifAdapter selectById(String id);
+    public void update(QifAdapter qifAdapter);
 }

@@ -10,4 +10,5 @@ import java.util.List;
 public interface AdapterDao {
     public List<QifAdapter> select(QifAdapter filter);
     public QifAdapter selectById(String id);
+    public void update(QifAdapter qifAdapter);
 }

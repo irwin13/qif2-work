@@ -33,4 +33,9 @@ public class AdapterDaoImp implements AdapterDao {
     public QifAdapter selectById(String id) {
         return basicDao.selectById(id, false);
     }
+
+    @Override
+    public void update(QifAdapter qifAdapter) {
+        basicDao.update(qifAdapter);
+    }
 }
