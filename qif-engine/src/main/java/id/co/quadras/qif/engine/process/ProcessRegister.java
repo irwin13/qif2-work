@@ -34,7 +34,8 @@ public class ProcessRegister {
 
             processSet = new HashSet<Class<? extends QifProcess>>();
             for (ClassPath.ClassInfo classInfo : immutableSetProcess) {
-                if (!Modifier.isAbstract(classInfo.load().getModifiers())) {
+                if (!Modifier.isAbstract(classInfo.load().getModifiers())
+                        && QifProcess.class.isAssignableFrom(classInfo.load())) {
                     processSet.add((Class<? extends QifProcess>) classInfo.load());
                 }
             }

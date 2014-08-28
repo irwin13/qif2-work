@@ -27,7 +27,7 @@ public class JmsQueueAdapter extends SingletonAdapter {
     private static final String CONNECTION = "CONNECTION";
     private static final String SESSION = "SESSION";
     private static final String MESSAGE_PRODUCER = "MESSAGE_PRODUCER";
-    private static final String SEPARATOR = "SEPARATOR";
+    private static final String SEPARATOR = "_";
     private static final String LAST_UPDATE = "LAST_UPDATE";
 
     public JmsQueueAdapter(QifAdapter qifAdapter) throws Exception {

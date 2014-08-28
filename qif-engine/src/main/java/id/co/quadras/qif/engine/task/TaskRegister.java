@@ -34,7 +34,8 @@ public class TaskRegister {
 
             taskSet = new HashSet<Class<? extends QifTask>>();
             for (ClassPath.ClassInfo classInfo : immutableSetTask) {
-                if (!Modifier.isAbstract(classInfo.load().getModifiers())) {
+                if (!Modifier.isAbstract(classInfo.load().getModifiers())
+                        && QifTask.class.isAssignableFrom(classInfo.load())) {
                     taskSet.add((Class<? extends QifTask>) classInfo.load());
                 }
             }
