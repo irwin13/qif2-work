@@ -5,12 +5,14 @@ import com.irwin13.winwork.basic.WinWorkConstants;
 import com.irwin13.winwork.basic.utilities.StringUtil;
 import com.irwin13.winwork.basic.utilities.WinWorkUtil;
 import id.co.quadras.qif.engine.counter.QifTransactionCounter;
-import id.co.quadras.qif.engine.json.QifJsonParser;
 import id.co.quadras.qif.engine.json.JsonPrettyPrint;
+import id.co.quadras.qif.engine.json.QifJsonParser;
 import id.co.quadras.qif.engine.queue.ActivityLogDataQueue;
 import id.co.quadras.qif.engine.queue.ActivityLogInputMsgQueue;
 import id.co.quadras.qif.engine.queue.ActivityLogOutputMsgQueue;
 import id.co.quadras.qif.engine.queue.ActivityLogQueue;
+import id.co.quadras.qif.engine.service.AdapterService;
+import id.co.quadras.qif.model.entity.QifAdapter;
 import id.co.quadras.qif.model.entity.log.QifActivityLog;
 import id.co.quadras.qif.model.entity.log.QifActivityLogData;
 import id.co.quadras.qif.model.entity.log.QifActivityLogInputMsg;
@@ -87,6 +89,9 @@ public abstract class QifTask implements QifActivity {
 
     @Inject
     private ActivityLogOutputMsgQueue outputMessageQueue;
+
+    @Inject
+    protected AdapterService adapterService;
 
     private void insertAuditTrail(QifProcess qifProcess, QifActivityMessage qifActivityMessage, long start, QifActivityResult qifActivityResult) {
 
@@ -196,5 +201,9 @@ public abstract class QifTask implements QifActivity {
     private void addCounterTask() {
         transactionCounter.add(this.getClass().getName());
         transactionCounter.add(this.getClass().getName() + "_" + WinWorkConstants.SDF_DEFAULT.format(new Date()));
+    }
+
+    protected QifAdapter getAdapter(String name) {
+        return adapterService.selectByName(name);
     }
 }
