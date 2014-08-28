@@ -1,13 +1,14 @@
 package id.co.quadras.qif.ui.validator.config;
 
+import id.co.quadras.qif.model.entity.QifEvent;
+import id.co.quadras.qif.ui.service.config.QifEventService;
+
+import java.util.List;
+
 import com.google.inject.Inject;
 import com.irwin13.winwork.basic.validator.AbstractValidator;
 import com.irwin13.winwork.basic.validator.ValidationStatus;
 import com.irwin13.winwork.basic.validator.ValidatorResult;
-import id.co.quadras.qif.core.model.entity.QifEvent;
-import id.co.quadras.qif.ui.service.config.QifEventService;
-
-import java.util.List;
 
 /**
  * @author irwin Timestamp : 02/07/2014 14:05

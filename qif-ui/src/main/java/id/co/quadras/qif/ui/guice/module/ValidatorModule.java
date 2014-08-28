@@ -1,14 +1,23 @@
 package id.co.quadras.qif.ui.guice.module;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.name.Names;
-import com.irwin13.winwork.basic.model.entity.app.*;
-import com.irwin13.winwork.basic.validator.AbstractValidator;
-import id.co.quadras.qif.core.model.entity.QifAdapter;
-import id.co.quadras.qif.core.model.entity.QifEvent;
-import id.co.quadras.qif.ui.validator.app.*;
+import id.co.quadras.qif.model.entity.QifAdapter;
+import id.co.quadras.qif.model.entity.QifEvent;
+import id.co.quadras.qif.ui.validator.app.AppOptionValidator;
+import id.co.quadras.qif.ui.validator.app.AppPermissionValidator;
+import id.co.quadras.qif.ui.validator.app.AppRoleValidator;
+import id.co.quadras.qif.ui.validator.app.AppSettingValidator;
+import id.co.quadras.qif.ui.validator.app.AppUserValidator;
 import id.co.quadras.qif.ui.validator.config.QifAdapterValidator;
 import id.co.quadras.qif.ui.validator.config.QifEventValidator;
+
+import com.google.inject.AbstractModule;
+import com.google.inject.name.Names;
+import com.irwin13.winwork.basic.model.entity.app.AppOption;
+import com.irwin13.winwork.basic.model.entity.app.AppPermission;
+import com.irwin13.winwork.basic.model.entity.app.AppRole;
+import com.irwin13.winwork.basic.model.entity.app.AppSetting;
+import com.irwin13.winwork.basic.model.entity.app.AppUser;
+import com.irwin13.winwork.basic.validator.AbstractValidator;
 
 /**
  * @author irwin Timestamp : 22/09/13 0:37

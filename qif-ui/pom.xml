@@ -230,14 +230,9 @@
 
         <!-- DATABASE -->
         <dependency>
-            <groupId>postgresql</groupId>
+            <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>8.4-702.jdbc4</version>
-        </dependency>
-        <dependency>
-            <groupId>oracle</groupId>
-            <artifactId>ojdbc6</artifactId>
-            <version>11.1.0.7.0</version>
+            <version>9.3-1100-jdbc4</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>

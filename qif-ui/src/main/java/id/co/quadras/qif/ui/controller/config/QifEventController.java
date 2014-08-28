@@ -1,5 +1,35 @@
 package id.co.quadras.qif.ui.controller.config;
 
+import id.co.quadras.qif.model.entity.QifEvent;
+import id.co.quadras.qif.model.entity.QifEventProperty;
+import id.co.quadras.qif.model.vo.event.EventInterface;
+import id.co.quadras.qif.model.vo.event.EventType;
+import id.co.quadras.qif.ui.WebPage;
+import id.co.quadras.qif.ui.WebSession;
+import id.co.quadras.qif.ui.controller.CrudController;
+import id.co.quadras.qif.ui.service.config.QifEventService;
+
+import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
@@ -7,28 +37,6 @@ import com.irwin13.winwork.basic.model.KeyValue;
 import com.irwin13.winwork.basic.validator.AbstractValidator;
 import com.irwin13.winwork.basic.validator.ValidationStatus;
 import com.irwin13.winwork.basic.validator.ValidatorResult;
-import id.co.quadras.qif.core.model.entity.QifEvent;
-import id.co.quadras.qif.core.model.entity.QifEventProperty;
-import id.co.quadras.qif.core.model.vo.event.EventInterface;
-import id.co.quadras.qif.core.model.vo.event.EventType;
-import id.co.quadras.qif.ui.WebPage;
-import id.co.quadras.qif.ui.WebSession;
-import id.co.quadras.qif.ui.controller.CrudController;
-import id.co.quadras.qif.ui.service.config.QifEventService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.Response;
-import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author irwin Timestamp : 02/07/2014 14:21
