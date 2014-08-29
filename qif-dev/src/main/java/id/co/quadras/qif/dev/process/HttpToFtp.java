@@ -5,6 +5,7 @@ import id.co.quadras.qif.dev.task.PutToFtp;
 import id.co.quadras.qif.engine.core.QifActivityMessage;
 import id.co.quadras.qif.engine.core.QifUtil;
 import id.co.quadras.qif.engine.process.HttpProcess;
+import id.co.quadras.qif.model.entity.QifEvent;
 import id.co.quadras.qif.model.vo.HttpRequestMessage;
 import id.co.quadras.qif.model.vo.QifActivityResult;
 import id.co.quadras.qif.model.vo.message.QifMessageType;
@@ -15,7 +16,7 @@ import id.co.quadras.qif.model.vo.message.QifMessageType;
 public class HttpToFtp extends HttpProcess {
 
     @Override
-    protected QifActivityResult implementProcess(QifActivityMessage qifActivityMessage) {
+    protected QifActivityResult implementProcess(QifEvent qifEvent, QifActivityMessage qifActivityMessage) {
         QifActivityResult qifActivityResult;
 
         try {

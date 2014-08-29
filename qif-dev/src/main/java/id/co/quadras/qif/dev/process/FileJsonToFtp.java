@@ -5,6 +5,7 @@ import id.co.quadras.qif.dev.task.PutToFtp;
 import id.co.quadras.qif.engine.core.QifActivityMessage;
 import id.co.quadras.qif.engine.core.QifUtil;
 import id.co.quadras.qif.engine.process.FileProcess;
+import id.co.quadras.qif.model.entity.QifEvent;
 import id.co.quadras.qif.model.vo.QifActivityResult;
 import id.co.quadras.qif.model.vo.message.FileMessage;
 import id.co.quadras.qif.model.vo.message.QifMessageType;
@@ -18,7 +19,7 @@ import java.util.Map;
 public class FileJsonToFtp extends FileProcess {
 
     @Override
-    protected QifActivityResult implementProcess(QifActivityMessage qifActivityMessage) {
+    protected QifActivityResult implementProcess(QifEvent qifEvent, QifActivityMessage qifActivityMessage) {
         QifActivityResult qifActivityResult;
         try {
             FileMessage fileMessage = (FileMessage) qifActivityMessage.getMessageContent();

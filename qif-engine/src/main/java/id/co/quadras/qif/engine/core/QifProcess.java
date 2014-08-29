@@ -88,7 +88,7 @@ public abstract class QifProcess implements QifActivity {
     protected abstract QifActivityResult handleEvent(QifEvent qifEvent, Object eventMessage,
                                                       QifMessageType messageType) throws Exception;
 
-    protected abstract QifActivityResult implementProcess(QifActivityMessage qifActivityMessage) throws Exception;
+    protected abstract QifActivityResult implementProcess(QifEvent qifEvent, QifActivityMessage qifActivityMessage) throws Exception;
 
     public QifActivityResult executeEvent(QifEvent qifEvent, Object eventMessage,
                                           QifMessageType messageType) throws Exception {
@@ -111,7 +111,7 @@ public abstract class QifProcess implements QifActivity {
             qifEventLog = insertEventLog(qifEvent, qifActivityMessage.getMessageContent(), qifActivityMessage.getMessageType());
         }
         processLog = insertProcessLog(qifEvent, qifActivityMessage);
-        QifActivityResult qifActivityResult = implementProcess(qifActivityMessage);
+        QifActivityResult qifActivityResult = implementProcess(qifEvent, qifActivityMessage);
         updateProcessLog(qifActivityMessage, qifActivityResult);
         return qifActivityResult;
     }
