@@ -1,21 +1,29 @@
 package id.co.quadras.qif.ui.filter;
 
+import id.co.quadras.qif.ui.WebSession;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.irwin13.winwork.basic.model.UserAccess;
-import id.co.quadras.qif.core.helper.JsonParser;
-import id.co.quadras.qif.ui.WebSession;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * @author irwin Timestamp : 12/04/13 18:24
@@ -31,7 +39,7 @@ public class UserAccessFilter implements Filter {
     private WebSession webSession;
 
     @Inject
-    private JsonParser messageParser;
+    private ObjectMapper objectMapper;
 
     @Override
     public void init(FilterConfig config) throws ServletException {
@@ -97,7 +105,7 @@ public class UserAccessFilter implements Filter {
         if (object instanceof List) {
             permissionList = (List<UserAccess>) object;
         } else if (object instanceof String) {
-            permissionList = messageParser.parseToObject(false, (String) object, new TypeReference<List<UserAccess>>() {});
+            permissionList = objectMapper.readValue((String) object, new TypeReference<List<UserAccess>>() {});
         }
 
         if (permissionList != null) {

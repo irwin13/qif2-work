@@ -1,6 +1,20 @@
 package id.co.quadras.qif.ui.service.config.imp;
 
+import id.co.quadras.qif.model.entity.QifEvent;
+import id.co.quadras.qif.model.entity.QifEventProperty;
+import id.co.quadras.qif.ui.dao.config.QifEventDao;
+import id.co.quadras.qif.ui.service.app.AppSettingService;
+import id.co.quadras.qif.ui.service.config.QifEventService;
+
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.irwin13.winwork.basic.model.KeyValue;
@@ -8,18 +22,6 @@ import com.irwin13.winwork.basic.model.SearchParameter;
 import com.irwin13.winwork.basic.model.SortParameter;
 import com.irwin13.winwork.basic.service.BasicEntityCommonService;
 import com.irwin13.winwork.basic.utilities.RestClient;
-import id.co.quadras.qif.core.helper.JsonParser;
-import id.co.quadras.qif.core.model.entity.QifEvent;
-import id.co.quadras.qif.core.model.entity.QifEventProperty;
-import id.co.quadras.qif.ui.dao.config.QifEventDao;
-import id.co.quadras.qif.ui.service.app.AppSettingService;
-import id.co.quadras.qif.ui.service.config.QifEventService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * @author irwin Timestamp : 02/07/2014 14:00
@@ -38,7 +40,7 @@ public class QifEventServiceImp implements QifEventService {
     private RestClient restClient;
 
     @Inject
-    private JsonParser jsonParser;
+    private ObjectMapper objectMapper;
 
     @Inject
     private AppSettingService appSettingService;
@@ -97,7 +99,7 @@ public class QifEventServiceImp implements QifEventService {
         LOGGER.debug("apiUrl = {}", apiUrl);
 
         try {
-            String json = jsonParser.parseToString(false, model);
+            String json = objectMapper.writeValueAsString(model);
             LOGGER.debug("put json = {}", json);
             restClient.put(apiUrl + "event-api", json);
         } catch (IOException e) {
@@ -122,7 +124,7 @@ public class QifEventServiceImp implements QifEventService {
         LOGGER.debug("apiUrl = {}", apiUrl);
 
         try {
-            String json = jsonParser.parseToString(false, model);
+            String json = objectMapper.writeValueAsString(model);
             LOGGER.debug("post json = {}", json);
             restClient.post(apiUrl + "event-api", json);
         } catch (IOException e) {
@@ -181,7 +183,7 @@ public class QifEventServiceImp implements QifEventService {
             String json = restClient.get(apiUrl + "process-api");
             LOGGER.debug("json response = {}", json);
             if (!Strings.isNullOrEmpty(json)) {
-                List<String> stringList = jsonParser.parseToObject(false, json, new TypeReference<List<String>>(){});
+                List<String> stringList = objectMapper.readValue(json, new TypeReference<List<String>>(){});
                 for (String val : stringList) {
                     KeyValue keyValue = new KeyValue(val, val);
                     keyValueList.add(keyValue);

@@ -1,15 +1,16 @@
 package id.co.quadras.qif.ui.service.config.imp;
 
-import com.google.inject.Inject;
-import com.irwin13.winwork.basic.model.SearchParameter;
-import com.irwin13.winwork.basic.model.SortParameter;
-import com.irwin13.winwork.basic.service.BasicEntityCommonService;
-import id.co.quadras.qif.core.model.entity.QifAdapter;
-import id.co.quadras.qif.core.model.entity.QifAdapterProperty;
+import id.co.quadras.qif.model.entity.QifAdapter;
+import id.co.quadras.qif.model.entity.QifAdapterProperty;
 import id.co.quadras.qif.ui.dao.config.QifAdapterDao;
 import id.co.quadras.qif.ui.service.config.QifAdapterService;
 
 import java.util.List;
+
+import com.google.inject.Inject;
+import com.irwin13.winwork.basic.model.SearchParameter;
+import com.irwin13.winwork.basic.model.SortParameter;
+import com.irwin13.winwork.basic.service.BasicEntityCommonService;
 
 /**
  * @author irwin Timestamp : 02/07/2014 14:00

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
-<hibernate-mapping package="id.co.quadras.qif.core.model.entity">
+<hibernate-mapping package="id.co.quadras.qif.model.entity">
     <class name="QifEvent" table="QIF_EVENT" lazy="true">
 
         <id name="id" type="string" column="ID">
@@ -24,7 +24,7 @@
 
         <bag name="qifEventPropertyList" table="QIF_EVENT_PROPERTY" cascade="all" order-by="PROPERTY_KEY ASC">
             <key column="QIF_EVENT_ID"/>
-            <one-to-many class="id.co.quadras.qif.core.model.entity.QifEventProperty"/>
+            <one-to-many class="id.co.quadras.qif.model.entity.QifEventProperty"/>
         </bag>
 
     </class>
