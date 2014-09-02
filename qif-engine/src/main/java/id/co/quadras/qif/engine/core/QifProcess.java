@@ -154,7 +154,7 @@ public abstract class QifProcess implements QifActivity {
             boolean keepMessageContent = qifEvent.getKeepMessageContent();
 
             if (keepMessageContent) {
-                if (qifActivityMessage != null) {
+                if (qifActivityMessage != null && qifActivityMessage.getMessageContent() != null) {
                     QifActivityLogInputMsg inputMsg = new QifActivityLogInputMsg();
                     inputMsg.setId(StringUtil.random32UUID());
                     inputMsg.setActivityLogId(id);
