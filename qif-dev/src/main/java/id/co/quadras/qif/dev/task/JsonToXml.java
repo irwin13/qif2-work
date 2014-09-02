@@ -3,7 +3,7 @@ package id.co.quadras.qif.dev.task;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import id.co.quadras.qif.dev.message.Book;
 import id.co.quadras.qif.engine.core.QifActivityMessage;
-import id.co.quadras.qif.engine.task.AbstractTask;
+import id.co.quadras.qif.engine.core.QifTask;
 import id.co.quadras.qif.model.vo.QifActivityResult;
 import id.co.quadras.qif.model.vo.message.QifMessageType;
 
@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * @author irwin Timestamp : 25/05/2014 0:39
  */
-public class JsonToXml extends AbstractTask {
+public class JsonToXml extends QifTask {
 
     @Override
     protected QifActivityResult implementTask(QifActivityMessage qifActivityMessage) {

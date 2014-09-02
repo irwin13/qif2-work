@@ -2,6 +2,7 @@ package id.co.quadras.qif.engine.core;
 
 import com.google.inject.Inject;
 import com.irwin13.winwork.basic.WinWorkConstants;
+import com.irwin13.winwork.basic.model.entity.app.AppSetting;
 import com.irwin13.winwork.basic.utilities.StringUtil;
 import com.irwin13.winwork.basic.utilities.WinWorkUtil;
 import id.co.quadras.qif.engine.counter.QifTransactionCounter;
@@ -12,7 +13,9 @@ import id.co.quadras.qif.engine.queue.ActivityLogInputMsgQueue;
 import id.co.quadras.qif.engine.queue.ActivityLogOutputMsgQueue;
 import id.co.quadras.qif.engine.queue.ActivityLogQueue;
 import id.co.quadras.qif.engine.service.AdapterService;
+import id.co.quadras.qif.engine.service.app.AppSettingService;
 import id.co.quadras.qif.model.entity.QifAdapter;
+import id.co.quadras.qif.model.entity.QifAdapterProperty;
 import id.co.quadras.qif.model.entity.log.QifActivityLog;
 import id.co.quadras.qif.model.entity.log.QifActivityLogData;
 import id.co.quadras.qif.model.entity.log.QifActivityLogInputMsg;
@@ -92,6 +95,9 @@ public abstract class QifTask implements QifActivity {
 
     @Inject
     protected AdapterService adapterService;
+
+    @Inject
+    protected AppSettingService appSettingService;
 
     private void insertAuditTrail(QifProcess qifProcess, QifActivityMessage qifActivityMessage, long start, QifActivityResult qifActivityResult) {
 
@@ -205,5 +211,14 @@ public abstract class QifTask implements QifActivity {
 
     protected QifAdapter getAdapter(String name) {
         return adapterService.selectByName(name);
+    }
+
+    protected AppSetting getAppSetting(String code) {
+        return appSettingService.selectByCode(code);
+    }
+
+    protected String getPropertyValue(QifAdapter qifAdapter, String propertyKey) {
+        QifAdapterProperty qifAdapterProperty = QifUtil.getAdapterProperty(qifAdapter, propertyKey);
+        return (qifAdapterProperty == null) ? null : qifAdapterProperty.getPropertyValue();
     }
 }

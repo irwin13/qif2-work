@@ -2,6 +2,7 @@ package id.co.quadras.qif.engine.core;
 
 import com.google.inject.Inject;
 import com.irwin13.winwork.basic.WinWorkConstants;
+import com.irwin13.winwork.basic.model.entity.app.AppSetting;
 import com.irwin13.winwork.basic.utilities.StringUtil;
 import com.irwin13.winwork.basic.utilities.WinWorkUtil;
 import id.co.quadras.qif.engine.counter.QifTransactionCounter;
@@ -10,6 +11,9 @@ import id.co.quadras.qif.engine.guice.provider.ExecutorServiceProvider;
 import id.co.quadras.qif.engine.json.JsonPrettyPrint;
 import id.co.quadras.qif.engine.json.QifJsonParser;
 import id.co.quadras.qif.engine.queue.*;
+import id.co.quadras.qif.engine.service.AdapterService;
+import id.co.quadras.qif.engine.service.app.AppSettingService;
+import id.co.quadras.qif.model.entity.QifAdapter;
 import id.co.quadras.qif.model.entity.QifEvent;
 import id.co.quadras.qif.model.entity.QifEventProperty;
 import id.co.quadras.qif.model.entity.log.*;
@@ -76,6 +80,12 @@ public abstract class QifProcess implements QifActivity {
 
     @Inject
     private EventLogMsgQueue messageQueue;
+
+    @Inject
+    protected AdapterService adapterService;
+
+    @Inject
+    protected AppSettingService appSettingService;
 
     private QifActivityLog processLog;
     private QifEventLog qifEventLog;
@@ -365,6 +375,15 @@ public abstract class QifProcess implements QifActivity {
 				}
 			}
 		});
+    }
+
+
+    protected QifAdapter getAdapter(String name) {
+        return adapterService.selectByName(name);
+    }
+
+    protected AppSetting getAppSetting(String code) {
+        return appSettingService.selectByCode(code);
     }
 
 }

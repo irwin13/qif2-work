@@ -2,7 +2,7 @@ package id.co.quadras.qif.dev.task;
 
 import id.co.quadras.qif.engine.connector.adapter.FileAdapter;
 import id.co.quadras.qif.engine.core.QifActivityMessage;
-import id.co.quadras.qif.engine.task.AbstractTask;
+import id.co.quadras.qif.engine.core.QifTask;
 import id.co.quadras.qif.model.entity.QifAdapter;
 import id.co.quadras.qif.model.vo.QifActivityResult;
 import id.co.quadras.qif.model.vo.message.FileMessage;
@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * @author irwin Timestamp : 25/05/2014 0:39
  */
-public class WriteToFile extends AbstractTask {
+public class WriteToFile extends QifTask {
 
     @Override
     protected QifActivityResult implementTask(QifActivityMessage qifActivityMessage) {
