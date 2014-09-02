@@ -16,9 +16,11 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.*;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.util.Arrays;
@@ -40,7 +42,6 @@ public class EventResource {
 
     // ADD
     @PUT
-    @Produces(MediaType.TEXT_PLAIN)
     public Response doPut() throws IOException {
         String json = IOUtils.toString(req.getReader());
         LOGGER.debug("json input = {}", json);
@@ -58,7 +59,6 @@ public class EventResource {
 
     // UPDATE
     @POST
-    @Produces(MediaType.TEXT_PLAIN)
     public Response doPost() throws IOException {
         String json = IOUtils.toString(req.getReader());
         LOGGER.debug("json input = {}", json);
@@ -84,7 +84,6 @@ public class EventResource {
 
     // DELETE
     @DELETE
-    @Produces(MediaType.TEXT_PLAIN)
     public Response doDelete() throws IOException {
         String id = req.getParameter("id");
         LOGGER.debug("delete scheduler event id = {}", id);

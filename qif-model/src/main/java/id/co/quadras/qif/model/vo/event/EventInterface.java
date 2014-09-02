@@ -5,6 +5,7 @@ package id.co.quadras.qif.model.vo.event;
  */
 public enum EventInterface {
 
+    SCHEDULER("scheduler"),
     HTTP("http"),
     WEB_SERVICE_SOAP("webservice_soap"),
     FTP("ftp"),
