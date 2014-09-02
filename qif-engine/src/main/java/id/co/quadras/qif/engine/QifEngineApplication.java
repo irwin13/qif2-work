@@ -16,8 +16,8 @@ import id.co.quadras.qif.engine.process.DaemonProcess;
 import id.co.quadras.qif.engine.service.CounterService;
 import id.co.quadras.qif.engine.service.EventService;
 import id.co.quadras.qif.engine.service.app.AppSettingService;
-import id.co.quadras.qif.engine.web.AppStatusResource;
-import id.co.quadras.qif.engine.web.servlet.*;
+import id.co.quadras.qif.engine.web.*;
+import id.co.quadras.qif.engine.web.servlet.EventDispatcherServlet;
 import id.co.quadras.qif.model.entity.QifEvent;
 import io.dropwizard.Application;
 import io.dropwizard.lifecycle.Managed;
@@ -94,16 +94,16 @@ public abstract class QifEngineApplication extends Application<QifConfig> {
         counterService.initCounter(eventList);
         LOGGER.info("=== Init counter complete ===");
 
-        LOGGER.info("=== Register servlets ... ===");
+        LOGGER.info("=== Register servlet ... ===");
         environment.getApplicationContext().addServlet(EventDispatcherServlet.class, "/http-event/*");
-        environment.getApplicationContext().addServlet(EventApiServlet.class, "/event-api");
-        environment.getApplicationContext().addServlet(ProcessApiServlet.class, "/process-api");
-        environment.getApplicationContext().addServlet(TaskApiServlet.class, "/task-api");
-        environment.getApplicationContext().addServlet(AdapterApiServlet.class, "/adapter-api");
-        LOGGER.info("=== Register servlets complete ===");
+        LOGGER.info("=== Register servlet complete ===");
 
         LOGGER.info("=== Register resources ... ===");
         environment.jersey().register(AppStatusResource.class);
+        environment.jersey().register(AdapterResource.class);
+        environment.jersey().register(EventResource.class);
+        environment.jersey().register(ProcessResource.class);
+        environment.jersey().register(TaskResource.class);
         LOGGER.info("=== Register resources complete ===");
 
         LOGGER.info("=== Submit daemon ... ===");

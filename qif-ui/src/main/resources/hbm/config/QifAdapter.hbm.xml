@@ -19,7 +19,7 @@
 
         <bag name="qifAdapterPropertyList" table="QIF_ADAPTER_PROPERTY" cascade="all" order-by="PROPERTY_KEY ASC">
             <key column="QIF_ADAPTER_ID"/>
-            <one-to-many class="id.co.quadras.qif.core.model.entity.QifAdapterProperty"/>
+            <one-to-many class="id.co.quadras.qif.model.entity.QifAdapterProperty"/>
         </bag>
 
     </class>

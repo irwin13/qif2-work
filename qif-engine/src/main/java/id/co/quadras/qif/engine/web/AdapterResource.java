@@ -1,4 +1,4 @@
-package id.co.quadras.qif.engine.web.servlet;
+package id.co.quadras.qif.engine.web;
 
 import id.co.quadras.qif.engine.core.QifActivity;
 import id.co.quadras.qif.engine.guice.QifGuice;
@@ -9,56 +9,57 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.util.Date;
 
 /**
- * @author irwin Timestamp : 28/08/2014 19:47
+ * @author irwin Timestamp : 02/09/2014 15:56
  */
-@Deprecated
-public class AdapterApiServlet extends HttpServlet {
+@Path("/adapter-api")
+public class AdapterResource {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(EventApiServlet.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AdapterResource.class);
     private final QifJsonParser qifJsonParser = QifGuice.getInjector().getInstance(QifJsonParser.class);
     private final AdapterService adapterService = QifGuice.getInjector().getInstance(AdapterService.class);
 
+    @Context private HttpServletRequest req;
+
     // UPDATE
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    @POST
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response post() throws IOException {
         String json = IOUtils.toString(req.getReader());
         LOGGER.debug("json input = {}", json);
         QifAdapter qifAdapter = qifJsonParser.parseToObject(false, json, QifAdapter.class);
         LOGGER.debug("update qifAdapter = {}", qifAdapter);
         qifAdapter.setLastUpdateDate(new Date());
         adapterService.update(qifAdapter);
-        buildResponse(resp, HttpServletResponse.SC_OK, QifActivity.SUCCESS);
+        return buildResponse(HttpServletResponse.SC_OK, QifActivity.SUCCESS);
     }
 
-    // DELETE
-    @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    @DELETE
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response doDelete() throws IOException {
         String id = req.getParameter("id");
         LOGGER.debug("delete scheduler event id = {}", id);
         QifAdapter qifAdapter = adapterService.selectById(id);
         qifAdapter.setLastUpdateDate(new Date());
         qifAdapter.setActive(Boolean.FALSE);
         adapterService.update(qifAdapter);
-        buildResponse(resp, HttpServletResponse.SC_OK, QifActivity.SUCCESS);
+        return buildResponse(HttpServletResponse.SC_OK, QifActivity.SUCCESS);
     }
 
-    private void buildResponse(HttpServletResponse response, int statusCode, String message)
-            throws IOException {
-
-        response.setContentType(EventDispatcherServlet.TEXT_PLAIN);
-        response.setStatus(statusCode);
-        if (message != null) {
-            response.setContentLength(message.length());
-        }
-        response.getWriter().println(message);
+    private Response buildResponse(int statusCode, String message) {
+        return Response.status(statusCode).entity(message).build();
     }
 
 }

@@ -18,6 +18,7 @@ import java.util.Set;
 /**
  * @author irwin Timestamp : 03/07/2014 16:42
  */
+@Deprecated
 public class TaskApiServlet extends HttpServlet {
 
     @Override
