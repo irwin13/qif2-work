@@ -8,7 +8,6 @@ import id.co.quadras.qif.engine.json.QifJsonParser;
 import id.co.quadras.qif.engine.service.EventService;
 import id.co.quadras.qif.model.entity.QifEvent;
 import id.co.quadras.qif.model.vo.event.EventType;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.quartz.SchedulerException;
 import org.slf4j.Logger;
@@ -16,10 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
@@ -42,8 +38,7 @@ public class EventResource {
 
     // ADD
     @PUT
-    public Response doPut() throws IOException {
-        String json = IOUtils.toString(req.getReader());
+    public Response doPut(String json) throws IOException {
         LOGGER.debug("json input = {}", json);
         QifEvent qifEvent = qifJsonParser.parseToObject(false, json, QifEvent.class);
         LOGGER.debug("add scheduler event = {}", qifEvent);
@@ -59,8 +54,7 @@ public class EventResource {
 
     // UPDATE
     @POST
-    public Response doPost() throws IOException {
-        String json = IOUtils.toString(req.getReader());
+    public Response doPost(String json) throws IOException {
         LOGGER.debug("json input = {}", json);
         QifEvent qifEvent = qifJsonParser.parseToObject(false, json, QifEvent.class);
         LOGGER.debug("update scheduler event = {}", qifEvent);
@@ -84,8 +78,7 @@ public class EventResource {
 
     // DELETE
     @DELETE
-    public Response doDelete() throws IOException {
-        String id = req.getParameter("id");
+    public Response doDelete(@QueryParam("id") String id) throws IOException {
         LOGGER.debug("delete scheduler event id = {}", id);
         QifEvent qifEvent = eventService.selectById(id);
         if (EventType.SCHEDULER_CRON.getName().equals(qifEvent.getEventType()) ||

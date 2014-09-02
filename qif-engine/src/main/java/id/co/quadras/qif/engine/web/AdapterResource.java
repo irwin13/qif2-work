@@ -5,7 +5,6 @@ import id.co.quadras.qif.engine.guice.QifGuice;
 import id.co.quadras.qif.engine.json.QifJsonParser;
 import id.co.quadras.qif.engine.service.AdapterService;
 import id.co.quadras.qif.model.entity.QifAdapter;
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
@@ -33,8 +33,7 @@ public class AdapterResource {
 
     // UPDATE
     @POST
-    public Response post() throws IOException {
-        String json = IOUtils.toString(req.getReader());
+    public Response post(String json) throws IOException {
         LOGGER.debug("json input = {}", json);
         QifAdapter qifAdapter = qifJsonParser.parseToObject(false, json, QifAdapter.class);
         LOGGER.debug("update qifAdapter = {}", qifAdapter);
@@ -44,8 +43,7 @@ public class AdapterResource {
     }
 
     @DELETE
-    public Response doDelete() throws IOException {
-        String id = req.getParameter("id");
+    public Response doDelete(@QueryParam("id") String id) throws IOException {
         LOGGER.debug("delete scheduler event id = {}", id);
         QifAdapter qifAdapter = adapterService.selectById(id);
         qifAdapter.setLastUpdateDate(new Date());
