@@ -39,7 +39,7 @@ public abstract class QifEngineApplication extends Application<QifConfig> {
     public static final long START = System.currentTimeMillis();
 
     private final Logger LOGGER = LoggerFactory.getLogger(getClass());
-    private static boolean LOOP_FOREVER = true;
+    private static boolean ACTIVE = true;
     private static Injector injector;
     private static HazelcastInstance hazelcastInstance;
 
@@ -119,7 +119,7 @@ public abstract class QifEngineApplication extends Application<QifConfig> {
                 LOGGER.info("===== Shutdown QifEngineApplication =====");
 
                 LOGGER.info("=== Shutdown loop forever ... ===");
-                LOOP_FOREVER = false;
+                ACTIVE = false;
                 LOGGER.info("=== Shutdown loop forever complete ===");
 
                 LOGGER.info("=== Shutdown Quartz scheduler ... ===");
@@ -152,8 +152,8 @@ public abstract class QifEngineApplication extends Application<QifConfig> {
 
     }
 
-    public static boolean loopForever() {
-        return LOOP_FOREVER;
+    public static boolean isActive() {
+        return ACTIVE;
     }
 
     public static HazelcastInstance getHazelcastInstance() {

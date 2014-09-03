@@ -63,7 +63,7 @@ public abstract class JmsProcess extends DaemonProcess {
 
                     connection.start();
 
-                    while (QifEngineApplication.loopForever()) {
+                    while (QifEngineApplication.isActive()) {
                         TextMessage textMessage = (TextMessage) consumer.receiveNoWait();
                         if (textMessage != null && !Strings.isNullOrEmpty(textMessage.getText())) {
                             QifActivityMessage qifActivityMessage = new QifActivityMessage(textMessage.getText(), QifMessageType.STRING);

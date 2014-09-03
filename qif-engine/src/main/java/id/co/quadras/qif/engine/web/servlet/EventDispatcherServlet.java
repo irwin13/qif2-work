@@ -2,6 +2,7 @@ package id.co.quadras.qif.engine.web.servlet;
 
 import com.google.common.base.Strings;
 import com.google.common.net.MediaType;
+import id.co.quadras.qif.engine.QifEngineApplication;
 import id.co.quadras.qif.engine.core.QifActivity;
 import id.co.quadras.qif.engine.core.QifProcess;
 import id.co.quadras.qif.engine.guice.QifGuice;
@@ -51,30 +52,35 @@ public class EventDispatcherServlet extends HttpServlet {
     }
 
     private void handleRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String path = request.getRequestURI().substring(request.getContextPath().length()).replaceFirst(EVENT_PATH, "");
-        LOGGER.debug("incoming request for path {}", path);
+        if (QifEngineApplication.isActive()) {
+            String path = request.getRequestURI().substring(request.getContextPath().length()).replaceFirst(EVENT_PATH, "");
+            LOGGER.debug("incoming request for path {}", path);
 
-        EventService eventService = QifGuice.getInjector().getInstance(EventService.class);
-        QifEvent qifEventPath = eventService.selectByProperty(EventHttp.HTTP_PATH.getName(), path);
-        QifEvent qifEventMethod = eventService.selectByProperty(EventHttp.HTTP_METHOD.getName(), request.getMethod().toLowerCase());
-        if (qifEventPath == null) {
-            buildResponse(response, HttpServletResponse.SC_NOT_FOUND, TEXT_PLAIN,
-                    "404 : Not Found. No QifEvent configured with HTTP path '" + path + "'", null);
-        } else {
-            if (qifEventPath.getActiveAcceptMessage()) {
-                if (qifEventMethod != null) {
-                    QifActivityResult result = executeEvent(request, qifEventPath);
-                    buildResponseFromResult(response, result);
-                } else {
-                    String errorMessage = "405 : Method Not Allowed. HTTP Method not match, QifEvent '" + qifEventPath.getName()
-                            + "' is not configured with HTTP Method '" + request.getMethod().toLowerCase() + "'";
-                    buildResponse(response, HttpServletResponse.SC_METHOD_NOT_ALLOWED, TEXT_PLAIN, errorMessage, null);
-                }
-
+            EventService eventService = QifGuice.getInjector().getInstance(EventService.class);
+            QifEvent qifEventPath = eventService.selectByProperty(EventHttp.HTTP_PATH.getName(), path);
+            QifEvent qifEventMethod = eventService.selectByProperty(EventHttp.HTTP_METHOD.getName(), request.getMethod().toLowerCase());
+            if (qifEventPath == null) {
+                buildResponse(response, HttpServletResponse.SC_NOT_FOUND, TEXT_PLAIN,
+                        "404 : Not Found. No QifEvent configured with HTTP path '" + path + "'", null);
             } else {
-                String errorMessage = "503 : Service Unavailable. QifEvent is not activated, please try again later";
-                buildResponse(response, HttpServletResponse.SC_SERVICE_UNAVAILABLE, TEXT_PLAIN, errorMessage, null);
+                if (qifEventPath.getActiveAcceptMessage()) {
+                    if (qifEventMethod != null) {
+                        QifActivityResult result = executeEvent(request, qifEventPath);
+                        buildResponseFromResult(response, result);
+                    } else {
+                        String errorMessage = "405 : Method Not Allowed. HTTP Method not match, QifEvent '" + qifEventPath.getName()
+                                + "' is not configured with HTTP Method '" + request.getMethod().toLowerCase() + "'";
+                        buildResponse(response, HttpServletResponse.SC_METHOD_NOT_ALLOWED, TEXT_PLAIN, errorMessage, null);
+                    }
+
+                } else {
+                    String errorMessage = "503 : Service Unavailable. QifEvent is not activated, please try again later";
+                    buildResponse(response, HttpServletResponse.SC_SERVICE_UNAVAILABLE, TEXT_PLAIN, errorMessage, null);
+                }
             }
+        } else {
+            String errorMessage = "503 : Service Unavailable. QIF is shutting down";
+            buildResponse(response, HttpServletResponse.SC_SERVICE_UNAVAILABLE, TEXT_PLAIN, errorMessage, null);
         }
     }
 
