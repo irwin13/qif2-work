@@ -87,8 +87,8 @@ public abstract class JmsProcess extends DaemonProcess {
                             }
 
                             qifActivityMessage.setMessageHeader(messageHeader);
-                            logger.info("execute process with message header = {}", messageHeader);
-                            logger.info("execute process with message content = {}", textMessage.getText());
+                            logger.debug("execute process with message header = {}", messageHeader);
+                            logger.debug("execute process with message content = {}", textMessage.getText());
 
                             executeProcess(qifEvent, qifActivityMessage);
                         }
