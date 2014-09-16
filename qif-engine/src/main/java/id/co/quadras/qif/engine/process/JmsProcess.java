@@ -64,33 +64,37 @@ public abstract class JmsProcess extends DaemonProcess {
                     connection.start();
 
                     while (QifEngineApplication.isActive()) {
-                        TextMessage textMessage = (TextMessage) consumer.receiveNoWait();
-                        if (textMessage != null && !Strings.isNullOrEmpty(textMessage.getText())) {
-                            QifActivityMessage qifActivityMessage = new QifActivityMessage(textMessage.getText(), QifMessageType.STRING);
+                        try {
+                            TextMessage textMessage = (TextMessage) consumer.receiveNoWait();
+                            if (textMessage != null && !Strings.isNullOrEmpty(textMessage.getText())) {
+                                QifActivityMessage qifActivityMessage = new QifActivityMessage(textMessage.getText(), QifMessageType.STRING);
 
-                            Map<String, Object> messageHeader = new HashMap<String, Object>();
+                                Map<String, Object> messageHeader = new HashMap<String, Object>();
 
-                            messageHeader.put("JMSCorrelationID", textMessage.getJMSCorrelationID());
-                            messageHeader.put("JMSDeliveryMode", textMessage.getJMSDeliveryMode());
-                            messageHeader.put("JMSExpiration", textMessage.getJMSExpiration());
-                            messageHeader.put("JMSMessageID", textMessage.getJMSMessageID());
-                            messageHeader.put("JMSPriority", textMessage.getJMSPriority());
-                            messageHeader.put("JMSRedelivered", textMessage.getJMSRedelivered());
-                            messageHeader.put("JMSTimestamp", textMessage.getJMSTimestamp());
-                            messageHeader.put("JMSType", textMessage.getJMSType());
+                                messageHeader.put("JMSCorrelationID", textMessage.getJMSCorrelationID());
+                                messageHeader.put("JMSDeliveryMode", textMessage.getJMSDeliveryMode());
+                                messageHeader.put("JMSExpiration", textMessage.getJMSExpiration());
+                                messageHeader.put("JMSMessageID", textMessage.getJMSMessageID());
+                                messageHeader.put("JMSPriority", textMessage.getJMSPriority());
+                                messageHeader.put("JMSRedelivered", textMessage.getJMSRedelivered());
+                                messageHeader.put("JMSTimestamp", textMessage.getJMSTimestamp());
+                                messageHeader.put("JMSType", textMessage.getJMSType());
 
-                            Enumeration enumeration = textMessage.getPropertyNames();
-                            while (enumeration.hasMoreElements()) {
-                                String propertyName = (String) enumeration.nextElement();
-                                Object object = textMessage.getObjectProperty(propertyName);
-                                messageHeader.put(propertyName, object);
+                                Enumeration enumeration = textMessage.getPropertyNames();
+                                while (enumeration.hasMoreElements()) {
+                                    String propertyName = (String) enumeration.nextElement();
+                                    Object object = textMessage.getObjectProperty(propertyName);
+                                    messageHeader.put(propertyName, object);
+                                }
+
+                                qifActivityMessage.setMessageHeader(messageHeader);
+                                logger.debug("execute process with message header = {}", messageHeader);
+                                logger.debug("execute process with message content = {}", textMessage.getText());
+
+                                executeProcess(qifEvent, qifActivityMessage);
                             }
-
-                            qifActivityMessage.setMessageHeader(messageHeader);
-                            logger.debug("execute process with message header = {}", messageHeader);
-                            logger.debug("execute process with message content = {}", textMessage.getText());
-
-                            executeProcess(qifEvent, qifActivityMessage);
+                        } catch (Exception e) {
+                            logger.error(e.getLocalizedMessage(), e);
                         }
                     }
 

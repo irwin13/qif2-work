@@ -224,3 +224,7 @@ CREATE TABLE QIF_EVENT_RAW_CONTENT
   content_name character varying(500),
   CONSTRAINT pk_event_raw_content PRIMARY KEY (id)
 );
+
+ALTER TABLE QIF_ACTIVITY_LOG_INPUT_MSG ADD MSG_TYPE character varying(255);
+ALTER TABLE QIF_ACTIVITY_LOG_OUTPUT_MSG ADD MSG_TYPE character varying(255);
+ALTER TABLE QIF_EVENT_LOG_MSG ADD MSG_TYPE character varying(255);
