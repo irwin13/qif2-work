@@ -11,7 +11,8 @@ public enum EventJms {
     JNDI_PASSWORD("jndi_password"),
     JNDI_CONNECTION_FACTORY("jndi_connection_factory"),
     JNDI_DESTINATION("jndi_destination"),
-    MESSAGE_SELECTOR("message_selector");
+    MESSAGE_SELECTOR("message_selector"),
+    THREAD_COUNT("thread_count");
 
     private final String name;
 

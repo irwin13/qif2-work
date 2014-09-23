@@ -1,5 +1,6 @@
 package id.co.quadras.qif.engine;
 
+import com.google.common.base.Strings;
 import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
 import com.hazelcast.config.Config;
@@ -10,6 +11,7 @@ import com.irwin13.winwork.basic.utilities.WinWorkUtil;
 import id.co.quadras.qif.engine.bundle.QifGuiceBundle;
 import id.co.quadras.qif.engine.config.QifConfig;
 import id.co.quadras.qif.engine.core.QifProcess;
+import id.co.quadras.qif.engine.core.QifUtil;
 import id.co.quadras.qif.engine.guice.QifGuice;
 import id.co.quadras.qif.engine.healthcheck.DbRepoHealthCheck;
 import id.co.quadras.qif.engine.process.DaemonProcess;
@@ -19,6 +21,8 @@ import id.co.quadras.qif.engine.service.app.AppSettingService;
 import id.co.quadras.qif.engine.web.*;
 import id.co.quadras.qif.engine.web.servlet.EventDispatcherServlet;
 import id.co.quadras.qif.model.entity.QifEvent;
+import id.co.quadras.qif.model.entity.QifEventProperty;
+import id.co.quadras.qif.model.vo.event.EventJms;
 import io.dropwizard.Application;
 import io.dropwizard.lifecycle.Managed;
 import io.dropwizard.setup.Bootstrap;
@@ -42,6 +46,8 @@ public abstract class QifEngineApplication extends Application<QifConfig> {
     private static boolean ACTIVE = true;
     private static Injector injector;
     private static HazelcastInstance hazelcastInstance;
+
+    private static int DEFAULT_DAEMON_THREAD_COUNT = 1;
 
     protected abstract void initializeApplication(Bootstrap<QifConfig> qifConfigBootstrap);
     protected abstract void runApplication(QifConfig qifConfig, Environment environment);
@@ -169,12 +175,28 @@ public abstract class QifEngineApplication extends Application<QifConfig> {
                 try {
                     QifProcess qifProcess = (QifProcess) injector.getInstance(Class.forName(qifEvent.getQifProcess()));
                     if (qifProcess instanceof DaemonProcess) {
-                        Runnable runnable = qifProcess.createDaemon(qifEvent);
-                        if (runnable != null) {
-                            executorService.submit(runnable);
-                            LOGGER.info("Submit daemon for event {} with process {}", qifEvent.getName(), qifProcess.activityName());
-                        } else {
-                            LOGGER.error("Unexpected null Runnable for event {} with process {}", qifEvent.getName(), qifProcess.activityName());
+                        int threadCount = 1;
+                        QifEventProperty threadCountProp = QifUtil.getEventProperty(qifEvent, EventJms.THREAD_COUNT.getName());
+                        if (threadCountProp != null) {
+                            String value = threadCountProp.getPropertyValue();
+                            if (!Strings.isNullOrEmpty(value)) {
+                                try {
+                                    threadCount = Integer.valueOf(value);
+                                } catch (NumberFormatException e) {
+                                    LOGGER.error("Error parsing integer in property 'thread_count' for Event '{}'", qifEvent.getName());
+                                }
+                            }
+                        }
+
+                        for (int i = 0; i < threadCount; i++) {
+                            Runnable runnable = qifProcess.createDaemon(qifEvent);
+                            if (runnable != null) {
+                                executorService.submit(runnable);
+                                LOGGER.info("Submit thread daemon {} for event {} with process {}",
+                                        new Object[]{i, qifEvent.getName(), qifProcess.activityName()});
+                            } else {
+                                LOGGER.error("Unexpected null Runnable for event {} with process {}", qifEvent.getName(), qifProcess.activityName());
+                            }
                         }
                     }
                 } catch (Exception e) {
