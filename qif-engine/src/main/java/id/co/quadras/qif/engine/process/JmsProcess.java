@@ -1,7 +1,6 @@
 package id.co.quadras.qif.engine.process;
 
 import com.google.common.base.Strings;
-import com.irwin13.winwork.basic.utilities.StringUtil;
 import id.co.quadras.qif.engine.QifEngineApplication;
 import id.co.quadras.qif.engine.core.QifActivityMessage;
 import id.co.quadras.qif.model.entity.QifEvent;
@@ -23,8 +22,6 @@ public abstract class JmsProcess extends DaemonProcess {
 
     @Override
     public Runnable createDaemon(final QifEvent qifEvent) throws Exception {
-
-        Thread.currentThread().setName(getClass().getName() + "#" + StringUtil.random32UUID());
 
         Hashtable<String, String> env = new Hashtable<String, String>();
         env.put(Context.INITIAL_CONTEXT_FACTORY, getPropertyValue(qifEvent, EventJms.INITIAL_CONTEXT_FACTORY.getName()));

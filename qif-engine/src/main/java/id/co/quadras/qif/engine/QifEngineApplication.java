@@ -167,8 +167,6 @@ public abstract class QifEngineApplication extends Application<QifConfig> {
     }
 
     private void submitDaemon(List<QifEvent> eventList) {
-        ExecutorService executorService = injector.getInstance(ExecutorService.class);
-
         for (final QifEvent qifEvent : eventList) {
             boolean active = qifEvent.getActiveAcceptMessage();
             if (active) {
@@ -191,7 +189,9 @@ public abstract class QifEngineApplication extends Application<QifConfig> {
                         for (int i = 0; i < threadCount; i++) {
                             Runnable runnable = qifProcess.createDaemon(qifEvent);
                             if (runnable != null) {
-                                executorService.submit(runnable);
+                                Thread thread = new Thread(runnable);
+                                thread.setName(qifEvent.getName() + "_" + i);
+                                thread.start();
                                 LOGGER.info("Submit thread daemon {} for event {} with process {}",
                                         new Object[]{i, qifEvent.getName(), qifProcess.activityName()});
                             } else {
