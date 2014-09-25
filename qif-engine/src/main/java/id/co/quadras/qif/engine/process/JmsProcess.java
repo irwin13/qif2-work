@@ -90,6 +90,10 @@ public abstract class JmsProcess extends DaemonProcess {
                                 logger.debug("execute process with message content = {}", textMessage.getText());
 
                                 executeProcess(qifEvent, qifActivityMessage);
+                            } else {
+                                // if no message, sleep for 10 seconds
+                                logger.info("No message, sleep for 10 seconds");
+                                Thread.sleep(10000);
                             }
                         } catch (Exception e) {
                             logger.error(e.getLocalizedMessage(), e);

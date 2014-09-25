@@ -12,7 +12,8 @@ public enum EventJms {
     JNDI_CONNECTION_FACTORY("jndi_connection_factory"),
     JNDI_DESTINATION("jndi_destination"),
     MESSAGE_SELECTOR("message_selector"),
-    THREAD_COUNT("thread_count");
+    THREAD_COUNT("thread_count"),
+    LISTENER_COUNT("listener_count");
 
     private final String name;
 
