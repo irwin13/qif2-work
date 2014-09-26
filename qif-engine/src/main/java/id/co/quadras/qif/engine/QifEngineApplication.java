@@ -142,6 +142,9 @@ public abstract class QifEngineApplication extends Application<QifConfig> {
                 executorService.shutdown();
                 LOGGER.info("=== Shutdown ExecutorService complete ===");
 
+                // sleep for 15 seconds to let all process done before shutdown hazelcast
+                Thread.sleep(15000);
+
                 LOGGER.info("=== Shutdown Hazelcast ... ===");
                 hazelcastInstance.shutdown();
                 LOGGER.info("=== Shutdown Hazelcast complete ===");
