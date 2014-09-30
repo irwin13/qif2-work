@@ -42,4 +42,23 @@ public class ActivityLogDataQueueReaderImp implements ActivityLogDataQueueReader
         LOGGER.trace("total message = {}", result.size());
         return result;
     }
+
+	@Override
+	public List<QifActivityLogData> drainQueue() {
+		List<QifActivityLogData> result = new LinkedList<QifActivityLogData>();
+		
+		drainLoop:
+		while (true) {
+			QifActivityLogData log = queue.get();
+			if (log != null) {
+				result.add(log);
+			} else {
+				break drainLoop;
+			}
+		}
+		
+		LOGGER.info("total drained message = {}", result.size());
+		return result;
+	}
+        
 }

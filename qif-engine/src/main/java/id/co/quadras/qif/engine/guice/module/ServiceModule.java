@@ -6,11 +6,13 @@ import id.co.quadras.qif.engine.job.internal.*;
 import id.co.quadras.qif.engine.service.AdapterService;
 import id.co.quadras.qif.engine.service.CounterService;
 import id.co.quadras.qif.engine.service.EventService;
+import id.co.quadras.qif.engine.service.QueueDrainer;
 import id.co.quadras.qif.engine.service.app.AppSettingService;
 import id.co.quadras.qif.engine.service.app.imp.AppSettingServiceImp;
 import id.co.quadras.qif.engine.service.imp.AdapterServiceImp;
 import id.co.quadras.qif.engine.service.imp.CounterServiceImp;
 import id.co.quadras.qif.engine.service.imp.EventServiceImp;
+import id.co.quadras.qif.engine.service.imp.QueueDrainerImp;
 import id.co.quadras.qif.engine.service.log.*;
 import id.co.quadras.qif.engine.service.log.imp.*;
 
@@ -52,5 +54,8 @@ public class ServiceModule extends AbstractModule {
 
         // APP
         bind(AppSettingService.class).to(AppSettingServiceImp.class);
+        
+        // QUEUE DRAINER
+        bind(QueueDrainer.class).to(QueueDrainerImp.class);
     }
 }

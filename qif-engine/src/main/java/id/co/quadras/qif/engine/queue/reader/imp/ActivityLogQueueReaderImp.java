@@ -1,15 +1,17 @@
 package id.co.quadras.qif.engine.queue.reader.imp;
 
-import com.google.common.base.Preconditions;
-import com.google.inject.Inject;
 import id.co.quadras.qif.engine.queue.ActivityLogQueue;
 import id.co.quadras.qif.engine.queue.reader.ActivityLogQueueReader;
 import id.co.quadras.qif.model.entity.log.QifActivityLog;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.LinkedList;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Preconditions;
+import com.google.inject.Inject;
 
 /**
  * @author irwin Timestamp : 05/05/2014 11:52
@@ -42,5 +44,24 @@ public class ActivityLogQueueReaderImp implements ActivityLogQueueReader {
         LOGGER.trace("total message = {}", result.size());
         return result;
     }
+    
+	@Override
+	public List<QifActivityLog> drainQueue() {
+		List<QifActivityLog> result = new LinkedList<QifActivityLog>();
+		
+		drainLoop:
+		while (true) {
+			QifActivityLog log = queue.get();
+			if (log != null) {
+				result.add(log);
+			} else {
+				break drainLoop;
+			}
+		}
+		
+		LOGGER.info("total drained message = {}", result.size());
+		return result;
+	}
+
 
 }

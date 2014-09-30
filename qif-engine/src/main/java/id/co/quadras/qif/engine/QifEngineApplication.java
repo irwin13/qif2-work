@@ -17,6 +17,7 @@ import id.co.quadras.qif.engine.healthcheck.DbRepoHealthCheck;
 import id.co.quadras.qif.engine.process.DaemonProcess;
 import id.co.quadras.qif.engine.service.CounterService;
 import id.co.quadras.qif.engine.service.EventService;
+import id.co.quadras.qif.engine.service.QueueDrainer;
 import id.co.quadras.qif.engine.service.app.AppSettingService;
 import id.co.quadras.qif.engine.web.*;
 import id.co.quadras.qif.engine.web.servlet.EventDispatcherServlet;
@@ -142,6 +143,11 @@ public abstract class QifEngineApplication extends Application<QifConfig> {
                 executorService.shutdown();
                 LOGGER.info("=== Shutdown ExecutorService complete ===");
 
+                LOGGER.info("=== Draining queue ... ===");
+                QueueDrainer queueDrainer = injector.getInstance(QueueDrainer.class);
+                queueDrainer.drainQueue();
+                LOGGER.info("=== Draining queue complete ===");
+
                 // sleep for 15 seconds to let all process done before shutdown hazelcast
                 Thread.sleep(15000);
 
@@ -176,7 +182,7 @@ public abstract class QifEngineApplication extends Application<QifConfig> {
                 try {
                     QifProcess qifProcess = (QifProcess) injector.getInstance(Class.forName(qifEvent.getQifProcess()));
                     if (qifProcess instanceof DaemonProcess) {
-                        int threadCount = 1;
+                        int threadCount = DEFAULT_DAEMON_THREAD_COUNT;
                         QifEventProperty threadCountProp = QifUtil.getEventProperty(qifEvent, EventJms.THREAD_COUNT.getName());
                         if (threadCountProp != null) {
                             String value = threadCountProp.getPropertyValue();

@@ -7,4 +7,5 @@ import java.util.List;
  */
 public interface QifQueueReader<T> {
     public List<T> getLogList(int maxFetch);
+    public List<T> drainQueue();
 }

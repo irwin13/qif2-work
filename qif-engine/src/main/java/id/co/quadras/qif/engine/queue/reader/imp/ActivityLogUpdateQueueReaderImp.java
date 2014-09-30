@@ -43,4 +43,22 @@ public class ActivityLogUpdateQueueReaderImp implements ActivityLogUpdateQueueRe
         return result;
     }
 
+	@Override
+	public List<QifActivityLog> drainQueue() {
+		List<QifActivityLog> result = new LinkedList<QifActivityLog>();
+		
+		drainLoop:
+		while (true) {
+			QifActivityLog log = queue.get();
+			if (log != null) {
+				result.add(log);
+			} else {
+				break drainLoop;
+			}
+		}
+		
+		LOGGER.info("total drained message = {}", result.size());
+		return result;
+	}
+
 }

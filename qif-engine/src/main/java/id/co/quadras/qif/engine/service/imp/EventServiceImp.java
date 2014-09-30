@@ -1,21 +1,22 @@
 package id.co.quadras.qif.engine.service.imp;
 
-import com.google.common.base.Preconditions;
-import com.google.inject.Inject;
-import com.irwin13.winwork.basic.service.BasicEntityCommonService;
 import id.co.quadras.qif.engine.QifException;
 import id.co.quadras.qif.engine.dao.EventDao;
 import id.co.quadras.qif.engine.dao.EventPropertyDao;
 import id.co.quadras.qif.engine.service.EventService;
 import id.co.quadras.qif.model.entity.QifEvent;
 import id.co.quadras.qif.model.entity.QifEventProperty;
-import org.apache.ibatis.session.ExecutorType;
-import org.apache.ibatis.session.SqlSession;
 
 import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+
+import org.apache.ibatis.session.ExecutorType;
+import org.apache.ibatis.session.SqlSession;
+
+import com.google.common.base.Preconditions;
+import com.google.inject.Inject;
 
 /**
  * @author irwin Timestamp : 17/05/2014 22:06
@@ -23,15 +24,12 @@ import java.util.List;
 public class EventServiceImp implements EventService {
 
     private final EventDao eventDao;
-    private final EventPropertyDao eventPropertyDao;
-    private final BasicEntityCommonService commonService;
+    private final EventPropertyDao eventPropertyDao;   
 
     @Inject
-    public EventServiceImp(EventDao eventDao, EventPropertyDao eventPropertyDao,
-                           BasicEntityCommonService commonService) {
+    public EventServiceImp(EventDao eventDao, EventPropertyDao eventPropertyDao) {
         this.eventDao = eventDao;
         this.eventPropertyDao = eventPropertyDao;
-        this.commonService = commonService;
     }
 
     @Override

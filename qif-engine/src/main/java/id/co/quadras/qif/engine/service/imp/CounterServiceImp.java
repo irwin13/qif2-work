@@ -1,8 +1,5 @@
 package id.co.quadras.qif.engine.service.imp;
 
-import com.google.inject.Inject;
-import com.irwin13.winwork.basic.WinWorkConstants;
-import com.irwin13.winwork.basic.utilities.StringUtil;
 import id.co.quadras.qif.engine.core.QifProcess;
 import id.co.quadras.qif.engine.core.QifTask;
 import id.co.quadras.qif.engine.dao.CounterDao;
@@ -11,20 +8,20 @@ import id.co.quadras.qif.engine.service.CounterService;
 import id.co.quadras.qif.engine.task.TaskRegister;
 import id.co.quadras.qif.model.entity.QifCounter;
 import id.co.quadras.qif.model.entity.QifEvent;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import com.google.inject.Inject;
+import com.irwin13.winwork.basic.WinWorkConstants;
+import com.irwin13.winwork.basic.utilities.StringUtil;
+
 /**
  * @author irwin Timestamp : 04/06/2014 19:05
  */
 public class CounterServiceImp implements CounterService {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(CounterServiceImp.class);
 
     private final CounterDao counterDao;
 
