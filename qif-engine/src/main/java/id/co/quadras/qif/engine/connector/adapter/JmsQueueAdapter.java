@@ -27,14 +27,12 @@ public class JmsQueueAdapter extends SingletonAdapter {
     private static final String CONNECTION = "CONNECTION";
     private static final String SESSION = "SESSION";
     private static final String MESSAGE_PRODUCER = "MESSAGE_PRODUCER";
-    private static final String SEPARATOR = "_";
-    private static final String LAST_UPDATE = "LAST_UPDATE";
 
     public JmsQueueAdapter(QifAdapter qifAdapter) throws Exception {
         super(qifAdapter);
     }
 
-    public static final ConcurrentHashMap<String, Object> CACHE = new ConcurrentHashMap<String, Object>();
+    private static final ConcurrentHashMap<String, Object> CACHE = new ConcurrentHashMap<String, Object>();
 
     @Override
     protected void initSingletonObjects() throws Exception {
