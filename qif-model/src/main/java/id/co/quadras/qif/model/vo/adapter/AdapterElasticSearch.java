@@ -6,7 +6,7 @@ package id.co.quadras.qif.model.vo.adapter;
 public enum AdapterElasticSearch {
 
     CLUSTER_NAME("cluster_name"),
-    SERVER_LIST("serverList"),;
+    SERVER_LIST("server_list"),;
 
     private final String name;
 
