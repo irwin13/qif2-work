@@ -11,7 +11,7 @@ public abstract class SingletonAdapter extends AbstractAdapter {
     protected static final String SEPARATOR = "_";
     protected static final String LAST_UPDATE = "LAST_UPDATE";
 
-    protected SingletonAdapter(QifAdapter qifAdapter) throws Exception{
+    protected SingletonAdapter(QifAdapter qifAdapter) throws Exception {
         super(qifAdapter);
         initSingletonObjects();
     }

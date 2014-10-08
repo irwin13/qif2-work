@@ -5,13 +5,12 @@ import com.irwin13.winwork.basic.scheduler.BasicSchedulerManager;
 import id.co.quadras.qif.engine.config.QifConfig;
 import id.co.quadras.qif.engine.core.QifConstants;
 import id.co.quadras.qif.engine.core.QifUtil;
-import id.co.quadras.qif.engine.guice.QifGuice;
 import id.co.quadras.qif.engine.job.QifEventConcurrentJob;
 import id.co.quadras.qif.engine.job.QifEventSingleInstanceJob;
 import id.co.quadras.qif.engine.job.internal.*;
-import id.co.quadras.qif.engine.json.QifJsonParser;
 import id.co.quadras.qif.model.entity.QifEvent;
 import id.co.quadras.qif.model.entity.QifEventProperty;
+import id.co.quadras.qif.model.vo.event.EventInterface;
 import id.co.quadras.qif.model.vo.event.EventType;
 import id.co.quadras.qif.model.vo.event.SchedulerCron;
 import id.co.quadras.qif.model.vo.event.SchedulerInterval;
@@ -19,7 +18,6 @@ import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,16 +41,12 @@ public final class SchedulerStarter {
 
     public void startEvent(List<QifEvent> qifEventList) throws SchedulerException {
         LOGGER.info("=====================================");
-        LOGGER.info("Configure BP Listener with type SCHEDULER ");
+        LOGGER.info("Configure Qif Event with type SCHEDULER ");
 
         for (QifEvent qifEvent : qifEventList) {
-            try {
-                LOGGER.debug(QifGuice.getInjector().getInstance(QifJsonParser.class).parseToString(false, qifEvent));
-            } catch (IOException e) {
-                LOGGER.error(e.getLocalizedMessage(), e);
-            }
-            if (qifEvent.getEventType().equalsIgnoreCase(EventType.SCHEDULER_CRON.getName()) ||
-                    qifEvent.getEventType().equalsIgnoreCase(EventType.SCHEDULER_INTERVAL.getName())) {
+
+            if (qifEvent.getEventInterface().equalsIgnoreCase(EventInterface.SCHEDULER.getName())) {
+                LOGGER.info("Setup Scheduler for QifEvent = {}", qifEvent.getName());
 
                 QifEventProperty concurrentExecutionProperty = QifUtil.getEventProperty(qifEvent,
                         SchedulerInterval.CONCURRENT_EXECUTION.getName());
@@ -95,9 +89,14 @@ public final class SchedulerStarter {
                         LOGGER.error("FATAL : Missing Listener Property with property key = 'cronExpression' for QifEvent {}",
                                 qifEvent.getName());
                     }
+
+                } else {
+                    LOGGER.error("FATAL : QifEvent '{}' eventType is not 'scheduler_interval' or 'scheduler_cron'",
+                            qifEvent.getName());
+                    throw new QifException("FATAL : QifEvent '" + qifEvent.getName() + "' eventType is not 'scheduler_interval' or 'scheduler_cron'");
                 }
 
-                if (!schedulerManager.isJobAlreadyExists(jobKey) && jobDetail != null) {
+                if (!schedulerManager.isJobAlreadyExists(jobKey) && jobDetail != null && trigger != null) {
                     schedulerManager.add(jobDetail, trigger);
                 } else if (jobDetail != null) {
                     LOGGER.debug("JobKey {} already exists, try to reschedule", jobKey);
