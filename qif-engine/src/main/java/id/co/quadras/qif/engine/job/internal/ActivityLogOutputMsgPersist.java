@@ -15,17 +15,27 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.TimerTask;
 
 /**
  * @author irwin Timestamp : 17/05/2014 22:25
  */
 @DisallowConcurrentExecution
-public class ActivityLogOutputMsgPersist implements Job {
+public class ActivityLogOutputMsgPersist extends TimerTask implements Job {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ActivityLogOutputMsgPersist.class);
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
+        process();
+    }
+
+    @Override
+    public void run() {
+        process();
+    }
+
+    private void process() {
         ActivityLogOutputMsgQueueReader queueReader = QifGuice.getInjector().getInstance(ActivityLogOutputMsgQueueReader.class);
         ActivityLogOutputMsgService service = QifGuice.getInjector().getInstance(ActivityLogOutputMsgService.class);
 
@@ -48,6 +58,5 @@ public class ActivityLogOutputMsgPersist implements Job {
         if (!list.isEmpty()) {
             service.batchInsert(list);
         }
-
     }
 }

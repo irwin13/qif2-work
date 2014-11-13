@@ -89,7 +89,7 @@ public abstract class QifEngineApplication extends Application<QifConfig> {
 
         try {
             schedulerStarter.startEvent(eventList);
-            schedulerStarter.startInternalScheduler(qifConfig);
+            schedulerStarter.startInternalTimer(qifConfig);
             schedulerStarter.startScheduler();
         } catch (SchedulerException e) {
             LOGGER.error(e.getLocalizedMessage(), e);

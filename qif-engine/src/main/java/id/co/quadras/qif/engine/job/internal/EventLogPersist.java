@@ -15,17 +15,27 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.TimerTask;
 
 /**
  * @author irwin Timestamp : 17/05/2014 20:57
  */
 @DisallowConcurrentExecution
-public class EventLogPersist implements Job {
+public class EventLogPersist extends TimerTask implements Job {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventLogPersist.class);
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
+        process();
+    }
+
+    @Override
+    public void run() {
+        process();
+    }
+
+    private void process() {
         EventLogQueueReader queueReader = QifGuice.getInjector().getInstance(EventLogQueueReader.class);
         EventLogService service = QifGuice.getInjector().getInstance(EventLogService.class);
 

@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
 
 /**
  * @author irwin Timestamp : 12/05/2014 17:47
@@ -106,6 +107,43 @@ public final class SchedulerStarter {
         }
     }
 
+    public void startInternalTimer(QifConfig qifConfig) {
+        LOGGER.info("Start Internal Timer ");
+        // counter
+        new Timer(CounterUpdate.class.getName())
+        .schedule(new CounterUpdate(), QifConstants.ONE_SECOND,
+                qifConfig.getBatchConfig().getCounterUpdateInterval());
+
+        // event log
+        new Timer(EventLogMsgPersist.class.getName())
+                .schedule(new EventLogMsgPersist(), QifConstants.ONE_SECOND,
+                        qifConfig.getBatchConfig().getEventLogMsgPersistInterval());
+
+        new Timer(EventLogPersist.class.getName())
+                .schedule(new EventLogPersist(), QifConstants.ONE_SECOND,
+                        qifConfig.getBatchConfig().getEventLogPersistInterval());
+
+        // activity log
+        new Timer(ActivityLogPersist.class.getName())
+                .schedule(new ActivityLogPersist(), QifConstants.ONE_SECOND,
+                        qifConfig.getBatchConfig().getActivityLogPersistInterval());
+
+        new Timer(ActivityLogDataPersist.class.getName())
+                .schedule(new ActivityLogDataPersist(), QifConstants.ONE_SECOND,
+                        qifConfig.getBatchConfig().getActivityLogDataPersistInterval());
+
+        new Timer(ActivityLogInputMsgPersist.class.getName())
+                .schedule(new ActivityLogInputMsgPersist(), QifConstants.ONE_SECOND,
+                        qifConfig.getBatchConfig().getActivityLogInputMsgPersistInterval());
+
+        new Timer(ActivityLogOutputMsgPersist.class.getName())
+                .schedule(new ActivityLogOutputMsgPersist(), QifConstants.ONE_SECOND,
+                        qifConfig.getBatchConfig().getActivityLogOutputMsgPersistInterval());
+
+        LOGGER.info("Start Internal Timer complete");
+    }
+
+    @Deprecated
     public void startInternalScheduler(QifConfig qifConfig) throws SchedulerException {
         LOGGER.info("Start Internal Scheduler ");
 

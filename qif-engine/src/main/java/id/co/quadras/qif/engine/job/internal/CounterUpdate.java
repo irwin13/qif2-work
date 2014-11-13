@@ -25,18 +25,23 @@ import java.util.*;
  * @author irwin Timestamp : 05/06/2014 16:44
  */
 @DisallowConcurrentExecution
-public class CounterUpdate implements Job {
+public class CounterUpdate extends TimerTask implements Job {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CounterUpdate.class);
-    private QifTransactionCounter transactionCounter;
-    private EventService eventService;
+
+    @Override
+    public void run() {
+        process();
+    }
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
+        process();
+    }
 
-        transactionCounter = QifGuice.getInjector().getInstance(QifTransactionCounter.class);
+    private void process() {
         CounterService counterService = QifGuice.getInjector().getInstance(CounterService.class);
-        eventService = QifGuice.getInjector().getInstance(EventService.class);
+        QifTransactionCounter transactionCounter = QifGuice.getInjector().getInstance(QifTransactionCounter.class);
 
         List<QifCounter> qifCounterList = new LinkedList<QifCounter>();
         Map<String, Integer> mapCounter = new WeakHashMap<String, Integer>();
@@ -55,6 +60,9 @@ public class CounterUpdate implements Job {
 
     private void populateData(List<QifCounter> qifCounterList, Map<String, Integer> mapCounter) {
         Date today = new Date();
+
+        QifTransactionCounter transactionCounter = QifGuice.getInjector().getInstance(QifTransactionCounter.class);
+        EventService eventService = QifGuice.getInjector().getInstance(EventService.class);
 
         QifEvent filterEvent = new QifEvent();
         filterEvent.setActive(Boolean.TRUE);
