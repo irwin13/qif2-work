@@ -13,6 +13,7 @@ import javax.validation.constraints.NotNull;
 public class QifConfig extends Configuration {
 
     private int qifTaskMaxConcurrent;
+    private boolean internalLogActive;
 
     @NotNull
     private String transactionManager;
@@ -96,6 +97,14 @@ public class QifConfig extends Configuration {
 
     public void setJndiDataSource(JndiDataSource jndiDataSource) {
         this.jndiDataSource = jndiDataSource;
+    }
+
+    public boolean isInternalLogActive() {
+        return internalLogActive;
+    }
+
+    public void setInternalLogActive(boolean internalLogActive) {
+        this.internalLogActive = internalLogActive;
     }
 
     @Override

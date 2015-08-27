@@ -2,6 +2,8 @@
 
 qifTaskMaxConcurrent: 1024
 
+internalLogActive: false
+
 rootPackage:
     process: foo.qif.process
     task: foo.qif.task

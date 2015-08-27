@@ -89,7 +89,12 @@ public abstract class QifEngineApplication extends Application<QifConfig> {
 
         try {
             schedulerStarter.startEvent(eventList);
-            schedulerStarter.startInternalTimer(qifConfig);
+            if (qifConfig.isInternalLogActive()) {
+                schedulerStarter.startInternalTimer(qifConfig);
+                LOGGER.info("InternalLog is ON");
+            } else {
+                LOGGER.info("InternalLog is OFF");
+            }
             schedulerStarter.startScheduler();
         } catch (SchedulerException e) {
             LOGGER.error(e.getLocalizedMessage(), e);
@@ -148,7 +153,7 @@ public abstract class QifEngineApplication extends Application<QifConfig> {
                 queueDrainer.drainQueue();
                 LOGGER.info("=== Draining queue complete ===");
 
-                // sleep for 15 seconds to let all process done before shutdown hazelcast
+                // sleep for 15 seconds to let all process completed before shutdown hazelcast
                 Thread.sleep(15000);
 
                 LOGGER.info("=== Shutdown Hazelcast ... ===");
