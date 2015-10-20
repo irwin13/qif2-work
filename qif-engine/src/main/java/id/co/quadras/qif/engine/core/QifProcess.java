@@ -130,7 +130,7 @@ public abstract class QifProcess implements QifActivity {
 
     private QifActivityLog insertProcessLog(QifEvent qifEvent, QifActivityMessage qifActivityMessage) {
 
-        addCounterProcess();
+        //addCounterProcess();
         boolean auditTrailEnabled = qifEvent.getAuditTrailEnabled();
 
         if (auditTrailEnabled) {
@@ -248,7 +248,7 @@ public abstract class QifProcess implements QifActivity {
 
     private QifEventLog insertEventLog(QifEvent qifEvent, Object eventMessage, QifMessageType messageType) {
 
-        addCounterEvent(qifEvent);
+        //addCounterEvent(qifEvent);
         QifEventLog qifEventLog = new QifEventLog();
 
         if (qifEvent.getAuditTrailEnabled() != null && qifEvent.getAuditTrailEnabled()) {

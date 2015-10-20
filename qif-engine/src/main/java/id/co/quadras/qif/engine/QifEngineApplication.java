@@ -15,9 +15,7 @@ import id.co.quadras.qif.engine.core.QifUtil;
 import id.co.quadras.qif.engine.guice.QifGuice;
 import id.co.quadras.qif.engine.healthcheck.DbRepoHealthCheck;
 import id.co.quadras.qif.engine.process.DaemonProcess;
-import id.co.quadras.qif.engine.service.CounterService;
 import id.co.quadras.qif.engine.service.EventService;
-import id.co.quadras.qif.engine.service.QueueDrainer;
 import id.co.quadras.qif.engine.service.app.AppSettingService;
 import id.co.quadras.qif.engine.web.*;
 import id.co.quadras.qif.engine.web.servlet.EventDispatcherServlet;
@@ -101,10 +99,10 @@ public abstract class QifEngineApplication extends Application<QifConfig> {
         }
         LOGGER.info("=== Starting Scheduler QifEvent complete ===");
 
-        LOGGER.info("=== Init counter ... ===");
-        CounterService counterService = injector.getInstance(CounterService.class);
-        counterService.initCounter(eventList);
-        LOGGER.info("=== Init counter complete ===");
+        //LOGGER.info("=== Init counter ... ===");
+        //CounterService counterService = injector.getInstance(CounterService.class);
+        //counterService.initCounter(eventList);
+        //LOGGER.info("=== Init counter complete ===");
 
         LOGGER.info("=== Register servlet ... ===");
         environment.getApplicationContext().addServlet(EventDispatcherServlet.class, "/http-event/*");
@@ -148,10 +146,10 @@ public abstract class QifEngineApplication extends Application<QifConfig> {
                 executorService.shutdown();
                 LOGGER.info("=== Shutdown ExecutorService complete ===");
 
-                LOGGER.info("=== Draining queue ... ===");
-                QueueDrainer queueDrainer = injector.getInstance(QueueDrainer.class);
-                queueDrainer.drainQueue();
-                LOGGER.info("=== Draining queue complete ===");
+                //LOGGER.info("=== Draining queue ... ===");
+                //QueueDrainer queueDrainer = injector.getInstance(QueueDrainer.class);
+                //queueDrainer.drainQueue();
+                //LOGGER.info("=== Draining queue complete ===");
 
                 // sleep for 15 seconds to let all process completed before shutdown hazelcast
                 Thread.sleep(15000);
